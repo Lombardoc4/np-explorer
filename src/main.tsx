@@ -9,12 +9,13 @@ import "./index.css";
 import ErrorPage from './error-page';
 import { StatePage } from './StatePage';
 import { ParkProvider } from './ParkContext'
+import ScrollToTop from './components/ScrollToTop';
 
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <><ScrollToTop/><App /></>,
     errorElement: <ErrorPage />,
     children: [
       {

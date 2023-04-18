@@ -119,9 +119,8 @@ export const StatePage = () => {
                     </div>
                     <MapBox>
                         <LeafletMap 
-                        // Expensive Calculation every render 
+                        state={state} 
                         parkCoords={activeParks.map(park => ({ longitude: park.longitude, latitude: park.latitude, name: park.fullName }))}
-                        stateCoords={state.name}
                         />
                     </MapBox>
                 </div>

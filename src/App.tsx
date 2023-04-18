@@ -63,11 +63,16 @@ function App() {
           
           <Outlet />
           
-        <div className="container">
           <USMap/>
-        </div>
         
       </main>
+      
+      <footer style={{minHeight: '300px', marginTop: '2em', backgroundColor: '#000', color: '#fff', padding: '2em 0' }}>
+        <div className="container">
+          <p>Footer</p>
+        </div>
+        
+      </footer>
     </>
   )
 }

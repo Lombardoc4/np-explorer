@@ -13,6 +13,7 @@ interface DropdownProps {
 
 const DropdownSearch = styled.div`
   position: relative;
+  z-index: 2000;
   display: flex;
   flex-direction: column;
   align-items: center;

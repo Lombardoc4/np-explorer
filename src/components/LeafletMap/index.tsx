@@ -1,113 +1,68 @@
-import { useEffect, useState, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvent, GeoJSON} from 'react-leaflet';
+// Create a react leaflet that renders a US Map centered on the state
+import { MapContainer, TileLayer, GeoJSON, useMap, Marker, Popup } from "react-leaflet"
 import { USMapCords } from '../../data/USMap';
-import { LatLngBoundsExpression } from 'leaflet';
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-interface LeafletMapProps {
-    stateCoords: string,
-    parkCoords: { 
-        longitude: number, 
-        latitude: number,
-        name: string 
-    }[];
-}
-
-function SetViewOnClick({ animateRef }) {
-    const map = useMapEvent('click', (e) => {
-      map.setView(e.latlng, map.getZoom(), {
-        animate: animateRef.current || false,
-      })
-    })
-  
-    
-    
-  
-    return null
-  }
-  
-  function AnimateExample({ bounds }) {
-    const animateRef = useRef(false)
-    console.log('reload', bounds)
-    return (
-      <>
-        <p>
-          <label>
-            <input
-              type="checkbox"
-              onChange={() => {
-                animateRef.current = !animateRef.current
-              }}
-            />
-            Animate panning
-          </label>
-        </p>
-        <MapContainer style={{height: '400px', width: '100%'}} bounds={bounds} zoom={13} scrollWheelZoom={false}>
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <SetViewOnClick animateRef={animateRef} />
-        </MapContainer>
-      </>
-    )
-  }
-  
-
-const SetViewOnChange = ({features}: any) => {
+const LeafletEvents = ({state}) => {
     const map = useMap();
-    
-    
-    // map.setView(, map.getZoom());
-    // map.fitBounds(USMapCords.features[0].getBounds());
-    
-    function onEachFeature(feature, layer) {
-      layer.on({
-          click: function(e: { target: { getBounds: () => LatLngBoundsExpression; }; }) {
-            console.log('e', e.target.getBounds(), e.target);
-            map.fitBounds(e.target.getBounds());
-          }
-      });
-    }
-    console.log('feature update')
-    return <GeoJSON data={features} onEachFeature={onEachFeature} />
-    ;
-}
-
-
-
-export const LeafletMap = ({stateCoords, parkCoords} : LeafletMapProps) => {
-    const [ftState, setFtState] = useState<{}>({});
-    const animateRef = useRef(false);
-    // const map = useMap()
+    const geoJsonLayer = useRef(null);
+    const ftState = USMapCords.features.filter(stateCoords => stateCoords.properties.name === state.name)[0];
     
     useEffect(() => {
-        const stateFeature = USMapCords.features.filter(state => state.properties.name === stateCoords)[0];
-        // stateFeature.id = '1';
-        setFtState(stateFeature)
-        // const coords = USMapCords.filter(state => state.name === stateCoords)[0].coords
-        // setBounds(coords);
-        // map.fitBounds(stateCoords);
-    }, [stateCoords]);
+        const stateFeature = USMapCords.features.filter(stateCoords => stateCoords.properties.name === state.name)[0];
+        if (geoJsonLayer.current) {
+            geoJsonLayer.current.clearLayers().addData(stateFeature);
+        }
+    }, [state])
     
-    // console.log('stateCoords', bounds);
+    const onEachFeature = (feature, layer) => {
+        layer.on({
+            click: function(e) {
+                map.fitBounds(e.target.getBounds());
+            }
+        });
+    }
+    
+    return (<GeoJSON ref={geoJsonLayer} data={ftState} onEachFeature={onEachFeature} />)
+}
 
+function DisplayPosition({ map, state }) {
+    useEffect(() => {
+        map.on('load', map.setView(state.coords, 5))
+    }, [state])
     
-    return (
-      <>
-        {/* <AnimateExample bounds={bounds}  /> */}
-        <MapContainer style={{height: '400px', width: '100%'}} center={[37.8, -96]} zoom={4} >
+    return null
+  }
+
+export const LeafletMap = ({state, parkCoords}) => {
+    const [map, setMap] = useState(null)
+
+    const displayMap = useMemo(
+        () => (
+          <MapContainer
+            style={{height: '400px', width: '100%'}} 
+            center={[37.8, -96]} 
+            zoom={4}
+            ref={setMap}>
             <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-              
-            <SetViewOnChange features={ftState}/>
+            <LeafletEvents state={state} />
             {parkCoords.map((park) => 
                     <Marker key={park.name} position={[park.latitude, park.longitude]}>
                         <Popup>{park.name}</Popup>
                     </Marker>
             )}
-        </MapContainer>
+          </MapContainer>
+        ),
+        [state],
+    )
+    
+    return (
+        <>
+        {map ? <DisplayPosition map={map} state={state} /> : null}
+        {displayMap}
       </>
     )
 }

@@ -6,11 +6,12 @@ export const USMap = () => {
     const navigate = useNavigate();
     
     const handleStateSelect = (state:any) => {
-        navigate('/state/' + state)
+        window.scrollTo(0, 0);
+        navigate('/state/' + state);
     }
     
     return (
-        <>
+        <div className="container" style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '3em 0', gap: '2em'}}>
             <svg className='us-map' xmlns="http://www.w3.org/2000/svg" width="959" height="593">
                 <g className="state">
                 {stateMap.map((state) => (
@@ -35,6 +36,6 @@ export const USMap = () => {
                 options={stateMap.map((state) => ({value: state.id, title: state.name}))}
                 onSelect={(option) => handleStateSelect(option)}
             />
-        </>
+        </div>
     )
 }
