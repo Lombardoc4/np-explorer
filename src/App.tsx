@@ -1,0 +1,75 @@
+import { useContext } from 'react'
+import {  Link, Outlet, useNavigate } from 'react-router-dom'
+import ParkContext from './ParkContext'
+import { Dropdown } from './components/Dropdown'
+import { USMap } from './components/USMap'
+
+import viteLogo from '/vite.svg'
+import './App.css'
+import './stateMap.css'
+
+interface Image {
+  id: number
+  url: string
+  title: string
+  description: string
+}
+
+
+function App() {
+  const parks = useContext(ParkContext);
+  
+  const navigate = useNavigate();
+  
+  
+  const handleParkSelect = (park:any) => {
+    navigate(`/park/${park}`)
+  }
+  
+  if (!parks) return <div>Loading...</div>;
+  
+  return (
+    <>
+      <nav>
+        <div className="container">
+          
+          <div className="logo">
+            <Link to='/'>
+              <img src={viteLogo} alt="Vite Logo" />
+            </Link>
+          </div>
+          
+          <Dropdown
+            placeholder='Search for a park'
+            options={parks.map((park) => ({value: park.parkCode, title: park.fullName}))}
+            // options={Array(5).fill('6').map((_, i) => ({value: i + '', title: `Option ${i}`}))}
+            onSelect={(option) => handleParkSelect(option)}
+          />
+          
+          <div className="links">
+            <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
+              About
+            </a>
+            <a href="https://vitejs.dev/guide/features.html" target="_blank" rel="noopener noreferrer">
+              Contact
+            </a>
+          </div>
+        </div>
+        
+      </nav>
+      <main>
+        
+        
+          
+          <Outlet />
+          
+        <div className="container">
+          <USMap/>
+        </div>
+        
+      </main>
+    </>
+  )
+}
+
+export default App
