@@ -45,12 +45,6 @@ input:focus {
   border-color: #8bc944;
 }
 
-input:focus,
-button:focus,
-button:focus-visible {
-  /* outline: 4px auto -webkit-focus-ring-color; */
-  /* box-shadow: 0 0 0.5rem #8bc944; */
-}
 
 input[type="search"]{
   border: none;

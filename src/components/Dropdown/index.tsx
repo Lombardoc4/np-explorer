@@ -77,7 +77,7 @@ export const Dropdown = ({ onSelect, placeholder, options }: DropdownProps) => {
     }
     
     return (
-        <DropdownSearch ref={dropdownSearch} onClick={() => onSetFocused(true)} $open={focused}>
+        <DropdownSearch className="dropdown-search" ref={dropdownSearch} onClick={() => onSetFocused(true)} $open={focused}>
           <SearchForm autoComplete="off">
             <svg 
               onMouseDown={(e) => {e.preventDefault()}}

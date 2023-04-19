@@ -10,10 +10,15 @@ const LeafletEvents = ({state}) => {
     
     useEffect(() => {
         const stateFeature = USMapCords.features.filter(stateCoords => stateCoords.properties.name === state.name)[0];
+        
         if (geoJsonLayer.current) {
+            // Clear the current layer and add the new data
             geoJsonLayer.current.clearLayers().addData(stateFeature);
+            // Set Initial Bounds
+            map.fitBounds(geoJsonLayer.current.getBounds())
         }
     }, [state])
+    
     
     const onEachFeature = (feature, layer) => {
         layer.on({
@@ -26,17 +31,11 @@ const LeafletEvents = ({state}) => {
     return (<GeoJSON ref={geoJsonLayer} data={ftState} onEachFeature={onEachFeature} />)
 }
 
-function DisplayPosition({ map, state }) {
-    useEffect(() => {
-        map.on('load', map.setView(state.coords, 5))
-    }, [state])
-    
-    return null
-  }
 
 export const LeafletMap = ({state, parkCoords}) => {
     const [map, setMap] = useState(null)
 
+    
     const displayMap = useMemo(
         () => (
           <MapContainer
@@ -56,13 +55,10 @@ export const LeafletMap = ({state, parkCoords}) => {
             )}
           </MapContainer>
         ),
-        [state],
+        [parkCoords],
     )
     
     return (
-        <>
-        {map ? <DisplayPosition map={map} state={state} /> : null}
-        {displayMap}
-      </>
+        <>{displayMap}</>
     )
 }
