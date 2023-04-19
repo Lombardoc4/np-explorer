@@ -1,12 +1,11 @@
 import { useContext } from 'react'
 import {  Link, Outlet, useNavigate } from 'react-router-dom'
-import ParkContext from './ParkContext'
+import ParkContext from './hooks/ParkContext'
 import { Dropdown } from './components/Dropdown'
 import { USMap } from './components/USMap'
 
 import viteLogo from '/vite.svg'
 import './App.css'
-import './stateMap.css'
 
 interface Image {
   id: number
@@ -30,7 +29,7 @@ function App() {
   
   return (
     <>
-      <nav>
+      <nav style={{backgroundColor: 'rgb(80, 119,67)'}}>
         <div className="container">
           
           <div className="logo">

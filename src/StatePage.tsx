@@ -1,5 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router-dom"
-import ParkContext from "./ParkContext";
+import ParkContext from "./hooks/ParkContext";
 import { useContext, useEffect, useState } from "react";
 import { stateMap } from "./data/stateMap";
 
@@ -13,6 +13,7 @@ const Header = styled.header`
     justify-content: center;
     align-items: center;
     height: 400px;
+    /* background: rgb(80, 119, 67); */
     background: #000;
     color: #fff;
     margin-bottom: 2rem;
@@ -26,6 +27,10 @@ const Header = styled.header`
         width: 33%;
         padding-right: 2em;
         margin: auto auto 1em 1em;
+        
+        h1{
+            font-size: 5em;
+        }
     }
 `;
     
@@ -33,7 +38,7 @@ const MapBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 66%;
+    width: 67%;
     height: 100%;
 `;
 

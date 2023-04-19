@@ -1,6 +1,8 @@
 import { stateMap, borderMap, otherMap } from '../../data/stateMap';
 import { Link, useNavigate } from 'react-router-dom'
 import { Dropdown } from '../Dropdown';
+import './stateMap.css'
+
 
 export const USMap = () => {
     const navigate = useNavigate();

@@ -14,7 +14,7 @@ function ParkProvider({children} : {children: React.ReactNode}){
       .catch(error => console.error(error));
     }, []);
     
-    console.log('context', myData)
+    // console.log('context', myData)
 
   return (
     <ParkContext.Provider value={myData}>

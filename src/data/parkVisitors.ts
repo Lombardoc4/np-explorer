@@ -499,10 +499,10 @@ export const parkVistors: ParkVisitorProps[] = [
       "parkCode": "LINC"
     },
     {
-      "parkName": "Martin Luther King",
-      "state": "Jr. Memorial",
-      "visitors": "District of Columbia",
-      "parkCode": 3321897
+      "parkName": "Martin Luther King Jr. Memorial",
+      "state": "District of Columbia",
+      "visitors": 3321897,
+      "parkCode": "MLKM"
     },
     {
       "parkName": "Mary McLeod Bethune Council House NHS",
@@ -691,10 +691,10 @@ export const parkVistors: ParkVisitorProps[] = [
       "parkCode": "KEMO"
     },
     {
-      "parkName": "Martin Luther King",
-      "state": "Jr. NHP",
-      "visitors": "Georgia",
-      "parkCode": 242789
+      "parkName": "Martin Luther King Jr. NHP",
+      "state": "Georgia",
+      "visitors": 242789,
+      "parkCode": "MALU"
     },
     {
       "parkName": "Ocmulgee Mounds NHP",
@@ -2371,10 +2371,10 @@ export const parkVistors: ParkVisitorProps[] = [
       "parkCode": "GRTE"
     },
     {
-      "parkName": "John D. Rockefeller",
-      "state": "Jr. MEM PKWY",
-      "visitors": "Wyoming",
-      "parkCode": 1091196
+      "parkName": "John D. Rockefeller Jr. MEM PKWY",
+      "state": "Wyoming",
+      "visitors": 1091196,
+      "parkCode": "JODR"
     },
     {
       "parkName": "Yellowstone NP",

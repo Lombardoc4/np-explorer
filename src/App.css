@@ -27,12 +27,6 @@ main{
   justify-content: space-between;
 }
 
-main h1{
-  font-size: 5em;
-  /* line-height: 1.1; */
-  /* margin-left: 1em; */
-  /* margin-bottom: 1em; */
-}
 
 .container{
   width: 100%;
@@ -103,7 +97,7 @@ input[type="search" i]::-webkit-search-cancel-button {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1em;
+  /* padding: 1em; */
   background-color: #f9f9f9;
 }
 
