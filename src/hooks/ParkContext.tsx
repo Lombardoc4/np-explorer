@@ -8,7 +8,7 @@ function ParkProvider({children} : {children: React.ReactNode}){
   const [myData, setMyData] = useState(null);
 
   useEffect(() => {
-    fetch('https://developer.nps.gov/api/v1/parks?limit=500&api_key=XRJp7yE57VgDhz3ndpb3sgLnTKXIkIAxwTrYZkbn')
+    fetch(`https://developer.nps.gov/api/v1/parks?limit=500&api_key=${import.meta.env.VITE_NPS_API_KEY}`)
       .then(response => response.json())
       .then(data => setMyData(data.data))
       .catch(error => console.error(error));

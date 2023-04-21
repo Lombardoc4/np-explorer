@@ -1,13 +1,25 @@
 
 import { Link, useNavigate, useParams } from "react-router-dom"
 import ParkContext from "./hooks/ParkContext";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, Fragment, useRef, useMemo } from "react";
 import { stateMap } from "./data/stateMap";
 
 import styled from 'styled-components';
 import { parkVistors } from "./data/parkVisitors";
 import { LeafletMap } from "./components/LeafletMap";
 import { Dropdown } from "./components/Dropdown";
+import { ParkAlert } from "./components/ParkAlert";
+
+const DetailCategories = [
+    { name: 'Things to do', id: 'thingstodo' },
+    { name: 'Amenities', id: 'amenities/parksplaces' },
+    { name: 'Camping', id: 'campgrounds' },
+    { name: 'Events', id: 'events' },
+    { name: 'Tours', id: 'tours' },
+    { name: 'Visitor Centers', id: 'visitorcenters' },
+    { name: 'Parking Lots', 'id': 'parkinglots'},
+    { name: 'News Releases', id: 'newsreleases' },
+]
 
 const Header = styled.header`
     display: flex;
@@ -16,7 +28,7 @@ const Header = styled.header`
     height: 400px;
     background: #000;
     color: #fff;
-    margin-bottom: 2rem;
+    /* margin-bottom: 2rem; */
     
     .container{
         display: flex;
@@ -31,6 +43,7 @@ const Header = styled.header`
         h1{
             font-size: 3em;
         }
+        h2{ font-size: 2em; font-style: italic; }
     }
 `;
     
@@ -42,219 +55,218 @@ const MapBox = styled.div`
     height: 100%;
 `;
 
-const CardGrid = styled.div`
-    /* width: 80%; */
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-gap: 2rem;
-    /* margin: 1rem; */
-    .filters{
-        grid-column: 1 / -1;
+const DescriptionBox = styled.div`
+    /* background: #f9f9f9; */
+    color: #000;
+    padding: 2em 1em;
+        display: flex;
+        gap: 1em;
+`;
+
+const InfoBox = styled.div`
+    width: 50%;
+    padding: 1em;
+    
+    p{ margin-bottom: 1em; }
+    
+    .fees {
+        margin-bottom: 1em;
+        p{
+            margin: 0;
+        }
+    }
+`;
+
+const ImgGrid = styled.div`
+    padding: 1em;
+    background-color: #f9f9f9;
+    
+    .container{
+        position: relative;
+        display: flex;
+        flex-wrap: no-wrap;
+        overflow: hidden;
+        gap: 0.5em;
     }
     
-    .dropdown-search{
-        margin: 0 0 1em;
+    .img-container{
+        min-width: 300px;
+        max-width: 25%;
+        overflow: hidden;
     }
     
+    .overlay{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.3s 0.3s ease-out;
+        opacity: 0;
+        &:hover{
+            opacity: 1;
+            transition: opacity 0.3s ease-out;
+            
+        }
+            
+    }
 `;
 
 
-const Card = styled.div`
-    color: #000;
-    background: #fff;
-    border-radius: 5px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-    /* margin: 1rem; */
-    /* width: 300px; */
-    overflow: hidden;
-    transition: all 0.3s ease-out;
-    /* &:hover {
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.26);
-        transform: translateY(-5px);
-    } */
+        
+const DetailGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5em;
+    padding: 1em;
     
-    .btn, button{
-        margin: auto 0 0 auto;
-        color: #fff;
-    }
-    
-    .img-container {
-        width: 100%;
-        height: 200px;
-        overflow: hidden;
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-    }
-    .card-content{
-        padding: 1rem;
-        /* height: 100%; */
-        flex: 1;
+    .detailCard{
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        align-items: center;
+        padding: 1em;
+        text-transform: uppercase;
+        height: 100%;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        box-shadow: rgba(80, 119, 67, 0.26) 0px 2px 8px;
+        overflow: hidden;
+        transition: all 0.3s ease-out 0s;
+        background-color: rgb(80, 119, 67);
+        color: #f9f9f9;
+        &:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.26);
+            transform: translateY(-3px);
+        }
         
     }
-    h2 { line-height: 1.1;  min-height: 3em; }
-    h2:hover {
-        text-decoration: underline;
-        /* height: 100%; */
-        /* font-size: 1.5rem; */
-        /* margin: 1rem 0; */
-    }
-    p {
-        font-size: 1rem;
-        margin: 0 0 1rem;
-    }
 `;
 
-const TileGrid = styled.div`
-    margin-top: 1em;
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-    &.row{
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-`;
-
-const Tile = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-    
-    border-radius: 5px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-    background: #f9f9f9;
-    color: #507743;
-    font-weight: 700;
-    font-size: 0.75em;
-    padding: 0.5em 1em;
-    cursor: pointer;
-    &:not(.active):hover {
-        background: #507743;
-        color: #fff;
-    }
-    &.active {
-        background: #507743;
-        color: #fff;
-        & svg:hover{
-            fill: #507743;
-            background: #fff;
-            border-radius: 50%;
-        }
-    }
-`;
-    
-interface FilterProps {
-    activities: string[];
+const ActionButtons = () => {
+    return (
+        <DetailGrid>
+            {
+                DetailCategories.map((category: any) => (
+                    // On Click of each button, navigate to the detail page
+                    <div key={category.name} className="detailCard">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="76" height="76" fill="currentColor" className="bi bi-balloon" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 9.984C10.403 9.506 12 7.48 12 5a4 4 0 0 0-8 0c0 2.48 1.597 4.506 4 4.984ZM13 5c0 2.837-1.789 5.227-4.52 5.901l.244.487a.25.25 0 1 1-.448.224l-.008-.017c.008.11.02.202.037.29.054.27.161.488.419 1.003.288.578.235 1.15.076 1.629-.157.469-.422.867-.588 1.115l-.004.007a.25.25 0 1 1-.416-.278c.168-.252.4-.6.533-1.003.133-.396.163-.824-.049-1.246l-.013-.028c-.24-.48-.38-.758-.448-1.102a3.177 3.177 0 0 1-.052-.45l-.04.08a.25.25 0 1 1-.447-.224l.244-.487C4.789 10.227 3 7.837 3 5a5 5 0 0 1 10 0Zm-6.938-.495a2.003 2.003 0 0 1 1.443-1.443C7.773 2.994 8 2.776 8 2.5c0-.276-.226-.504-.498-.459a3.003 3.003 0 0 0-2.46 2.461c-.046.272.182.498.458.498s.494-.227.562-.495Z"/>
+                        </svg>
+                        <h3>{category.name}</h3>
+                    </div>
+                ))
+            }       
+        </DetailGrid>
+    )
 }
+
+const MainDescription = ({ park }: any) => {
+    return (
+        <InfoBox>
+            <p>{park.description}</p>  
+            <p>{park.weatherInfo}</p>
+            <div className="fees">
+                <h3>Fees</h3>
+                {park.entranceFees.map((fee: any) => (
+                    <p key={fee.title}>
+                        <b>${fee.cost}</b> - {fee.title} <br/>
+                        <i>{fee.description}</i>
+                    </p>
+                ))}
+            </div>
+            <div className="directions"> 
+                <h3>Directions</h3>
+                <p>
+                    <b>Coordinates</b>: {park.latitude}, {park.longitude}<br/>
+                    {park.directionsInfo}
+                    <br/>
+                </p>
+                <Link to={park.directionsUrl}>Nation Park Directions</Link>
+            </div>
+            <Link to={park.url}>National Parks Page</Link>
+            
+        </InfoBox>
+    )
+}
+
+const ImageGrid = ({ images }: any) => {
+    return (
+        <ImgGrid>
+            <div className="container">
+                {images.slice(0, 4).map((image: any, i: number) => (
+                    <div key={image.title} className={"img-container " + "img" + (i + 1)}>
+                        <img src={image.url} alt={image.altText} title={image.title} />
+                        <div className="credits">
+                            {image.credit}
+                        </div>
+                    </div>
+                ))}
+                <div className="overlay">
+                    {/* OnClick Open Modal Gallery */}
+                    <button>View More</button>
+                </div>
+            </div>
+        </ImgGrid>
+    )
+}
+
+const ParkHeader = ({ park, state, parkId  }: any) => {
+    
+    const visitors = parkVistors.filter(park => park.parkCode === parkId?.toUpperCase());
+    const visitCount = visitors[0].visitors;
+    
+    return (
+        <Header>
+            <div className="container">
+                <div className="content">
+                    <h1>{park.fullName}</h1>
+                    <h2>{state.name}</h2>
+                    <p><strong>{visitCount}+</strong> visitors in 2022</p>
+                </div>
+                <MapBox>
+                    <LeafletMap 
+                    state={state} 
+                    parkCoords={[{ longitude: park.longitude, latitude: park.latitude, name: park.fullName }]}
+                    />
+                </MapBox>
+            </div>
+        </Header>
+    )
+}
+
 
 export const ParkPage = () => {
     const parks = useContext(ParkContext);
     const { parkId } = useParams();
-    const navigate = useNavigate();
     
-    // const [ filters, setFilters ] = useState<FilterProps>({ activities: []});
-    // const [ defaultParks, setDefaultParks] = useState(parks.filter((park: any) => park.states.toLowerCase().includes(stateId)));
-    const [ activePark, setActivePark] = useState(parks.find((park: any) => park.parkCode === parkId));
-    // const [ loadMore, setLoadMore] = useState(0);
-    
-    console.log('activePark', activePark)
+    const activePark = useMemo(() => parks.find((park: any) => park.parkCode === parkId), [parkId]);
     
     // Look into useMemo for these
     const state = stateMap.filter(state => activePark.states.toLowerCase().includes(state.id))[0];
-    // const parkCount = activeParks.length;
-    
-    //  Compare parks with visitor data and return the park code
-    const parkCodes = parkVistors.map((park: any) => park.parkCode);
-    const visitorCodes = parkVistors.map((park: any) => park.parkCode);
-    // console.log('length', parkCodes.length, visitorCodes.length);
-    
-    const matchingCodes = parkCodes.filter(code => visitorCodes.includes(code));
-    console.log('matchingCodes', matchingCodes);
-    
-    // const parkCodes = parkVistors.map((park: any) => park.parkCode);
-    console.log('codes', parkCodes, parkId, parkCodes.includes(parkId?.toUpperCase()));
-    const visitors = parkVistors.filter(park => park.parkCode === parkId?.toUpperCase());
-    
-    
-    const visitCount = visitors[0].visitors;
-    
-    
-    // Reduce the park activities into an object with the activity name as the key and the count as the value
-    // const parkActivities = defaultParks.reduce((acc: any, park: any) => {
-    //     park.activities.forEach((activity: any) => {
-    //         if(acc[activity.name]){
-    //             acc[activity.name] += 1;
-    //         } else {
-    //             acc[activity.name] = 1;
-    //         }
-    //     })
-    //     return acc;
-    // }, {});
-    
-    // Sort Park Activities by with the most common first
-    // const sortedParkActivities = Object.keys(parkActivities).sort((a: any, b: any) => parkActivities[b] - parkActivities[a]);
-    
-    
-    // useEffect(() => {
-    //     const newParkList = parks.filter((park: any) => park.states.toLowerCase().includes(stateId));
-    //     setDefaultParks(newParkList);
-    //     setActiveParks(newParkList);
-        
-    //     setLoadMore(0);
-    // }, [stateId]);
-    
-    // const handleParkSelect = (park:any) => {
-    //   navigate(`/park/${park}`)
-    // }
-    
-    // const toggleFilter = (filter: string) => {
-    //     let newActivites = [...filters.activities];
-    //     if(filters.activities.includes(filter)){
-    //         newActivites = filters.activities.filter((activity: string) => activity !== filter);
-    //     } else {
-    //         newActivites.push(filter);
-    //     }
-    //     setFilters({ ...filters, activities: newActivites });
-        
-        
-    //     if (newActivites.length <= 0) {
-    //         setActiveParks(defaultParks);
-    //     } else {
-    //         const compareStr = newActivites.join(', ');
-    //         // Filter through parks
-    //         const filteredParks = activeParks.filter((park: any) => {
-    //             // Filter though activites
-    //             return park.activities.filter((activity: any) => compareStr.includes(activity.name)).length > 0;
-    //         });
-    //         setActiveParks(filteredParks);
-    //     }
-    // }
-    
+
+    console.log('activePArk', activePark);
     
     return (
         <>
-            <Header>
-                <div className="container">
-                    <div className="content">
-                        <h1>{activePark.fullName}</h1>
-                        <h2>{state.name}</h2>
-                        <p><strong>{visitCount}+</strong> visitors in 2022</p>
-                    </div>
-                    <MapBox>
-                        <LeafletMap 
-                        state={state} 
-                        parkCoords={[{ longitude: activePark.longitude, latitude: activePark.latitude, name: activePark.fullName }]}
-                        />
-                    </MapBox>
-                </div>
-            </Header>
+            <ParkHeader park={activePark} parkId={parkId} state={state}/>
             
+            <ImageGrid images={activePark.images}/>
+           
+           <DescriptionBox className="container">
+                <MainDescription park={activePark}/>
+                
+                <div style={{width: '50%'}}>
+                    
+                    <ParkAlert parkId={parkId}/>
+                    
+                    <ActionButtons/>
+                    
+                </div>
+           </DescriptionBox>
         </>
     )
 }
