@@ -6,9 +6,9 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import "./index.css";
-import ErrorPage from './error-page';
-import { StatePage } from './StatePage';
-import { ParkPage } from './ParkPage';
+import ErrorPage from './pages/error-page';
+import { StatePage } from './pages/StatePage';
+import { ParkPage } from './pages/ParkPage';
 import { ParkProvider } from './hooks/ParkContext'
 import ScrollToTop from './components/ScrollToTop';
 
@@ -34,7 +34,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ParkProvider>
-    <RouterProvider router={router} />
+      <RouterProvider router={router} />
     </ParkProvider>
   </React.StrictMode>,
 )

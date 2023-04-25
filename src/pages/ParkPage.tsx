@@ -1,14 +1,14 @@
 
 import { Link, useNavigate, useParams } from "react-router-dom"
-import ParkContext from "./hooks/ParkContext";
+import ParkContext from "../hooks/ParkContext";
 import { useContext, useEffect, useState, Fragment, useRef, useMemo } from "react";
-import { stateMap } from "./data/stateMap";
+import { stateMap } from "../data/stateMap";
 
 import styled from 'styled-components';
-import { parkVistors } from "./data/parkVisitors";
-import { LeafletMap } from "./components/LeafletMap";
-import { Dropdown } from "./components/Dropdown";
-import { ParkAlert } from "./components/ParkAlert";
+import { parkVistors } from "../data/parkVisitors";
+import { LeafletMap } from "../components/LeafletMap";
+import { Dropdown } from "../components/Dropdown";
+import { ParkAlert } from "../components/ParkAlert";
 
 const DetailCategories = [
     { name: 'Things to do', id: 'thingstodo' },
@@ -217,7 +217,7 @@ const ImageGrid = ({ images }: any) => {
 const ParkHeader = ({ park, state, parkId  }: any) => {
     
     const visitors = parkVistors.filter(park => park.parkCode === parkId?.toUpperCase());
-    const visitCount = visitors[0].visitors;
+    const visitCount = visitors.length >= 1 ? visitors[0].visitors: 0;
     
     return (
         <Header>
@@ -225,7 +225,7 @@ const ParkHeader = ({ park, state, parkId  }: any) => {
                 <div className="content">
                     <h1>{park.fullName}</h1>
                     <h2>{state.name}</h2>
-                    <p><strong>{visitCount}+</strong> visitors in 2022</p>
+                    { visitCount !== 0 && <p><strong>{visitCount}+</strong> visitors in 2022</p>}
                 </div>
                 <MapBox>
                     <LeafletMap 
@@ -238,6 +238,25 @@ const ParkHeader = ({ park, state, parkId  }: any) => {
     )
 }
 
+const OtherParks = ({ state }: any) => {
+    const parks = useContext(ParkContext);
+    const otherParks = parks.filter((park: any) => park.states.toLowerCase().includes(state.id) && park.fullName !== state.name);
+    
+    return (
+        <div className="container" style={{padding: '2em 3em'}}>
+            <h2>Other Parks in {state.name}</h2>
+            <ul style={{display: 'grid', gridTemplateRows: `repeat(${Math.round(otherParks.length / 2)}, 1fr)`, gridAutoFlow: 'column'}}>
+                {otherParks.map((park: any) => (
+                    <li key={park.parkCode}>
+                        <Link to={`/park/${park.parkCode}`}>
+                            {park.fullName}
+                        </Link>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    )
+}
 
 export const ParkPage = () => {
     const parks = useContext(ParkContext);
@@ -256,7 +275,7 @@ export const ParkPage = () => {
             
             <ImageGrid images={activePark.images}/>
            
-           <DescriptionBox className="container">
+            <DescriptionBox className="container">
                 <MainDescription park={activePark}/>
                 
                 <div style={{width: '50%'}}>
@@ -266,7 +285,9 @@ export const ParkPage = () => {
                     <ActionButtons/>
                     
                 </div>
-           </DescriptionBox>
+            </DescriptionBox>
+            
+            <OtherParks state={state}/>
         </>
     )
 }

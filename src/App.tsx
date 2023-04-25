@@ -4,8 +4,8 @@ import ParkContext from './hooks/ParkContext'
 import { Dropdown } from './components/Dropdown'
 import { USMap } from './components/USMap'
 
-import viteLogo from '/vite.svg'
 import './App.css'
+import { NavBar } from './components/NavBar'
 
 interface Image {
   id: number
@@ -29,33 +29,14 @@ function App() {
   
   return (
     <>
-      <nav style={{backgroundColor: 'rgb(80, 119,67)'}}>
-        <div className="container">
-          
-          <div className="logo">
-            <Link to='/'>
-              <img src={viteLogo} alt="Vite Logo" />
-            </Link>
-          </div>
-          
-          <Dropdown
-            placeholder='Search for a park'
-            options={parks.map((park) => ({value: park.parkCode, title: park.fullName}))}
-            // options={Array(5).fill('6').map((_, i) => ({value: i + '', title: `Option ${i}`}))}
-            onSelect={(option) => handleParkSelect(option)}
-          />
-          
-          <div className="links">
-            <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-              About
-            </a>
-            <a href="https://vitejs.dev/guide/features.html" target="_blank" rel="noopener noreferrer">
-              Contact
-            </a>
-          </div>
-        </div>
-        
-      </nav>
+      <NavBar>
+        <Dropdown
+              placeholder='Search for a park'
+              options={parks.map((park) => ({value: park.parkCode, title: park.fullName}))}
+              // options={Array(5).fill('6').map((_, i) => ({value: i + '', title: `Option ${i}`}))}
+              onSelect={(option) => handleParkSelect(option)}
+            />
+      </NavBar>
       <main>
         
         

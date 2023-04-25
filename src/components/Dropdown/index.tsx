@@ -66,6 +66,7 @@ const Option = styled.li`
 export const Dropdown = ({ onSelect, placeholder, options }: DropdownProps) => {
     const [searchVal, onSetSearchVal] = useState('');
     const [focused, onSetFocused] = useState(false);
+    const [listOptions, setListOptions] = useState(options);
     const searchInput = useRef<HTMLInputElement>(null);
     const dropdownSearch = useRef<HTMLDivElement>(null);
     
@@ -75,6 +76,11 @@ export const Dropdown = ({ onSelect, placeholder, options }: DropdownProps) => {
         e.stopPropagation();
         onSelect(value);
         onSetFocused(false);
+    }
+    
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setListOptions(options.filter(option => option.title.toLowerCase().includes(e.target.value.toLowerCase())));
+        onSetSearchVal(e.target.value);
     }
     
     return (
@@ -97,13 +103,13 @@ export const Dropdown = ({ onSelect, placeholder, options }: DropdownProps) => {
               type="search" 
               value={searchVal} 
               placeholder={placeholder}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSetSearchVal(e.currentTarget.value)} />
+              onChange={handleSearch} />
           </SearchForm>
           { focused &&
             <FormResults>
               <Border />
               {/* Get Parks */}
-              {options.map((option) => (
+              {listOptions.map((option) => (
                 <Option onClick={(e: MouseEvent) => handleSelect(e, option.value)} key={option.value}>{option.title}</Option>
               ))}
             </FormResults>

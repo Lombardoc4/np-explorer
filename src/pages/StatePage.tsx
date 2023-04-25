@@ -1,12 +1,12 @@
 import { Link, useNavigate, useParams } from "react-router-dom"
-import ParkContext from "./hooks/ParkContext";
+import ParkContext from "../hooks/ParkContext";
 import { useContext, useEffect, useState } from "react";
-import { stateMap } from "./data/stateMap";
+import { stateMap } from "../data/stateMap";
 
 import styled from 'styled-components';
-import { parkVistors } from "./data/parkVisitors";
-import { LeafletMap } from "./components/LeafletMap";
-import { Dropdown } from "./components/Dropdown";
+import { parkVistors } from "../data/parkVisitors";
+import { LeafletMap } from "../components/LeafletMap";
+import { Dropdown } from "../components/Dropdown";
 
 const Header = styled.header`
     display: flex;
@@ -31,6 +31,7 @@ const Header = styled.header`
         h1{
             font-size: 5em;
         }
+        p{ font-size: 1.25em }
     }
 `;
     
@@ -227,7 +228,7 @@ export const StatePage = () => {
                 <div className="container">
                     <div className="content">
                         <h1>{state.name}</h1>
-                        <p><strong>{parkCount}</strong> National Parks with <strong>{visitCount}+</strong> visitors in 2022</p>
+                        <p><strong>{parkCount}</strong> National Parks with <strong>{visitCount}+</strong>&nbsp;visitors in 2022</p>
                     </div>
                     <MapBox>
                         <LeafletMap 
