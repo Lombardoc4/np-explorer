@@ -5,7 +5,6 @@ type ContextType = any
 const ParkContext = createContext<ContextType>({});
 
 function ParkProvider({children} : {children: React.ReactNode}){
-  console.log('children', children);
   const [myData, setMyData] = useState(null);
 
   useEffect(() => {
