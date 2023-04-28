@@ -28,7 +28,8 @@ jobs:
 
       - name: build
         env:
-          BASE_PATH: '/your-repo-name'
+          BASE_PATH: '/np-explorer'
+          VITE_NPS_API_KEY: ${{ secrets.NPS_API_KEY }}
         run: |
           npm run build
 
