@@ -15,10 +15,6 @@ import { LandingPage } from './pages/Landing';
 
 const router = createBrowserRouter([
   {
-    path: '*',
-    errorElement: <ErrorPage />,
-  },
-  {
     path: "/",
     element: <App navSearchBar={false} />,
     children: [
@@ -40,6 +36,10 @@ const router = createBrowserRouter([
         element: <ParkPage/>,
       },
     ]
+  },
+  {
+    path: '/*',
+    errorElement: <ErrorPage />,
   }
 ]);
 
