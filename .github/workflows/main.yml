@@ -29,7 +29,8 @@ jobs:
       - name: build
         env:
           VITE_NPS_API_KEY: ${{ secrets.NPS_API_KEY }}
-        run: npm run build-prod
+        run: |
+          npm run build-prod
 
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v1
