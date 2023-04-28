@@ -7,11 +7,24 @@ import styled from 'styled-components';
 import { useState } from 'react';
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2em 0;
-    /* gap: 2em; */
+
+    background-color: #f1f1f1;
+    margin-top: 3em;
+    padding: 3em 0;
+
+    .container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* gap: 2em; */
+    }
+    
+    
+    h2{
+        line-height: 1;
+        font-size: 3em;
+        text-transform: uppercase;
+    }
 `;
 
 const USMapSVG = styled.svg`
@@ -38,19 +51,22 @@ export const USMap = () => {
     }
     
     return (
-        <Container className="container">
-            <h2>Where To Explore?</h2>
-            <div style={{margin: '1em 0', width: '100%'}}>
+        <Container>
+            <div className="container">
+                <h2 style={{fontWeight: 300, fontStyle: 'italic', fontSize: '6em'}}>Where To? </h2>
+                <h2 style={{   color: '#6a9e3f'}}>{hoverState || 'Pick a state'}</h2>
+            {/* <div style={{margin: '1em 0', width: '100%'}}>
                 <Dropdown
                     placeholder='Search for a state'
                     // options={allParks.map((park) => ({value: park.id, title: park.fullName}))}
                     options={stateMap.map((state) => ({value: state.id, title: state.name}))}
                     onSelect={(option) => handleStateSelect(option)}
                     />
-            </div>
+            </div> */}
             <div>
-                <h3 style={{textAlign: 'center'}}>{hoverState}</h3>
-                <USMapSVG xmlns="http://www.w3.org/2000/svg" width="959" height="593">
+                <USMapSVG 
+                onMouseLeave={() => setHoverState('')}
+                xmlns="http://www.w3.org/2000/svg" width="959" height="593">
                     <StatePaths>
                         {stateMap.map((state) => (
                             <Link key={state.id} to={'state/' + state.id}>
@@ -69,7 +85,7 @@ export const USMap = () => {
                 </USMapSVG>
             </div>
             
-            
+            </div>
         </Container>
     )
 }

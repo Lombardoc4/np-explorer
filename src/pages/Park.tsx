@@ -2,13 +2,13 @@
 import { Link, useNavigate, useParams } from "react-router-dom"
 import ParkContext from "../hooks/ParkContext";
 import { useContext, useEffect, useState, Fragment, useRef, useMemo } from "react";
-import { stateMap } from "../data/stateMap";
+import { StateProps, stateMap } from "../data/stateMap";
 
 import styled from 'styled-components';
 import { parkVistors } from "../data/parkVisitors";
 import { LeafletMap } from "../components/LeafletMap";
-import { Dropdown } from "../components/Dropdown";
 import { ParkAlert } from "../components/ParkAlert";
+import { Header } from "../components/Header";
 
 const DetailCategories = [
     { name: 'Things to do', id: 'thingstodo' },
@@ -21,32 +21,6 @@ const DetailCategories = [
     { name: 'News Releases', id: 'newsreleases' },
 ]
 
-const Header = styled.header`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 400px;
-    background: #000;
-    color: #fff;
-    /* margin-bottom: 2rem; */
-    
-    .container{
-        display: flex;
-        /* justify-content: flex-end; */
-    }
-    
-    .content{
-        width: 33%;
-        padding-right: 2em;
-        margin: auto auto 1em 1em;
-        
-        h1{
-            font-size: 3em;
-        }
-        h2{ font-size: 2em; font-style: italic; }
-    }
-`;
-    
 const MapBox = styled.div`
     display: flex;
     justify-content: center;
@@ -56,7 +30,7 @@ const MapBox = styled.div`
 `;
 
 const DescriptionBox = styled.div`
-    /* background: #f9f9f9; */
+    /* background: #f1f1f1; */
     color: #000;
     padding: 2em 1em;
         display: flex;
@@ -78,8 +52,8 @@ const InfoBox = styled.div`
 `;
 
 const ImgGrid = styled.div`
-    padding: 1em;
-    background-color: #f9f9f9;
+    padding: 0 1em;
+    background-color: #f1f1f1;
     
     .container{
         position: relative;
@@ -116,11 +90,26 @@ const ImgGrid = styled.div`
     }
 `;
 
+const AlertBox = styled.div`
+    padding: 1em;
+    margin: 1em;
+    background-color: #f1f1f1;
+    color: #507743;
+    border-radius: 5px;
+    box-shadow: rgba(80, 119, 67, 0.26) 0px 2px 8px;
+    
+    p:not(:last-child){
+        padding: 0.5em 0;
+        border-bottom: 1px solid #507743;
+    }
+    
+    a { text-decoration: underline }
+`;
 
         
 const DetailGrid = styled.div`
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.5em;
     padding: 1em;
     
@@ -131,13 +120,13 @@ const DetailGrid = styled.div`
         padding: 1em;
         text-transform: uppercase;
         height: 100%;
-        background-color: #f9f9f9;
+        background-color: #f1f1f1;
         border-radius: 5px;
         box-shadow: rgba(80, 119, 67, 0.26) 0px 2px 8px;
         overflow: hidden;
         transition: all 0.3s ease-out 0s;
         background-color: rgb(80, 119, 67);
-        color: #f9f9f9;
+        color: #f1f1f1;
         &:hover {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.26);
             transform: translateY(-3px);
@@ -148,7 +137,7 @@ const DetailGrid = styled.div`
 
 const ActionButtons = () => {
     return (
-        <DetailGrid>
+        <DetailGrid className="container">
             {
                 DetailCategories.map((category: any) => (
                     // On Click of each button, navigate to the detail page
@@ -214,26 +203,36 @@ const ImageGrid = ({ images }: any) => {
     )
 }
 
-const ParkHeader = ({ park, state, parkId  }: any) => {
-    
+const getVisitorCount = (parkId : string) => {
     const visitors = parkVistors.filter(park => park.parkCode === parkId?.toUpperCase());
-    const visitCount = visitors.length >= 1 ? visitors[0].visitors: 0;
+    return visitors.length >= 1 ? visitors[0].visitors: 0;
+}
+
+interface ParkHeaderProps {
+    park: any;
+    state: StateProps;
+    parkId?: string;
+}
+
+const ParkHeader = ({ park, state, parkId  }: ParkHeaderProps) => {
+    const visitCount = parkId && getVisitorCount(parkId);
+    const Description = visitCount ? <p><strong>{visitCount}+</strong> visitors in 2022</p> : <p></p>;
+    const subtitle = {
+        text: state.name,
+        link: '/state/' + state.id
+    }
     
     return (
-        <Header>
-            <div className="container">
-                <div className="content">
-                    <h1>{park.fullName}</h1>
-                    <h2>{state.name}</h2>
-                    { visitCount !== 0 && <p><strong>{visitCount}+</strong> visitors in 2022</p>}
-                </div>
-                <MapBox>
-                    <LeafletMap 
-                    state={state} 
-                    parkCoords={[{ longitude: park.longitude, latitude: park.latitude, name: park.fullName }]}
-                    />
-                </MapBox>
-            </div>
+        <Header
+        title={park.fullName}
+        subtitle={subtitle}
+        description={Description}>
+            <MapBox>
+                <LeafletMap 
+                state={state} 
+                parkCoords={[{ longitude: park.longitude, latitude: park.latitude, name: park.fullName }]}
+                />
+            </MapBox>
         </Header>
     )
 }
@@ -268,21 +267,28 @@ export const ParkPage = () => {
     const state = stateMap.filter(state => activePark.states.toLowerCase().includes(state.id))[0];
 
     console.log('activePArk', activePark);
+    const memoHeader = useMemo(() => (
+        <ParkHeader park={activePark} parkId={parkId} state={state}/>
+    ), [parkId, state]);
     
     return (
         <>
-            <ParkHeader park={activePark} parkId={parkId} state={state}/>
+            {memoHeader}
             
             <ImageGrid images={activePark.images}/>
-           
+            
+            <ActionButtons/>
+            
             <DescriptionBox className="container">
                 <MainDescription park={activePark}/>
                 
                 <div style={{width: '50%'}}>
                     
-                    <ParkAlert parkId={parkId}/>
+                    {parkId && <ParkAlert parkId={parkId}/>}
                     
-                    <ActionButtons/>
+                    <AlertBox>
+                        <h2>Park Events</h2>
+                    </AlertBox>
                     
                 </div>
             </DescriptionBox>

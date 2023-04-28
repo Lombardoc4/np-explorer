@@ -55,6 +55,8 @@ const FormResults = styled.ul`
 `;
 
 const Option = styled.li`
+    color: #000;
+    text-align: left;
     padding: 0.75em 1.5em;
     cursor: pointer;
     &:hover {
@@ -72,7 +74,7 @@ export const Dropdown = ({ onSelect, placeholder, options }: DropdownProps) => {
     
     useOutsideAlerter(dropdownSearch, () => onSetFocused(false));
     
-    const handleSelect = (e: MouseEvent, value: string) => {
+    const handleSelect = (e: React.MouseEvent, value: string) => {
         e.stopPropagation();
         onSelect(value);
         onSetFocused(false);
@@ -105,14 +107,18 @@ export const Dropdown = ({ onSelect, placeholder, options }: DropdownProps) => {
               placeholder={placeholder}
               onChange={handleSearch} />
           </SearchForm>
-          { focused &&
+          
+          {/* Results */}
+          { focused && <>
+            <Border />
             <FormResults>
-              <Border />
               {/* Get Parks */}
+              {/* Make a list of parks with a click event that handles the select and innerHTML is the option title*/}
               {listOptions.map((option) => (
-                <Option onClick={(e: MouseEvent) => handleSelect(e, option.value)} key={option.value}>{option.title}</Option>
-              ))}
+                <Option onClick={(event: React.MouseEvent) => handleSelect(event, option.value)} key={option.value}>{option.title}</Option>
+                ))}
             </FormResults>
+          </> 
           }
         </DropdownSearch>
     );

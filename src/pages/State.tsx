@@ -1,45 +1,46 @@
 import { Link, useNavigate, useParams } from "react-router-dom"
 import ParkContext from "../hooks/ParkContext";
-import { useContext, useEffect, useState } from "react";
-import { stateMap } from "../data/stateMap";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { StateProps, stateMap } from "../data/stateMap";
 
 import styled from 'styled-components';
 import { parkVistors } from "../data/parkVisitors";
 import { LeafletMap } from "../components/LeafletMap";
 import { Dropdown } from "../components/Dropdown";
+import { Header } from "../components/Header";
 
-const Header = styled.header`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 400px;
-    /* background: rgb(80, 119, 67); */
-    background: #000;
-    color: #fff;
-    margin-bottom: 2rem;
+// const Header = styled.header`
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     height: 400px;
+//     /* background: rgb(80, 119, 67); */
+//     background: #000;
+//     color: #fff;
+//     margin-bottom: 2rem;
     
-    .container{
-        display: flex;
-        /* justify-content: flex-end; */
-    }
+//     .container{
+//         display: flex;
+//         /* justify-content: flex-end; */
+//     }
     
-    .content{
-        width: 33%;
-        padding-right: 2em;
-        margin: auto auto 1em 1em;
+//     .content{
+//         width: 50%;
+//         padding-right: 2em;
+//         margin: auto auto 1em 1em;
         
-        h1{
-            font-size: 5em;
-        }
-        p{ font-size: 1.25em }
-    }
-`;
+//         h1{
+//             font-size: 5em;
+//         }
+//         p{ font-size: 1.25em }
+//     }
+// `;
     
 const MapBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 67%;
+    width: 66%;
     height: 100%;
 `;
 
@@ -129,7 +130,7 @@ const Tile = styled.div`
     
     border-radius: 5px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-    background: #f9f9f9;
+    background: #f1f1f1;
     color: #507743;
     font-weight: 700;
     font-size: 0.75em;
@@ -154,6 +155,31 @@ interface FilterProps {
     activities: string[];
 }
 
+interface StateHeaderProps {
+    state: StateProps;
+    parks: any[];
+}
+
+const StateHeader = ({state, parks} : StateHeaderProps) => {
+    const parkCount = parks.length;
+    const visitCount = parkVistors.filter(park => park.state === state.name).reduce((acc: number, park: any) => acc + park.visitors, 0);
+    
+    const Description = <p><strong>{parkCount}</strong> National Parks with <strong>{visitCount}+</strong>&nbsp;visitors in 2022</p>;
+    
+    return (
+        <Header
+        title={state.name}
+        description={Description}>
+            <MapBox>
+                <LeafletMap 
+                state={state} 
+                parkCoords={parks.map((park : any) => ({ longitude: park.longitude, latitude: park.latitude, name: park.fullName }))}
+                />
+            </MapBox>
+        </Header>
+    )
+}
+
 export const StatePage = () => {
     const parks = useContext(ParkContext);
     const { stateId } = useParams();
@@ -166,8 +192,6 @@ export const StatePage = () => {
     
     // Look into useMemo for these
     const state = stateMap.filter(state => state.id === stateId)[0];
-    const parkCount = activeParks.length;
-    const visitCount = parkVistors.filter(park => park.state === state.name).reduce((acc: number, park: any) => acc + park.visitors, 0);
     
     
     // Reduce the park activities into an object with the activity name as the key and the count as the value
@@ -222,22 +246,13 @@ export const StatePage = () => {
     }
     
     
+    const memoHeader = useMemo(() => (
+        <StateHeader state={state} parks={activeParks} />
+    ), [state, activeParks]);
+    
     return (
         <>
-            <Header>
-                <div className="container">
-                    <div className="content">
-                        <h1>{state.name}</h1>
-                        <p><strong>{parkCount}</strong> National Parks with <strong>{visitCount}+</strong>&nbsp;visitors in 2022</p>
-                    </div>
-                    <MapBox>
-                        <LeafletMap 
-                        state={state} 
-                        parkCoords={activeParks.map(park => ({ longitude: park.longitude, latitude: park.latitude, name: park.fullName }))}
-                        />
-                    </MapBox>
-                </div>
-            </Header>
+            {memoHeader}
             
             <div className="container" style={{display:'grid', gap: '2em', gridTemplateColumns: '250px auto', alignItems: 'flex-start'}}>
                 <Card>
@@ -271,7 +286,7 @@ export const StatePage = () => {
                     <div className="filters">
                         <Dropdown
                         placeholder={`Find a park in ${state.name}`}
-                        options={activeParks.map((park) => ({value: park.parkCode, title: park.fullName}))}
+                        options={activeParks.map((park : any) => ({value: park.parkCode, title: park.fullName}))}
                         // options={Array(5).fill('6').map((_, i) => ({value: i + '', title: `Option ${i}`}))}
                         onSelect={(option) => handleParkSelect(option)}
                         />

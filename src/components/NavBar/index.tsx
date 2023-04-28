@@ -23,20 +23,6 @@ const Nav = styled.nav`
         gap: 0.5em;
         font-size: 1.5em;
     }
-    
-    a:not(.logo){
-        background-color: #000;
-        border-radius: 5px;
-        padding: 0.5em 1em;
-        font-weight: 700;
-        box-shadow: rgba(0, 0, 0, 0.26) 0px 4px 16px;
-        
-        &:hover{
-            /* background-color: #333; */
-            /* border: inset 1px solid #fff; */
-            box-shadow: rgb(255,255,255) 0 0 0 1px, rgba(255, 255, 255, 0.26) 0px 2px 8px;
-        }
-    }
 `;
     
 
@@ -44,16 +30,26 @@ export const NavBar = ({children}: {children: JSX.Element}) => {
     return(
         <Nav>
             <div className="container">
-                <Link to='/' className="logo">
-                    <img src={logo} alt="Logo" />
-                    Park Explorer
-                </Link>
                 
-                {children}
+                <div style={{flex: 1}}>
+                    <Link to='/' className="logo">
+                        <img src={logo} alt="Logo" />
+                        Park Explorer
+                    </Link>
+                </div>
                 
-                <Link to='/about' >
-                    About
-                </Link>
+                
+                <div style={{flex: 2}}>
+                    {children}
+                </div>
+                
+                <div style={{flex: 1, textAlign: 'right'}}>
+                    <Link to='/about' >
+                        <button>
+                            About
+                        </button>
+                    </Link>
+                </div>
             </div>
         </Nav>
     )
