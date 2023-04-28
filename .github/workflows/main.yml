@@ -28,7 +28,7 @@ jobs:
       - name: Building project
         env:
           VITE_NPS_API_KEY: ${{ secrets.NPS_API_KEY }}
-        run: npm run build-prod
+        run: npm run build
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
