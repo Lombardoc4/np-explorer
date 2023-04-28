@@ -12,7 +12,7 @@ import { ParkPage } from './pages/Park';
 import { ParkProvider } from './hooks/ParkContext'
 import { LandingPage } from './pages/Landing';
 
-console.log('API', import.meta.env.VITE_NPS_API_KEY);
+console.log('API', import.meta.env);
 
 const router = createBrowserRouter([
   {
