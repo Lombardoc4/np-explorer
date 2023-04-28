@@ -32,7 +32,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::359349157074:role/GH-Action-Intercept-Splash
+          role-to-assume: arn:aws:iam::890078463828:role/ghActionUploadS3
           role-session-name: GhActionSession
           aws-region: ${{ env.AWS_REGION }}
 
