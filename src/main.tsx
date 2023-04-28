@@ -46,6 +46,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ParkProvider>
+      <div>It Works</div>
       <RouterProvider 
         router={router}
         fallbackElement={<div>Loading...</div>} />
