@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "watch": "tsc -w | vite build --watch --mode developement"
+    "build=prod": "tsc && vite build --base=/np-explorer/",
+    "preview": "vite preview"
   },
   "dependencies": {
     "csstype": "^3.1.2",
