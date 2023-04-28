@@ -30,7 +30,7 @@ jobs:
         env:
           BASE_PATH: '/np-explorer'
           VITE_NPS_API_KEY: ${{ secrets.NPS_API_KEY }}
-        run: npm run build
+        run: npm run vite build --base=/np-explorer/
 
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v1
