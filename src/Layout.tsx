@@ -8,15 +8,11 @@ import { NavBar } from './components/NavBar'
 import ScrollToTop from './components/ScrollToTop'
 import { ParksDropdown } from './components/Dropdown/ParksDropdown'
 
-interface Image {
-  id: number
-  url: string
-  title: string
-  description: string
+interface NavSearch {
+  navSearchBar?: boolean
 }
 
-
-function App({navSearchBar = true}: {navSearchBar?: boolean}) {
+function App({navSearchBar = true} : NavSearch) {
   const parks = useContext(ParkContext);
   
   

@@ -1,5 +1,7 @@
+import { CardButtonGrid } from "../components/CardButtonGrid";
 import { ParksDropdown } from "../components/Dropdown/ParksDropdown";
 import { Header } from "../components/Header"
+import { Icon } from "../components/Icon";
 
 export const LandingPage = () => {
 
@@ -21,28 +23,25 @@ export const LandingPage = () => {
         description={Description}/>
         
         <div className="container" style={{display: 'flex'}}>
-            <div style={{flex: 2}}>
-                
-            <h1>Activity Search</h1>
-            <div>
-                {/* Lists of random activies */}
-                <div className='activity'>
-                    <h2>Activity 1</h2>
-                    <p>Activity 1 description</p>
-                </div>
-                <div className='activity'>
-                    <h2>Activity 2</h2>
-                    <p>Activity 2 description</p>
-                </div>
-                <div className='activity'>
-                    <h2>Activity 3</h2>
-                    <p>Activity 3 description</p>
-                </div>
-                
-            </div>
+            
+            <div style={{flex: 1}}>
+                <h2>About this page</h2>
+                <p>Find things to do</p>
+                <h2>First time park goes</h2>
+                <p>Find things to do</p>
+                <h2>Experienced park goes</h2>
+                <p>Find things to do</p>
             </div>
             <div style={{flex: 1}}>
-                <h2>Events</h2>
+                <CardButtonGrid
+                buttons={[
+                    { name: 'Find a Park', id: '/park', icon: 'balloon' },
+                    { name: 'Find a State', id: '/state', icon: 'balloon'  },
+                    { name: 'Find an Activity', id: '/activity', icon: 'balloon'  },
+                    { name: 'Find a State', id: '/state', icon: 'balloon'  },
+                    { name: 'Find an Activity', id: '/activity', icon: 'balloon'  },
+                ]}/> 
+                {/* </div> */}
             </div>
         </div>
         </>

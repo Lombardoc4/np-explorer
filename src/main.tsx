@@ -17,6 +17,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App navSearchBar={false} />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "",
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
   },
   { 
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/state/:stateId",
@@ -37,10 +39,7 @@ const router = createBrowserRouter([
       },
     ]
   },
-  {
-    path: '/*',
-    errorElement: <ErrorPage />,
-  }
+  
 ]);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
