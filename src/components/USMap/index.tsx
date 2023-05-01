@@ -1,15 +1,12 @@
-import { stateMap, borderMap, otherMap } from '../../data/stateMap';
-import { Link, useNavigate } from 'react-router-dom'
-import { Dropdown } from '../Dropdown';
-// import './stateMap.css'
-
+import {  useState } from 'react';
+import { Link } from 'react-router-dom'
 import styled from 'styled-components';
-import { useState } from 'react';
 
-const Container = styled.div`
+import { stateMap, borderMap, otherMap } from '../../utils/data/stateMap';
 
+const Main = styled.div`
     background-color: #f1f1f1;
-    margin-top: 3em;
+    /* margin-top: 3em; */
     padding: 3em 0;
 
     .container{
@@ -27,6 +24,21 @@ const Container = styled.div`
     }
 `;
 
+const Title = styled.h2`
+    line-height: 1;
+    font-size: 6em;
+    text-transform: uppercase;
+    font-weight: 600;
+    fontStyle: italic;
+`;
+
+const Subtitle = styled.h3`
+    line-height: 1;
+    font-size: 3em;
+    text-transform: uppercase;
+    color: #6a9e3f;
+`;
+    
 const USMapSVG = styled.svg`
     path {fill: none; cursor: pointer}
     .borders {stroke:#FFFFFF; stroke-width:1}    /* color and width of borders between states */
@@ -42,19 +54,13 @@ const StatePaths = styled.g`
 `;
 
 export const USMap = () => {
-    const navigate = useNavigate();
     const [hoverState, setHoverState] = useState('');
-    
-    const handleStateSelect = (state:any) => {
-        window.scrollTo(0, 0);
-        navigate('/state/' + state);
-    }
-    
     return (
-        <Container>
+        <Main>
             <div className="container">
-                <h2 style={{fontWeight: 300, fontStyle: 'italic', fontSize: '6em'}}>Where To? </h2>
-                <h2 style={{   color: '#6a9e3f'}}>{hoverState || 'Pick a state'}</h2>
+                <Title>Where To?</Title>
+                <Subtitle>{hoverState || 'Pick a state'}</Subtitle>
+                {/* Dropdown is for mobile */}
             {/* <div style={{margin: '1em 0', width: '100%'}}>
                 <Dropdown
                     placeholder='Search for a state'
@@ -66,14 +72,21 @@ export const USMap = () => {
             <div>
                 <USMapSVG 
                 onMouseLeave={() => setHoverState('')}
-                xmlns="http://www.w3.org/2000/svg" width="959" height="593">
+                xmlns="http://www.w3.org/2000/svg" 
+                width="959" 
+                height="593"
+                >
                     <StatePaths>
                         {stateMap.map((state) => (
                             <Link key={state.id} to={'state/' + state.id}>
-                                <path onMouseEnter={() => setHoverState(state.name)} className={state.id} d={state.data} />
+                                <path 
+                                    onMouseEnter={() => setHoverState(state.name)} 
+                                    className={state.id} 
+                                    d={state.data} />
                             </Link>
                         ))}
                     </StatePaths>
+                    
                     <g className="borders">
                         {borderMap.map((state) => (
                             <path key={state.id} className={state.id} d={state.data} />
@@ -86,6 +99,6 @@ export const USMap = () => {
             </div>
             
             </div>
-        </Container>
+        </Main>
     )
 }

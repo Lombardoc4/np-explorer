@@ -3,11 +3,11 @@
   --def-input-border-radius: calc(0.5 * var(--def-input-height));
 }
 
-#root {
+/* #root {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  }
+} */
 
 
 main{
@@ -46,7 +46,10 @@ input[type="search"]{
   width: 100%;
 }
 
-input[type="search" i]::-webkit-search-cancel-button {
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
   -webkit-appearance: none;
   display: none;
 }

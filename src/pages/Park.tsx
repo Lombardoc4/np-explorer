@@ -1,20 +1,19 @@
 
-import { Link, useNavigate, useParams } from "react-router-dom"
-import ParkContext from "../hooks/ParkContext";
-import { useContext, useEffect, useState, Fragment, useRef, useMemo } from "react";
-import { StateProps, stateMap } from "../data/stateMap";
-
+import { useContext, useMemo } from "react";
+import { useParams } from "react-router-dom"
 import styled from 'styled-components';
-import { parkVistors } from "../data/parkVisitors";
+
 import { LeafletMap } from "../components/LeafletMap";
 import { ParkAlert } from "../components/ParkAlert";
 import { Header } from "../components/Header";
 import { CardButtonGrid } from "../components/CardButtonGrid";
-
-import BalloonIcon from '/balloon.svg';
 import { StyledList } from "../components/StyledList";
 import { ImageGrid } from "../components/ImageViewer";
 import { ParkDescription } from "../components/ParkDescription";
+
+import ParkContext from "../utils/hooks/ParkContext";
+import { StateProps, stateMap } from "../utils/data/stateMap";
+import { parkVistors } from "../utils/data/parkVisitors";
 
 const activityCategories = [
     { 
@@ -68,7 +67,7 @@ const MapBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 66%;
+    width: 100%;
     height: 100%;
 `;
 
@@ -137,6 +136,8 @@ export const ParkPage = () => {
     const parks = useContext(ParkContext);
     const { parkId } = useParams();
     
+    // Migrate logic to loader action via router 
+    
     const activePark =  parks.find((park: any) => park.parkCode === parkId);
     const state =       stateMap.filter(state => activePark.states.toLowerCase().includes(state.id))[0];
     
@@ -144,7 +145,7 @@ export const ParkPage = () => {
     const otherParks =  parks.filter((park: any) => 
                             park.states.toLowerCase().includes(state.id) && park.fullName !== state.name
                         ).map((park: any) => 
-                            ({ link: park.parkCode, text: park.fullName })
+                            ({ link: '/park/' + park.parkCode, text: park.fullName })
                         );
     const memoHeader = useMemo(() => (
         <ParkHeader park={activePark} parkId={parkId} state={state}/>

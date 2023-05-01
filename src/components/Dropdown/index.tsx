@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import styled from 'styled-components';
-import { useOutsideAlerter } from "../../hooks/useOuterClick";
+import { useOutsideAlerter } from "../../utils/hooks/useOuterClick";
 
 interface DropdownProps {
     onSelect: (value: string) => void;

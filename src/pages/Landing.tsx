@@ -8,19 +8,24 @@ export const LandingPage = () => {
   
     const Description = (
         <>
-            <p style={{width: '75%', margin: 'auto'}}>
+            {/* <p>
                 Find your favorite national park and start planning your next adventure!
             </p>
-            <br/>
+            <br/> */}
             <ParksDropdown/>
         </>
     );
     return (
         <>
+        
         <Header
         style={{textAlign: 'center'}}
         title='National Parks Explorer'
-        description={Description}/>
+        description={Description}>
+            
+            {/* Potential Image Slideshow */}
+            
+        </Header>
         
         <div className="container" style={{display: 'flex'}}>
             

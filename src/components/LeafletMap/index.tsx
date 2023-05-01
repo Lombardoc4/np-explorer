@@ -1,8 +1,8 @@
 // Create a react leaflet that renders a US Map centered on the state
 import { MapContainer, TileLayer, GeoJSON, useMap, Marker, Popup} from "react-leaflet"
-import { USMapCords } from '../../data/USMap';
+import { USMapCords } from '../../utils/data/USMap';
 import { useEffect, useMemo, useRef, useState } from "react";
-import { StateProps } from "../../data/stateMap";
+import { StateProps } from "../../utils/data/stateMap";
 
 import { GeoJSON as GeoJSONType } from "leaflet";
 
@@ -15,6 +15,7 @@ const LeafletEvents = ({state} : {state: StateProps}) => {
     // specific type definition to ensure it always holds a value of type FeatureGroup.
     const geoJsonLayer = useRef< GeoJSONType >(null as unknown as GeoJSONType) as React.MutableRefObject<GeoJSONType>;
     
+    // ! This function scrolls to the top too
     const resetBounds = () => {map.fitBounds(geoJsonLayer.current && geoJsonLayer.current.getBounds())}
     useEffect(() => {
         const stateFeature = USMapCords.features.filter(stateCoords => stateCoords.properties && stateCoords.properties.name === state.name)[0];
@@ -45,7 +46,6 @@ const LeafletEvents = ({state} : {state: StateProps}) => {
         data={ftState} 
         // onEachFeature={onEachFeature} 
         />
-        <h1>Test</h1>
         <div className='leaflet-bottom leaflet-left'>
             <div className="leaflet-control leaflet-bar" onClick={resetBounds}>
                 <a style={{padding: '0 1em', width: 'auto', display: 'flex', alignItems: 'center'}} href="#" aria-label="Reset">

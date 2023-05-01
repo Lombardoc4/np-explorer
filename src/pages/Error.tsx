@@ -1,15 +1,23 @@
-import { useRouteError } from "react-router-dom";
+import { Link, isRouteErrorResponse, useRouteError } from "react-router-dom";
+import { Header } from "../components/Header";
 
 export default function ErrorPage() {
   const error: any = useRouteError();
+  let errorMsg;
+  if (isRouteErrorResponse(error)) {
+    errorMsg = `${error.status} - ${error.statusText}`;
+  } else {
+    errorMsg = error.message || "Unknown Error"
+  }
+
 
   return (
-    <div id="error-page">
-      <h1>Oops!</h1>
-      <p>Sorry, an unexpected error has occurred.</p>
-      <p>
-        <i>{error.statusText || error.message}</i>
-      </p>
-    </div>
+    <Header
+      title={errorMsg}
+      description={<h2>
+        {/* Fill Advertising */}
+        Oops, let's go back to the <Link to="/">HOME PAGE</Link>
+      </h2>}
+    />
   );
 }

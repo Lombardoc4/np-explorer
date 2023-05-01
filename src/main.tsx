@@ -1,41 +1,49 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './Layout'
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import "./index.css";
+
+import App from './Layout'
 import ErrorPage from './pages/Error';
 import { StatePage } from './pages/State';
 import { ParkPage } from './pages/Park';
-import { ParkProvider } from './hooks/ParkContext'
 import { LandingPage } from './pages/Landing';
 
+import { ParkProvider } from './utils/hooks/ParkContext'
+
+import "./index.css";
 
 const router = createBrowserRouter([
+  // todo: re-renders all of layout for each object below, only need navbar re-rendered
+  // note : each child rerenders the layout ?
   {
     path: "/",
-    element: <App navSearchBar={false} />,
-    errorElement: <ErrorPage />,
+    element: <App  />,
+    errorElement: <App><ErrorPage /></App>,
     children: [
       {
-        path: "",
-        element: <LandingPage/>
-      }
-    ],
-  },
-  { 
-    element: <App />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: "/state/:stateId",
-        element: <StatePage/>
-      },
-      {
-        path: "/park/:parkId",
-        element: <ParkPage/>,
+        errorElement: <ErrorPage />,
+        
+        children: [
+          {
+            index: true,
+            element: <LandingPage/>
+          },
+          {
+            path: "/state/:stateId",
+            element: <StatePage/>
+          },
+          {
+            path: "/park/:parkId",
+            element: <ParkPage/>,
+          },
+          // {
+          //   path: "*",
+          //   element: <ErrorPage/>,
+          // }
+        ],
       },
     ]
   },

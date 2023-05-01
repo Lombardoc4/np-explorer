@@ -1,41 +1,51 @@
-import { useContext } from 'react'
+import { useContext, useMemo } from 'react'
 import { Outlet } from 'react-router-dom'
-import ParkContext from './hooks/ParkContext'
-import { USMap } from './components/USMap'
 
-import './App.css'
+import { USMap } from './components/USMap'
 import { NavBar } from './components/NavBar'
 import ScrollToTop from './components/ScrollToTop'
-import { ParksDropdown } from './components/Dropdown/ParksDropdown'
 
-interface NavSearch {
-  navSearchBar?: boolean
-}
+import ParkContext from './utils/hooks/ParkContext'
 
-function App({navSearchBar = true} : NavSearch) {
+import './App.css'
+import { Footer } from './components/Footer'
+import { ThemeProvider } from 'styled-components'
+import GlobalStyles from './globalStyles'
+
+
+const theme = {
+  colors: {
+    primary: 'hsl(105, 28%, 43%)',
+    secondary: 'hsl(40, 44%, 43%)',
+    accent: 'hsl(93, 43%, 43%)',
+    black: '#000000',
+    white: '#fff',
+    gray: '#c3afac',
+  }
+};
+
+function App({children} : {children?: JSX.Element}) {
   const parks = useContext(ParkContext);
-  
+  const memoUSMap = useMemo(() => <USMap/>, [parks]);
   
   if (!parks) return <div>Loading...</div>;
   
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles/>
       <ScrollToTop/>
-      <NavBar>
-        {navSearchBar ? <ParksDropdown/> : <></> }
-      </NavBar>
+      
+      <NavBar/>
       
       <main>
           <Outlet />
-          <USMap/>
+          {children}
+          {memoUSMap}
       </main>
       
-      <footer style={{minHeight: '300px', backgroundColor: '#000', color: '#fff', padding: '2em 0' }}>
-        <div className="container">
-          <p>Footer</p>
-        </div>
-      </footer>
-    </>
+      
+     <Footer/>
+    </ThemeProvider>
   )
 }
 

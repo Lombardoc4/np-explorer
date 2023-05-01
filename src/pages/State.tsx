@@ -1,10 +1,10 @@
 import { Link, useNavigate, useParams } from "react-router-dom"
-import ParkContext from "../hooks/ParkContext";
+import ParkContext from "../utils/hooks/ParkContext";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { StateProps, stateMap } from "../data/stateMap";
+import { StateProps, stateMap } from "../utils/data/stateMap";
 
 import styled from 'styled-components';
-import { parkVistors } from "../data/parkVisitors";
+import { parkVistors } from "../utils/data/parkVisitors";
 import { LeafletMap } from "../components/LeafletMap";
 import { Dropdown } from "../components/Dropdown";
 import { Header } from "../components/Header";
@@ -40,7 +40,7 @@ const MapBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 66%;
+    /* width: 66%; */
     height: 100%;
 `;
 

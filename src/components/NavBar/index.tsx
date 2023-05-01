@@ -1,56 +1,43 @@
-import { Link } from "react-router-dom"
-import logo from '/nps-base.svg'
+import { Link, useLocation } from "react-router-dom"
+import logo from '/npe-green.svg'
 
-import styled from 'styled-components';
+import { ParksDropdown } from "../Dropdown/ParksDropdown";
+import { Logo, StyledHeader, StyledNavBar } from "../styled/StyledNavBar";
 
-const Nav = styled.nav`
-    background-color: rgb(80, 119,67);
-    padding: 1em 2em;
-    
-    .container{
-        display: flex;
-        gap: 1em;
-        align-items: center;
-    }
-    
-    /* .dropdown-search{ margin: 0 0 0 auto; } */
-    
-    a{color: #fff;}
-    
-    .logo{
-        display: flex;
-        align-items: center;
-        gap: 0.5em;
-        font-size: 1.5em;
-    }
-`;
-    
 
-export const NavBar = ({children}: {children: JSX.Element}) => {
+export const NavBar = () => {
+    const location = useLocation();
+    const showNavSearch = ['park', 'state'].some(el => location.pathname.includes(el)) 
+    
     return(
-        <Nav>
-            <div className="container">
+        <StyledHeader>
+            <StyledNavBar>
                 
-                <div style={{flex: 1}}>
-                    <Link to='/' className="logo">
-                        <img src={logo} alt="Logo" />
-                        Park Explorer
+                {/* Left */}
+                <div className="side">
+                    <Link to='/'>
+                        {/* <Logo src={logo} alt="National Park Exp Logo"/> */}
+                        <img src={logo} alt="NPS Logo"/>
                     </Link>
                 </div>
                 
+                {/* Middle */}
+                { showNavSearch && 
+                    <div className="main">
+                        <ParksDropdown/>
+                    </div>
+                }
                 
-                <div style={{flex: 2}}>
-                    {children}
-                </div>
-                
-                <div style={{flex: 1, textAlign: 'right'}}>
+                {/* Right */}
+                <div className="side right">
                     <Link to='/about' >
                         <button>
                             About
                         </button>
                     </Link>
                 </div>
-            </div>
-        </Nav>
+                
+            </StyledNavBar>
+        </StyledHeader>
     )
 }

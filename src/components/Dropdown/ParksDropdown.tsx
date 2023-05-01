@@ -1,17 +1,17 @@
 import { useContext } from "react";
 import { Dropdown } from "../Dropdown";
-import { Header } from "../Header"
 import { useNavigate } from "react-router-dom";
-import ParkContext from "../../hooks/ParkContext";
+import ParkContext from "../../utils/hooks/ParkContext";
 
 export const ParksDropdown = () => {
     const parks = useContext(ParkContext);
     const navigate = useNavigate();
     
-    
     const handleParkSelect = (park:any) => {
       navigate(`/park/${park}`)
     }
+    
+    
     return(
         <Dropdown
               placeholder='Search for a park'

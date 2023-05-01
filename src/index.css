@@ -1,23 +1,4 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
 
-  /* color-scheme: light dark; */
-  /* background-color: #242424; */
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-}
-
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
 
 a {
   font-weight: 500;
@@ -35,9 +16,12 @@ a {
   min-width: 320px;
   min-height: 100vh;
 } */
-
+@media screen and (min-width: 768px) {
+  h1{ 
+    font-size: 3.2em;} 
+}
 h1 {
-  font-size: 3.2em;
+  /* font-size: 3.2em; */
   line-height: 1.1;
 }
 
@@ -63,14 +47,4 @@ button:focus-visible {
 }
 
 @media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  /* a:hover {
-    color: #747bff;
-  } */
-  /* button { */
-    /* background-color: #f1f1f1; */
-  /* } */
 }

@@ -1,28 +1,47 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import type * as CSS from 'csstype';
+import { StyledContainer } from '../styled/StyledContainer';
 
+
+// const StyledContainer = styled.div`
+//   width: 100%;
+//   max-width: 1280px;
+//   margin: 0 auto;
+//   display: flex;
+//   flex-direction: column;
+//   padding: 1em 0 0;
+  
+  
+  
+//   @media (min-width: 768px) {
+//       flex-direction: row;
+//       padding: 0;
+//   }
+// `;
 
 const HeaderBox = styled.header`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 400px;
-    background: #000;
-    color: #fff;
-    margin-bottom: 1rem;
+    background: ${({ theme }) => theme.colors.black};
+    color: ${({ theme }) => theme.colors.white};
     
-    .container{
-        display: flex;
-        justify-content: center;
-    }
+    
+    min-height: 400px;
+    
+    /* margin-bottom: 1rem; */
+
     
     .content{
-        width: 50%;
-        padding-right: 2em;
-        margin: auto 0 1em 1em;
-        
-        h1{
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 1.5em 1.5em 2.5em;
+    }
+    hr{
+        margin: 1.25em 0;
+    }
+        /* h1{
             font-size: 2.5em;
             
             &.state{
@@ -30,9 +49,7 @@ const HeaderBox = styled.header`
             }
         }
         
-        hr{
-            margin: 1.25em 0 0.75em;
-        }
+        
         h2{ font-size: 2em;  }
         
         a{
@@ -47,26 +64,27 @@ const HeaderBox = styled.header`
         }
         
         p{ font-size: 1.5em; font-style: italic;}
-    }
+    } */
 `;
     
 
 interface HeaderProps {
-    title: string,
+    children?: any,
     description: JSX.Element,
+    style? : CSS.Properties
     subtitle?: {
         text: string,
         link: string
     },
-    style? : CSS.Properties
-    children?: any,
+    title: string,
 }
+
 
 export const Header = ({ title, description, subtitle, style, children  }: HeaderProps) => {
     return (
         <HeaderBox style={style}>
-            <div className="container">
-                <div className="content">
+            <StyledContainer column={true}>
+                <div className="content" style={{flex: 1}}>
                     <h1 className={!subtitle ? 'state' : ''}>{title}</h1>
                     <hr/>
                     {subtitle &&
@@ -78,8 +96,8 @@ export const Header = ({ title, description, subtitle, style, children  }: Heade
                     }
                     {description}
                 </div>
-                {children}
-            </div>
+                {children  &&  <div style={{flex: 2}}> {children} </div> }
+            </StyledContainer>
         </HeaderBox>
     )
 }
