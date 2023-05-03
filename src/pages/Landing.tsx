@@ -2,9 +2,17 @@ import { CardButtonGrid } from "../components/CardButtonGrid";
 import { ParksDropdown } from "../components/Dropdown/ParksDropdown";
 import { Header } from "../components/Header"
 import { Icon } from "../components/Icon";
+import styled from "styled-components";
+
+const Container = styled.div`
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+`;
+
 
 export const LandingPage = () => {
-
+    
   
     const Description = (
         <>
@@ -27,7 +35,7 @@ export const LandingPage = () => {
             
         </Header>
         
-        <div className="container" style={{display: 'flex'}}>
+        <Container className="container">
             
             <div style={{flex: 1}}>
                 <h2>About this page</h2>
@@ -48,7 +56,7 @@ export const LandingPage = () => {
                 ]}/> 
                 {/* </div> */}
             </div>
-        </div>
+        </Container>
         </>
         
     )

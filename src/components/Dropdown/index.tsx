@@ -13,6 +13,7 @@ interface DropdownProps {
 
 const DropdownSearch = styled.div`
   position: relative;
+  background-color: #fff;
   /* background-color: ${({ theme }) => theme.colors.grey}; */
   z-index: 2000;
   display: flex;
@@ -42,7 +43,7 @@ const SearchForm = styled.form`
 const Border = styled.div`
   height: 1px;
   width: 90%;
-  border-top: 1px solid #bdbdbd;
+  /* border-top: 1px solid #bdbdbd; */
   margin: 0 auto;
 `;
 

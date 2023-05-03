@@ -79,9 +79,9 @@ const DescriptionBox = styled.div`
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
         gap: 1em;
         
-    @media (min-width: 768px) {
-        grid-template-columns: 1fr 1fr;
-    }
+    /* @media (min-width: 768px) { */
+        /* grid-template-columns: 1fr 1fr; */
+    /* } */
 `;
 
 
