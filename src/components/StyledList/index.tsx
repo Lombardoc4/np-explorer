@@ -9,9 +9,18 @@ interface StyledListProps {
     }[]
 }
 
-const List = styled.ul`
+interface ListProps {
+    length: number;
+}
+
+const List = styled.ul<ListProps>`
     display: grid;
-    grid-auto-flow: column;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    
+    @media (min-width: 768px) {
+        grid-auto-flow: column;
+        grid-template-rows: ${({ length }) => `repeat(${Math.round(length / 2)}, 1fr)`};
+    }
 `;
     
     
@@ -21,7 +30,7 @@ export const StyledList = ({title, listItems}: StyledListProps) => {
         <div className="container" style={{padding: '2em 3em'}}>
             <h2>{title}</h2>
             {listItems &&
-            <List style={{gridTemplateRows: `repeat(${Math.round(listItems.length / 2)}, 1fr)`}}>
+            <List length={listItems.length}>
                 {listItems.map((item) => (
                     <li key={item.link}>
                         <Link to={item.link}>

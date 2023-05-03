@@ -15,7 +15,7 @@ const Card = styled.div`
     padding: 1em;
     text-transform: uppercase;
     height: 100%;
-    background-color: #f1f1f1;
+    background-color: ${({ theme }) => theme.colors.gray};
     border-radius: 5px;
     box-shadow: rgba(80, 119, 67, 0.26) 0px 2px 8px;
     overflow: hidden;

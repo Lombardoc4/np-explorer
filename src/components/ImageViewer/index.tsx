@@ -1,22 +1,38 @@
 import styled from 'styled-components';
 
 const ImgGrid = styled.div`
-    padding: 0 1em;
-    background-color: #f1f1f1;
+    padding: 1em;
+    background-color: ${({ theme }) => theme.colors.secondary};
+    position: relative;
     
     .container{
         position: relative;
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         flex-wrap: no-wrap;
         overflow: hidden;
-        gap: 0.5em;
+        gap: 1em;
+        
+        @media (min-width: 768px) {
+            display: flex;
+        }
     }
     
     .img-container{
-        min-width: 300px;
-        max-width: 25%;
+        /* min-width: 300px; */
+        border: 1px solid ${({ theme }) => theme.colors.black};
+        border-radius: 5px;
+        width: 100%;
+        max-height: 200px;
+        
         overflow: hidden;
-        max-height: 250px;
+        
+        
+        @media (min-width: 768px) {
+            min-width: 300px;
+            max-width: 25%;
+            max-height: 250px;
+        }  
     }
     
     .overlay{
@@ -25,7 +41,7 @@ const ImgGrid = styled.div`
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0,0,0,0.2);
+        background: rgba(0,0,0,0.3);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -52,10 +68,10 @@ export const ImageGrid = ({ images }: any) => {
                         </div>
                     </div>
                 ))}
-                <div className="overlay">
-                    {/* OnClick Open Modal Gallery */}
-                    <button>View More</button>
-                </div>
+            </div>
+            <div className="overlay">
+                {/* OnClick Open Modal Gallery */}
+                <button>View More</button>
             </div>
         </ImgGrid>
     )

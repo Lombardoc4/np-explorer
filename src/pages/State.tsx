@@ -130,7 +130,7 @@ const Tile = styled.div`
     
     border-radius: 5px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-    background: #f1f1f1;
+    background: ${({ theme }) => theme.colors.gray};
     color: #507743;
     font-weight: 700;
     font-size: 0.75em;

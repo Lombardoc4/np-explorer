@@ -22,9 +22,9 @@ const GlobalStyles = createGlobalStyle`
         padding: 0;
     }
     
-    /* body {
-        font-family: Times New Roman, Times, serif;
-    } */
+    body {
+        font-size: 16px;
+    }
     
     h1, h2, h3, h4, h5, h6 {
         font-family: "futura-pt", sans-serif;

@@ -16,11 +16,11 @@ import GlobalStyles from './globalStyles'
 const theme = {
   colors: {
     primary: 'hsl(105, 28%, 43%)',
-    secondary: 'hsl(40, 44%, 43%)',
+    secondary: 'hsl(40, 44%, 63%)',
     accent: 'hsl(93, 43%, 43%)',
     black: '#000000',
     white: '#fff',
-    gray: '#c3afac',
+    gray: '#f1f1f1',
   }
 };
 

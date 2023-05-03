@@ -41,31 +41,9 @@ const HeaderBox = styled.header`
     hr{
         margin: 1.25em 0;
     }
-        /* h1{
-            font-size: 2.5em;
-            
-            &.state{
-                font-size: 3em;
-            }
-        }
-        
-        
-        h2{ font-size: 2em;  }
-        
-        a{
-            color: inherit;
-            font-weight: 700;
-            cursor: pointer;
-            
-            &:hover{
-                text-decoration: underline;
-                
-            }
-        }
-        
-        p{ font-size: 1.5em; font-style: italic;}
-    } */
 `;
+
+
     
 
 interface HeaderProps {
@@ -83,7 +61,7 @@ interface HeaderProps {
 export const Header = ({ title, description, subtitle, style, children  }: HeaderProps) => {
     return (
         <HeaderBox style={style}>
-            <StyledContainer column={true}>
+            <StyledContainer column={true} reverse={true}>
                 <div className="content" style={{flex: 1}}>
                     <h1 className={!subtitle ? 'state' : ''}>{title}</h1>
                     <hr/>

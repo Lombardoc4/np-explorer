@@ -75,8 +75,13 @@ const DescriptionBox = styled.div`
     /* background: #f1f1f1; */
     color: #000;
     padding: 2em 1em;
-        display: flex;
+        display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
         gap: 1em;
+        
+    @media (min-width: 768px) {
+        grid-template-columns: 1fr 1fr;
+    }
 `;
 
 
@@ -84,7 +89,7 @@ const DescriptionBox = styled.div`
 const AlertBox = styled.div`
     padding: 1em;
     margin: 1em;
-    background-color: #f1f1f1;
+    background-color: ${({ theme }) => theme.colors.gray};
     color: #507743;
     border-radius: 5px;
     box-shadow: rgba(80, 119, 67, 0.26) 0px 2px 8px;
@@ -137,19 +142,19 @@ export const ParkPage = () => {
     const { parkId } = useParams();
     
     // Migrate logic to loader action via router 
+    // Todo Can this be simplied
     
     const activePark =  parks.find((park: any) => park.parkCode === parkId);
     const state =       stateMap.filter(state => activePark.states.toLowerCase().includes(state.id))[0];
     
-    // Todo Can this be simplied
     const otherParks =  parks.filter((park: any) => 
                             park.states.toLowerCase().includes(state.id) && park.fullName !== state.name
                         ).map((park: any) => 
                             ({ link: '/park/' + park.parkCode, text: park.fullName })
                         );
-    const memoHeader = useMemo(() => (
-        <ParkHeader park={activePark} parkId={parkId} state={state}/>
-    ), [parkId, state]);
+    const memoHeader =  useMemo(() => (
+                            <ParkHeader park={activePark} parkId={parkId} state={state}/>
+                        ), [parkId, state]);
     
     return (
         <>
@@ -159,21 +164,23 @@ export const ParkPage = () => {
             
             
             <DescriptionBox className="container">
-                <div style={{width: '50%'}}>
+                <div>
                     
                 {parkId && <ParkAlert parkId={parkId}/>}
                 <ParkDescription park={activePark}/>
                 </div>
                 
-                <div style={{width: '50%'}}>
+                <div>
                     {/* API Call */}
                     <CardButtonGrid buttons={activityCategories} />
                     {/* API Call */}
                 </div>
             </DescriptionBox>
             
-            <AlertBox><h2>Park Events</h2></AlertBox>
+            {/* <AlertBox><h2>Park Events</h2></AlertBox> */}
             
+            
+            {/* !! Todo Replace with Cards????? */}
             <StyledList title={`Other Parks in ${state.name}`} listItems={otherParks}/>
         </>
     )
