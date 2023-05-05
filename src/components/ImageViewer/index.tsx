@@ -8,14 +8,11 @@ const ImgGrid = styled.div`
     .container{
         position: relative;
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr))
         flex-wrap: no-wrap;
         overflow: hidden;
         gap: 1em;
         
-        @media (min-width: 768px) {
-            display: flex;
-        }
     }
     
     .img-container{
