@@ -11,11 +11,15 @@ interface DropdownProps {
     }[];
 }
 
-const DropdownSearch = styled.div`
+interface DropdownSearchProps {
+    $open: boolean;
+}
+
+const DropdownSearch = styled.div<DropdownSearchProps>`
   position: relative;
   background-color: #fff;
   /* background-color: ${({ theme }) => theme.colors.grey}; */
-  z-index: 2000;
+  z-index: ${({ theme }) => theme.zIndex.dropdown};
   display: flex;
   flex-direction: column;
   align-items: center;

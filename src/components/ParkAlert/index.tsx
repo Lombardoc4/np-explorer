@@ -9,7 +9,7 @@ interface Props {
 
 const AlertBox = styled.div`
     padding: 1em;
-    margin: 1em;
+    margin: 1em 0;
     background-color: ${({ theme }) => theme.colors.gray};
     color: #507743;
     border-radius: 5px;
@@ -23,14 +23,22 @@ const AlertBox = styled.div`
 const AlertItem = styled.div`
     
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    /* align-items: center; */
     color: #507743;
     padding: 0;
     background-color: transparent;
     border: none;
     outline: none;
     border-radius: 0;
-    text-decoration: underline;
+    
+    a, b {
+        text-decoration: underline;
+    }
+    
+    .preview {
+        cursor: pointer;
+    }
     
     &:not(:last-child){
         padding: 0.5em 0;
@@ -50,16 +58,14 @@ const AlertItem = styled.div`
 `;
 
 const ParkAlertItem = (alert: any) => {
-    const [showInfo, setShowInfo] = useState<Boolean>(false);
+    const [showInfo, setShowInfo] = useState<Boolean>(true);
     
     return(
         <AlertItem key={alert}>
-            <span  onClick={() => setShowInfo(!showInfo)}>
             <b>{alert.category}</b>
-            <br/>
-            {alert.title}
-            </span>
-            <br/>
+            {/* <div className="preview" onClick={() => setShowInfo(!showInfo)}> */}
+                {alert.title}
+            {/* </div> */}
             {/* <ToggleButton show={showInfo}>
                 {showInfo ? 'Read More' : 'Read Less'}
                 <span style={{display: 'inline-block', marginLeft: '0.5em', transform: showInfo ? 'rotate(0deg)' : 'rotate(90deg)'}}>
@@ -89,15 +95,15 @@ export const ParkAlert = ({parkId}: {parkId: string}) => {
             const data = await response.json();
             setAlerts(data.data);
         }
-        // fetchAlerts();
+        fetchAlerts();
     }, [parkId]);
     
     return (
         <AlertBox>
                     <h2>ALERTS</h2>
                     
-                    {alerts.length > 0  && 
-                    <p style={{fontSize: '0.75em', fontStyle: 'italic', textTransform: 'uppercase'}}>Click alerts to read details</p>}
+                    {/* {alerts.length > 0  && 
+                    <p style={{fontSize: '0.75em', fontStyle: 'italic', textTransform: 'uppercase'}}>Click alerts to read details</p>} */}
                     
                     {alerts.length > 0 ? 
                         alerts.map((alert: any) => (

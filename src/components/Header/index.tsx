@@ -34,11 +34,17 @@ const HeaderBox = styled.header`
 
     
     .content{
-        max-width: 600px;
+        flex: 1;
+        max-width: 400px;
         margin: 0 auto;
         padding: 1.5em 1.5em 2.5em;
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
     }
     hr{
+        width: 100%;
         margin: 1.25em 0;
     }
 `;
@@ -61,8 +67,8 @@ interface HeaderProps {
 export const Header = ({ title, description, subtitle, style, children  }: HeaderProps) => {
     return (
         <HeaderBox style={style}>
-            <StyledContainer column={true} reverse={true}>
-                <div className="content" style={{flex: 1}}>
+            <StyledContainer $column={true}>
+                <div className="content">
                     <h1 className={!subtitle ? 'state' : ''}>{title}</h1>
                     <hr/>
                     {subtitle &&

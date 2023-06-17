@@ -13,7 +13,7 @@ import { LandingPage } from './pages/Landing';
 
 import { ParkProvider } from './utils/hooks/ParkContext'
 
-import "./index.css";
+// import "./index.css";
 
 const router = createBrowserRouter([
   // todo: re-renders all of layout for each object below, only need navbar re-rendered

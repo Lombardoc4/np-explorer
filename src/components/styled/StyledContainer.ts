@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 interface StyledContainerProps {
-    column?: boolean;
-    reverse?: boolean;
+    $column?: boolean;
+    $reverse?: boolean;
 }
 
 export const StyledContainer = styled.div<StyledContainerProps>`
@@ -10,7 +10,7 @@ export const StyledContainer = styled.div<StyledContainerProps>`
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    flex-direction: ${ ({ column, reverse }) => ((column ? 'column' : 'row') + (reverse ? '-reverse' : ''))};
+    flex-direction: ${ ({ $column, $reverse }) => (($column ? 'column' : 'row') + ($reverse ? '-reverse' : ''))};
     /* padding: 1em 0 0; */
 
 

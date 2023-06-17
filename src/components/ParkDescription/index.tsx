@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const InfoBox = styled.div`
     /* width: 50%; */
-    padding: 1em;
+    padding: 1em 0;
     
     p{ margin-bottom: 1em; }
     
@@ -22,6 +22,9 @@ export const ParkDescription = ({ park }: any) => {
             <h2>About {park.fullName}</h2>
             <p>{park.description}</p>  
             <p>{park.weatherInfo}</p>
+            
+            {/* TODO: make into a grid some some sort not card but maybe borders between */}
+            { park.entranceFees.length > 0 ?
             <div className="fees">
                 <h3>Fees</h3>
                 {park.entranceFees.map((fee: any) => (
@@ -31,6 +34,12 @@ export const ParkDescription = ({ park }: any) => {
                     </p>
                 ))}
             </div>
+            :
+            <div className="fees">
+                <h3>No Fees</h3>
+            </div>
+            }
+            
             <div className="directions"> 
                 <h3>Directions</h3>
                 <p>

@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { StateProps } from "../../utils/data/stateMap";
 
 import { GeoJSON as GeoJSONType } from "leaflet";
+import { Link } from "react-router-dom";
 
 const LeafletEvents = ({state} : {state: StateProps}) => {
     const map = useMap();
@@ -50,7 +51,7 @@ const LeafletEvents = ({state} : {state: StateProps}) => {
             <div className="leaflet-control leaflet-bar" onClick={resetBounds}>
                 <a style={{padding: '0 1em', width: 'auto', display: 'flex', alignItems: 'center'}} href="#" aria-label="Reset">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrows-fullscreen" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z"/>
+                    <path fillRule="evenodd" d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z"/>
                 </svg>
                 </a>
             </div>
@@ -93,7 +94,10 @@ export const LeafletMap = ({state, parkCoords}: LeafletMapProps) => {
             {parkCoords.map((park) => 
                     <Marker key={park.name} position={[park.latitude, park.longitude]}>
                         <Popup>
-                            {park.name}
+                            <div style={{maxWidth: '200px'}}>
+                                <p>{park.name}</p>
+                                <Link to={`/park/${park.name}`}>View Park</Link>
+                            </div>
                             {/* List Activites */}
                         </Popup>
                     </Marker>

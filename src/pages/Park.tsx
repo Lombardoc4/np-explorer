@@ -14,6 +14,7 @@ import { ParkDescription } from "../components/ParkDescription";
 import ParkContext from "../utils/hooks/ParkContext";
 import { StateProps, stateMap } from "../utils/data/stateMap";
 import { parkVistors } from "../utils/data/parkVisitors";
+import { ParkCards } from "../components/ParkCards";
 
 const activityCategories = [
     { 
@@ -56,51 +57,10 @@ const activityCategories = [
         id: 'newsreleases' ,
         icon: 'balloon'
     },
-    { 
-        name: 'News Releases', 
-        id: 'newsreleases' ,
-        icon: 'balloon'
-    },
 ]
 
-const MapBox = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-`;
-
-const DescriptionBox = styled.div`
-    /* background: #f1f1f1; */
-    color: #000;
-    padding: 2em 1em;
-        display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 1em;
-        
-    /* @media (min-width: 768px) { */
-        /* grid-template-columns: 1fr 1fr; */
-    /* } */
-`;
 
 
-
-const AlertBox = styled.div`
-    padding: 1em;
-    margin: 1em;
-    background-color: ${({ theme }) => theme.colors.gray};
-    color: #507743;
-    border-radius: 5px;
-    box-shadow: rgba(80, 119, 67, 0.26) 0px 2px 8px;
-    
-    p:not(:last-child){
-        padding: 0.5em 0;
-        border-bottom: 1px solid #507743;
-    }
-    
-    a { text-decoration: underline }
-`;
 
 
 const getVisitorCount = (parkId : string) => {
@@ -149,9 +109,10 @@ export const ParkPage = () => {
     
     const otherParks =  parks.filter((park: any) => 
                             park.states.toLowerCase().includes(state.id) && park.fullName !== state.name
-                        ).map((park: any) => 
-                            ({ link: '/park/' + park.parkCode, text: park.fullName })
-                        );
+                        )
+                        // .map((park: any) => 
+                        //     ({ link: '/park/' + park.parkCode, text: park.fullName })
+                        // );
     const memoHeader =  useMemo(() => (
                             <ParkHeader park={activePark} parkId={parkId} state={state}/>
                         ), [parkId, state]);
@@ -160,17 +121,17 @@ export const ParkPage = () => {
         <>
             {memoHeader}
             
-            <ImageGrid images={activePark.images}/>
+            {parkId && <ImageGrid previewImgs={activePark.images} parkId={parkId}/>}
             
             
             <DescriptionBox className="container">
                 <div>
                     
-                {parkId && <ParkAlert parkId={parkId}/>}
                 <ParkDescription park={activePark}/>
                 </div>
                 
                 <div>
+                    {parkId && <ParkAlert parkId={parkId}/>}
                     {/* API Call */}
                     <CardButtonGrid buttons={activityCategories} />
                     {/* API Call */}
@@ -179,9 +140,33 @@ export const ParkPage = () => {
             
             {/* <AlertBox><h2>Park Events</h2></AlertBox> */}
             
-            
-            {/* !! Todo Replace with Cards????? */}
-            <StyledList title={`Other Parks in ${state.name}`} listItems={otherParks}/>
+            <div className="container" style={{padding: '2em 1em'}}>
+                <h2>Other Parks in {state.name}</h2>
+                <br/>
+                <ParkCards columns={3} parks={otherParks}/>
+            </div>
         </>
     )
 }
+
+
+const MapBox = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+`;
+
+const DescriptionBox = styled.div`
+    /* background: #f1f1f1; */
+    color: #000;
+    padding: 2em 1em;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1em;
+        
+    /* @media (min-width: 768px) { */
+        /* grid-template-columns: 1fr 1fr; */
+    /* } */
+`;
