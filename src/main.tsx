@@ -25,7 +25,7 @@ const router = createBrowserRouter([
     children: [
       {
         errorElement: <ErrorPage />,
-        
+
         children: [
           {
             index: true,
@@ -47,15 +47,15 @@ const router = createBrowserRouter([
       },
     ]
   },
-  
+
 ]);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ParkProvider>
-      <RouterProvider 
+      <RouterProvider
         router={router}
-        fallbackElement={<div>Loading...</div>} />
+        fallbackElement={<div>Loading.......</div>} />
     </ParkProvider>
   </React.StrictMode>,
 )
