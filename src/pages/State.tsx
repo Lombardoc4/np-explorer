@@ -121,6 +121,7 @@ const MainContainer = styled.div`
 
 	@media (max-width: 768px) {
 		grid-template-columns: 1fr;
+		padding: 1em;
 	}
 `;
 

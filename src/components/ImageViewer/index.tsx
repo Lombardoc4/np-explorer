@@ -1,164 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const ImgGrid = styled.div`
-	padding: 1em;
-	background-color: ${({ theme }) => theme.colors.secondary};
-	position: relative;
-
-	.container {
-		position: relative;
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-		gap: 1em;
-	}
-
-	.img-container {
-		border: 1px solid ${({ theme }) => theme.colors.black};
-		border-radius: 5px;
-		max-height: 200px;
-		overflow: hidden;
-
-		@media (min-width: 768px) {
-			min-width: 300px;
-			max-width: 25%;
-			max-height: 250px;
-		}
-	}
-
-	.overlay {
-		opacity: 0;
-		&:hover {
-			opacity: 1;
-			transition: opacity 0.3s ease-out;
-		}
-	}
-`;
-
-const StyledImageViewer = styled.div`
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-
-	cursor: pointer;
-	background: rgba(0, 0, 0, 0.8);
-	z-index: ${({ theme }) => theme.zIndex.overlay};
-
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-    
-    .loading {
-        color: #fff;
-        font-size: 2em;
-    }
-
-	.img-container {
-		position: relative;
-		width: 300px;
-		cursor: initial;
-		background: #000;
-
-		img {
-			object-fit: contain;
-		}
-	}
-
-	.credits {
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		padding: 1em;
-		background: rgba(0, 0, 0, 0.8);
-		color: #fff;
-		font-size: 0.75em;
-	}
-
-	.prev,
-	.next {
-		position: absolute;
-		top: 50%;
-		transform: translateY(-50%);
-		width: 50px;
-		height: 50px;
-		background: rgba(255, 255, 255, 0.8);
-		border-radius: 50%;
-		color: #000;
-		font-size: 1.5em;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		cursor: pointer;
-		transition: background 0.3s ease-out;
-		&:hover {
-			background: rgba(255, 255, 255, 1);
-		}
-	}
-
-	.prev {
-		left: 1em;
-	}
-
-	.next {
-		right: 1em;
-	}
-
-	.dots {
-		position: absolute;
-		top: 100%;
-		left: 0;
-		width: 100%;
-		height: 100px;
-		/* padding: 1em; */
-		background: rgba(0, 0, 0, 0.8);
-		color: #fff;
-		font-size: 0.75em;
-		overflow-x: scroll;
-		overflow-y: hidden;
-
-		display: flex;
-		justify-content: flex-start;
-		align-items: center;
-
-		.img-preview {
-			flex: 1 0 100px;
-			/* width: 100px; */
-			height: 100%;
-			margin: 0 0.5em;
-			cursor: pointer;
-
-			&.active {
-				border: 1px solid #fff;
-			}
-
-			img {
-				max-height: 100%;
-				max-width: 100%;
-				object-fit: contain;
-			}
-		}
-	}
-
-	.dots {
-		display: none;
-	}
-
-	@media (min-width: 768px) {
-		.img-container {
-			max-height: 500px;
-			width: 80%;
-		}
-
-		.dots {
-			display: flex;
-		}
-	}
-`;
-
 // Increment and Decrement functions for switching images
 const increment = (index: number, length: number) => {
 	return index === length - 1 ? 0 : index + 1;
@@ -322,3 +164,168 @@ export const ImageGrid = ({ previewImgs, parkId }: { previewImgs: any; parkId: s
 		</>
 	);
 };
+
+
+const ImgGrid = styled.div`
+	padding: 1em;
+	background-color: ${({ theme }) => theme.colors.secondary};
+	position: relative;
+
+	.container {
+		position: relative;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+		gap: 1em;
+	}
+
+	.img-container {
+		border: 1px solid ${({ theme }) => theme.colors.black};
+		border-radius: 5px;
+		max-height: 200px;
+		overflow: hidden;
+
+		@media (min-width: 768px) {
+			min-width: 300px;
+			max-width: 25%;
+			max-height: 250px;
+		}
+	}
+
+	.overlay {
+		opacity: 0;
+		&:hover {
+			opacity: 1;
+			transition: opacity 0.3s ease-out;
+		}
+	}
+    
+    @media (max-width: 768px) {
+        .container {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+`;
+
+const StyledImageViewer = styled.div`
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+
+	cursor: pointer;
+	background: rgba(0, 0, 0, 0.8);
+	z-index: ${({ theme }) => theme.zIndex.overlay};
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+    
+    .loading {
+        color: #fff;
+        font-size: 2em;
+    }
+
+	.img-container {
+		position: relative;
+		width: 300px;
+		cursor: initial;
+		background: #000;
+
+		img {
+			object-fit: contain;
+		}
+	}
+
+	.credits {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		padding: 1em;
+		background: rgba(0, 0, 0, 0.8);
+		color: #fff;
+		font-size: 0.75em;
+	}
+
+	.prev,
+	.next {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 50px;
+		height: 50px;
+		background: rgba(255, 255, 255, 0.8);
+		border-radius: 50%;
+		color: #000;
+		font-size: 1.5em;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+		transition: background 0.3s ease-out;
+		&:hover {
+			background: rgba(255, 255, 255, 1);
+		}
+	}
+
+	.prev {
+		left: 1em;
+	}
+
+	.next {
+		right: 1em;
+	}
+
+	.dots {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		width: 100%;
+		height: 100px;
+		/* padding: 1em; */
+		background: rgba(0, 0, 0, 0.8);
+		color: #fff;
+		font-size: 0.75em;
+		overflow-x: scroll;
+		overflow-y: hidden;
+
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+
+		.img-preview {
+			flex: 1 0 100px;
+			/* width: 100px; */
+			height: 100%;
+			margin: 0 0.5em;
+			cursor: pointer;
+
+			&.active {
+				border: 1px solid #fff;
+			}
+
+			img {
+				max-height: 100%;
+				max-width: 100%;
+				object-fit: contain;
+			}
+		}
+	}
+
+	.dots {
+		display: none;
+	}
+
+	@media (min-width: 768px) {
+		.img-container {
+			max-height: 500px;
+			width: 80%;
+		}
+
+		.dots {
+			display: flex;
+		}
+	}
+`;

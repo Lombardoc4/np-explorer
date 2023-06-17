@@ -27,7 +27,9 @@ const CardGrid = styled.div<CardGridProps>`
     }
     
     @media (max-width: 768px) {
-        padding: 0 1em;
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
     }
 `;
 
@@ -73,6 +75,10 @@ const Card = styled.div<CardGridProps>`
     }
     
     @media (max-width: 768px) {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+        
         h2{
             width: 80%;
         }

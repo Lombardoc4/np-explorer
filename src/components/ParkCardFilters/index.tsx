@@ -99,6 +99,7 @@ export const ParkCardFilters = ({ filters, activeParks, defaultParks, toggleFilt
 			<Tile className="active" onClick={() =>  {toggleFilter({activities: [], cost: ''}, defaultParks)}}>
 				Clear Filters
 			</Tile>
+			
 			<Dropdown
 				placeholder={`Find a park in ${state.name}`}
 				options={activeParks.length > 0 ? activeParks.map((park: any) => ({ value: park.parkCode, title: park.fullName })) : [{value: '', title: 'No Parks Found'}]}

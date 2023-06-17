@@ -161,12 +161,12 @@ const MapBox = styled.div`
 const DescriptionBox = styled.div`
     /* background: #f1f1f1; */
     color: #000;
-    padding: 2em 1em;
+    padding: 0 1em;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 1em;
         
-    /* @media (min-width: 768px) { */
-        /* grid-template-columns: 1fr 1fr; */
-    /* } */
+    @media (min-width: 768px) {
+        padding: 2em 1em;
+    }
 `;

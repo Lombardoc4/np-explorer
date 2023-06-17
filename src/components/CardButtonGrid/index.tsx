@@ -9,7 +9,7 @@ const Grid = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1.5em;
-    padding: 1em;
+    /* padding: 1em; */
 `
 
 const Card = styled.div`
