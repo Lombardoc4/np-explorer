@@ -95,16 +95,16 @@ export const ParkCardFilters = ({ filters, activeParks, defaultParks, toggleFilt
 
 	return (
 		<div className='filters'>
-			<TileGrid className='row'>
-			<Tile className="active" onClick={() =>  {toggleFilter({activities: [], cost: ''}, defaultParks)}}>
-				Clear Filters
-			</Tile>
-			
+			<TileGrid>
 			<Dropdown
 				placeholder={`Find a park in ${state.name}`}
 				options={activeParks.length > 0 ? activeParks.map((park: any) => ({ value: park.parkCode, title: park.fullName })) : [{value: '', title: 'No Parks Found'}]}
 				onSelect={(option) => handleParkSelect(option)}
 			/>
+			
+			<Tile className="active" onClick={() =>  {toggleFilter({activities: [], cost: ''}, defaultParks)}}>
+				Clear Filters
+			</Tile>
 			
 			</TileGrid>
 
@@ -137,7 +137,8 @@ export const ParkCardFilters = ({ filters, activeParks, defaultParks, toggleFilt
 			</TileGrid>
 
 			<TileGrid className='row'>
-				<h3>Activities:</h3>
+				<h3>Activities:
+				</h3>
 				{/* Get most present activites and add load more button */}
 				{activities.map((activity: string, i) => {
 					if (i < 10 + 10 * loadMore) {
@@ -218,4 +219,7 @@ const Tile = styled.div`
 			border-radius: 50%;
 		}
 	}
+	
+	@media (max-width: 768px) {
+		width: 100%;
 `;

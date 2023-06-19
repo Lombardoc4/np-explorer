@@ -131,19 +131,32 @@ export const ParkPage = () => {
                 </div>
                 
                 <div>
+                    {/* API Call */}
                     {parkId && <ParkAlert parkId={parkId}/>}
-                    {/* API Call */}
-                    <CardButtonGrid buttons={activityCategories} />
-                    {/* API Call */}
+                    
+                    <div className="directions"> 
+                        <h2>Directions</h2>
+                        <p>{activePark.directionsInfo}</p>
+                        
+                        <h3>Coordinates</h3>
+                        <p>{activePark.latitude}, {activePark.longitude}</p>
+                        
+                        <a href={activePark.directionsUrl}>Nation Park Directions</a>
+                    </div>
+                    
                 </div>
             </DescriptionBox>
             
             {/* <AlertBox><h2>Park Events</h2></AlertBox> */}
             
             <div className="container" style={{padding: '2em 1em'}}>
+                    <CardButtonGrid buttons={activityCategories} />
+            </div>
+            
+            <div className="container" style={{padding: '2em 1em'}}>
                 <h2>Other Parks in {state.name}</h2>
                 <br/>
-                <ParkCards columns={3} parks={otherParks}/>
+                <ParkCards parks={otherParks} columns={3} showDescription={false}/>
             </div>
         </>
     )
@@ -165,6 +178,25 @@ const DescriptionBox = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 1em;
+    font-size: 1.2em;
+    
+    .directions {
+        
+        padding: 1em;
+        margin: 1em 0;
+        background-color: ${({ theme }) => theme.colors.gray};
+        color: #507743;
+        border-radius: 5px;
+        box-shadow: rgba(0, 0, 0, 0.26) 0px 2px 8px;
+        
+        p { margin-bottom: 1em; }
+        
+        a {
+            text-decoration: underline;
+            font-size: 1.1em;
+            /* color: ${({ theme }) => theme.colors.black}; */
+        }
+    }
         
     @media (min-width: 768px) {
         padding: 2em 1em;

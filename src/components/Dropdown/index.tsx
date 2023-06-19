@@ -129,6 +129,9 @@ export const Dropdown = ({ onSelect, placeholder, options }: DropdownProps) => {
               {listOptions.map((option) => (
                 <Option onClick={(event: React.MouseEvent) => handleSelect(event, option.value)} key={option.value}>{option.title}</Option>
                 ))}
+              {listOptions.length <= 0 &&
+                <Option>No Matches</Option>
+              }
             </FormResults>
           </> 
           }

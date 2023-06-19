@@ -85,7 +85,12 @@ const Card = styled.div<CardGridProps>`
     }
 `;
 
-export const ParkCards = ({ columns = 0, parks }: { columns?: number, parks: any[]}) => {
+export const ParkCards = ({ columns = 0, parks, showDescription = true }: { columns?: number, parks: any[], showDescription?: boolean}) => {
+    
+    // TODO : Turn these badboiiis into accordians
+    // ** When opened fetch necessary data
+    // ** When closed maintain data
+    
     return (
         <CardGrid $columns={columns} >
             { parks.length === 0 && 
@@ -98,12 +103,12 @@ export const ParkCards = ({ columns = 0, parks }: { columns?: number, parks: any
                     <Link className="img-container" to={`/park/${park.parkCode}`}>
                         <img src={park.images[0].url} alt={park.images[0].altText } />
                     </Link>
-                    <div className="card-content">
-                        <Link to={`/park/${park.parkCode}`}>
-                            <h2>{park.fullName}</h2>
-                        </Link>
-                        <p>{park.description}</p>
-                    </div>
+                        <div className="card-content">
+                            <Link to={`/park/${park.parkCode}`}>
+                                <h2>{park.fullName}</h2>
+                            </Link>
+                            { showDescription && ( <p>{park.description}</p> )}
+                        </div>
                 </Card>
             ))}
         </CardGrid>

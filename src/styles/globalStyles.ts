@@ -22,22 +22,19 @@ const GlobalStyles = createGlobalStyle`
         padding: 0;
     }
     
-    body {
-        font-size: 16px;
-    }
-    
     h1, h2, h3, h4, h5, h6 {
         font-family: "futura-pt", sans-serif;
         font-weight: 700;
         font-style: normal;
     }
+    
     h1 { font-weight: 800; }
     
     
     a {
-    font-weight: 500;
-    color:  ${({theme})=> theme.colors.primary};
-    text-decoration: inherit;
+        font-weight: 600;
+        color:  inherit;
+        /* text-decoration: inherit; */
     }
     
     button {
