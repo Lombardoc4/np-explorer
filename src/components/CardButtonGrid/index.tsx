@@ -3,11 +3,11 @@ import { Icon, IconStyles } from '../Icon';
 import { Link } from 'react-router-dom';
 
 const Grid = styled.div`
-    /* display: grid; */
-    /* grid-template-columns: repeat(4, 1fr); */
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     
-    display: flex;
-    flex-direction: column;
+    /* display: flex; */
+    /* flex-direction: column; */
     gap: 1.5em;
     /* padding: 1em; */
 `
@@ -20,6 +20,7 @@ const Card = styled.div`
     padding: 1em;
     text-transform: uppercase;
     height: 100%;
+    min-height: 300px;
     background-color: ${({ theme }) => theme.colors.gray};
     border-radius: 5px;
     box-shadow: rgba(80, 119, 67, 0.26) 0px 2px 8px;

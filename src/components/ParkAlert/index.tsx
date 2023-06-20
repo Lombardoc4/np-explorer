@@ -11,9 +11,11 @@ const AlertBox = styled.div`
     padding: 1em;
     margin: 1em 0;
     background-color: ${({ theme }) => theme.colors.secondary};
+    color: ${({ theme }) => theme.colors.black};
     /* color: #507743; */
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.26) 0px 2px 8px;
+    border: 2px solid ${({ theme }) => theme.colors.black};
     
     
     h2{
@@ -79,6 +81,8 @@ export const ParkAlert = ({parkId}: {parkId: string}) => {
         }
         fetchAlerts();
     }, [parkId]);
+    
+    if (alerts.length <= 0) return (<></>);
     
     return (
         <AlertBox>

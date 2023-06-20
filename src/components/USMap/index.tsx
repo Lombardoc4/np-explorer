@@ -33,7 +33,7 @@ const Title = styled.h2`
 `;
 
 interface SubtitleProps {
-    active?: boolean
+    $active?: boolean
 }
 
 const Subtitle = styled.h3<SubtitleProps>`
@@ -44,7 +44,7 @@ const Subtitle = styled.h3<SubtitleProps>`
     text-align: center;
     margin-bottom: 0.25em;
     
-    text-decoration: ${({ active }) => active ? 'underline' : 'none'};
+    text-decoration: ${({ $active }) => $active ? 'underline' : 'none'};
     
     @media (min-width: 768px) {
         font-size: 3em;
@@ -69,6 +69,8 @@ const StatePaths = styled.g`
         fill: #507743;
         &:hover {
             fill: #6a9e3f;
+            box-shadow: 5px 2px 10px #000;
+            z-index: 1000;
         }
     }
 `;
@@ -81,7 +83,7 @@ const Map = () => {
     
     return (
         <>
-            { hoverState.name && <Subtitle active={true} onClick={() => navigate('/state/' + hoverState.id)}>{hoverState.name}</Subtitle> }
+            { hoverState.name && <Subtitle $active={true} onClick={() => navigate('/state/' + hoverState.id)}>{hoverState.name}</Subtitle> }
             
             { !hoverState.name && <Subtitle>Pick a state</Subtitle>}
         

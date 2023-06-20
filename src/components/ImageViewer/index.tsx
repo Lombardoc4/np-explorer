@@ -58,6 +58,8 @@ const ImageViewer = ({
 		fetchImages();
 	}, []);
 	useEffect(() => {
+		// TODO; scroll to active image
+		
 		// Add keyboard event listener for closing the modal and switching images
 		window.addEventListener("keydown", handleKeyDown);
 		return () => {
@@ -83,7 +85,7 @@ const ImageViewer = ({
 					<div className='img-container'>
 						{/* Image */}
 						<img
-							src={images[activeImage].fileInfo || images[activeImage].url}
+							src={images[activeImage].fileInfo ? images[activeImage].fileInfo.url : images[activeImage].url}
 							alt={images[activeImage].altText}
 							title={images[activeImage].title}
 						/>
@@ -92,6 +94,7 @@ const ImageViewer = ({
 						{images[activeImage].credit && <div className='credits'>{images[activeImage].credit}</div>}
 
 						{/* Image Previews */}
+						
 						<div className='dots'>
 							{images.map((image: any, i: number) => (
 								<div
@@ -133,12 +136,12 @@ export const ImageGrid = ({ previewImgs, parkId }: { previewImgs: any; parkId: s
 
 	return (
 		<>
-			<ImgGrid onClick={() => setOpen(true)}>
-				<div className='container'>
-					{previewImgs.slice(0, 4).map((image: any, i: number) => (
-						<div
+			{/* <ImgGrid onClick={() => setOpen(true)}> */}
+					{previewImgs.slice(0, 1).map((image: any, i: number) => (
+						<ImgContainer
 							key={image.title}
-							className={"img-container " + "img" + (i + 1)}
+							className="img-container"
+							onClick={() => setOpen(true)}
 						>
 							<img
 								src={image.fileInfo ? image.fileInfo.url : image.url}
@@ -146,14 +149,13 @@ export const ImageGrid = ({ previewImgs, parkId }: { previewImgs: any; parkId: s
 								title={image.title}
 							/>
 							<div className='credits'>{image.credit}</div>
-						</div>
+							<div className='overlay'>
+								{/* OnClick Open Modal Gallery */}
+								<button>View Pics</button>
+							</div>
+						</ImgContainer>
 					))}
-				</div>
-				<div className='overlay'>
-					{/* OnClick Open Modal Gallery */}
-					<button>View More</button>
-				</div>
-			</ImgGrid>
+			{/* </ImgGrid> */}
 			{open && (
 				<ImageViewer
 					parkId={parkId}
@@ -166,30 +168,29 @@ export const ImageGrid = ({ previewImgs, parkId }: { previewImgs: any; parkId: s
 };
 
 
-const ImgGrid = styled.div`
-	padding: 1em;
-	background-color: ${({ theme }) => theme.colors.secondary};
-	position: relative;
+const ImgContainer = styled.div`
+	/* padding: 1em; */
+	/* background-color: ${({ theme }) => theme.colors.secondary}; */
 
-	.container {
-		position: relative;
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-		gap: 1em;
-	}
 
-	.img-container {
-		border: 1px solid ${({ theme }) => theme.colors.black};
-		border-radius: 5px;
-		max-height: 200px;
-		overflow: hidden;
+		/* position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom 0; */
+		
+		/* border: 1px solid ${({ theme }) => theme.colors.black}; */
+		/* border-radius: 5px; */
+		width: 100%;
+		height: 100%;
+		/* max-height: 200px; */
+		/* overflow: hidden; */
 
 		@media (min-width: 768px) {
-			min-width: 300px;
-			max-width: 25%;
-			max-height: 250px;
+			/* min-width: 300px; */
+			/* max-width: 25%; */
+			/* max-height: 250px; */
 		}
-	}
 
 	.overlay {
 		opacity: 0;
@@ -198,12 +199,6 @@ const ImgGrid = styled.div`
 			transition: opacity 0.3s ease-out;
 		}
 	}
-    
-    @media (max-width: 768px) {
-        .container {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
 `;
 
 const StyledImageViewer = styled.div`

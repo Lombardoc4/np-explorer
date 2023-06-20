@@ -4,8 +4,13 @@ import styled from 'styled-components';
 const InfoBox = styled.div`
     /* width: 50%; */
     padding: 1em 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap:2em;
     
-    p{ margin-bottom: 1em; }
+    
+    
+    .mb-1 { margin-bottom: 1em; }
     
     .fees {
         margin-bottom: 1em;
@@ -14,7 +19,7 @@ const InfoBox = styled.div`
         gap: 1em;
         
         
-        h3 { grid-column: 1 / -1; }
+        h2 { grid-column: 1 / -1; }
         
         div {
             display: flex;
@@ -40,17 +45,49 @@ const InfoBox = styled.div`
 `;
 
 
+const ContactInfo = styled.div`
+    
+    padding: 1em;
+    margin: 1em 0;
+    color: ${({ theme }) => theme.colors.black};
+    /* color: #507743; */
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.26) 0px 2px 8px;
+    border: 2px solid ${({ theme }) => theme.colors.black};
+`;
+
 export const ParkDescription = ({ park }: any) => {
     return (
         <InfoBox>
-            <h2>{park.fullName}</h2>
-            <p>{park.description}</p>  
-            <p>{park.weatherInfo}</p>
+            <div>
+                
+                <h2>{park.fullName}</h2>
+                <p className="mb-1">{park.description}</p>  
+                <p className="mb-1">{park.weatherInfo}</p>
+                <Link to={park.url}>Official National Parks Page</Link>
+                
+                <ContactInfo>
+                    <h2>Contact Info</h2>
+                    { park.contacts.phoneNumbers.length > 0 &&
+                        park.contacts.phoneNumbers.map((phone: any) => (
+                            <p key={phone.phoneNumber}>Phone: {phone.phoneNumber}</p>
+                            ))   
+                        }
+                    { park.contacts.emailAddresses.length > 0 &&
+                        park.contacts.emailAddresses.map((email: any) => (
+                            <>{email.emailAddress.length > 0 &&
+                                <p key={email.emailAddress}>Email: {email.emailAddress}</p>
+                            }</>
+                            ))   
+                        }
+                    
+                </ContactInfo>
             
+            </div>
             {/* TODO: make into a grid some some sort not card but maybe borders between */}
             { park.entranceFees.length > 0 ?
             <div className="fees">
-                <h3>Fees</h3>
+                <h2>Fees</h2>
                 {park.entranceFees.map((fee: any) => (
                     <div key={fee.title}>
                         <p className="price">
@@ -73,7 +110,6 @@ export const ParkDescription = ({ park }: any) => {
             }
             
             
-            <Link to={park.url}>Official National Parks Page</Link>
             
         </InfoBox>
     )

@@ -28,7 +28,7 @@ const HeaderBox = styled.header`
     color: ${({ theme }) => theme.colors.white};
     
     
-    min-height: 400px;
+    height: 400px;
     
     /* margin-bottom: 1rem; */
 
@@ -67,7 +67,7 @@ interface HeaderProps {
 export const Header = ({ title, description, subtitle, style, children  }: HeaderProps) => {
     return (
         <HeaderBox style={style}>
-            <StyledContainer $column={true}>
+            <StyledContainer $column={false}>
                 <div className="content">
                     <h1 className={!subtitle ? 'state' : ''}>{title}</h1>
                     <hr/>
@@ -80,7 +80,7 @@ export const Header = ({ title, description, subtitle, style, children  }: Heade
                     }
                     {description}
                 </div>
-                {children  &&  <div style={{flex: 2}}> {children} </div> }
+                {children  &&  <div style={{flex: 2, maxHeight: '400px'}}> {children} </div> }
             </StyledContainer>
         </HeaderBox>
     )

@@ -44,6 +44,7 @@ const StateHeader = ({ state, parks }: StateHeaderProps) => {
 						longitude: park.longitude,
 						latitude: park.latitude,
 						name: park.fullName,
+						id: park.parkCode,
 					}))}
 				/>
 			</MapBox>

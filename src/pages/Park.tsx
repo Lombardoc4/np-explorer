@@ -48,7 +48,7 @@ const activityCategories = [
         icon: 'balloon' 
     },
     { 
-        name: 'Parking Lots', 
+        name: 'Parking',
         id: 'parkinglots',
         icon: 'balloon'
     },
@@ -87,12 +87,7 @@ const ParkHeader = ({ park, state, parkId  }: ParkHeaderProps) => {
         title={park.fullName}
         subtitle={subtitle}
         description={Description}>
-            <MapBox>
-                <LeafletMap 
-                state={state} 
-                parkCoords={[{ longitude: park.longitude, latitude: park.latitude, name: park.fullName }]}
-                />
-            </MapBox>
+            {parkId && <ImageGrid previewImgs={park.images} parkId={parkId}/> }
         </Header>
     )
 }
@@ -117,12 +112,22 @@ export const ParkPage = () => {
                             <ParkHeader park={activePark} parkId={parkId} state={state}/>
                         ), [parkId, state]);
     
+                        
+console.log('activePark', activePark);
     return (
         <>
             {memoHeader}
             
-            {parkId && <ImageGrid previewImgs={activePark.images} parkId={parkId}/>}
+            {/* {parkId && <ImageGrid previewImgs={activePark.images} parkId={parkId}/>} */}
             
+            
+            <div className="container" style={{padding: '1em'}}>
+                {parkId && <ParkAlert parkId={parkId}/>}
+            </div>
+            
+            <div className="container" style={{padding: '2em 1em'}}>
+                <CardButtonGrid dir={'row'} buttons={activityCategories} />
+            </div>
             
             <DescriptionBox className="container">
                 <div>
@@ -130,28 +135,28 @@ export const ParkPage = () => {
                 <ParkDescription park={activePark}/>
                 </div>
                 
-                <div>
-                    {/* API Call */}
-                    {parkId && <ParkAlert parkId={parkId}/>}
-                    
-                    <div className="directions"> 
-                        <h2>Directions</h2>
-                        <p>{activePark.directionsInfo}</p>
-                        
-                        <h3>Coordinates</h3>
-                        <p>{activePark.latitude}, {activePark.longitude}</p>
-                        
-                        <a href={activePark.directionsUrl}>Nation Park Directions</a>
-                    </div>
-                    
-                </div>
             </DescriptionBox>
             
-            {/* <AlertBox><h2>Park Events</h2></AlertBox> */}
-            
-            <div className="container" style={{padding: '2em 1em'}}>
-                    <CardButtonGrid buttons={activityCategories} />
-            </div>
+            <DirectionSection className="container">
+                {/* API Call */}
+                
+                <div className="directions"> 
+                    <h2>Directions</h2>
+                    <p>{activePark.directionsInfo}</p>
+                    
+                    <h3>Coordinates</h3>
+                    <p>{activePark.latitude}, {activePark.longitude}</p>
+                    
+                    <a href={activePark.directionsUrl}>Nation Park Directions</a>
+                </div>
+                
+                <MapBox>
+                    <LeafletMap 
+                    state={state} 
+                    parkCoords={[{ longitude: activePark.longitude, latitude: activePark.latitude, name: activePark.fullName, id: activePark.parkCode }]}
+                    />
+                </MapBox>
+            </DirectionSection>
             
             <div className="container" style={{padding: '2em 1em'}}>
                 <h2>Other Parks in {state.name}</h2>
@@ -180,14 +185,30 @@ const DescriptionBox = styled.div`
     gap: 1em;
     font-size: 1.2em;
     
+    
+        
+    @media (min-width: 768px) {
+        padding: 2em 1em;
+    }
+`;
+
+const DirectionSection = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap:2em;
+    font-size: 1.2em;
+    
+    
+    background-color: ${({ theme }) => theme.colors.gray};
+    color: #507743;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.26) 0px 2px 8px;
+    
     .directions {
         
         padding: 1em;
-        margin: 1em 0;
-        background-color: ${({ theme }) => theme.colors.gray};
-        color: #507743;
-        border-radius: 5px;
-        box-shadow: rgba(0, 0, 0, 0.26) 0px 2px 8px;
+        /* margin: 1em 0; */
         
         p { margin-bottom: 1em; }
         
@@ -197,8 +218,5 @@ const DescriptionBox = styled.div`
             /* color: ${({ theme }) => theme.colors.black}; */
         }
     }
-        
-    @media (min-width: 768px) {
-        padding: 2em 1em;
-    }
 `;
+    
