@@ -159,20 +159,11 @@ export const ParkAlert = ({parkId}: {parkId: string}) => {
             {/* {alerts.length > 0  && 
             <p style={{fontSize: '0.75em', fontStyle: 'italic', textTransform: 'uppercase'}}>Click alerts to read details</p>} */}
             
-            {alerts.length > 0 ? 
+            {alerts.length > 0 &&
                 alerts.map((alert: any) => (
                     <ParkAlertItem key={alert.id} {...alert} />
                     ))
-                    
-                    : <p>No Alerts</p>
-                }
-            {alerts.length > 0 ? 
-                alerts.map((alert: any) => (
-                    <ParkAlertItem key={alert.id} {...alert} />
-                    ))
-                    
-                    : <p>No Alerts</p>
-                }
+            }
             </div>
         </AlertBox>
                 
