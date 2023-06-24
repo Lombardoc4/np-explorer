@@ -69,8 +69,8 @@ export const LeafletMap = ({state, parkCoords}: LeafletMapProps) => {
     const displayMap = useMemo(
         () => (
           <MapContainer
-            style={{height: '400px', width: '100%'}} 
             center={[37.8, -96]} 
+            minZoom={4}
             zoom={4}>
             <TileLayer
                 attribution='Map data ©2023 Google'

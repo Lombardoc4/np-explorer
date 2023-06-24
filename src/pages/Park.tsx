@@ -7,7 +7,6 @@ import { LeafletMap } from "../components/LeafletMap";
 import { ParkAlert } from "../components/ParkAlert";
 import { Header } from "../components/Header";
 import { CardButtonGrid } from "../components/CardButtonGrid";
-import { StyledList } from "../components/StyledList";
 import { ImageGrid } from "../components/ImageViewer";
 import { ParkDescription } from "../components/ParkDescription";
 
@@ -15,48 +14,54 @@ import ParkContext from "../utils/hooks/ParkContext";
 import { StateProps, stateMap } from "../utils/data/stateMap";
 import { parkVistors } from "../utils/data/parkVisitors";
 import { ParkCards } from "../components/ParkCards";
+import { ReactComponent as ListStar} from "../assets/icons/list-stars.svg";
+import { ReactComponent as Fire} from "../assets/icons/fire.svg";
+import { ReactComponent as CalendarCheck} from "../assets/icons/calendar-check-fill.svg";
+import { ReactComponent as People} from "../assets/icons/people-fill.svg";
+import { ReactComponent as House} from "../assets/icons/house-fill.svg";
+import { ReactComponent as Car} from "../assets/icons/car-front-fill.svg";
 
 const activityCategories = [
     { 
         name: 'Things to do', 
-        id: 'thingstodo',
-        icon: 'balloon'
+        id: 'things-to-do',
+        icon: <ListStar/>
     },
-    { 
-        name: 'Amenities', 
-        id: 'amenities/parksplaces',
-        icon: 'balloon'
-    },
+    // { 
+    //     name: 'Amenities', 
+    //     id: 'amenities-parks-places',
+    //     icon: 'balloon'
+    // },
     { 
         name: 'Camping', 
         id: 'campgrounds',
-        icon: 'balloon' 
+        icon: <Fire/>
     },
     { 
         name: 'Events', 
         id: 'events',
-        icon: 'balloon' 
+        icon: <CalendarCheck/>
     },
     { 
         name: 'Tours', 
         id: 'tours',
-        icon: 'balloon' 
+        icon: <People/>
     },
     { 
         name: 'Visitor Centers', 
-        id: 'visitorcenters',
-        icon: 'balloon' 
+        id: 'visitor-centers',
+        icon: <House/>
     },
     { 
         name: 'Parking',
-        id: 'parkinglots',
-        icon: 'balloon'
+        id: 'parking-lots',
+        icon: <Car/>
     },
-    { 
-        name: 'News Releases', 
-        id: 'newsreleases' ,
-        icon: 'balloon'
-    },
+    // { 
+    //     name: 'News Releases', 
+    //     id: 'news-releases' ,
+    //     icon: 'balloon'
+    // },
 ]
 
 
@@ -113,27 +118,22 @@ export const ParkPage = () => {
                         ), [parkId, state]);
     
                         
-console.log('activePark', activePark);
     return (
         <>
             {memoHeader}
+            {parkId && <ParkAlert parkId={parkId}/>}
             
             {/* {parkId && <ImageGrid previewImgs={activePark.images} parkId={parkId}/>} */}
             
             
-            <div className="container" style={{padding: '1em'}}>
-                {parkId && <ParkAlert parkId={parkId}/>}
-            </div>
             
             <div className="container" style={{padding: '2em 1em'}}>
                 <CardButtonGrid dir={'row'} buttons={activityCategories} />
             </div>
             
             <DescriptionBox className="container">
-                <div>
                     
                 <ParkDescription park={activePark}/>
-                </div>
                 
             </DescriptionBox>
             
@@ -145,7 +145,7 @@ console.log('activePark', activePark);
                     <p>{activePark.directionsInfo}</p>
                     
                     <h3>Coordinates</h3>
-                    <p>{activePark.latitude}, {activePark.longitude}</p>
+                    <p><a href={`http://www.google.com/maps/place/${activePark.latitude},${activePark.longitude}`}>{activePark.latitude}, {activePark.longitude}</a></p>
                     
                     <a href={activePark.directionsUrl}>Nation Park Directions</a>
                 </div>
@@ -181,29 +181,28 @@ const DescriptionBox = styled.div`
     color: #000;
     padding: 0 1em;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 1em;
     font-size: 1.2em;
     
     
-        
+    
     @media (min-width: 768px) {
         padding: 2em 1em;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     }
 `;
 
 const DirectionSection = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap:2em;
+    gap: 1em;
     font-size: 1.2em;
     
     
     background-color: ${({ theme }) => theme.colors.gray};
-    color: #507743;
+    color: ${({ theme }) => theme.colors.primary};
     border-radius: 5px;
     overflow: hidden;
-    box-shadow: rgba(0, 0, 0, 0.26) 0px 2px 8px;
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 8px -2px;
     
     .directions {
         
@@ -217,6 +216,13 @@ const DirectionSection = styled.div`
             font-size: 1.1em;
             /* color: ${({ theme }) => theme.colors.black}; */
         }
+    }
+    
+    @media (min-width: 768px) {
+        grid-template-columns: 1fr 1fr;
+        gap:2em;
+        box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 16px -8px;
+        
     }
 `;
     

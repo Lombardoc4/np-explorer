@@ -33,7 +33,7 @@ function App({children} : {children?: JSX.Element}) {
           <Outlet />
           {children}
           
-          {memoUSMap}
+          {/* {memoUSMap} */}
       </main>
       
       

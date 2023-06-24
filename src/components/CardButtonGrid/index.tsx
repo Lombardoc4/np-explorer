@@ -1,26 +1,28 @@
 import styled from 'styled-components';
-import { Icon, IconStyles } from '../Icon';
 import { Link } from 'react-router-dom';
 
 const Grid = styled.div`
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    a { text-decoration: none; }
+    /* grid-template-columns: repeat(4, 1fr); */
     
     /* display: flex; */
     /* flex-direction: column; */
     gap: 1.5em;
     /* padding: 1em; */
+    
+    
 `
 
 const Card = styled.div`
     display: flex;
     /* flex-direction: column; */
     align-items: center;
-    gap: 0.25em;
+    gap: 0.5em;
     padding: 1em;
     text-transform: uppercase;
     height: 100%;
-    min-height: 300px;
+    /* min-height: 300px; */
     background-color: ${({ theme }) => theme.colors.gray};
     border-radius: 5px;
     box-shadow: rgba(80, 119, 67, 0.26) 0px 2px 8px;
@@ -41,21 +43,17 @@ const Card = styled.div`
 interface CardButtonProps {
     name:   string;
     id:     string;
-    icon:  string;
+    icon:  JSX.Element;
 }
 
-interface ButtonsProps extends IconStyles {
+interface ButtonsProps {
     buttons: CardButtonProps[];
     bgColor?: string;
     dir? : 'row' | 'col';
 }
 
 
-export const CardButtonGrid = ({buttons, size=40, dir='col', color = "#f9f9f9", bgColor= '#507743', }: ButtonsProps) => {
-    const cardStyles = {
-        color: color, 
-        backgroundColor: bgColor,
-    };
+export const CardButtonGrid = ({buttons,  dir='col' }: ButtonsProps) => {
     
     const repeatVal = {
         row : '' + Math.round(buttons.length / (dir === 'row' ? 2 : Math.floor(buttons.length / 2)) ),
@@ -66,12 +64,14 @@ export const CardButtonGrid = ({buttons, size=40, dir='col', color = "#f9f9f9", 
     }
     
     return (
-        <Grid className="container" style={gridStyles}>
+        <Grid className="container">
             { buttons.map(({name,id, icon}) => (
-                <Card key={name} className="detailCard" style={cardStyles}>
-                    <Icon icon={icon} size={size} color={color}/>
+                <Link to={'./' + id} key={name}>
+                <Card className="detailCard">
+                    {icon}
                     <h3>{name}</h3>
                 </Card>
+                </Link>
             ))}
         </Grid>
     )

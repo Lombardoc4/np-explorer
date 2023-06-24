@@ -2,7 +2,7 @@ import { DefaultTheme } from "styled-components";
 
 const theme = {
     colors: {
-      primary: 'hsl(105, 28%, 43%)',
+      primary: 'hsl(95, 48%, 26%)',
       secondary: 'hsl(40, 44%, 63%)',
       accent: 'hsl(93, 43%, 43%)',
       black: '#000000',
@@ -10,8 +10,9 @@ const theme = {
       gray: '#f1f1f1',
     },
     zIndex: {
-      dropdown: 100,
-      overlay: 1000,
+      dropdown: 1000,
+      overlay: 5000,
+      navbar: 10000,
     }
   };
   

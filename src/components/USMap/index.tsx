@@ -66,9 +66,9 @@ const USMapSVG = styled.svg`
 
 const StatePaths = styled.g`
     path {
-        fill: #507743;
+        fill: ${({ theme }) => theme.colors.primary};
         &:hover {
-            fill: #6a9e3f;
+            fill: ${({ theme }) => theme.colors.accent};
             box-shadow: 5px 2px 10px #000;
             z-index: 1000;
         }
@@ -127,7 +127,10 @@ export const USMap = () => {
             
                 {/* Dropdown is for mobile */}
                 {/* Mobile Context? */}
-                <div style={{margin: '2em 0 0', padding: '0 1em', width: '100%'}}>
+                    <p style={{textAlign: 'center', fontSize: '1.5em', margin: '1em 0'}}>OR</p>
+                
+                <div style={{padding: '0 1em', width: '100%'}}>
+                    
                     <StateDropdown/>
                 </div>
             

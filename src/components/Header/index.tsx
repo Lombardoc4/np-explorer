@@ -22,30 +22,47 @@ import { StyledContainer } from '../styled/StyledContainer';
 
 const HeaderBox = styled.header`
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background: ${({ theme }) => theme.colors.black};
     color: ${({ theme }) => theme.colors.white};
-    
-    
-    height: 400px;
-    
+    /* height: 400px; */
     /* margin-bottom: 1rem; */
 
-    
     .content{
-        flex: 1;
+        /* flex: 1; */
         max-width: 400px;
         margin: 0 auto;
         padding: 1.5em 1.5em 2.5em;
         
         display: flex;
         flex-direction: column;
-        justify-content: flex-end;
+        justify-content: center;
     }
+    
+    .children {
+        flex: 2;
+        max-height: 400px;
+    }
+    
+    
     hr{
         width: 100%;
-        margin: 1.25em 0;
+        margin: 0.75em 0;
+    }
+    
+    @media (min-width: 768px) {
+        flex-direction: row;
+        
+        .content {
+            flex: 1;
+            justify-content: center;
+        }
+        
+        hr {
+            margin: 1.25em 0;
+        }
     }
 `;
 
@@ -67,7 +84,8 @@ interface HeaderProps {
 export const Header = ({ title, description, subtitle, style, children  }: HeaderProps) => {
     return (
         <HeaderBox style={style}>
-            <StyledContainer $column={false}>
+            {/* <StyledContainer $column={false}> */}
+                {children  &&  <div className='children'> {children} </div> }
                 <div className="content">
                     <h1 className={!subtitle ? 'state' : ''}>{title}</h1>
                     <hr/>
@@ -80,8 +98,7 @@ export const Header = ({ title, description, subtitle, style, children  }: Heade
                     }
                     {description}
                 </div>
-                {children  &&  <div style={{flex: 2, maxHeight: '400px'}}> {children} </div> }
-            </StyledContainer>
+            {/* </StyledContainer> */}
         </HeaderBox>
     )
 }

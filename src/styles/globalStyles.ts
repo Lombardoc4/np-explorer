@@ -15,6 +15,10 @@ const GlobalStyles = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
     }
+    
+    .no-scroll {
+        overflow: hidden;
+    }
 
     *, *:before, *:after{
         box-sizing: border-box;
@@ -69,6 +73,21 @@ const GlobalStyles = createGlobalStyle`
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+    
+    .leaflet-container {
+        height: 300px;
+        width: 100%;
+    }
+    
+    .directions .leaflet-container {
+        height: 400px;
+    }
+    
+    @media (min-width: 768px) {
+        .leaflet-container {
+            height: 400px;
+        }
     }
 `;
 

@@ -3,6 +3,7 @@ import { ParksDropdown } from "../components/Dropdown/ParksDropdown";
 import { Header } from "../components/Header"
 import { Icon } from "../components/Icon";
 import styled from "styled-components";
+import { USMap } from "../components/USMap";
 
 const Container = styled.div`
 
@@ -12,32 +13,35 @@ const Container = styled.div`
 
 
 export const LandingPage = () => {
-    
+      
   
     const Description = (
-        <>
+        <div style={{padding: '1em 0 0'}}>
             {/* <p>
                 Find your favorite national park and start planning your next adventure!
             </p>
             <br/> */}
             <ParksDropdown/>
-        </>
+        </div>
     );
     return (
         <>
         
         <Header
-        style={{textAlign: 'center'}}
-        title='National Parks Explorer'
-        description={Description}>
+            style={{textAlign: 'center'}}
+            title='National Parks Explorer'
+            description={Description}>
             
             {/* Potential Image Slideshow */}
             
         </Header>
         
+        
+        <USMap/>
+        
         <Container className="container">
-            
-            <div style={{flex: 1}}>
+            <h1>COOL STUFF GOES HERE</h1>
+            {/* <div style={{flex: 1}}>
                 <h2>About this page</h2>
                 <p>Find things to do</p>
                 <h2>First time park goes</h2>
@@ -54,8 +58,7 @@ export const LandingPage = () => {
                     { name: 'Find a State', id: '/state', icon: 'balloon'  },
                     { name: 'Find an Activity', id: '/activity', icon: 'balloon'  },
                 ]}/> 
-                {/* </div> */}
-            </div>
+            </div> */}
         </Container>
         </>
         

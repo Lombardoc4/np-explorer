@@ -37,7 +37,7 @@ const StateHeader = ({ state, parks }: StateHeaderProps) => {
 			title={state.name}
 			description={Description}
 		>
-			<MapBox>
+			{/* <MapBox> */}
 				<LeafletMap
 					state={state}
 					parkCoords={parks.map((park: any) => ({
@@ -47,7 +47,7 @@ const StateHeader = ({ state, parks }: StateHeaderProps) => {
 						id: park.parkCode,
 					}))}
 				/>
-			</MapBox>
+			{/* </MapBox> */}
 		</Header>
 	);
 };
@@ -98,8 +98,6 @@ export const StatePage = () => {
 					state={state}
 				/>
 
-				<h3>{activeParks.length} Parks</h3>
-
 				<ParkCards parks={activeParks} />
 			</MainContainer>
 		</>
@@ -108,21 +106,25 @@ export const StatePage = () => {
 
 const MainContainer = styled.div`
 	display: grid;
-	gap: 2em;
+	grid-template-columns: 1fr;
+	gap: 1em;
 	/* grid-template-columns: 250px auto; */
 	align-items: flex-start;
 	margin: auto;
-	padding: 2em;
-
+	padding: 1em;
+	
 	.filters {
 		display: flex;
 		flex-direction: column;
-		gap: 2em;
+		/* gap: 0.5em; */
+		border-bottom: 2px solid ${({ theme }) => theme.colors.gray};
+		padding-bottom: 1em;
+		margin-bottom: 1em;
 	}
 
-	@media (max-width: 768px) {
-		grid-template-columns: 1fr;
-		padding: 1em;
+	@media (min-width: 768px) {
+		padding: 2em;
+		/* gap: 1em; */
 	}
 `;
 

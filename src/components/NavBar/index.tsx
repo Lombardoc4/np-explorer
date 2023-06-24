@@ -1,8 +1,9 @@
 import { Link, useLocation } from "react-router-dom"
-import logo from '/npe-green.svg'
+import logo from '../../assets/npe-green.svg'
 
 import { ParksDropdown } from "../Dropdown/ParksDropdown";
-import { Logo, StyledHeader, StyledNavBar } from "../styled/StyledNavBar";
+import { StyledNavBar } from "../styled/StyledNavBar";
+import { StyledContainer } from "../styled/StyledContainer";
 
 
 export const NavBar = () => {
@@ -10,9 +11,9 @@ export const NavBar = () => {
     const showNavSearch = ['park', 'state'].some(el => location.pathname.includes(el)) 
     
     return(
-        <StyledHeader>
             <StyledNavBar>
-                
+                <div className="container">
+                    
                 {/* Left */}
                 <div className="side">
                     <Link to='/'>
@@ -36,8 +37,8 @@ export const NavBar = () => {
                         </button>
                     </Link>
                 </div>
+                </div>
                 
             </StyledNavBar>
-        </StyledHeader>
     )
 }

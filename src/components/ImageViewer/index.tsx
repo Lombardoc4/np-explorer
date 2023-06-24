@@ -98,7 +98,7 @@ const ImageViewer = ({
 						<div className='dots'>
 							{images.map((image: any, i: number) => (
 								<div
-									key={image.title}
+									key={image.id || image.title}
 									className={"img-preview " + (i === activeImage ? "active" : "")}
 									onClick={() => setActiveImage(i)}
 								>
@@ -110,6 +110,11 @@ const ImageViewer = ({
 								</div>
 							))}
 						</div>
+						
+						
+						<div className="key-hints">
+								Arrow keys to navigate, Esc to close
+							</div>
 					</div>
 
 					{/* Prev / Next Photo Buttons */}
@@ -133,6 +138,11 @@ const ImageViewer = ({
 
 export const ImageGrid = ({ previewImgs, parkId }: { previewImgs: any; parkId: string }) => {
 	const [open, setOpen] = useState(false);
+	
+	const toggleOpen = () => {
+		setOpen(!open);
+		document.body.classList.toggle('no-scroll');
+	}
 
 	return (
 		<>
@@ -141,7 +151,7 @@ export const ImageGrid = ({ previewImgs, parkId }: { previewImgs: any; parkId: s
 						<ImgContainer
 							key={image.title}
 							className="img-container"
-							onClick={() => setOpen(true)}
+							onClick={toggleOpen}
 						>
 							<img
 								src={image.fileInfo ? image.fileInfo.url : image.url}
@@ -151,7 +161,7 @@ export const ImageGrid = ({ previewImgs, parkId }: { previewImgs: any; parkId: s
 							<div className='credits'>{image.credit}</div>
 							<div className='overlay'>
 								{/* OnClick Open Modal Gallery */}
-								<button>View Pics</button>
+								<button>View Photos</button>
 							</div>
 						</ImgContainer>
 					))}
@@ -160,7 +170,7 @@ export const ImageGrid = ({ previewImgs, parkId }: { previewImgs: any; parkId: s
 				<ImageViewer
 					parkId={parkId}
 					previewImgs={previewImgs}
-					closeAction={() => setOpen(false)}
+					closeAction={toggleOpen}
 				/>
 			)}
 		</>
@@ -182,12 +192,13 @@ const ImgContainer = styled.div`
 		/* border: 1px solid ${({ theme }) => theme.colors.black}; */
 		/* border-radius: 5px; */
 		width: 100%;
-		height: 100%;
+		height: 300px;
 		/* max-height: 200px; */
 		/* overflow: hidden; */
 
 		@media (min-width: 768px) {
 			/* min-width: 300px; */
+			height: 400px
 			/* max-width: 25%; */
 			/* max-height: 250px; */
 		}
@@ -243,6 +254,17 @@ const StyledImageViewer = styled.div`
 		color: #fff;
 		font-size: 0.75em;
 	}
+	
+	.key-hints {
+		position: absolute;
+		top: 0;
+		right: 0;
+		transform: translateY(-100%);
+		padding: 1em;
+		background: rgba(0, 0, 0, 0.8);
+		color: #fff;
+		font-size: 0.75em;
+	}
 
 	.prev,
 	.next {
@@ -281,6 +303,7 @@ const StyledImageViewer = styled.div`
 		height: 100px;
 		/* padding: 1em; */
 		background: rgba(0, 0, 0, 0.8);
+		border-top: 1px solid ${({ theme }) => theme.colors.grey};
 		color: #fff;
 		font-size: 0.75em;
 		overflow-x: scroll;

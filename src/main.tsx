@@ -15,6 +15,36 @@ import { ParkProvider } from './utils/hooks/ParkContext'
 
 // import "./index.css";
 
+const parkRoutes = [
+  {
+    path: "park/:parkId/things-to-do",
+    element: <div>Things to do</div>
+  },
+  {
+    path: "park/:parkId/campgrounds",
+    element: <div>Things to do</div>
+  },
+  {
+    path: "park/:parkId/events",
+    element: <div>Things to do</div>
+  },
+  {
+    path: "park/:parkId/tours",
+    element: <div>Things to do</div>
+  },
+  {
+    path: "park/:parkId/vistor-centers",
+    element: <div>Things to do</div>
+  },
+  {
+    path: "park/:parkId/parking-lots",
+    element: <div>Things to do</div>
+  },
+  {
+    path: "/park/:parkId",
+    element: <ParkPage/>,
+  },
+];
 const router = createBrowserRouter([
   // todo: re-renders all of layout for each object below, only need navbar re-rendered
   // note : each child rerenders the layout ?
@@ -32,13 +62,10 @@ const router = createBrowserRouter([
             element: <LandingPage/>
           },
           {
-            path: "/state/:stateId",
+            path: "state/:stateId",
             element: <StatePage/>
           },
-          {
-            path: "/park/:parkId",
-            element: <ParkPage/>,
-          },
+          ...parkRoutes
           // {
           //   path: "*",
           //   element: <ErrorPage/>,

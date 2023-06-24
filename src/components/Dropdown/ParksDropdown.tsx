@@ -14,7 +14,7 @@ export const ParksDropdown = () => {
     
     return(
         <Dropdown
-              placeholder='Search for a park'
+              placeholder='Find a park'
               options={parks.map((park: any) => ({value: park.parkCode, title: park.fullName}))}
               // options={Array(5).fill('6').map((_, i) => ({value: i + '', title: `Option ${i}`}))}
               onSelect={(option) => handleParkSelect(option)}
