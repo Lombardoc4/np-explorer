@@ -44,6 +44,7 @@ const HeaderBox = styled.header`
     .children {
         flex: 2;
         max-height: 400px;
+        width: 100%;
     }
     
     
