@@ -32,8 +32,9 @@ const HeaderBox = styled.header`
 
     .content{
         /* flex: 1; */
+        width: 100%;
         max-width: 400px;
-        margin: 0 auto;
+        /* margin: 0 auto; */
         padding: 1.5em 1.5em 2.5em;
         
         display: flex;
@@ -58,6 +59,7 @@ const HeaderBox = styled.header`
         
         .content {
             flex: 1;
+            margin: 0 auto;
             justify-content: center;
         }
         
@@ -72,7 +74,7 @@ const HeaderBox = styled.header`
 
 interface HeaderProps {
     children?: any,
-    description: JSX.Element,
+    description?: JSX.Element,
     style? : CSS.Properties
     subtitle?: {
         text: string,
@@ -88,15 +90,13 @@ export const Header = ({ title, description, subtitle, style, children  }: Heade
             {/* <StyledContainer $column={false}> */}
                 {children  &&  <div className='children'> {children} </div> }
                 <div className="content">
-                    <h1 className={!subtitle ? 'state' : ''}>{title}</h1>
-                    <hr/>
                     {subtitle &&
-                    <h2>
                         <Link to={subtitle.link}>
                             {subtitle.text}
                         </Link>
-                    </h2>
                     }
+                    <h1 className={!subtitle ? 'state' : ''}>{title}</h1>
+                    <hr/>
                     {description}
                 </div>
             {/* </StyledContainer> */}

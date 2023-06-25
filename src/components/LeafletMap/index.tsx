@@ -70,7 +70,7 @@ export const LeafletMap = ({state, parkCoords}: LeafletMapProps) => {
         () => (
           <MapContainer
             center={[37.8, -96]} 
-            minZoom={4}
+            minZoom={5}
             zoom={4}>
             <TileLayer
                 attribution='Map data ©2023 Google'

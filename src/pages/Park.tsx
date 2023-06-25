@@ -1,6 +1,6 @@
 
 import { useContext, useMemo } from "react";
-import { useParams } from "react-router-dom"
+import { Outlet, useParams } from "react-router-dom"
 import styled from 'styled-components';
 
 import { LeafletMap } from "../components/LeafletMap";
@@ -20,6 +20,8 @@ import { ReactComponent as CalendarCheck} from "../assets/icons/calendar-check-f
 import { ReactComponent as People} from "../assets/icons/people-fill.svg";
 import { ReactComponent as House} from "../assets/icons/house-fill.svg";
 import { ReactComponent as Car} from "../assets/icons/car-front-fill.svg";
+import { Dropdown } from "../components/Dropdown";
+import { StateParks } from "./State";
 
 const activityCategories = [
     { 
@@ -79,9 +81,9 @@ interface ParkHeaderProps {
     parkId?: string;
 }
 
-const ParkHeader = ({ park, state, parkId  }: ParkHeaderProps) => {
+export const ParkHeader = ({ park, state, parkId  }: ParkHeaderProps) => {
     const visitCount = parkId && getVisitorCount(parkId);
-    const Description = visitCount ? <p><strong>{visitCount}+</strong> visitors in 2022</p> : <p></p>;
+    const Description = visitCount ? <p style={{fontSize: '1.2em'}}><strong>{visitCount}+</strong> visitors in 2022</p> : <p></p>;
     const subtitle = {
         text: state.name,
         link: '/state/' + state.id
@@ -123,6 +125,8 @@ export const ParkPage = () => {
             {memoHeader}
             {parkId && <ParkAlert parkId={parkId}/>}
             
+            <Outlet/>
+            
             {/* {parkId && <ImageGrid previewImgs={activePark.images} parkId={parkId}/>} */}
             
             
@@ -137,31 +141,31 @@ export const ParkPage = () => {
                 
             </DescriptionBox>
             
-            <DirectionSection className="container">
-                {/* API Call */}
-                
-                <div className="directions"> 
-                    <h2>Directions</h2>
-                    <p>{activePark.directionsInfo}</p>
+            <div className="container">
+                <h2>Directions</h2>
+                <DirectionSection>
+                    {/* API Call */}
                     
-                    <h3>Coordinates</h3>
-                    <p><a href={`http://www.google.com/maps/place/${activePark.latitude},${activePark.longitude}`}>{activePark.latitude}, {activePark.longitude}</a></p>
+                    <div className="directions"> 
+                        <p>{activePark.directionsInfo}</p>
+                        
+                        <h3>Coordinates</h3>
+                        <p><a href={`http://www.google.com/maps/place/${activePark.latitude},${activePark.longitude}`}>{activePark.latitude}, {activePark.longitude}</a></p>
+                        
+                        <a href={activePark.directionsUrl}>Nation Park Directions</a>
+                    </div>
                     
-                    <a href={activePark.directionsUrl}>Nation Park Directions</a>
-                </div>
-                
-                <MapBox>
-                    <LeafletMap 
-                    state={state} 
-                    parkCoords={[{ longitude: activePark.longitude, latitude: activePark.latitude, name: activePark.fullName, id: activePark.parkCode }]}
-                    />
-                </MapBox>
-            </DirectionSection>
+                    <MapBox>
+                        <LeafletMap 
+                        state={state} 
+                        parkCoords={[{ longitude: activePark.longitude, latitude: activePark.latitude, name: activePark.fullName, id: activePark.parkCode }]}
+                        />
+                    </MapBox>
+                </DirectionSection>
+            </div>
             
-            <div className="container" style={{padding: '2em 1em'}}>
-                <h2>Other Parks in {state.name}</h2>
-                <br/>
-                <ParkCards parks={otherParks} columns={3} showDescription={false}/>
+            <div style={{marginTop: '4em'}}>
+                <StateParks title={"Other parks in " + state.name} state={state} parks={otherParks}/>
             </div>
         </>
     )
@@ -183,6 +187,7 @@ const DescriptionBox = styled.div`
     display: grid;
     gap: 1em;
     font-size: 1.2em;
+ 
     
     
     

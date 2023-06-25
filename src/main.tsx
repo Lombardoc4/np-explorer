@@ -12,38 +12,47 @@ import { ParkPage } from './pages/Park';
 import { LandingPage } from './pages/Landing';
 
 import { ParkProvider } from './utils/hooks/ParkContext'
+import ThingsToDo from './pages/ThingsToDo';
+import Camping from './pages/Camping';
+import Events from './pages/Events';
+import Tours from './pages/Tours';
+import VisitorCenters from './pages/VisitorCenters';
+import Parking from './pages/Parking';
 
 // import "./index.css";
 
 const parkRoutes = [
   {
-    path: "park/:parkId/things-to-do",
-    element: <div>Things to do</div>
-  },
-  {
-    path: "park/:parkId/campgrounds",
-    element: <div>Things to do</div>
-  },
-  {
-    path: "park/:parkId/events",
-    element: <div>Things to do</div>
-  },
-  {
-    path: "park/:parkId/tours",
-    element: <div>Things to do</div>
-  },
-  {
-    path: "park/:parkId/vistor-centers",
-    element: <div>Things to do</div>
-  },
-  {
-    path: "park/:parkId/parking-lots",
-    element: <div>Things to do</div>
-  },
-  {
-    path: "/park/:parkId",
+    path: "park/:parkId",
     element: <ParkPage/>,
-  },
+    children : [
+      {
+        path: "things-to-do",
+        element: <ThingsToDo/>
+      },
+      {
+        path: "campgrounds",
+        element: <Camping/>
+      },
+      {
+        path: "events",
+        element: <Events/>
+      },
+      {
+        path: "tours",
+        element: <Tours/>
+      },
+      {
+        path: "visitor-centers",
+        element: <VisitorCenters/>
+      },
+      {
+        path: "parking-lots",
+        element: <Parking/>
+      },
+    ]
+  }
+  
 ];
 const router = createBrowserRouter([
   // todo: re-renders all of layout for each object below, only need navbar re-rendered

@@ -37,9 +37,12 @@ const AlertBox = styled.div<AlertBoxProps>`
     }
     
     @media (min-width: 768px) {
-        top: 0;
+        top: unset;
         height: 100vh;
         padding: 1em 2em;
+        
+        display: flex;
+        justify-content: center;
     }
 `;
 
@@ -75,12 +78,24 @@ const AlertFloat = styled.button`
         justify-content: center;
         align-items: center;
         font-size: 0.75em;
+        font-weight: bold;
         
     }  
     
     @media (min-width: 768px) {
         bottom: 2em;
         left: 2em;
+        
+        svg {
+           height: 48px;
+            width: 48px; 
+        }
+        
+        .badge {
+            width: 2em;
+            height: 2em;
+            font-size: 1em;
+        }
     }
 `;
 

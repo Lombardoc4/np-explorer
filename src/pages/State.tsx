@@ -27,8 +27,8 @@ const StateHeader = ({ state, parks }: StateHeaderProps) => {
 		.reduce((acc: number, park: any) => acc + park.visitors, 0);
 
 	const Description = (
-		<p>
-			<strong>{parkCount}</strong> National Parks with <strong>{visitCount}+</strong>&nbsp;visitors in 2022
+		<p style={{fontSize: '1.2em'}}>
+			<strong>{parkCount}</strong> National Parks<br/><strong>{visitCount}+</strong>&nbsp;visitors in 2022
 		</p>
 	);
 
@@ -52,28 +52,57 @@ const StateHeader = ({ state, parks }: StateHeaderProps) => {
 	);
 };
 
+interface StateParksProps {
+	state: StateProps;
+	parks: any[];
+	title?: string;
+}
+
+export const StateParks = ({ state, parks, title }: StateParksProps) => {
+	const [filters, setFilters] = useState<FilterProps>({ activities: [], cost: "" });
+	
+	const [activeParks, setActiveParks] = useState(parks);
+	
+	const toggleFilter = (newFilters: FilterProps, filteredParks: any) => {
+		setFilters(newFilters);
+        // If there are no filters, set active parks to default parks
+		setActiveParks((newFilters.activities.length > 0 || newFilters.cost !== '') ? filteredParks : parks);
+	};
+	
+	
+	useEffect(() => {
+		setActiveParks(parks);
+	}, [state]);
+	
+	
+	return (
+		<MainContainer className='container'>
+			<h2 className="title">{title}</h2>
+			<ParkCardFilters
+				filters={filters}
+				activeParks={activeParks}
+				defaultParks={parks}
+				toggleFilter={toggleFilter}
+				state={state}
+			/>
+
+			<ParkCards grid={true} parks={activeParks} />
+		</MainContainer>
+	)
+}
+
 export const StatePage = () => {
 	const parks = useContext(ParkContext);
 	const { stateId } = useParams();
 	const state = stateMap.filter((state) => state.id === stateId)[0];
 
-	const [filters, setFilters] = useState<FilterProps>({ activities: [], cost: "" });
 	const defaultParks = useMemo(
 		() => parks.filter((park: any) => park.states.toLowerCase().includes(stateId)),
 		[stateId]
 	);
 
-	const [activeParks, setActiveParks] = useState(defaultParks);
 
-	useEffect(() => {
-		setActiveParks(defaultParks);
-	}, [stateId]);
 
-	const toggleFilter = (newFilters: FilterProps, filteredParks: any) => {
-		setFilters(newFilters);
-        // If there are no filters, set active parks to default parks
-		setActiveParks((newFilters.activities.length > 0 || newFilters.cost !== '') ? filteredParks : defaultParks);
-	};
 
 	const memoHeader = useMemo(
 		() => (
@@ -82,24 +111,13 @@ export const StatePage = () => {
 				parks={ defaultParks }
 			/>
 		),
-		[state, activeParks]
+		[state]
 	);
 
 	return (
 		<>
 			{memoHeader}
-
-			<MainContainer className='container'>
-				<ParkCardFilters
-					filters={filters}
-					activeParks={activeParks}
-					defaultParks={defaultParks}
-					toggleFilter={toggleFilter}
-					state={state}
-				/>
-
-				<ParkCards parks={activeParks} />
-			</MainContainer>
+			<StateParks state={state} parks={defaultParks} />			
 		</>
 	);
 };
@@ -112,6 +130,11 @@ const MainContainer = styled.div`
 	align-items: flex-start;
 	margin: auto;
 	padding: 1em;
+	
+	.title {
+		font-size: 2.2em;
+		text-align: center;
+	}
 	
 	.filters {
 		display: flex;

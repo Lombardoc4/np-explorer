@@ -59,14 +59,13 @@ const ImageViewer = ({
 	}, []);
 	useEffect(() => {
 		// TODO; scroll to active image
-		
 		// Add keyboard event listener for closing the modal and switching images
 		window.addEventListener("keydown", handleKeyDown);
 		return () => {
 			// Remove event listener on unmount
 			window.removeEventListener("keydown", handleKeyDown);
 		};
-	}, [activeImage]);
+	}, [loading, activeImage]);
 
 	return (
 		<StyledImageViewer
@@ -74,10 +73,10 @@ const ImageViewer = ({
 			onClick={handleClose}
 		>
 			{/* Loading */}
-			{loading && <div className="loading">Loading...</div>}
+			{loading && <div className='loading'>Loading...</div>}
 
 			{/* No Images */}
-			{!loading && images.length === 0 && <div className="loading">No Images Found</div>}
+			{!loading && images.length === 0 && <div className='loading'>No Images Found</div>}
 
 			{/* Images */}
 			{!loading && images.length > 0 && (
@@ -85,7 +84,11 @@ const ImageViewer = ({
 					<div className='img-container'>
 						{/* Image */}
 						<img
-							src={images[activeImage].fileInfo ? images[activeImage].fileInfo.url : images[activeImage].url}
+							src={
+								images[activeImage].fileInfo
+									? images[activeImage].fileInfo.url
+									: images[activeImage].url
+							}
 							alt={images[activeImage].altText}
 							title={images[activeImage].title}
 						/>
@@ -94,7 +97,7 @@ const ImageViewer = ({
 						{images[activeImage].credit && <div className='credits'>{images[activeImage].credit}</div>}
 
 						{/* Image Previews */}
-						
+
 						<div className='dots'>
 							{images.map((image: any, i: number) => (
 								<div
@@ -110,11 +113,8 @@ const ImageViewer = ({
 								</div>
 							))}
 						</div>
-						
-						
-						<div className="key-hints">
-								Arrow keys to navigate, Esc to close
-							</div>
+
+						<div className='key-hints'>Arrow keys to navigate, Esc to close</div>
 					</div>
 
 					{/* Prev / Next Photo Buttons */}
@@ -138,33 +138,33 @@ const ImageViewer = ({
 
 export const ImageGrid = ({ previewImgs, parkId }: { previewImgs: any; parkId: string }) => {
 	const [open, setOpen] = useState(false);
-	
+
 	const toggleOpen = () => {
 		setOpen(!open);
-		document.body.classList.toggle('no-scroll');
-	}
+		document.body.classList.toggle("no-scroll");
+	};
 
 	return (
 		<>
 			{/* <ImgGrid onClick={() => setOpen(true)}> */}
-					{previewImgs.slice(0, 1).map((image: any, i: number) => (
-						<ImgContainer
-							key={image.title}
-							className="img-container"
-							onClick={toggleOpen}
-						>
-							<img
-								src={image.fileInfo ? image.fileInfo.url : image.url}
-								alt={image.altText}
-								title={image.title}
-							/>
-							<div className='credits'>{image.credit}</div>
-							<div className='overlay'>
-								{/* OnClick Open Modal Gallery */}
-								<button>View Photos</button>
-							</div>
-						</ImgContainer>
-					))}
+			{previewImgs.slice(0, 1).map((image: any, i: number) => (
+				<ImgContainer
+					key={image.title}
+					className='img-container'
+					onClick={toggleOpen}
+				>
+					<img
+						src={image.fileInfo ? image.fileInfo.url : image.url}
+						alt={image.altText}
+						title={image.title}
+					/>
+					<div className='credits'>{image.credit}</div>
+					<div className='overlay'>
+						{/* OnClick Open Modal Gallery */}
+						<button>View Photos</button>
+					</div>
+				</ImgContainer>
+			))}
 			{/* </ImgGrid> */}
 			{open && (
 				<ImageViewer
@@ -177,31 +177,29 @@ export const ImageGrid = ({ previewImgs, parkId }: { previewImgs: any; parkId: s
 	);
 };
 
-
 const ImgContainer = styled.div`
 	/* padding: 1em; */
 	/* background-color: ${({ theme }) => theme.colors.secondary}; */
 
-
-		/* position: absolute;
+	/* position: absolute;
 		top: 0;
 		left: 0;
 		right: 0;
 		bottom 0; */
-		
-		/* border: 1px solid ${({ theme }) => theme.colors.black}; */
-		/* border-radius: 5px; */
-		width: 100%;
-		height: 300px;
-		/* max-height: 200px; */
-		/* overflow: hidden; */
 
-		@media (min-width: 768px) {
-			/* min-width: 300px; */
-			height: 400px
-			/* max-width: 25%; */
-			/* max-height: 250px; */
-		}
+	/* border: 1px solid ${({ theme }) => theme.colors.black}; */
+	/* border-radius: 5px; */
+	width: 100%;
+	height: 300px;
+	/* max-height: 200px; */
+	/* overflow: hidden; */
+
+	@media (min-width: 768px) {
+		/* min-width: 300px; */
+		height: 400px;
+		/* max-width: 25%; */
+		/* max-height: 250px; */
+	}
 
 	.overlay {
 		opacity: 0;
@@ -227,11 +225,11 @@ const StyledImageViewer = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-    
-    .loading {
-        color: #fff;
-        font-size: 2em;
-    }
+
+	.loading {
+		color: #fff;
+		font-size: 2em;
+	}
 
 	.img-container {
 		position: relative;
@@ -254,7 +252,7 @@ const StyledImageViewer = styled.div`
 		color: #fff;
 		font-size: 0.75em;
 	}
-	
+
 	.key-hints {
 		position: absolute;
 		top: 0;

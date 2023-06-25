@@ -31,11 +31,11 @@ export const NavBar = () => {
                 
                 {/* Right */}
                 <div className="side right">
-                    <Link to='/about' >
+                    {/* <Link to='/about' >
                         <button>
                             About
                         </button>
-                    </Link>
+                    </Link> */}
                 </div>
                 </div>
                 

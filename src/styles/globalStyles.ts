@@ -33,7 +33,10 @@ const GlobalStyles = createGlobalStyle`
     }
     
     h1 { font-weight: 800; }
-    
+       
+    h2 {
+        font-size: 2.2em;
+    }
     
     a {
         font-weight: 600;
@@ -61,6 +64,9 @@ const GlobalStyles = createGlobalStyle`
     button:focus-visible {
         outline: 4px auto -webkit-focus-ring-color;
     }
+    
+    .mt-auto { margin-top: auto; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
     
     .overlay{
         position: absolute;
