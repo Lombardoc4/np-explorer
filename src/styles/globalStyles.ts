@@ -65,7 +65,6 @@ const GlobalStyles = createGlobalStyle`
         outline: 4px auto -webkit-focus-ring-color;
     }
     
-    .mt-auto { margin-top: auto; }
     .mx-auto { margin-left: auto; margin-right: auto; }
     
     .overlay{

@@ -180,12 +180,15 @@ export const ParkDescription = ({ park }: any) => {
 	return (
 		<InfoBox>
 			<div className='content'>
+                <div style={{marginBottom: '2em'}}>
+                    
 				<h2>{park.fullName}</h2>
 				<p className='mb-1'>{park.description}</p>
 				<p className='mb-1'>{park.weatherInfo}</p>
 				<Link to={park.url}>Official National Parks Page</Link>
+                </div>
 
-				<StyledCard className="b-w mt-auto">
+				<StyledCard className="b-w">
 					<h3>Contact Info</h3>
 					{park.contacts.phoneNumbers.length > 0 &&
 						park.contacts.phoneNumbers.map(({ phoneNumber }: { phoneNumber: string }) => (

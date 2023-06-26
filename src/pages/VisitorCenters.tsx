@@ -5,6 +5,7 @@ import ParkContext from "../utils/hooks/ParkContext";
 import { stateMap } from "../utils/data/stateMap";
 import { ParkHeader } from "./Park";
 import passbook from '/passport-book.webp';
+import { SymbolMap } from "../utils/symbolMap";
 
 
 const daysOfWeek= [
@@ -104,11 +105,15 @@ const VisitorCenters = () => {
                             <p>{vc.operatingHours[0].description}</p>
                             
                             { vc.amenities.length > 0 &&
-                                    <div>
-                                        <h3>Amenities</h3>
+                                    <div style={{display: 'grid', gridTemplateColumns: "1fr 1fr", gap: '1em'}}>
+                                        <h3 style={{gridColumn: '1 / -1'}}>Amenities</h3>
                                         {vc.amenities.map((amenity: any) => (
-                                            <p key={amenity}>{amenity}</p>
-                                            ))}
+                                            <div style={{display: 'flex', alignItems: 'center', gap: '0.5em'}} key={amenity}>
+                                                <img src={`https://raw.githubusercontent.com/nationalparkservice/symbol-library/gh-pages/src/standalone/${SymbolMap[amenity]}-black-22.svg`}/>
+                                                {' '}
+                                                <p>{amenity}</p>
+                                            </div>
+                                        ))}
                                     </div>
                                 }
                             
