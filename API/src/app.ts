@@ -1,8 +1,8 @@
-import fs from 'fs';
-
-import  { hello } from './helper.js';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 import express from 'express';
+import { checkApiKey, createIndex } from '../lib/redis';
 
 const app = express();
 
@@ -12,9 +12,20 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/request', (req, res, next) => {
-    console.log('Request Type:', req.method);
+app.use('/createIndex', (req, res, next) => {
+    createIndex();
     next();
+});
+
+app.use('/*', (req, res, next) => {
+    const apiKey = req.headers.apiKey;
+    
+    if (!apiKey || !checkApiKey(apiKey)) {
+        return res.status(401).send('Unauthorized');
+    }
+    
+    next();
+    
 });
 
 // Get example
