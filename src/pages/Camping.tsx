@@ -2,9 +2,9 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Header } from "../components/Header"
 import ParkContext from "../utils/hooks/ParkContext";
-import { stateMap } from "../utils/data/stateMap";
+import { stateMap } from "../utils/lib/stateMap";
 import { ParkHeader } from "./Park";
-import { fetchAPI } from "../utils/fetch";
+// import { fetchApi } from "../utils/fetch";
 
 const Camping = () => {
     const {parkId} = useParams();
@@ -18,10 +18,10 @@ const Camping = () => {
     
     useEffect(() => {
         // fetch camping
-        fetchAPI('campgrounds', parkId).then((data: any) => {
+        // fetchApi('campgrounds', `parkCode=${parkId}`).then((data: any) => {
             // setcamping
-            setCamping(data);
-        });
+            // setCamping(data);
+        // });
     }, []);
     
     console.log('camping', camping);

@@ -1,6 +1,6 @@
 import { Dropdown } from "../Dropdown";
 import { useNavigate } from "react-router-dom";
-import { stateMap } from "../../utils/data/stateMap";
+import { stateMap } from "../../utils/lib/stateMap";
 
 export const StateDropdown = () => {
     const navigate = useNavigate();

@@ -1,11 +1,12 @@
 // Create a react leaflet that renders a US Map centered on the state
 import { MapContainer, TileLayer, GeoJSON, useMap, Marker, Popup} from "react-leaflet"
-import { USMapCords } from '../../utils/data/USMap';
+import { USMapCords } from '../../utils/lib/USMap';
 import { useEffect, useMemo, useRef, useState } from "react";
-import { StateProps } from "../../utils/data/stateMap";
+import { StateProps } from "../../utils/lib/stateMap";
 
 import { GeoJSON as GeoJSONType } from "leaflet";
 import { Link } from "react-router-dom";
+import useOnScreen from "../../utils/hooks/useOnScreen";
 
 const LeafletEvents = ({state} : {state: StateProps}) => {
     const map = useMap();
@@ -65,18 +66,19 @@ interface LeafletMapProps {
 }
 
 export const LeafletMap = ({state, parkCoords}: LeafletMapProps) => {
+    const [active, setActive] = useState(false);
+    const ref = useRef(null);
+    const offscreen = useOnScreen(ref)
+    
+    
+    useEffect(() => {
+        if (offscreen) setActive(false)
+    }, [offscreen])
+    
     
     const displayMap = useMemo(
         () => (
-          <MapContainer
-            center={[37.8, -96]} 
-            minZoom={5}
-            zoom={4}>
-            <TileLayer
-                attribution='Map data ©2023 Google'
-                url="http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}"
-                subdomains={['mt0','mt1','mt2','mt3']}
-            />
+          <>
             
             <LeafletEvents state={state} />
             {parkCoords.map((park) => 
@@ -90,12 +92,33 @@ export const LeafletMap = ({state, parkCoords}: LeafletMapProps) => {
                         </Popup>
                     </Marker>
             )}
-          </MapContainer>
+            </>
         ),
         [parkCoords],
     )
     
     return (
-        <>{displayMap}</>
+        <>
+        <MapContainer
+          center={[37.8, -96]} 
+          minZoom={5}
+          zoom={4}>
+            <TileLayer
+                attribution='Map data ©2023 Google'
+                url="http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}"
+                subdomains={['mt0','mt1','mt2','mt3']}
+            />
+            
+            {displayMap}
+            
+          </MapContainer>
+            <div 
+                ref={ref}
+                className="overlay"
+                style={{visibility: active ? 'hidden' : 'initial'}}
+                onScroll={(e) => e.stopPropagation()}
+                onClick= {() => setActive(true)}
+                />
+        </>
     )
 }

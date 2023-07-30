@@ -2,6 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import {
   createBrowserRouter,
+  ParamParseKey,
+  Params,
   RouterProvider,
 } from "react-router-dom";
 
@@ -18,13 +20,32 @@ import Events from './pages/Events';
 import Tours from './pages/Tours';
 import VisitorCenters from './pages/VisitorCenters';
 import Parking from './pages/Parking';
+import { fetcher } from './utils/fetch';
+import Park2 from './pages/Park2';
 
 // import "./index.css";
 
 const parkRoutes = [
   {
     path: "park/:parkId",
-    element: <ParkPage/>,
+    element: <Park2/>,
+    loader: async ({ params }: { params : Params}) => {
+      const thingtodo = await fetcher(`thingstodo?parkCode=${params.parkId}`);
+      const campgrounds = await fetcher(`campgrounds?parkCode=${params.parkId}`);
+      const events = await fetcher(`events?parkCode=${params.parkId}`);
+      const tours= await fetcher(`tours?parkCode=${params.parkId}`);
+      const visitorCenters = await fetcher(`visitorcenters?parkCode=${params.parkId}`);
+      const parkingLots = await fetcher(`parkinglots?parkCode=${params.parkId}`);
+      
+      return {
+        thingsToDo: thingtodo,
+        campgrounds,
+        events,
+        tours,
+        visitorCenters,
+        parkingLots
+      }
+    },
     children : [
       {
         path: "things-to-do",
@@ -59,12 +80,11 @@ const router = createBrowserRouter([
   // note : each child rerenders the layout ?
   {
     path: "/",
-    element: <App  />,
+    element: <App/>,
     errorElement: <App><ErrorPage /></App>,
     children: [
       {
         errorElement: <ErrorPage />,
-
         children: [
           {
             index: true,

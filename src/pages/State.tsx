@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import ParkContext from "../utils/hooks/ParkContext";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { StateProps, stateMap } from "../utils/data/stateMap";
+import { StateProps, stateMap } from "../utils/lib/stateMap";
 
 import styled from "styled-components";
-import { parkVistors } from "../utils/data/parkVisitors";
+import { parkVistors } from "../utils/lib/parkVisitors";
 import { LeafletMap } from "../components/LeafletMap";
 import { Header } from "../components/Header";
 import { ParkCards } from "../components/ParkCards";
@@ -23,7 +23,7 @@ interface StateHeaderProps {
 const StateHeader = ({ state, parks }: StateHeaderProps) => {
 	const parkCount = parks.length;
 	const visitCount = parkVistors
-		.filter((park) => park.state === state.name)
+		.filter((park: { state: string; }) => park.state === state.name)
 		.reduce((acc: number, park: any) => acc + park.visitors, 0);
 
 	const Description = (
@@ -86,7 +86,7 @@ export const StateParks = ({ state, parks, title }: StateParksProps) => {
 				state={state}
 			/>
 
-			<ParkCards grid={true} parks={activeParks} />
+			<ParkCards grid={true} parks={activeParks} showDescription={false} />
 		</MainContainer>
 	)
 }

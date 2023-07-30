@@ -2,7 +2,7 @@ import {  useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components';
 
-import { stateMap, borderMap, otherMap } from '../../utils/data/stateMap';
+import { stateMap, borderMap, otherMap } from '../../utils/lib/stateMap';
 import { StateDropdown } from '../Dropdown/StateDropdown';
 
 const Main = styled.div`

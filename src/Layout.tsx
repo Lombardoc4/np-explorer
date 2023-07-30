@@ -22,6 +22,7 @@ function App({children} : {children?: JSX.Element}) {
   
   if (!parks) return <div>Loading...</div>;
   
+  
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles/>

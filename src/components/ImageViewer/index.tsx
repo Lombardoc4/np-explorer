@@ -87,7 +87,7 @@ const ImageViewer = ({
 							src={
 								images[activeImage].fileInfo
 									? images[activeImage].fileInfo.url
-									: images[activeImage].url
+									: images[activeImage].url ? images[activeImage].url : ''
 							}
 							alt={images[activeImage].altText}
 							title={images[activeImage].title}
@@ -159,10 +159,10 @@ export const ImageGrid = ({ previewImgs, parkId }: { previewImgs: any; parkId: s
 						title={image.title}
 					/>
 					<div className='credits'>{image.credit}</div>
-					<div className='overlay'>
 						{/* OnClick Open Modal Gallery */}
+					{/* <div className='overlay'>
 						<button>View Photos</button>
-					</div>
+					</div> */}
 				</ImgContainer>
 			))}
 			{/* </ImgGrid> */}
@@ -178,28 +178,9 @@ export const ImageGrid = ({ previewImgs, parkId }: { previewImgs: any; parkId: s
 };
 
 const ImgContainer = styled.div`
-	/* padding: 1em; */
-	/* background-color: ${({ theme }) => theme.colors.secondary}; */
-
-	/* position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom 0; */
-
-	/* border: 1px solid ${({ theme }) => theme.colors.black}; */
-	/* border-radius: 5px; */
 	width: 100%;
-	height: 300px;
-	/* max-height: 200px; */
-	/* overflow: hidden; */
+	height: 400px;
 
-	@media (min-width: 768px) {
-		/* min-width: 300px; */
-		height: 400px;
-		/* max-width: 25%; */
-		/* max-height: 250px; */
-	}
 
 	.overlay {
 		opacity: 0;

@@ -1,20 +1,20 @@
 import React, { createContext, useEffect, useState } from "react";
+import { fetcher } from "../fetch";
+
 
 type ContextType = any
 
 const ParkContext = createContext<ContextType>({});
 
 function ParkProvider({children} : {children: React.ReactNode}){
-  const [myData, setMyData] = useState(null);
-
-
+  const [myData, setMyData] = useState<JSON | undefined>();
   useEffect(() => {
-    fetch(`https://developer.nps.gov/api/v1/parks?limit=500&api_key=${import.meta.env.VITE_NPS_API_KEY}`)
-      .then(response => response.json())
-      .then(data => setMyData(data.data))
-      .catch(error => console.error(error));
+    
+    fetcher('parks?limit=500')
+    .then(data => setMyData(data))
+    .catch(error => console.error(error));
     }, []);
-
+    
     // console.log('context', myData)
 
   return (

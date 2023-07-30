@@ -1,19 +1,33 @@
+
 // Specific to NPS API
-export const fetchAPI = async (endpoint: string, parkId: string) => {
-    const sessionData = sessionStorage.getItem(endpoint);
-    // Check if session storage has data
-    if (sessionData) {
-        // If so, return data
-        return JSON.parse(sessionData)[parkId];
-    }
+// export const fetchApi = async (endpoint: string, filters ?: string, cache?: 'short'|'long') => {
+    
+//     const cacheLimit = cache ? cache === 'short' ?  "300": "86400" : "0";
+    
+//     console.log('url', url);
+//     // Make fetch call
+//     const response = await fetch( url,
+//         {
+//             headers: {
+//                 'Cache-Control': `max-age=${cacheLimit}`
+//             }
+//         }
+//     );
+    
+//     console.log('response', response);
+    
+//     const { data } = await response.json();
+    
+//     // Return data
+//     return data;
+// }
 
-    // Make fetch call
-    const response = await fetch(`https://developer.nps.gov/api/v1/${endpoint}/?parkCode=${parkId}&api_key=${import.meta.env.VITE_NPS_API_KEY}`);
-    const { data }= await response.json();
-
-    // Store in session storage
-    sessionStorage.setItem(endpoint, JSON.stringify({parkId: data}));
-
-    // Return data
-    return data;
-}
+export const fetcher = async (input: RequestInfo,  init?: RequestInit): Promise<JSON>  => {
+    
+    
+    const url = `https://developer.nps.gov/api/v1/${input}&api_key=${import.meta.env.VITE_NPS_API_KEY}`;
+    
+    const res = await fetch(url, init);
+    const data = await res.json();
+    return data.data;
+  }
