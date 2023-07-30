@@ -7,8 +7,6 @@ const ParkContext = createContext<ContextType>({});
 function ParkProvider({children} : {children: React.ReactNode}){
   const [myData, setMyData] = useState(null);
 
-  console.log('key', import.meta.env.VITE_NPS_API_KEY);
-
 
   useEffect(() => {
     fetch(`https://developer.nps.gov/api/v1/parks?limit=500&api_key=${import.meta.env.VITE_NPS_API_KEY}`)
