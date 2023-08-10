@@ -7,14 +7,14 @@ type ContextType = any
 const ParkContext = createContext<ContextType>({});
 
 function ParkProvider({children} : {children: React.ReactNode}){
-  const [myData, setMyData] = useState<JSON | undefined>();
+  const [myData, setMyData] = useState<any[]>();
   useEffect(() => {
-    
+
     fetcher('parks?limit=500')
     .then(data => setMyData(data))
     .catch(error => console.error(error));
     }, []);
-    
+
     // console.log('context', myData)
 
   return (

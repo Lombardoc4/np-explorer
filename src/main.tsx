@@ -10,7 +10,7 @@ import {
 import App from './Layout'
 import ErrorPage from './pages/Error';
 import { StatePage } from './pages/State';
-import { ParkPage } from './pages/Park';
+import ParkPage from './pages/Park';
 import { LandingPage } from './pages/Landing';
 
 import { ParkProvider } from './utils/hooks/ParkContext'
@@ -21,32 +21,36 @@ import Tours from './pages/Tours';
 import VisitorCenters from './pages/VisitorCenters';
 import Parking from './pages/Parking';
 import { fetcher } from './utils/fetch';
-import Park2 from './pages/Park2';
+import ParkLayout from './pages/ParkLayout';
 
 // import "./index.css";
 
 const parkRoutes = [
   {
-    path: "park/:parkId",
-    element: <Park2/>,
-    loader: async ({ params }: { params : Params}) => {
-      const thingtodo = await fetcher(`thingstodo?parkCode=${params.parkId}`);
-      const campgrounds = await fetcher(`campgrounds?parkCode=${params.parkId}`);
-      const events = await fetcher(`events?parkCode=${params.parkId}`);
-      const tours= await fetcher(`tours?parkCode=${params.parkId}`);
-      const visitorCenters = await fetcher(`visitorcenters?parkCode=${params.parkId}`);
-      const parkingLots = await fetcher(`parkinglots?parkCode=${params.parkId}`);
-      
-      return {
-        thingsToDo: thingtodo,
-        campgrounds,
-        events,
-        tours,
-        visitorCenters,
-        parkingLots
-      }
-    },
-    children : [
+    path: "park/:parkId/",
+    element: <ParkLayout/>,
+    children: [
+      {
+        path: '',
+        element: <ParkPage/>,
+        loader: async ({ params }: { params : Params}) => {
+          const thingtodo = await fetcher(`thingstodo?parkCode=${params.parkId}`);
+          const campgrounds = await fetcher(`campgrounds?parkCode=${params.parkId}`);
+          const events = await fetcher(`events?parkCode=${params.parkId}`);
+          const tours= await fetcher(`tours?parkCode=${params.parkId}`);
+          const visitorCenters = await fetcher(`visitorcenters?parkCode=${params.parkId}`);
+          const parkingLots = await fetcher(`parkinglots?parkCode=${params.parkId}`);
+
+          return {
+            thingsToDo: thingtodo,
+            campgrounds,
+            events,
+            tours,
+            visitorCenters,
+            parkingLots
+          }
+        }
+      },
       {
         path: "things-to-do",
         element: <ThingsToDo/>
@@ -73,7 +77,7 @@ const parkRoutes = [
       },
     ]
   }
-  
+
 ];
 const router = createBrowserRouter([
   // todo: re-renders all of layout for each object below, only need navbar re-rendered

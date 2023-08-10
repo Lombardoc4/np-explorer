@@ -3,16 +3,16 @@ import { useParams } from "react-router-dom";
 import { Header } from "../components/Header"
 import ParkContext from "../utils/hooks/ParkContext";
 import { stateMap } from "../utils/lib/stateMap";
-import { ParkHeader } from "./Park";
+// import { ParkHeader } from "./Park";
 
 const Events = () => {
     const {parkId} = useParams();
-    const parks = useContext(ParkContext);  
+    const parks = useContext(ParkContext);
     const park = parks.find((park: any) => park.parkCode === parkId);
     const state = stateMap.filter(state => park.states.toLowerCase().includes(state.id))[0];
-    
+
     const [events, setEvents] = useState<any[]>([]);
-    
+
     useEffect(() => {
         // fetch events
         const fetchCall = async () => {
@@ -23,7 +23,7 @@ const Events = () => {
         fetchCall();
         // setevents
     }, []);
-    
+
     console.log('events', events);
     return (
         <>

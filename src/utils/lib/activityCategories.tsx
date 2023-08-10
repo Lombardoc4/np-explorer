@@ -7,38 +7,38 @@ import { ReactComponent as House } from "../../assets/icons/house-fill.svg";
 import { ReactComponent as Car } from "../../assets/icons/car-front-fill.svg";
 
 
-interface ActivityDetails {
+export interface ActivityDetails {
 	name: string,
 	icon: JSX.Element
 }
 
-interface ActivityCategory {
+export interface ActivityCategory {
 	[key: string]: ActivityDetails
 }
 
 export const activityCategories : ActivityCategory = {
-	"thingsToDo": {
-		name: "Things to do",
-		icon: <ListStar />,
-	},
-	"campgrounds": {
-		name: "Camping",
-		icon: <Fire />,
-	},
-	events: {
-		name: "Events",
-		icon: <CalendarCheck />,
+	visitorCenters: {
+		name: "Visitor Centers",
+		icon: <House width={32} height={32}/>,
 	},
 	tours: {
 		name: "Tours",
-		icon: <People />,
+		icon: <People width={32} height={32}/>,
 	},
-	visitorCenters: {
-		name: "Visitor Centers",
-		icon: <House />,
+	campgrounds: {
+		name: "Campgrounds",
+		icon: <Fire width={32} height={32}/>,
+	},
+	events: {
+		name: "Events",
+		icon: <CalendarCheck width={32} height={32}/>,
+	},
+	thingsToDo: {
+		name: "Things to do",
+		icon: <ListStar width={32} height={32}/>,
 	},
 	parkingLots: {
 		name: "Parking",
-		icon: <Car />,
+		icon: <Car width={32} height={32}/>,
 	},
 };

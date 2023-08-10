@@ -2,31 +2,20 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
     /* Import fonts here */
-  /* @import url("https://use.typekit.net/lhn3rih.css"); */
+    /* @import url("https://use.typekit.net/lhn3rih.css"); */
 
-
-
-
-
-
-
-  
     :root {
-    font-family: "futura-pt", sans-serif;
-    /* line-height: 1.5; */
-    /* font-weight: 400; */
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-text-size-adjust: 100%;
-    
-    --def-input-height: 3em;
-    --def-input-border-radius: calc(0.5 * var(--def-input-height));
-    }
-    
-    .no-scroll {
-        overflow: hidden;
+        font-family: "futura-pt", sans-serif;
+        /* line-height: 1.5; */
+        /* font-weight: 400; */
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-text-size-adjust: 100%;
+
+        --def-input-height: 3em;
+        --def-input-border-radius: calc(0.5 * var(--def-input-height));
     }
 
     *, *:before, *:after{
@@ -34,26 +23,17 @@ const GlobalStyles = createGlobalStyle`
         margin: 0;
         padding: 0;
     }
-    
-    h1, h2, h3, h4, h5, h6 {
-        font-family: "futura-pt", sans-serif;
-        font-weight: 700;
-        font-style: normal;
+
+    .no-scroll { overflow: hidden; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .bold { font-weight: 700 }
+    a { color:  inherit; }
+    h1, h2, h3, h4, h5, h6 { font-weight: 800 }
+    li {
+        margin-left: 2em;
     }
-    
-    /* h1 { font-weight: 800; } */
-       
-    /* h2 { */
-        /* font-size: 2.2em; */
-    /* } */
-    
-    a {
-        /* font-weight: 600; */
-        color:  inherit;
-        /* text-decoration: inherit; */
-    }
-    
-    button {
+
+    /* button {
         border-radius: 8px;
         border: 1px solid transparent;
         padding: 0.6em 1.2em;
@@ -72,26 +52,73 @@ const GlobalStyles = createGlobalStyle`
     button:focus,
     button:focus-visible {
         outline: 4px auto -webkit-focus-ring-color;
-    }
-    
+    } */
+
     .container{
         width: clamp(300px, 90%, 1200px);
-        /* max-width: 1200px; */
         margin-left:  auto;
         margin-right: auto;
-        
-        /* @media (max-width: 1200px) { */
     }
-    
-    .card {
+
+    .img-container{
         width: 100%;
-        padding: 1em;
-        border-radius: 0.5em;
-        box-shadow: ${props => props.theme.boxShadow.small};
-        /* display: flex; */
-        /* align-items: center; */
-        gap: 0.5em;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .credits{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 0.5em;
+            background-color: rgba(0,0,0,0.5);
+            color: #fff;
+            font-size: 0.8em;
+        }
     }
+
+    .overlay, .overlay-gradient{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: ${({ theme }) => theme.zIndex.overlay};
+        background: rgba(0,0,0,0.3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .overlay-gradient {
+        background: linear-gradient( rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%);
+        align-items: flex-end;
+        justify-content: flex-start;
+        padding: 1em;
+    }
+
+
+    .content {
+        font-size: 1.2em;
+
+        .section {
+            padding: 1em 0;
+            border-bottom: 1px solid;
+            /* margin: 0 0 1em; */
+        }
+
+        li {
+            margin-top: 0.5em;
+        }
+    }
+
 
         /* Move to Dropdown styles */
         /* vvvvvvvvvvv */
@@ -140,64 +167,12 @@ const GlobalStyles = createGlobalStyle`
 
 
 
-
-        .img-container{
-        width: 100%;
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #f1f1f1;
-        }
-
-        .img-container img{
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        }
-
-        .img-container .credits{
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        padding: 0.5em;
-        background-color: rgba(0,0,0,0.5);
-        color: #fff;
-        font-size: 0.8em;
-        
-        }
-    
-    .mx-auto { margin-left: auto; margin-right: auto; }
-    
-    .overlay, .overlay-gradient{
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: ${({ theme }) => theme.zIndex.overlay};
-        background: rgba(0,0,0,0.3);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    .overlay-gradient {
-        background: linear-gradient( rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%);
-        align-items: flex-end;
-        justify-content: flex-start;
-        padding: 1em;
-    }
-    
+    /* TODO Move to Leaflet file */
     .leaflet-container {
         height: 300px;
         width: 100%;
     }
-    
-    .directions .leaflet-container {
-        height: 400px;
-    }
-    
+
     @media (min-width: 768px) {
         .leaflet-container {
             height: 400px;

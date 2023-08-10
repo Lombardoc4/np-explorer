@@ -60,24 +60,40 @@ interface StateParksProps {
 
 export const StateParks = ({ state, parks, title }: StateParksProps) => {
 	const [filters, setFilters] = useState<FilterProps>({ activities: [], cost: "" });
-	
+
 	const [activeParks, setActiveParks] = useState(parks);
-	
+
 	const toggleFilter = (newFilters: FilterProps, filteredParks: any) => {
 		setFilters(newFilters);
         // If there are no filters, set active parks to default parks
 		setActiveParks((newFilters.activities.length > 0 || newFilters.cost !== '') ? filteredParks : parks);
 	};
-	
-	
+
+
 	useEffect(() => {
 		setActiveParks(parks);
 	}, [state]);
-	
-	
+
+
 	return (
 		<MainContainer className='container'>
 			<h2 className="title">{title}</h2>
+
+			{/* Map with parks */}
+			{/* <div style={{ position: "relative" }}>
+				<LeafletMap
+					state={state}
+					parkCoords={[
+						{
+							longitude: parks[0].longitude,
+							latitude: parks[0].latitude,
+							name: parks[0].fullName,
+							id: parks[0].parkCode,
+						},
+					]}
+				/>
+			</div> */}
+
 			<ParkCardFilters
 				filters={filters}
 				activeParks={activeParks}
@@ -117,7 +133,7 @@ export const StatePage = () => {
 	return (
 		<>
 			{memoHeader}
-			<StateParks state={state} parks={defaultParks} />			
+			<StateParks state={state} parks={defaultParks} />
 		</>
 	);
 };
@@ -130,12 +146,12 @@ const MainContainer = styled.div`
 	align-items: flex-start;
 	margin: auto;
 	padding: 1em;
-	
+
 	.title {
 		font-size: 2.2em;
 		text-align: center;
 	}
-	
+
 	.filters {
 		display: flex;
 		flex-direction: column;

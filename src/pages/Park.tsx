@@ -1,378 +1,357 @@
-import { useContext, useEffect, useMemo } from "react";
-import { Link, Outlet, useLoaderData, useParams } from "react-router-dom";
-import styled from "styled-components";
+import { Fragment, useContext } from "react";
+import { useParams, Link, useLoaderData } from "react-router-dom";
 
-import { LeafletMap } from "../components/LeafletMap";
 import { ParkAlert } from "../components/ParkAlert";
-import { Header } from "../components/Header";
-import { CardButtonGrid } from "../components/CardButtonGrid";
-import { ImageGrid } from "../components/ImageViewer";
-import { ParkDescription } from "../components/ParkDescription";
+import { LeafletMap } from "../components/LeafletMap";
+
+import { ReactComponent as EmailIcon } from "../assets/icons/envelope-fill.svg";
+import { ReactComponent as PhoneIcon } from "../assets/icons/telephone-fill.svg";
+import { ReactComponent as GlobeIcon } from "../assets/icons/globe.svg";
+
 
 import ParkContext from "../utils/hooks/ParkContext";
-import { StateProps, stateMap } from "../utils/lib/stateMap";
-import { parkVistors } from "../utils/lib/parkVisitors";
-import { ParkCards } from "../components/ParkCards";
-import { ReactComponent as ListStar } from "../assets/icons/list-stars.svg";
-import { ReactComponent as Fire } from "../assets/icons/fire.svg";
-import { ReactComponent as CalendarCheck } from "../assets/icons/calendar-check-fill.svg";
-import { ReactComponent as People } from "../assets/icons/people-fill.svg";
-import { ReactComponent as House } from "../assets/icons/house-fill.svg";
-import { ReactComponent as Car } from "../assets/icons/car-front-fill.svg";
-import { Dropdown } from "../components/Dropdown";
-import { StateParks } from "./State";
-import { ImgGrid } from "../components/ImgGrid";
+import { ActivityDetails, activityCategories } from "../utils/lib/activityCategories";
+import { stateMap } from "../utils/lib/stateMap";
+import { StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
+import styled from "styled-components";
+import { SymbolMap } from "../utils/symbolMap";
 
-const activityCategories = [
-	{
-		name: "Things to do",
-		id: "things-to-do",
-		icon: <ListStar />,
-	},
-	// {
-	//     name: 'Amenities',
-	//     id: 'amenities-parks-places',
-	//     icon: 'balloon'
-	// },
-	{
-		name: "Camping",
-		id: "campgrounds",
-		icon: <Fire />,
-	},
-	{
-		name: "Events",
-		id: "events",
-		icon: <CalendarCheck />,
-	},
-	{
-		name: "Tours",
-		id: "tours",
-		icon: <People />,
-	},
-	{
-		name: "Visitor Centers",
-		id: "visitor-centers",
-		icon: <House />,
-	},
-	{
-		name: "Parking",
-		id: "parking-lots",
-		icon: <Car />,
-	},
-	// {
-	//     name: 'News Releases',
-	//     id: 'news-releases' ,
-	//     icon: 'balloon'
-	// },
-];
-
-
-
-interface ParkHeaderProps {
-	park: any;
-	state: StateProps;
-	parkId?: string;
+interface ParkProps {
+    park: any;
 }
 
-export const ParkHeader = ({ park, state, parkId }: ParkHeaderProps) => {
-	
+interface ActiveCatergory extends ActivityDetails {
+	data: any[],
+	count: number
+}
 
-	
-
-	
-	return (
-		<>
-		<header className="container" style={{margin: '2rem auto 1rem'}}>
-			<div style={{display: 'flex', justifyContent: 'space-between'}}>
-				
-				<div>
-					<div style={{display: 'flex', columnGap: '0.25em', flexWrap: 'wrap', alignItems: 'flex-end', gap: '1em'}}>
-					</div>
-						<h1>{park.name}</h1>
-							
-						{park.designation && <h2>{park.designation}</h2>}
-						{park.states.length > 0 && (<div>
-							{park.states.split(",").map((state: string) => (
-							<><Link style={{fontWeight: 400}} to={"/state/" + state.toLowerCase()} key={state}>{state}</Link>{' '}</>
-							))}
-						</div>)}
-					{/* {Description} */}
-				</div>
-				
-				<div>
-					<div>
-						<ParkAlert parkId={park.parkCode}/>
-					</div>
-				</div>
-			</div>
-		</header>
-		
-		</>
-	);
-};
-
-export const ParkPage = () => {
-	const parks = useContext(ParkContext);
-	const { parkId } = useParams();
-
-	// Migrate logic to loader action via router
-	// Todo Can this be simplied
-	
+interface HeaderProps extends ParkProps {
+	activeCategories: ActiveCatergory[]
+}
 
 
-	const activePark = parks.find((park: any) => park.parkCode === parkId);
-	
-	// Todo: Fix to map for each state
-	const state = stateMap.filter((state) => activePark.states.toLowerCase().includes(state.id))[0];
+const ParkHeader = ({ park, activeCategories }: HeaderProps) => {
 
-	const otherParks = parks.filter(
-		(park: any) => park.states.toLowerCase().includes(state.id) && park.fullName !== state.name
-	);
-	
-	console.log('park', activePark);
-	// .map((park: any) =>
-	//     ({ link: '/park/' + park.parkCode, text: park.fullName })
-	// );
-	const memoHeader = useMemo(
-		() => (
-			<ParkHeader
-				park={activePark}
-				parkId={parkId}
-				state={state}
-			/>
-		),
-		[parkId, state]
-	);
-	
-	useEffect(() => {
-		// extend park context
-		// make a fetch to 
-		// - Things to do
-		// - Camping
-		// - Events
-		// - Tours
-		// - Visitor Centers
-		// - Parking
-		
-	}, []);
-
-	return (
-		<>
-			{memoHeader}
-			{ activePark.images.length > 0 && (
-				<ImgGrid images={activePark.images} />
-			)}
-			<div style={{position: 'relative'}}>
-				
-				
-			{/* {activePark.images.length > 0 && (
-				
-				<div className="container" style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gridTemplateRows: 'repeat(2, 1fr)', height: '500px'}}>
-						{activePark.images.map((img: any, i: number ) => {
-							if (i === 0) {
-								return (
-									<div style={{gridColumn: '1 / 3', gridRow: '1 / 3' }}>
-								<img
-								src={img.url}
-								alt={img.altText}
-								style={{width: '100%',  objectFit: 'cover'}}
-								/>
-							</div>
-								)
-							} 
-							
-							return (
-								
-								<div>
-								<img
-								src={img.url}
-								alt={img.altText}
-								style={{width: '100%', objectFit: 'cover'}}
-								/>
-							</div>
-								)
-						}
-						)}
-				</div>
-			)} */}
-				
-			{/* {parkId && <ParkAlert parkId={parkId} />} */}
-				
-			<Outlet />
-
-			{/* {parkId && <ImageGrid previewImgs={activePark.images} parkId={parkId}/>} */}
-
-			<div
-			className="container" style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '1em' ,marginBottom: '2rem'}}>
-				{
-					activityCategories.map((category) => {
-						return (
-							<div className="card"
-								style={{width: '100%', padding: '1em', borderRadius: '5px', boxShadow: 'rgba(0, 0, 0, 0.5) 0px 0px 8px -2px', display: 'flex', alignItems: 'center', gap: '0.5em'}}
-							key={category.id}>
-								{category.icon}
-								<p>{category.name}(#)</p>
-							</div>
-						)
-					}
-					)
-				}
-				{/* <CardButtonGrid
-					dir={"row"}
-					buttons={activityCategories} // Map catorgies to one with api returns
-					/> */}
-			</div>
-
-			<DescriptionBox className="container"  style={{marginBottom: '6rem'}}>
-				<ParkDescription park={activePark} />
-			</DescriptionBox>
-
-			
-			{/* {parkId &&
-				<ImageGrid
-				previewImgs={activePark.images}
-				parkId={parkId}
-				/>
-			} */}
-	<div className="container" style={{marginBottom: '6rem'}} >
-		
-				<h2>Directions</h2>
-				<DirectionSection >
-					
-					{/* API Call */}
-					<MapBox>
-						<LeafletMap
-							state={state}
-							parkCoords={[
-								{
-									longitude: activePark.longitude,
-									latitude: activePark.latitude,
-									name: activePark.fullName,
-									id: activePark.parkCode,
-								},
-							]}
-							/>
-					</MapBox>
-					<div className='directions'>
-						<div>
-							
-						<p>{activePark.directionsInfo}</p>
-						<a href={activePark.directionsUrl}>Official National Park Directions</a>
-						</div>
-
-						<div>
-							
-						<h3>Address</h3>
-						<p>
-							{activePark.addresses
-								.filter((add: any) => add.type === "Physical")
-								.map((add: any) => {
-									return (
-										<a
-										key={add.line1}
-										target='_blank'
-										href={`https://www.google.com/maps/search/?api=1&query=${add.line1.replaceAll(' ', '+').replace('.', '')} ${add.city.replaceAll(' ', '+')} ${add.stateCode} ${add.postalCode}`}
-										>
-											{add.line1}
-											<br />
-											{add.city}, {add.stateCode} {add.postalCode}
-										</a>
-									);
-								})}
-						</p>
-						<h3>Coordinates</h3>
-						<p>
-							<a
-								target='_blank'
-								href={`https://www.google.com/maps/search/?api=1&query=${activePark.latitude},${activePark.longitude}`}
-								>
-								{activePark.latitude}, {activePark.longitude}
+    return (
+        <div className="section" style={{ display: "flex",}}>
+			<div style={{ display: "flex", flexDirection: "column" }}>
+				<h2>{park.fullName}</h2>
+				<div style={{ display: "flex", gap: "1em", marginTop: "auto" }}>
+					{activeCategories.map((category: ActivityDetails, i: number, data: any) => (
+						<Fragment key={category.name}>
+							<a href={"#" + category.name.replaceAll(" ", "-").toLowerCase()}>
+								{i + 1} {category.name}
 							</a>
-						</p>
-						</div>
-
-					</div>
-
-					
-				</DirectionSection>
+							{i < data.length - 1 && <>~</>}
+						</Fragment>
+					))}
 				</div>
 			</div>
-			<div className="container" style={{ marginTop: "4em" }}>
-				<StateParks
-					title={"Other parks in " + state.name}
-					state={state}
-					parks={otherParks}
-					/>
+			<div className='img-container' style={{ width: "60px", margin: "0 1em 0 auto" }}>
+				<img
+					src='https://www.nps.gov/theme/assets/dist/images/branding/logo.png'
+					// width='60'
+				></img>
 			</div>
-		</>
-	);
+		</div>
+    );
 };
 
-const MapBox = styled.div`
-	position: relative;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	height: 100%;
-	
-	.leaflet-container {
-		height: 500px;
-	}
-`;
+const DirectionAddress = ({addresses}: {addresses : any[]}) => {
+	addresses.filter((add: any) => add.type === "Physical").map((add: any) => {
+		add.gMapsUrl = `https://www.google.com/maps/search/?api=1&query=${add.line1.replaceAll(" ", "+").replace(".", "")} ${add.city.replaceAll(" ", "+")} ${add.stateCode} ${add.postalCode}`
+		add.full = `${add.line1}, ${add.city}, ${add.stateCode} ${add.postalCode}`;
+	})
 
-const DescriptionBox = styled.div`
-	/* background: #f1f1f1; */
-	color: #000;
-	/* padding: 0 1em; */
-	display: grid;
-	gap: 1em;
-	/* font-size: 1.2em; */
+    return (
+        <>
+        {addresses.filter((add: any) => add.type === "Physical").map((add: any) => (
+            <p
+            key={add.full}
+            >
+                <a
+                    target='_blank'
+                    href={add.gMapsUrl}
+                    >
+                    {add.full}
+                </a>
+            </p>
+            ))}
+        </>
+    )
+}
 
-	@media (min-width: 768px) {
-		/* padding: 2em 1em; */
-		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-	}
-`;
+const ParkDirections = ({ park }: ParkProps) => {
+	const { addresses } = park;
 
-const DirectionSection = styled.div`
-	display: flex;
-	flex-direction: column;
-	gap: 0.5em;
-	/* font-size: 1.2em; */
 
-	border-radius: 1em;
-	overflow: hidden;
-	/* box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 8px -2px; */
-	
-	.directions {
-		background-color: ${({ theme }) => theme.colors.secondary};
-		color: ${({ theme }) => theme.colors.black};
-		padding: 1em;
-		display: flex;
-		gap: 2em;
-		
-		& > div {
-			flex-basis: 50%;
-		}
-		
-		/* margin: 1em 0; */
+    return (
+        <div className="section">
+            <h4>Directions</h4>
 
-		p {
-			margin-bottom: 1em;
-		}
+			<p>{park.directionsInfo}</p>
+			<a target="_blank" href={park.directionsUrl}>Official National Park Directions</a>
 
-		a {
-			text-decoration: underline;
-			font-size: 1.1em;
-			/* color: ${({ theme }) => theme.colors.black}; */
-		}
-	}
 
-	@media (min-width: 768px) {
-		/* flex-direction: column-reverse; */
-		
-		/* gap: 2em; */
-		/* box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 16px -8px; */
-	}
+			<div style={{ display: "grid", gridTemplateColumns: "1fr  1fr", margin: "0.5em 0" }}>
+				<div>
+					<h4>Address</h4>
+					<DirectionAddress addresses={addresses}/>
+				</div>
+				<div>
+					<h4>Coordinates</h4>
+					<p>
+						<a
+							target='_blank'
+							href={`https://www.google.com/maps/search/?api=1&query=${park.latitude},${park.longitude}`}
+						>
+							{park.latitude}, {park.longitude}
+						</a>
+					</p>
+				</div>
+			</div>
+        </div>
+    );
+};
+
+const FeeCard = ({ cost, title, description }: { cost: string; title: string; description: string }) => {
+	title = title.replace("-", "\u2011").replace("/", " ").slice(title.indexOf("-") + 1, title.length)
+    return (
+            <div
+                style={{
+                    padding: "0.5em",
+                    borderBottom: "1px solid #000",
+                    width: '100%'
+                }}
+            >
+                <h4>{title}</h4>
+                <p className="bold">${cost}</p>
+				<p>{description}</p>
+            </div>
+    );
+};
+
+const FeeSection = ({ entranceFees }: any) => {
+    if (entranceFees.length === 0)
+        return (
+            <div className='no-fees'>
+                <h2>No Entrance Fees</h2>
+                <div className='img-container'>
+                    <img src='/hiking.svg' />
+                </div>
+            </div>
+        );
+
+    return (
+        <StyledCardContainer>
+            <h2>Entrance Fees</h2>
+            <StyledCard $bg='#ffffff'>
+                {entranceFees.map((fee: any) => (
+                    <FeeCard key={fee.title} cost={fee.cost} title={fee.title} description={fee.description} />
+                    ))}
+            </StyledCard>
+        </StyledCardContainer>
+    );
+};
+
+const CategoryCard = ({ category, data }: { category: string; data: any }) => {
+    console.log('data', data);
+    switch (category) {
+        case "Visitor Centers":
+            return (
+                <li>
+                    <Link to={"./visitor-centers/#" + data.name.replaceAll(" ", "-").toLowerCase()}>
+                        {data.name}
+                    </Link>
+                    {data.isPassportStampLocation === "1" && (
+                        <img
+                            title='Passport Stamp'
+                            src='/passport-book.webp'
+                            alt='Passport Stamp'
+                            style={{ height: "30px" }}
+                        />
+                    )}
+                    <br/>
+                    {data.description}
+                </li>
+            );
+        case "Campgrounds":
+            return (
+                <li>
+                    <Link to={"./camping/#" + data.name.replaceAll(" ", "-").toLowerCase()}>{data.name}</Link>
+                    <br/>
+                    {data.description}
+                </li>
+            );
+        case "Things to do":
+            return (
+                <li>
+                    <Link to={"./camping/#" + data.title.replaceAll(" ", "-").toLowerCase()}>{data.title}</Link>
+                    <br/>
+                    {data.shortDescription}
+                </li>
+            );
+
+        default:
+            return <li>{data.name || data.title}</li>;
+    }
+};
+
+const ContactPhone = ({type, number} : {type: string, number: string}) => {
+    const icon = type === 'TTY' ?  <img width={24} height={24} src={`https://raw.githubusercontent.com/nationalparkservice/symbol-library/gh-pages/src/standalone/${SymbolMap['text-telephone-service']}-black-22.svg`}/> : <PhoneIcon width={24} height={24} />
+
+    if (type === 'Fax') return <></>;
+
+    return (
+        <div>
+            {icon}
+            <a href={`tel:${number}`}>{number.replace("/", "-")}</a>
+        </div>
+    )
+}
+
+const ContactEmail = ({email}: {email: string}) => (
+    <>
+    {email.length > 0 && (
+        <div>
+            <EmailIcon width={24} height={24} />{" "}
+            <a href={`mailto:${email}`}>{email}</a>
+        </div>
+    )}
+    </>
+)
+
+const ContactInfo = ({ park }: ParkProps) => {
+    const { contacts, url } = park
+
+    return (
+        <StyledCardContainer id="contact">
+            <h2>Contact</h2>
+            <ContactCard>
+
+                {contacts.phoneNumbers.length > 0 && contacts.phoneNumbers.map(({ type, phoneNumber }: { type: string, phoneNumber: string }) => (
+                    <ContactPhone key={phoneNumber} type={type} number={phoneNumber}/>
+                ))}
+
+                {contacts.emailAddresses.length > 0 && contacts.emailAddresses.map(({ emailAddress }: { emailAddress: string }) => (
+                    <ContactEmail key={emailAddress} email={emailAddress} />
+                ))}
+
+                <div>
+                    <GlobeIcon width={24} height={24} />
+                    <Link to={url}>Official National Parks Page</Link>
+                </div>
+
+            </ContactCard>
+        </StyledCardContainer>
+    );
+};
+
+interface LoaderProps {
+    thingsToDo: any[];
+    camping: any[];
+    events: any[];
+    tours: any[];
+    visitorCenters: any[];
+    parking: any[];
+}
+
+const ParkPage = () => {
+    const parks = useContext(ParkContext);
+    const { parkId } = useParams();
+
+    const park = parks.find((park: any) => park.parkCode === parkId);
+    const state = stateMap.filter((state) => park.addresses[0].stateCode.toLowerCase().includes(state.id))[0];
+
+    const loaderData = useLoaderData() as LoaderProps;
+
+    const activeCategories = Object.keys(activityCategories)
+        .map((category) => ({
+            ...activityCategories[category],
+            count: loaderData[category as keyof LoaderProps].length,
+            data: loaderData[category as keyof LoaderProps],
+        }))
+        .filter((c) => c.count > 0);
+
+    return (
+        <>
+            <main>
+                <div
+                    className='container'
+                    style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "4em", margin: "2em auto" }}
+                >
+                    {/* LEFT COLUMN */}
+                    <div className="content">
+                        {/* HEADER */}
+						<ParkHeader park={park} activeCategories={activeCategories}/>
+
+                        <p className="section">{park.description}</p>
+
+                        <ParkDirections park={park} />
+
+                        <div className='section'>
+                            <h3>Weather</h3>
+                            <p className='mb-1'>{park.weatherInfo}</p>
+                            <p>Weather API info</p>
+                        </div>
+
+
+                        {activeCategories.map((category) => (
+
+                            <div className='section' key={category.name}>
+                                <h3
+                                    id={category.name.replaceAll(" ", "-").toLowerCase()}
+                                    style={{ scrollMargin: "calc(100px + 2em)", display: 'flex', alignItems: 'center', gap: '0.25em' }}
+                                    >
+                                    {category.icon}
+                                    <br/>
+                                    <Link to={category.name.replaceAll(" ", "-").toLowerCase()}>
+                                        {category.name}
+                                    </Link>
+                                </h3>
+                                <ul>
+
+                                {category.data.map((data) => (
+                                    <CategoryCard key={data.name || data.title} category={category.name} data={data} />
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
+
+                    </div>
+
+                    {/* RIGHT COLUMN */}
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '2em'}}>
+
+                        {parkId && <ParkAlert parkId={parkId} />}
+
+                        <ContactInfo park={park} />
+
+                        <FeeSection entranceFees={park.entranceFees} />
+
+                    </div>
+
+                </div>
+            </main>
+        </>
+    );
+};
+
+export default ParkPage;
+
+const ContactCard = styled(StyledCard).attrs(props => ({
+	// we can define static props
+	// $bg: props.theme.colors.secondary,
+	$border: '2px solid ' + props.theme.colors.black,
+	// $radius: props.theme.radius.md
+}))`
+	box-shadow: rgba(0, 0, 0, 0.26) 0px 2px 8px;
+    font-size: 1.2em;
+    gap: 1em;
+
+    & > * {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+    }
 `;

@@ -5,13 +5,13 @@ const Grid = styled.div`
     display: grid;
     a { text-decoration: none; }
     /* grid-template-columns: repeat(4, 1fr); */
-    
+
     /* display: flex; */
     /* flex-direction: column; */
     gap: 1.5em;
     /* padding: 1em; */
-    
-    
+
+
 `
 
 const Card = styled.div`
@@ -30,9 +30,9 @@ const Card = styled.div`
     transition: all 0.3s ease-out 0s;
     /* background-color: rgb(80, 119, 67); */
     /* color: #f1f1f1; */
-    
+
     svg {
-        
+
     }
     &:hover {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.26);
@@ -43,7 +43,7 @@ const Card = styled.div`
 interface CardButtonProps {
     name:   string;
     id:     string;
-    icon:  JSX.Element;
+    icon:  string;
 }
 
 interface ButtonsProps {
@@ -54,7 +54,7 @@ interface ButtonsProps {
 
 
 export const CardButtonGrid = ({buttons,  dir='col' }: ButtonsProps) => {
-    
+
     const repeatVal = {
         row : '' + Math.round(buttons.length / (dir === 'row' ? 2 : Math.floor(buttons.length / 2)) ),
         col : '' + Math.floor(buttons.length / (dir === 'row' ? 2 : Math.floor(buttons.length / 2)) ),
@@ -62,7 +62,7 @@ export const CardButtonGrid = ({buttons,  dir='col' }: ButtonsProps) => {
     const gridStyles = {
         gridTemplateColumns: `repeat(${repeatVal[dir]}, 1fr)`,
     }
-    
+
     return (
         <Grid className="container">
             { buttons.map(({name,id, icon}) => (
