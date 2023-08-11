@@ -16,7 +16,7 @@ import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/
 import styled from "styled-components";
 import { SymbolMap } from "../utils/symbolMap";
 
-interface ParkProps {
+export interface ParkProps {
     park: any;
 }
 
@@ -129,12 +129,12 @@ const FeeItem = ({ cost, title, description }: { cost: string; title: string; de
 const FeeSection = ({ entranceFees }: any) => {
     if (entranceFees.length === 0)
         return (
-            <div id="fees" className='no-fees'>
+            <StyledCardContainer id="fees" className='no-fees'>
                 <h2>No Entrance Fees</h2>
-                <div className='img-container'>
-                    <img src='/hiking.svg' />
-                </div>
-            </div>
+                    <div className='img-container' style={{padding: '1em 0 0'}}>
+                        <img src='/hiking.svg' />
+                    </div>
+            </StyledCardContainer>
         );
 
     return (
@@ -266,7 +266,6 @@ const uniqueCategories = (categories: any) => {
     const unique = Array.from(new Set(categories.map((obj: any) => (obj.name || obj.title) ))).map(id => {
         return categories.find((obj: any) => obj.name === id || obj.title === id);
     });
-    console.log('unique', unique)
     return unique
 }
 
@@ -287,7 +286,6 @@ const ParkPage = () => {
         }))
         .filter((c) => c.count > 0);
 
-        console.log(activeCategories)
 
     return (
         <>

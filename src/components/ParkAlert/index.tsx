@@ -28,17 +28,19 @@ export const ParkAlert = ({ parkId }: { parkId: string }) => {
             });
     }, [parkId]);
 
-    if (alerts.length <= 0) return <></>;
+    if (alerts.length <= 0) return (
+        <StyledCardContainer id='alerts'>
+            <h2>NO ALERTS</h2>
+        </StyledCardContainer>
+    )
 
     return (
-        <>
-            <StyledCardContainer id='alerts'>
-                <h2>ALERTS</h2>
-                <StyledAlertBox onClick={(e) => e.stopPropagation()}>
-                    {alerts.length > 0 && alerts.map((alert: any) => <ParkAlertItem key={alert.id} {...alert} />)}
-                </StyledAlertBox>
-            </StyledCardContainer>
-        </>
+        <StyledCardContainer id='alerts'>
+            <h2>ALERTS</h2>
+            <StyledAlertBox onClick={(e) => e.stopPropagation()}>
+                { alerts.map((alert: any) => <ParkAlertItem key={alert.id} {...alert} />)}
+            </StyledAlertBox>
+        </StyledCardContainer>
     );
 };
 

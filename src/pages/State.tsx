@@ -5,7 +5,7 @@ import { StateProps, stateMap } from "../utils/lib/stateMap";
 
 import styled from "styled-components";
 import { parkVistors } from "../utils/lib/parkVisitors";
-import { LeafletMap } from "../components/LeafletMap";
+import { LeafletMap } from "../components/LeafletMap/index2";
 import { Header } from "../components/Header";
 import { ParkCards } from "../components/ParkCards";
 import { ParkCardFilters } from "../components/ParkCardFilters";
@@ -81,8 +81,6 @@ export const StateParks = ({ states, parks, title }: StateParksProps) => {
 	useEffect(() => {
 		setActiveParks(parks);
 	}, [parks]);
-
-	// console.log('state', state);
 
 
 

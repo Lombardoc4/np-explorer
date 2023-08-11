@@ -29,18 +29,20 @@ const LeafletEvents = ({ states }: { states: StateProps[] }) => {
     };
 
     useEffect(() => {
-        if (geoJsonLayer.current) {
+        if (geoJsonLayer.current && states.length === 1) {
             // Clear the current layer and add the new data
-            // geoJsonLayer.current.clearLayers().addData(stateCoords);
+            geoJsonLayer.current.clearLayers().addData(stateCoords[0]);
             // Set Initial Bounds
             resetBounds();
         }
     }, [states]);
 
+    console.log('rerender', states)
+
     return (
         <>
             {states.length <= 1 && <GeoJSON ref={geoJsonLayer} data={stateCoords[0]} />}
-            {states.length > 1 && stateCoords.map(s => <GeoJSON ref={geoJsonLayer} data={stateCoords[0]} />)}
+            {/* {states.length > 1 && stateCoords.map(s => <GeoJSON  data={s} />)} */}
             <div className='leaflet-bottom leaflet-left'>
                 <div className='leaflet-control leaflet-bar' onClick={resetBounds}>
                     <a
@@ -76,6 +78,7 @@ export const LeafletMap = ({ states, parkCoords }: LeafletMapProps) => {
         if (offscreen) setActive(false);
     }, [offscreen]);
 
+
     const displayMap = useMemo(
         () => (
             <>
@@ -93,7 +96,7 @@ export const LeafletMap = ({ states, parkCoords }: LeafletMapProps) => {
                 ))}
             </>
         ),
-        [parkCoords]
+        [states]
     );
 
     return (
