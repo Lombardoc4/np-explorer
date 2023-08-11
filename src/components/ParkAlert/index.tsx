@@ -1,70 +1,50 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { StyledCard, StyledCardContainer } from "../styled/StyledCard";
+import { CardItem, StyledCard, StyledCardContainer } from "../styled/StyledCard";
 
 const ParkAlertItem = (alert: any) => {
-	return (
-		<AlertItem>
-			<h3>{alert.category}</h3>
-			<p className="bold">{alert.title}</p>
-			<p>{alert.description}</p>
-			<Link to={alert.url}>NPS Info</Link>
-		</AlertItem>
-	);
+    return (
+        <CardItem>
+            <h3>{alert.category}</h3>
+            <p className='bold'>{alert.title}</p>
+            <p>{alert.description}</p>
+            <Link to={alert.url}>NPS Info</Link>
+        </CardItem>
+    );
 };
 
 export const ParkAlert = ({ parkId }: { parkId: string }) => {
-	const [alerts, setAlerts] = useState<any>([]);
+    const [alerts, setAlerts] = useState<any>([]);
 
-	useEffect(() => {
-		// Get Alerts for Park from API
-		fetch(`https://developer.nps.gov/api/v1/alerts?parkCode=${parkId}&api_key=${import.meta.env.VITE_NPS_API_KEY}`)
-			.then((res: any) => {
-				return res.json();
-			})
-			.then((data: any) => {
-				setAlerts(data.data);
-			});
-	}, [parkId]);
+    useEffect(() => {
+        // Get Alerts for Park from API
+        fetch(`https://developer.nps.gov/api/v1/alerts?parkCode=${parkId}&api_key=${import.meta.env.VITE_NPS_API_KEY}`)
+            .then((res: any) => {
+                return res.json();
+            })
+            .then((data: any) => {
+                setAlerts(data.data);
+            });
+    }, [parkId]);
 
-	if (alerts.length <= 0) return <></>;
+    if (alerts.length <= 0) return <></>;
 
-	return (
-		<>
-			<StyledCardContainer>
-				<h2>ALERTS</h2>
-				<StyledAlertBox
-					id="alerts"
-					onClick={(e) => e.stopPropagation()}
-				>
-					{alerts.length > 0 && alerts.map((alert: any) => (
-						<ParkAlertItem
-							key={alert.id}
-							{...alert}
-						/>
-					))}
-				</StyledAlertBox>
-			</StyledCardContainer>
-		</>
-	);
+    return (
+        <>
+            <StyledCardContainer id='alerts'>
+                <h2>ALERTS</h2>
+                <StyledAlertBox onClick={(e) => e.stopPropagation()}>
+                    {alerts.length > 0 && alerts.map((alert: any) => <ParkAlertItem key={alert.id} {...alert} />)}
+                </StyledAlertBox>
+            </StyledCardContainer>
+        </>
+    );
 };
 
-
-const StyledAlertBox = styled(StyledCard).attrs(props => ({
-	$bg: props.theme.colors.secondary,
-	$border: '2px solid ' + props.theme.colors.black,
+const StyledAlertBox = styled(StyledCard).attrs((props) => ({
+    $bg: props.theme.colors.secondary,
+    $border: "2px solid " + props.theme.colors.black,
 }))`
-	box-shadow: rgba(0, 0, 0, 0.26) 0px 2px 8px;
-`;
-
-const AlertItem = styled.div`
-	padding: 0.5em;
-
-	/* p {margin-bottom: 0.25em;} */
-
-	&:not(:last-child) {
-		/* margin-bottom: 0.5em; */
-		border-bottom: 1px solid ${({ theme }) => theme.colors.black};
-	}
+    box-shadow: rgba(0, 0, 0, 0.26) 0px 2px 8px;
 `;

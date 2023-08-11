@@ -351,7 +351,7 @@ export const stateMap:StateProps[] = [
         "coords": [ 14.2710, 170.1322 ]
     },
 ]
-    
+
 export const borderMap: SVGMap[] = [
     {
         "id": "al-fl",

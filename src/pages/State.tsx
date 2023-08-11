@@ -9,6 +9,7 @@ import { LeafletMap } from "../components/LeafletMap";
 import { Header } from "../components/Header";
 import { ParkCards } from "../components/ParkCards";
 import { ParkCardFilters } from "../components/ParkCardFilters";
+import { StyledCard } from "../components/styled/StyledCard";
 
 export interface FilterProps {
 	activities: string[];
@@ -16,12 +17,13 @@ export interface FilterProps {
 }
 
 interface StateHeaderProps {
-	state: StateProps;
+	states: StateProps[];
 	parks: any[];
 }
 
-const StateHeader = ({ state, parks }: StateHeaderProps) => {
+const StateHeader = ({ states, parks }: StateHeaderProps) => {
 	const parkCount = parks.length;
+	const [state] = states;
 	const visitCount = parkVistors
 		.filter((park: { state: string; }) => park.state === state.name)
 		.reduce((acc: number, park: any) => acc + park.visitors, 0);
@@ -39,7 +41,7 @@ const StateHeader = ({ state, parks }: StateHeaderProps) => {
 		>
 			{/* <MapBox> */}
 				<LeafletMap
-					state={state}
+					states={states}
 					parkCoords={parks.map((park: any) => ({
 						longitude: park.longitude,
 						latitude: park.latitude,
@@ -53,15 +55,21 @@ const StateHeader = ({ state, parks }: StateHeaderProps) => {
 };
 
 interface StateParksProps {
-	state: StateProps;
+	states: StateProps[];
 	parks: any[];
 	title?: string;
 }
 
-export const StateParks = ({ state, parks, title }: StateParksProps) => {
+export const StateParks = ({ states, parks, title }: StateParksProps) => {
 	const [filters, setFilters] = useState<FilterProps>({ activities: [], cost: "" });
 
 	const [activeParks, setActiveParks] = useState(parks);
+	const parkCoords = useMemo(() => activeParks.map(p => ({
+		longitude: p.longitude,
+		latitude: p.latitude,
+		name: p.fullName,
+		id: p.parkCode,
+	})), [activeParks])
 
 	const toggleFilter = (newFilters: FilterProps, filteredParks: any) => {
 		setFilters(newFilters);
@@ -72,37 +80,41 @@ export const StateParks = ({ state, parks, title }: StateParksProps) => {
 
 	useEffect(() => {
 		setActiveParks(parks);
-	}, [state]);
+	}, [parks]);
+
+	// console.log('state', state);
+
 
 
 	return (
-		<MainContainer className='container'>
+		<MainContainer>
 			<h2 className="title">{title}</h2>
 
 			{/* Map with parks */}
-			{/* <div style={{ position: "relative" }}>
+			<StyledCard
+
+				style={{ position: "relative"}}>
 				<LeafletMap
-					state={state}
-					parkCoords={[
-						{
-							longitude: parks[0].longitude,
-							latitude: parks[0].latitude,
-							name: parks[0].fullName,
-							id: parks[0].parkCode,
-						},
-					]}
+					states={states}
+					parkCoords={parkCoords}
 				/>
-			</div> */}
+			</StyledCard>
 
 			<ParkCardFilters
 				filters={filters}
 				activeParks={activeParks}
 				defaultParks={parks}
 				toggleFilter={toggleFilter}
-				state={state}
+				// state={state}
 			/>
 
-			<ParkCards grid={true} parks={activeParks} showDescription={false} />
+			{ activeParks.length > 0 ?
+				<ParkCards grid={true} parks={activeParks} showDescription={false} />
+				:
+				<h2>No parks match these filters</h2>
+			}
+
+
 		</MainContainer>
 	)
 }
@@ -110,7 +122,7 @@ export const StateParks = ({ state, parks, title }: StateParksProps) => {
 export const StatePage = () => {
 	const parks = useContext(ParkContext);
 	const { stateId } = useParams();
-	const state = stateMap.filter((state) => state.id === stateId)[0];
+	const states = stateMap.filter((state) => state.id === stateId);
 
 	const defaultParks = useMemo(
 		() => parks.filter((park: any) => park.states.toLowerCase().includes(stateId)),
@@ -123,17 +135,17 @@ export const StatePage = () => {
 	const memoHeader = useMemo(
 		() => (
 			<StateHeader
-				state={state}
+				states={states}
 				parks={ defaultParks }
 			/>
 		),
-		[state]
+		[states]
 	);
 
 	return (
 		<>
 			{memoHeader}
-			<StateParks state={state} parks={defaultParks} />
+			<StateParks states={states} parks={defaultParks} />
 		</>
 	);
 };
@@ -144,7 +156,7 @@ const MainContainer = styled.div`
 	gap: 1em;
 	/* grid-template-columns: 250px auto; */
 	align-items: flex-start;
-	margin: auto;
+	margin: 2em auto;
 	padding: 1em;
 
 	.title {
@@ -161,10 +173,10 @@ const MainContainer = styled.div`
 		margin-bottom: 1em;
 	}
 
-	@media (min-width: 768px) {
+	/* @media (min-width: 768px) {
 		padding: 2em;
-		/* gap: 1em; */
-	}
+		gap: 1em;
+	} */
 `;
 
 const MapBox = styled.div`

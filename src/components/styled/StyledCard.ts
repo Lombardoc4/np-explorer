@@ -13,7 +13,7 @@ export interface StyledCardProps {
 }
 
 export const StyledCardContainer = styled.div`
-    scroll-margin: calc(100vh - 2em);
+    scroll-margin: 100px;
 
     h2 {
         text-transform: uppercase;
@@ -26,7 +26,7 @@ export const StyledCardContainer = styled.div`
 export const StyledCard = styled.div<StyledCardProps>`
     background-color: ${({$bg}) => $bg ? $bg : theme.colors.gray};
     color: ${({$color}) => $color ? $color : theme.colors.black};
-    box-shadow: ${({$shadow}) =>  $shadow ? $shadow : 'none'};
+    box-shadow: ${({$shadow}) =>  $shadow ? $shadow : theme.boxShadow.sm};
     overflow: hidden;
     border: ${({$border}) => $border ? $border : 'none'};
     border-radius: ${({$radius}) => $radius ? $radius : theme.radius.md};
@@ -36,7 +36,7 @@ export const StyledCard = styled.div<StyledCardProps>`
     align-items: ${({$align}) => $align ? $align : 'flex-start'};
     justify-content: ${({$justify}) => $justify ? $justify : 'flex-start'};
 
-	padding: 1em 0.75em;
+	/* padding: 0.5em; */
 
     h1, h2, h3, h4, h5, h6 {
         font-weight: 700;
@@ -55,5 +55,15 @@ export const StyledCard = styled.div<StyledCardProps>`
 
 
     @media (min-width: 768px) {
+    }
+`;
+
+export const CardItem = styled.div`
+    padding: 0.75em 1em;
+    width: 100%;
+
+    &:not(:last-child) {
+        /* margin-bottom: 0.5em; */
+        border-bottom: 1px solid ${({ theme }) => theme.colors.black};
     }
 `;

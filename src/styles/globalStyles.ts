@@ -27,13 +27,11 @@ const GlobalStyles = createGlobalStyle`
     .no-scroll { overflow: hidden; }
     .mx-auto { margin-left: auto; margin-right: auto; }
     .bold { font-weight: 700 }
-    a { color:  inherit; }
+    a { color:  inherit; font-weight: inherit }
     h1, h2, h3, h4, h5, h6 { font-weight: 800 }
-    li {
-        margin-left: 2em;
-    }
 
-    /* button {
+
+    button {
         border-radius: 8px;
         border: 1px solid transparent;
         padding: 0.6em 1.2em;
@@ -52,7 +50,7 @@ const GlobalStyles = createGlobalStyle`
     button:focus,
     button:focus-visible {
         outline: 4px auto -webkit-focus-ring-color;
-    } */
+    }
 
     .container{
         width: clamp(300px, 90%, 1200px);
@@ -111,12 +109,13 @@ const GlobalStyles = createGlobalStyle`
         .section {
             padding: 1em 0;
             border-bottom: 1px solid;
-            /* margin: 0 0 1em; */
+            scroll-margin: 100px;
+
+            p {
+                margin-bottom: 0.25em;
+            }
         }
 
-        li {
-            margin-top: 0.5em;
-        }
     }
 
 

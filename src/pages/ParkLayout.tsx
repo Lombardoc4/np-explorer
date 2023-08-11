@@ -27,39 +27,38 @@ const getVisitorCount = (parkId: string) => {
 
 const ParkHeader = ({ park }: ParkProps) => {
 	const visitCount = park.parkCode && getVisitorCount(park.parkCode);
+	const stateLinks = park.states.length > 0 && park.states.split(",").map((state: string) => (
+		<Fragment key={state}>
+			<Link
+				to={"/state/" + state.toLowerCase()}
+				>
+				{state}
+			</Link>{" "}
+		</Fragment>
+	))
 	return (
         <>
             <div style={{display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between'}}>
                 <div>
-                    <h1>{park.name}</h1>
-					<p style={{fontSize: '1.35em'}}>
-						{park.states.length > 0 && park.states.split(",").map((state: string) => (
-							<Fragment key={state}>
-								<Link
-									to={"/state/" + state.toLowerCase()}
-									>
-									{state}
-								</Link>{" "}
-							</Fragment>
-						))}
-						{visitCount && <>- {visitCount} visitors in 2022</>}
+					<p style={{fontSize: '1.5em'}}>
+						{stateLinks}
+						{visitCount > 0 && <>- {visitCount} visitors in 2022</>}
                     </p>
                 </div>
 
                 <div style={{display: 'flex', gap: '1em', alignItems: 'flex-end', textAlign: 'right'}}>
-					<div>
 						<a href="#alerts">
 							Alerts
 						</a>
-					</div>
-					<div>
 						<a href="#contact">
 							Contact
 						</a>
-					</div>
-					<div>
+						<a href="#fees">
+							Fees
+						</a>
+						<p>
 						Share
-					</div>
+						</p>
                 </div>
             </div>
 		</>
@@ -81,9 +80,15 @@ const ParkLayout = () => {
 	const { parkId } = useParams();
 
 	const park = parks.find((park: any) => park.parkCode === parkId);
+
+	// Get stateMap info for each state
+	const states = stateMap.filter(s => park.states.split(',').includes(s.id.toUpperCase()))
+	const otherParks = parks.filter((p: any) => states.some(s => p.states.toLowerCase().includes(s.id) && park.parkCode !== p.parkCode));
+
 	const state = stateMap.filter((state) => park.addresses[0].stateCode.toLowerCase().includes(state.id))[0];
 
-	const otherParks = parks.filter((p: any) => p.states.toLowerCase().includes(state.id) && p.fullName !== p.fullName);
+	// const otherParks = parks.filter((p: any) => p.states.toLowerCase().includes(state.id) && p.fullName !== p.fullName);
+
 
 	return (
 		<>
@@ -96,14 +101,10 @@ const ParkLayout = () => {
 
                 <Outlet/>
 
-				<div
-					className='container'
-					style={{ marginTop: "4em" }}
-				>
-
+				<div className='container'>
 					<StateParks
-						title={"Other parks in " + state.name}
-						state={state}
+						title={"Explore Other Parks"}
+						states={states}
 						parks={otherParks}
 					/>
 				</div>

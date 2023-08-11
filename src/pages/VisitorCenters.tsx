@@ -105,7 +105,7 @@ const VisitorCenters = () => {
                 <h1>VisitorCenters</h1>
                 {visitorCenters.length > 0 &&
                     visitorCenters.map((vc: any) => (
-                        <div key={vc.id} id={vc.name.replaceAll(' ', '-').toLowerCase()} style={{display: 'grid', gridTemplateColumns: '1fr 1fr', margin: '4em 2em', gap: '2em', scrollMargin: 'calc(100px + 2em)'}}>
+                        <div key={vc.id} id={vc.name.replaceAll(' ', '-').toLowerCase()} style={{display: 'grid', gridTemplateColumns: '1fr 1fr', margin: '4em 2em', gap: '2em',}}>
                             <div >
                                 <div style={{display: 'flex', gap: '1em', alignItems: 'center'}}>
                                     {vc.isPassportStampLocation === '1' && <img title="Passport Stamp" src='/passport-book.webp' alt="Passport Stamp" style={{height: '30px'}}/>}

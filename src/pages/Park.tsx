@@ -12,7 +12,7 @@ import { ReactComponent as GlobeIcon } from "../assets/icons/globe.svg";
 import ParkContext from "../utils/hooks/ParkContext";
 import { ActivityDetails, activityCategories } from "../utils/lib/activityCategories";
 import { stateMap } from "../utils/lib/stateMap";
-import { StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
+import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
 import styled from "styled-components";
 import { SymbolMap } from "../utils/symbolMap";
 
@@ -36,13 +36,13 @@ const ParkHeader = ({ park, activeCategories }: HeaderProps) => {
         <div className="section" style={{ display: "flex",}}>
 			<div style={{ display: "flex", flexDirection: "column" }}>
 				<h2>{park.fullName}</h2>
-				<div style={{ display: "flex", gap: "1em", marginTop: "auto" }}>
+				<div style={{margin: 'auto 0'}}>
 					{activeCategories.map((category: ActivityDetails, i: number, data: any) => (
 						<Fragment key={category.name}>
 							<a href={"#" + category.name.replaceAll(" ", "-").toLowerCase()}>
 								{i + 1} {category.name}
 							</a>
-							{i < data.length - 1 && <>~</>}
+							{i < data.length - 1 && <> ~ </>}
 						</Fragment>
 					))}
 				</div>
@@ -50,7 +50,7 @@ const ParkHeader = ({ park, activeCategories }: HeaderProps) => {
 			<div className='img-container' style={{ width: "60px", margin: "0 1em 0 auto" }}>
 				<img
 					src='https://www.nps.gov/theme/assets/dist/images/branding/logo.png'
-					// width='60'
+					width='60'
 				></img>
 			</div>
 		</div>
@@ -60,7 +60,7 @@ const ParkHeader = ({ park, activeCategories }: HeaderProps) => {
 const DirectionAddress = ({addresses}: {addresses : any[]}) => {
 	addresses.filter((add: any) => add.type === "Physical").map((add: any) => {
 		add.gMapsUrl = `https://www.google.com/maps/search/?api=1&query=${add.line1.replaceAll(" ", "+").replace(".", "")} ${add.city.replaceAll(" ", "+")} ${add.stateCode} ${add.postalCode}`
-		add.full = `${add.line1}, ${add.city}, ${add.stateCode} ${add.postalCode}`;
+		add.full = <>{add.line1},<br/> {add.city}, {add.stateCode} {add.postalCode}</>;
 	})
 
     return (
@@ -87,7 +87,7 @@ const ParkDirections = ({ park }: ParkProps) => {
 
     return (
         <div className="section">
-            <h4>Directions</h4>
+            <h3>Directions</h3>
 
 			<p>{park.directionsInfo}</p>
 			<a target="_blank" href={park.directionsUrl}>Official National Park Directions</a>
@@ -105,7 +105,8 @@ const ParkDirections = ({ park }: ParkProps) => {
 							target='_blank'
 							href={`https://www.google.com/maps/search/?api=1&query=${park.latitude},${park.longitude}`}
 						>
-							{park.latitude}, {park.longitude}
+							Lat: {park.latitude},<br/>
+                            Log: {park.longitude}
 						</a>
 					</p>
 				</div>
@@ -114,27 +115,21 @@ const ParkDirections = ({ park }: ParkProps) => {
     );
 };
 
-const FeeCard = ({ cost, title, description }: { cost: string; title: string; description: string }) => {
+const FeeItem = ({ cost, title, description }: { cost: string; title: string; description: string }) => {
 	title = title.replace("-", "\u2011").replace("/", " ").slice(title.indexOf("-") + 1, title.length)
     return (
-            <div
-                style={{
-                    padding: "0.5em",
-                    borderBottom: "1px solid #000",
-                    width: '100%'
-                }}
-            >
-                <h4>{title}</h4>
+            <CardItem>
+                <h3>{title}</h3>
                 <p className="bold">${cost}</p>
 				<p>{description}</p>
-            </div>
+            </CardItem>
     );
 };
 
 const FeeSection = ({ entranceFees }: any) => {
     if (entranceFees.length === 0)
         return (
-            <div className='no-fees'>
+            <div id="fees" className='no-fees'>
                 <h2>No Entrance Fees</h2>
                 <div className='img-container'>
                     <img src='/hiking.svg' />
@@ -143,57 +138,68 @@ const FeeSection = ({ entranceFees }: any) => {
         );
 
     return (
-        <StyledCardContainer>
+        <StyledCardContainer id="fees">
             <h2>Entrance Fees</h2>
             <StyledCard $bg='#ffffff'>
                 {entranceFees.map((fee: any) => (
-                    <FeeCard key={fee.title} cost={fee.cost} title={fee.title} description={fee.description} />
-                    ))}
+                    <FeeItem key={fee.title} cost={fee.cost} title={fee.title} description={fee.description} />
+                ))}
             </StyledCard>
         </StyledCardContainer>
     );
 };
 
 const CategoryCard = ({ category, data }: { category: string; data: any }) => {
-    console.log('data', data);
     switch (category) {
         case "Visitor Centers":
             return (
-                <li>
-                    <Link to={"./visitor-centers/#" + data.name.replaceAll(" ", "-").toLowerCase()}>
-                        {data.name}
-                    </Link>
-                    {data.isPassportStampLocation === "1" && (
-                        <img
+                <div>
+
+                    <h4 style={{display: 'flex', alignItems: 'center', gap: '1em'}}>
+                        <Link to={"./visitor-centers/#" + data.name.replaceAll(" ", "-").toLowerCase()}>
+                            {data.name}
+                        </Link>{' '}
+                        {data.isPassportStampLocation === "1" && (
+                            <img
                             title='Passport Stamp'
                             src='/passport-book.webp'
                             alt='Passport Stamp'
-                            style={{ height: "30px" }}
-                        />
-                    )}
-                    <br/>
-                    {data.description}
-                </li>
+                            style={{ height: "35px" }}
+                            />
+                            )}
+                    </h4>
+                    <p>{data.description}</p>
+                </div>
             );
         case "Campgrounds":
             return (
-                <li>
-                    <Link to={"./camping/#" + data.name.replaceAll(" ", "-").toLowerCase()}>{data.name}</Link>
-                    <br/>
-                    {data.description}
-                </li>
+                <div>
+                    <h4>
+                        <Link to={"./camping/#" + data.name.replaceAll(" ", "-").toLowerCase()}>{data.name}</Link>
+                    </h4>
+                    <p>{data.description}</p>
+                </div>
             );
         case "Things to do":
             return (
-                <li>
-                    <Link to={"./camping/#" + data.title.replaceAll(" ", "-").toLowerCase()}>{data.title}</Link>
-                    <br/>
-                    {data.shortDescription}
-                </li>
+                <div>
+                    <h4>
+                        <Link to={"./things-to-do/#" + data.title.replaceAll(" ", "-").toLowerCase()}>{data.title}</Link>
+                    </h4>
+                    <p>{data.shortDescription}</p>
+                </div>
+            );
+        case "Events":
+            return (
+                <div>
+                    <span className="bold">{new Date(data.date.replace(/-/g, '\/')).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                    <h4><Link to={"./events/#" + data.title.replaceAll(" ", "-").toLowerCase()}>{data.title}</Link></h4>
+                    <div dangerouslySetInnerHTML={{__html: data.description.replaceAll('<br /><br />', '</p><p>')}}/>
+                </div>
             );
 
         default:
-            return <li>{data.name || data.title}</li>;
+            return <div>{data.name || data.title}</div>;
     }
 };
 
@@ -203,20 +209,20 @@ const ContactPhone = ({type, number} : {type: string, number: string}) => {
     if (type === 'Fax') return <></>;
 
     return (
-        <div>
+        <CardItem>
             {icon}
             <a href={`tel:${number}`}>{number.replace("/", "-")}</a>
-        </div>
+        </CardItem>
     )
 }
 
 const ContactEmail = ({email}: {email: string}) => (
     <>
     {email.length > 0 && (
-        <div>
+        <CardItem>
             <EmailIcon width={24} height={24} />{" "}
             <a href={`mailto:${email}`}>{email}</a>
-        </div>
+        </CardItem>
     )}
     </>
 )
@@ -237,10 +243,10 @@ const ContactInfo = ({ park }: ParkProps) => {
                     <ContactEmail key={emailAddress} email={emailAddress} />
                 ))}
 
-                <div>
+                <CardItem>
                     <GlobeIcon width={24} height={24} />
                     <Link to={url}>Official National Parks Page</Link>
-                </div>
+                </CardItem>
 
             </ContactCard>
         </StyledCardContainer>
@@ -254,6 +260,14 @@ interface LoaderProps {
     tours: any[];
     visitorCenters: any[];
     parking: any[];
+}
+
+const uniqueCategories = (categories: any) => {
+    const unique = Array.from(new Set(categories.map((obj: any) => (obj.name || obj.title) ))).map(id => {
+        return categories.find((obj: any) => obj.name === id || obj.title === id);
+    });
+    console.log('unique', unique)
+    return unique
 }
 
 const ParkPage = () => {
@@ -272,6 +286,8 @@ const ParkPage = () => {
             data: loaderData[category as keyof LoaderProps],
         }))
         .filter((c) => c.count > 0);
+
+        console.log(activeCategories)
 
     return (
         <>
@@ -298,10 +314,11 @@ const ParkPage = () => {
 
                         {activeCategories.map((category) => (
 
-                            <div className='section' key={category.name}>
+                            <div className='section' key={category.name}
+                                id={category.name.replaceAll(" ", "-").toLowerCase()}
+                            >
                                 <h3
-                                    id={category.name.replaceAll(" ", "-").toLowerCase()}
-                                    style={{ scrollMargin: "calc(100px + 2em)", display: 'flex', alignItems: 'center', gap: '0.25em' }}
+                                    style={{display: 'flex', alignItems: 'center', gap: '0.25em' }}
                                     >
                                     {category.icon}
                                     <br/>
@@ -309,12 +326,12 @@ const ParkPage = () => {
                                         {category.name}
                                     </Link>
                                 </h3>
-                                <ul>
+                                <div style={{display: 'flex', flexDirection: 'column', gap: '0.5em', marginTop: '0.5em'}}>
 
-                                {category.data.map((data) => (
+                                {uniqueCategories(category.data).map((data) => (
                                     <CategoryCard key={data.name || data.title} category={category.name} data={data} />
                                     ))}
-                                </ul>
+                                </div>
                             </div>
                         ))}
 
@@ -347,7 +364,7 @@ const ContactCard = styled(StyledCard).attrs(props => ({
 }))`
 	box-shadow: rgba(0, 0, 0, 0.26) 0px 2px 8px;
     font-size: 1.2em;
-    gap: 1em;
+    /* gap: 1em; */
 
     & > * {
         display: flex;

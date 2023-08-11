@@ -16,7 +16,7 @@ interface DropdownSearchProps {
 }
 
 const DropdownSearch = styled.div<DropdownSearchProps>`
-  position: relative;
+  position: absolute;
   background-color: #fff;
   /* background-color: ${({ theme }) => theme.colors.grey}; */
   z-index: ${({ theme }) => theme.zIndex.dropdown};
@@ -37,10 +37,10 @@ const SearchForm = styled.form`
   width: 100%;
   overflow: hidden;
   border-radius: var(--def-input-border-radius);
-  
+
   input {
     /* background-color: ${({ theme }) => theme.colors.grey}; */
-    
+
   }
 `;
 
@@ -71,7 +71,7 @@ const Option = styled.li`
     text-align: left;
     padding: 0.75em 1.5em;
     cursor: pointer;
-    &:hover {
+    &.hover {
         background-color: #eee;
     }
 `;
@@ -83,43 +83,43 @@ export const Dropdown = ({ onSelect, placeholder, options }: DropdownProps) => {
     const [listOptions, setListOptions] = useState(options);
     const searchInput = useRef<HTMLInputElement>(null);
     const dropdownSearch = useRef<HTMLDivElement>(null);
-    
+
     useOutsideAlerter(dropdownSearch, () => onSetFocused(false));
-    
+
     const handleSelect = (e: React.MouseEvent, value: string) => {
         e.stopPropagation();
         onSelect(value);
         onSetFocused(false);
     }
-    
+
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setListOptions(options.filter(option => option.title.toLowerCase().includes(e.target.value.toLowerCase())));
         onSetSearchVal(e.target.value);
     }
-    
+
     return (
         <DropdownSearch className="dropdown-search" ref={dropdownSearch} onClick={() => onSetFocused(true)} $open={focused}>
           <SearchForm autoComplete="off">
-            <svg 
+            <svg
               onMouseDown={(e) => {e.preventDefault()}}
               onClick={() => searchInput.current && searchInput.current.focus()}
               xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#000" className="search-icon bi bi-search" viewBox="0 0 16 16">
               <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
             </svg>
-            <svg 
+            <svg
               onMouseDown={(e) => {e.preventDefault()}}
               onClick={() => {onSetSearchVal(''); searchInput.current && searchInput.current.focus();}}
               xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000" className="close-icon bi bi-x" viewBox="0 0 16 16">
               <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
             </svg>
-            <input 
+            <input
               ref={searchInput}
-              type="search" 
-              value={searchVal} 
+              type="search"
+              value={searchVal}
               placeholder={placeholder}
               onChange={handleSearch} />
           </SearchForm>
-          
+
           {/* Results */}
           { focused && <>
             <Border />
@@ -127,13 +127,16 @@ export const Dropdown = ({ onSelect, placeholder, options }: DropdownProps) => {
               {/* Get Parks */}
               {/* Make a list of parks with a click event that handles the select and innerHTML is the option title*/}
               {listOptions.map((option) => (
-                <Option onClick={(event: React.MouseEvent) => handleSelect(event, option.value)} key={option.value}>{option.title}</Option>
+                <Option
+                onMouseEnter={(e: React.MouseEvent) => (e.target as HTMLLIElement).classList.add('hover')}
+                onMouseLeave={(e: React.MouseEvent) => (e.target as HTMLLIElement).classList.remove('hover')}
+                onClick={(event: React.MouseEvent) => handleSelect(event, option.value)} key={option.value}>{option.title}</Option>
                 ))}
               {listOptions.length <= 0 &&
                 <Option>No Matches</Option>
               }
             </FormResults>
-          </> 
+          </>
           }
         </DropdownSearch>
     );

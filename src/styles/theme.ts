@@ -10,7 +10,7 @@ const theme = {
       gray: '#f1f1f1',
     },
     zIndex: {
-      dropdown: 1000,
+      dropdown: 7500,
       overlay: 5000,
       navbar: 10000,
     },
