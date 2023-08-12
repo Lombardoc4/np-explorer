@@ -274,7 +274,6 @@ const ParkPage = () => {
     const { parkId } = useParams();
 
     const park = parks.find((park: any) => park.parkCode === parkId);
-    const state = stateMap.filter((state) => park.addresses[0].stateCode.toLowerCase().includes(state.id))[0];
 
     const loaderData = useLoaderData() as LoaderProps;
 
@@ -285,7 +284,6 @@ const ParkPage = () => {
             data: loaderData[category as keyof LoaderProps],
         }))
         .filter((c) => c.count > 0);
-
 
     return (
         <>

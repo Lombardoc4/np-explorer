@@ -4,6 +4,7 @@ import { Dropdown } from "../Dropdown";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { StateProps } from "../../utils/lib/stateMap";
+import { StyledCard } from "../styled/StyledCard";
 
 
 interface ParkCardFiltersProps {
@@ -21,20 +22,37 @@ const costFilters = [
 
 // Sort Activites by most common
 const sortActivities = (activeParks: any) => {
+
 	// Get Park Activity names and count
+	// Reduce activity duplicates and keep count
 	const activities = activeParks.reduce((acc: any, park: any) => {
 		park.activities.forEach((activity: any) => {
-			if (acc[activity.name]) {
-				acc[activity.name] += 1;
+			const existingItem = acc.find(((obj: {name: string, count: number}) => obj.name === activity.name));
+
+			if (existingItem) {
+				existingItem.count += 1;
 			} else {
-				acc[activity.name] = 1;
+				acc.push({ name: activity.name, count: 1 });
 			}
 		});
 		return acc;
-	}, {});
+	}, []);
+
 
 	// Returne sorted array of activities by count
-	return Object.keys(activities).sort((a: any, b: any) => activities[b] - activities[a]);
+	return activities.sort((a: any, b: any) => {
+		const nameA = a.name.toUpperCase(); // ignore upper and lowercase
+		const nameB = b.name.toUpperCase(); // ignore upper and lowercase
+		if (nameA < nameB) {
+		  return -1;
+		}
+		if (nameA > nameB) {
+		  return 1;
+		}
+
+		// names must be equal
+		return 0;
+	  });
 };
 
 export const ParkCardFilters = ({ filters, activeParks, defaultParks, toggleFilter}: ParkCardFiltersProps) => {
@@ -45,54 +63,53 @@ export const ParkCardFilters = ({ filters, activeParks, defaultParks, toggleFilt
 	const dropdownOptions = activeParks.length > 0 ? activeParks.map((park: any) => ({ value: park.parkCode, title: park.fullName })) : [{value: '', title: 'No Parks Found'}]
 
 	// Sort Park Activities by with the most common first
-	// const activities = useMemo(() => sortActivities(defaultParks), [state]);
+	const activities = useMemo(() => sortActivities(defaultParks), [defaultParks]);
 
 	const handleParkSelect = (park: any) => {
 		navigate(`/park/${park}`);
 	};
 
-	// const handleFilter = (type: "cost" | "activity", filter: string) => {
-	// 	let parks = [];
+	const handleFilter = (type: "cost" | "activity", filter: string) => {
+		let parks = [];
 
-	// 	if (type === "cost") {
-	// 		let cost = "";
-	// 		if (filter !== filters.cost) {
-	// 			cost = filter;
-	// 			parks = activeParks.filter((park: any) => {
-	// 				if (park.entranceFees.length <= 0 && cost === "free") return true;
-	// 				if (park.entranceFees.length <= 0) return false;
-	// 				// Filter though entrance fees
-	// 				return park.entranceFees.find((fee: any) => fee.cost > 0);
-	// 			});
-	// 		}
+		if (type === "cost") {
+			let cost = "";
+			if (filter !== filters.cost) {
+				cost = filter;
+				parks = activeParks.filter((park: any) => {
+					if (park.entranceFees.length <= 0 && cost === "free") return true;
+					if (park.entranceFees.length <= 0) return false;
+					// Filter though entrance fees
+					return park.entranceFees.find((fee: any) => fee.cost > 0);
+				});
+			}
 
-	// 		toggleFilter({ ...filters, cost: cost }, parks);
-	// 		return;
-	// 	}
+			toggleFilter({ ...filters, cost: cost }, parks);
+			return;
+		}
 
-	// 	if (type === "activity") {
-	// 		let activityFilters = [...filters.activities];
-	// 		if (filters.activities.includes(filter)) {
-	// 			activityFilters = filters.activities.filter((activity: string) => activity !== filter);
-	// 		} else {
-	// 			activityFilters.push(filter);
-	// 		}
+		if (type === "activity") {
+			let activityFilters = [...filters.activities];
+			if (filters.activities.includes(filter)) {
+				activityFilters = filters.activities.filter((activity: string) => activity !== filter);
+			} else {
+				activityFilters.push(filter);
+			}
 
-	// 		if (activityFilters.length > 0) {
-	// 			// Filter through parks to see if containers selected activities
-	// 			parks = defaultParks.filter((park: any) => { // Loop 1
-	// 				return activityFilters.every((filter: string) => { // Loop 2
-	// 					return park.activities.find((activity: any) => { // Loop 3
-	// 						return activity.name === filter;
-	// 					});
-	// 				});
-	// 			});
-	// 		}
-	// 		toggleFilter({ ...filters, activities: activityFilters }, parks);
-	// 		return;
-	// 	}
-	// };
-
+			if (activityFilters.length > 0) {
+				// Filter through parks to see if containers selected activities
+				parks = defaultParks.filter((park: any) => { // Loop 1
+					return activityFilters.every((filter: string) => { // Loop 2
+						return park.activities.find((activity: any) => { // Loop 3
+							return activity.name === filter;
+						});
+					});
+				});
+			}
+			toggleFilter({ ...filters, activities: activityFilters }, parks);
+			return;
+		}
+	};
 
 	// Reset activity filters length when state value change
 	// useEffect(() => {
@@ -100,95 +117,82 @@ export const ParkCardFilters = ({ filters, activeParks, defaultParks, toggleFilt
 	// }, [state]);
 
 	return (
+		<>
 		<div className='filters'>
-			<div style={{display: 'flex', justifyContent: 'center', alignItems: 'flex-end', height: 'var(--def-input-height)'}}>
+			<div className="container" style={{backgroundColor: '#fff'}}>
 
-				<button  style={{marginRight: 'auto'}}  onClick={() =>  {setShowFilters(!showFilters)}}>
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-sliders" viewBox="0 0 16 16">
-						<path fillRule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"/>
-					</svg>
-					Filters
-				</button>
+				<div style={{display: 'flex', justifyContent: 'center', alignItems: 'flex-end', height: 'var(--def-input-height)', margin: '1em 0'}}>
 
-				<h3>{activeParks.length} Parks</h3>
+					<button  style={{marginRight: 'auto'}}  onClick={() =>  {setShowFilters(!showFilters)}}>
+						<div className="img-container">
 
-				<Dropdown
-					placeholder={`Find a park`}
-					options={dropdownOptions}
-					onSelect={(option) => handleParkSelect(option)}
-				/>
-
-			</div>
-
-			{showFilters && <div style={{margin: '1em 0'}}>
-					<div style={{display: 'flex', gap: '2em'}}>
-						<div  style={{flex: '1', padding: '0.5em 0', borderBottom: '1px solid #000'}}>
-							<h3>Cost</h3>
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-sliders" viewBox="0 0 16 16">
+							<path fillRule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"/>
+						</svg>
 						</div>
-						<div  style={{flex: '1', padding: '0.5em 0', borderBottom: '1px solid #000'}}>
-							<h3>State</h3>
-						</div>
+						{/* {" "}FILTERS */}
+					</button>
 
-					</div>
-					<div  style={{flex: '1', padding: '0.5em 0', borderBottom: '1px solid #000'}}>
-						<h3>Activities</h3>
-					</div>
+					<h3>{activeParks.length} Parks</h3>
+
+					<Dropdown
+						placeholder={`Find a park`}
+						options={dropdownOptions}
+						onSelect={(option) => handleParkSelect(option)}
+					/>
 
 				</div>
-			}
-				{/* <FilterContainer className={showFilters ? 'show' : ''}>
+			</div>
+
+				{showFilters && <FilterCard className="container">
+
+						<FilterCell>
+							<h3>Cost</h3>
+							<h4>Fees:</h4>
+							<div className="checkbox">
+								<input type="checkbox" id="free" name="fees" value="free"/>
+								<label htmlFor="free">Free</label>
+							</div>
+							<div className="checkbox">
+								<input type="checkbox" id="paid" name="fees" value="paid" />
+								<label htmlFor="paid">Paid</label>
+							</div>
+
+							<h4>Annual Pass:</h4>
+							<div className="checkbox">
+								<input type="checkbox" id="annual-pass" name="pass" value="annual-pass" />
+								<label htmlFor="annual-pass">Annual Pass</label>
+							</div>
+						</FilterCell>
+
+						<FilterCell>
+							<h3>Activities</h3>
+							{ activities.map(({name, count} : {name: string, count: number}) => (
+								<div className="checkbox">
+									<input type="checkbox" id={name} name="activities" value={name} />
+									<label htmlFor={name}>{name} ({count})</label>
+								</div>
+							)) }
+						</FilterCell>
+
+					</FilterCard>
+				}
+					{/* <FilterContainer className={showFilters ? 'show' : ''}>
 
 
 
-					<TileGrid className='row' >
-						<h3>Entrance Cost:</h3>
-						{costFilters.map((filter: any) => {
-							return (
-								<Tile
-								className={filters.cost === filter.value ? "active" : ""}
-								onClick={() => handleFilter("cost", filter.value)}
-								key={filter.value}
-								>
-									{filter.title}
-									{filters.cost === filter.value && (
-										<svg
-										xmlns='http://www.w3.org/2000/svg'
-										width='16'
-										height='16'
-										fill='currentColor'
-										className='bi bi-x'
-										viewBox='0 0 16 16'
-										>
-											<path d='M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z' />
-										</svg>
-									)}
-								</Tile>
-							);
-						})}
-					</TileGrid>
-
-					<TileGrid className='row'>
-						<div className="heading">
-							<h3>Activities:</h3>
-							{ filters.activities.length > 0 &&
-								<Tile className="active" onClick={() =>  {toggleFilter({...filters,  activities: []}, defaultParks)}}>
-									Clear Filters
-								</Tile>
-							}
-						</div>
-						Get most present activites and add load more button
-						{activities.map((activity: string, i) => {
-							if (i < 10 + 10 * loadMore) {
+						<TileGrid className='row' >
+							<h3>Entrance Cost:</h3>
+							{costFilters.map((filter: any) => {
 								return (
 									<Tile
-									key={activity}
-									className={filters.activities.includes(activity) ? "active" : ""}
-									onClick={() => handleFilter("activity", activity)}
+									className={filters.cost === filter.value ? "active" : ""}
+									onClick={() => handleFilter("cost", filter.value)}
+									key={filter.value}
 									>
-										{activity}
-										{filters.activities.includes(activity) && (
+										{filter.title}
+										{filters.cost === filter.value && (
 											<svg
-											onClick={() => handleFilter("activity", activity)}
 											xmlns='http://www.w3.org/2000/svg'
 											width='16'
 											height='16'
@@ -201,33 +205,99 @@ export const ParkCardFilters = ({ filters, activeParks, defaultParks, toggleFilt
 										)}
 									</Tile>
 								);
-							}
-						})}
+							})}
+						</TileGrid>
 
-						{activities.length > 10 + 10 * loadMore && (
-							<Tile
-							onClick={() => setLoadMore(loadMore + 1)}
-							key='load-more'
-							>
-								Load More
-							</Tile>
-						)}
-					</TileGrid>
+						<TileGrid className='row'>
+							<div className="heading">
+								<h3>Activities:</h3>
+								{ filters.activities.length > 0 &&
+									<Tile className="active" onClick={() =>  {toggleFilter({...filters,  activities: []}, defaultParks)}}>
+										Clear Filters
+									</Tile>
+								}
+							</div>
+							Get most present activites and add load more button
+							{activities.map((activity: string, i) => {
+								if (i < 10 + 10 * loadMore) {
+									return (
+										<Tile
+										key={activity}
+										className={filters.activities.includes(activity) ? "active" : ""}
+										onClick={() => handleFilter("activity", activity)}
+										>
+											{activity}
+											{filters.activities.includes(activity) && (
+												<svg
+												onClick={() => handleFilter("activity", activity)}
+												xmlns='http://www.w3.org/2000/svg'
+												width='16'
+												height='16'
+												fill='currentColor'
+												className='bi bi-x'
+												viewBox='0 0 16 16'
+												>
+													<path d='M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z' />
+												</svg>
+											)}
+										</Tile>
+									);
+								}
+							})}
 
-			</FilterContainer> */}
+							{activities.length > 10 + 10 * loadMore && (
+								<Tile
+								onClick={() => setLoadMore(loadMore + 1)}
+								key='load-more'
+								>
+									Load More
+								</Tile>
+							)}
+						</TileGrid>
+
+				</FilterContainer> */}
 		</div>
+		</>
+
 	);
 };
 
-const FilterContainer = styled.div`
-	max-height: 0;
-	overflow: hidden;
-	transition: max-height 0.3s ease-out;
 
-	&.show {
-		max-height: 20vh;
-	}
+const FilterCard = styled(StyledCard)`
+	border-bottom: 2px solid ${({ theme }) => theme.colors.gray};
+	align-items: normal;
+	padding: 1em;
 `;
+
+const FilterCell = styled.div`
+
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	align-items: flex-start;
+	gap: 0.5em;
+
+
+    &:not(:last-child) {
+		margin-bottom: 0.5em;
+		padding-bottom: 0.5em;
+		border-bottom: 1px solid #000;
+	}
+	h3, h4 {
+		grid-column: 1 / -1;
+	}
+
+	.checkbox {
+		display: flex;
+		gap: 0.5em;
+		/* margin-bottom: 0.5em; */
+/*
+		input {
+			margin: 0.25em 0 auto 0;
+		} */
+	}
+`
+
+
 
 const TileGrid = styled.div`
 	display: flex;

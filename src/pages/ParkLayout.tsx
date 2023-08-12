@@ -101,13 +101,12 @@ const ParkLayout = () => {
 
                 <Outlet/>
 
-				<div className='container'>
 					<StateParks
 						title={"Explore Other Parks"}
 						states={states}
 						parks={otherParks}
+						activePark={park}
 					/>
-				</div>
 			</main>
 		</>
 	);

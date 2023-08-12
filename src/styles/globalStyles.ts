@@ -111,9 +111,9 @@ const GlobalStyles = createGlobalStyle`
             border-bottom: 1px solid;
             scroll-margin: 100px;
 
-            p {
-                margin-bottom: 0.25em;
-            }
+            li {margin-left: 1em;}
+
+            p {margin-bottom: 0.25em;}
         }
 
     }
@@ -174,7 +174,7 @@ const GlobalStyles = createGlobalStyle`
 
     @media (min-width: 768px) {
         .leaflet-container {
-            height: 400px;
+            height: 500px;
         }
     }
 `;

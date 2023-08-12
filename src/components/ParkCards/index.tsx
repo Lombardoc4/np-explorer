@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { StyledCard } from "../styled/StyledCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface CardProps {
     $row?: boolean;
@@ -27,12 +27,16 @@ const npsImage = (
 
 const parkImage = (img: { url: string; altText: string }) => <img src={img.url} alt={img.altText} />;
 
-export const ParkCards = ({  parks, row = false, grid = false, showDescription = true }: ParkCardProps) => {
+export const ParkCards = ({ parks, row = false, grid = false, showDescription = true }: ParkCardProps) => {
     const [listLength, setListLength] = useState(12);
 
     const loadMoreItems = () => {
         setListLength((prevListCount) => prevListCount + 12);
     };
+
+    useEffect(() => {
+        setListLength(12);
+    }, [parks]);
 
     // TODO : SORT BY MOST COMMON ACTIVITIES
 
@@ -41,7 +45,7 @@ export const ParkCards = ({  parks, row = false, grid = false, showDescription =
             <CardGrid $grid={grid}>
                 {parks.length > 0 &&
                     parks.slice(0, listLength).map((park) => (
-                        <Card $row={row} key={park.parkCode}>
+                        <Card key={park.parkCode}>
                             <Link className='img-container' to={`/park/${park.parkCode}`}>
                                 {park.images && park.images.length > 0 ? parkImage(park.images[0]) : npsImage}
                                 <span className='overlay-gradient'>{park.fullName}</span>
@@ -53,8 +57,12 @@ export const ParkCards = ({  parks, row = false, grid = false, showDescription =
                             )}
                         </Card>
                     ))}
+                {listLength < parks.length && (
+                    <button style={{ gridColumn: "1 / -1", margin: "auto" }} onClick={loadMoreItems}>
+                        Load More
+                    </button>
+                )}
             </CardGrid>
-            {listLength < parks.length && <button onClick={loadMoreItems}>Load More</button>}
         </>
     );
 };
@@ -62,7 +70,7 @@ export const ParkCards = ({  parks, row = false, grid = false, showDescription =
 const CardGrid = styled.div<CardGridProps>`
     display: grid;
     gap: 2em;
-	grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
 
     .filters {
         grid-column: 1 / -1;
@@ -72,17 +80,9 @@ const CardGrid = styled.div<CardGridProps>`
     .dropdown-search {
         margin: 0 0 1em;
     }
-/*
-    @media (max-width: 768px) {
-        display: flex;
-        flex-direction: column;
-        gap: 1em;
-    } */
 `;
 
 const Card = styled(StyledCard)<CardProps>`
-    /* gap: 1em; */
-
     .img-container {
         height: 200px;
         overflow: hidden;
@@ -101,9 +101,6 @@ const Card = styled(StyledCard)<CardProps>`
     }
 
     @media (min-width: 768px) {
-        flex-direction: ${({ $row }) => ($row ? "row" : "column")};
-        /* gap: 1em; */
-
         .img-container {
             height: 300px;
         }

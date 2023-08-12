@@ -5,7 +5,7 @@ import { StateProps, stateMap } from "../utils/lib/stateMap";
 
 import styled from "styled-components";
 import { parkVistors } from "../utils/lib/parkVisitors";
-import { LeafletMap } from "../components/LeafletMap/index2";
+import { LeafletMap } from "../components/LeafletMap";
 import { Header } from "../components/Header";
 import { ParkCards } from "../components/ParkCards";
 import { ParkCardFilters } from "../components/ParkCardFilters";
@@ -39,7 +39,6 @@ const StateHeader = ({ states, parks }: StateHeaderProps) => {
 			title={state.name}
 			description={Description}
 		>
-			{/* <MapBox> */}
 				<LeafletMap
 					states={states}
 					parkCoords={parks.map((park: any) => ({
@@ -49,7 +48,6 @@ const StateHeader = ({ states, parks }: StateHeaderProps) => {
 						id: park.parkCode,
 					}))}
 				/>
-			{/* </MapBox> */}
 		</Header>
 	);
 };
@@ -57,10 +55,11 @@ const StateHeader = ({ states, parks }: StateHeaderProps) => {
 interface StateParksProps {
 	states: StateProps[];
 	parks: any[];
+	activePark?: any;
 	title?: string;
 }
 
-export const StateParks = ({ states, parks, title }: StateParksProps) => {
+export const StateParks = ({ states, parks, activePark, title }: StateParksProps) => {
 	const [filters, setFilters] = useState<FilterProps>({ activities: [], cost: "" });
 
 	const [activeParks, setActiveParks] = useState(parks);
@@ -86,31 +85,36 @@ export const StateParks = ({ states, parks, title }: StateParksProps) => {
 
 	return (
 		<MainContainer>
+
 			<h2 className="title">{title}</h2>
 
 			{/* Map with parks */}
-			<StyledCard
-
-				style={{ position: "relative"}}>
+			<StyledCard className="container" style={{ position: "relative"}}>
 				<LeafletMap
 					states={states}
 					parkCoords={parkCoords}
+					activeMarker={activePark}
 				/>
 			</StyledCard>
 
-			<ParkCardFilters
-				filters={filters}
-				activeParks={activeParks}
-				defaultParks={parks}
-				toggleFilter={toggleFilter}
-				// state={state}
-			/>
+			<div id="other-parks">
 
-			{ activeParks.length > 0 ?
-				<ParkCards grid={true} parks={activeParks} showDescription={false} />
-				:
-				<h2>No parks match these filters</h2>
-			}
+				{/* TWO COMPONENTS BELOW MIGHT BE COMBINE ABLE  */}
+				<ParkCardFilters
+					filters={filters}
+					activeParks={activeParks}
+					defaultParks={parks}
+					toggleFilter={toggleFilter}
+					// state={state}
+				/>
+				<div className="container">
+				{ activeParks.length > 0 ?
+					<ParkCards grid={true} parks={activeParks} showDescription={false} />
+					:
+					<h2>No parks match these filters</h2>
+				}
+				</div>
+			</div>
 
 
 		</MainContainer>
@@ -166,9 +170,11 @@ const MainContainer = styled.div`
 		display: flex;
 		flex-direction: column;
 		/* gap: 0.5em; */
-		border-bottom: 2px solid ${({ theme }) => theme.colors.gray};
-		padding-bottom: 1em;
 		margin-bottom: 1em;
+		position: sticky;
+		top: 0;
+		z-index: ${({ theme }) => theme.zIndex.dropdown};
+
 	}
 
 	/* @media (min-width: 768px) {
