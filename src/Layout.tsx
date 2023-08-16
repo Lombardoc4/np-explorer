@@ -18,27 +18,22 @@ import theme from './styles/theme'
 
 function App({children} : {children?: JSX.Element}) {
   const parks = useContext(ParkContext);
-  const memoUSMap = useMemo(() => <USMap/>, [parks]);
-  
   if (!parks) return <div>Loading...</div>;
-  
-  
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles/>
+
+      {/* This scrolls page to top when the path changes */}
       <ScrollToTop/>
-      
+
       <NavBar/>
-      
-      <main>
-          <Outlet />
-          {children}
-          
-          {/* {memoUSMap} */}
-      </main>
-      
-      
-     <Footer/>
+
+      <Outlet />
+      {children}
+
+      <Footer/>
+
     </ThemeProvider>
   )
 }

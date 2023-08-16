@@ -29,7 +29,22 @@ const GlobalStyles = createGlobalStyle`
     .bold { font-weight: 700 }
     a { color:  inherit; font-weight: inherit }
     h1, h2, h3, h4, h5, h6 { font-weight: 800 }
+    a.btn {
+        border-radius: ${({ theme }) => theme.radius.sm};
+        padding: 0.25em 0.5em;
 
+        img, svg{
+            margin-right: 0.5em;
+        }
+
+        &:hover {
+            background-color: ${({ theme }) => theme.colors.gray};
+        }
+    }
+
+    header {
+        margin: 2em auto 1em;
+    }
 
     button {
         border-radius: 8px;
@@ -95,6 +110,7 @@ const GlobalStyles = createGlobalStyle`
         align-items: center;
     }
 
+
     .overlay-gradient {
         background: linear-gradient( rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%);
         align-items: flex-end;
@@ -106,7 +122,7 @@ const GlobalStyles = createGlobalStyle`
     .content {
         font-size: 1.2em;
 
-        .section {
+        .section:not(:first-child) {
             padding: 1em 0;
             border-bottom: 1px solid;
             scroll-margin: 100px;

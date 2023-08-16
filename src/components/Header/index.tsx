@@ -75,24 +75,20 @@ interface HeaderProps {
 export const Header = ({ title, description, subtitle, style, children  }: HeaderProps) => {
     return (
         <HeaderBox style={style}>
-            {/* <StyledContainer $column={false}> */}
-                {children  &&  <div className='children'> {children} </div> }
-                {/* <div className="content-bg"> */}
-                    <div className="container">
-                        <div className="content">
+            {children  &&  <div className='children'> {children} </div> }
+                <div className="container">
+                    <div className="content">
 
-                        {subtitle &&
-                            <Link to={subtitle.link}>
-                                {subtitle.text}
-                            </Link>
-                        }
-                        <h1 className={!subtitle ? 'state' : ''}>{title}</h1>
-                        <hr/>
-                        {description}
-                        </div>
+                    {subtitle &&
+                        <Link to={subtitle.link}>
+                            {subtitle.text}
+                        </Link>
+                    }
+                    <h1 className={!subtitle ? 'state' : ''}>{title}</h1>
+                    <hr/>
+                    {description}
                     </div>
-                {/* </div> */}
-            {/* </StyledContainer> */}
+                </div>
         </HeaderBox>
     )
 }

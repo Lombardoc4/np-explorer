@@ -146,7 +146,7 @@ export const StatePage = () => {
 
 	return (
 		<>
-			{memoHeader}
+			{/* {memoHeader} */}
 			<StateParks states={states} parks={defaultParks} />
 		</>
 	);

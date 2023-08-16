@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Header } from "../components/Header"
-import ParkContext from "../utils/hooks/ParkContext";
-import { stateMap } from "../utils/lib/stateMap";
+import ParkContext from "../../utils/hooks/ParkContext";
+import { stateMap } from "../../utils/lib/stateMap";
 // import { ParkHeader } from "./Park";
 
 const ThingsToDo = () => {

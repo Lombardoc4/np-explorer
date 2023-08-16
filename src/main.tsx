@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import {
   createBrowserRouter,
-  ParamParseKey,
   Params,
   RouterProvider,
 } from "react-router-dom";
@@ -10,29 +9,29 @@ import {
 import App from './Layout'
 import ErrorPage from './pages/Error';
 import { StatePage } from './pages/State';
-import ParkPage from './pages/Park';
 import { LandingPage } from './pages/Landing';
+import { ParkPage } from './pages/Park';
 
 import { ParkProvider } from './utils/hooks/ParkContext'
-import ThingsToDo from './pages/ThingsToDo';
-import Camping from './pages/Camping';
-import Events from './pages/Events';
-import Tours from './pages/Tours';
-import VisitorCenters from './pages/VisitorCenters';
-import Parking from './pages/Parking';
+import ThingsToDo from './pages/Park/ThingsToDo';
+import Camping from './pages/Park/Camping';
+import Events from './pages/Park/Events';
+import Tours from './pages/Park/Tours';
+import VisitorCenters from './pages/Park/VisitorCenters';
+// import Parking from './pages/Park/Parking';
 import { fetcher } from './utils/fetch';
-import ParkLayout from './pages/ParkLayout';
+import Park from './pages/Park/ParkInfo';
 
 // import "./index.css";
 
 const parkRoutes = [
   {
     path: "park/:parkId/",
-    element: <ParkLayout/>,
+    element: <ParkPage/>,
     children: [
       {
         path: '',
-        element: <ParkPage/>,
+        element: <Park/>,
         loader: async ({ params }: { params : Params}) => {
           const thingtodo = await fetcher(`thingstodo?parkCode=${params.parkId}`);
           const campgrounds = await fetcher(`campgrounds?parkCode=${params.parkId}`);
@@ -71,10 +70,10 @@ const parkRoutes = [
         path: "visitor-centers",
         element: <VisitorCenters/>
       },
-      {
-        path: "parking-lots",
-        element: <Parking/>
-      },
+      // {
+      //   path: "parking-lots",
+      //   element: <Parking/>
+      // },
     ]
   }
 
@@ -99,10 +98,6 @@ const router = createBrowserRouter([
             element: <StatePage/>
           },
           ...parkRoutes
-          // {
-          //   path: "*",
-          //   element: <ErrorPage/>,
-          // }
         ],
       },
     ]

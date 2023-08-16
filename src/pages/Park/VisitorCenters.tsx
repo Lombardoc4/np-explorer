@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import ParkContext from "../utils/hooks/ParkContext";
-import { stateMap } from "../utils/lib/stateMap";
-import { SymbolMap } from "../utils/symbolMap";
-import { fetcher } from "../utils/fetch";
-import { scrollToHash } from "../utils/scrollToHash";
+import ParkContext from "../../utils/hooks/ParkContext";
+import { stateMap } from "../../utils/lib/stateMap";
+import { SymbolMap } from "../../utils/lib/symbolMap";
+import { fetcher } from "../../utils/fetch";
+import { scrollToHash } from "../../utils/scrollToHash";
 
 
 const daysOfWeek= [

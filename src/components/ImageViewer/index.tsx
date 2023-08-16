@@ -9,39 +9,42 @@ const decrement = (index: number, length: number) => {
 	return index === 0 ? length - 1 : index - 1;
 };
 
-const ImageViewer = ({
-	previewImgs,
-	parkId,
-	closeAction,
-}: {
+interface ImageViewerProps {
 	previewImgs: any;
 	parkId: string;
-	closeAction: () => void;
-}) => {
+	closeAction: () => void
+}
+
+export const ImageViewer = ({
+	previewImgs,
+	parkId,
+	closeAction
+}: ImageViewerProps) => {
 	const [activeImage, setActiveImage] = useState(0);
 	const [images, setImages] = useState<any[]>(previewImgs);
 	const [loading, setLoading] = useState(true);
 
 	// Keyboard events for closing the modal and switching images
 	const handleKeyDown = (e: KeyboardEvent) => {
-		if (e.key === "Escape") {
-			closeAction();
-		}
 		if (e.key === "ArrowRight") {
 			setActiveImage(increment(activeImage, images.length));
+
 		}
 		if (e.key === "ArrowLeft") {
 			setActiveImage(decrement(activeImage, images.length));
 		}
 	};
 
-	// Event delegation for close action to prevent accidental closing
-	const handleClose = (e: React.MouseEvent<HTMLDivElement>) => {
-		const { id } = e.target as HTMLDivElement;
-		if (id === "image-viewer") {
-			closeAction();
-		}
-	};
+	useEffect(() => {
+		// TODO; scroll to active image
+		// Add keyboard event listener for closing the modal and switching images
+		window.addEventListener("keydown", handleKeyDown);
+		return () => {
+			// Remove event listener on unmount
+			window.removeEventListener("keydown", handleKeyDown);
+		};
+	}, [loading, activeImage]);
+
 
 	useEffect(() => {
 		// fetch all images on load
@@ -57,38 +60,29 @@ const ImageViewer = ({
 		};
 		fetchImages();
 	}, []);
-	useEffect(() => {
-		// TODO; scroll to active image
-		// Add keyboard event listener for closing the modal and switching images
-		window.addEventListener("keydown", handleKeyDown);
-		return () => {
-			// Remove event listener on unmount
-			window.removeEventListener("keydown", handleKeyDown);
-		};
-	}, [loading, activeImage]);
+
+
+	const imgSrc = images[activeImage].fileInfo
+	? images[activeImage].fileInfo.url
+	: images[activeImage].url ? images[activeImage].url : ''
 
 	return (
-		<StyledImageViewer
-			id='image-viewer'
-			onClick={handleClose}
-		>
-			{/* Loading */}
-			{loading && <div className='loading'>Loading...</div>}
+		<>
+		<StyledImageViewer>
 
-			{/* No Images */}
-			{!loading && images.length === 0 && <div className='loading'>No Images Found</div>}
+			<StyledImageContainer>
+				<div className='img-container'>
+					{/* Loading */}
+					{loading && <div className='loading'>Loading...</div>}
 
-			{/* Images */}
-			{!loading && images.length > 0 && (
-				<>
-					<div className='img-container'>
-						{/* Image */}
+					{/* No Images */}
+					{!loading && images.length === 0 && <div className='loading'>No Images Found</div>}
+
+					{/* Images */}
+					{!loading && images.length > 0 && (<>
+
 						<img
-							src={
-								images[activeImage].fileInfo
-									? images[activeImage].fileInfo.url
-									: images[activeImage].url ? images[activeImage].url : ''
-							}
+							src={imgSrc}
 							alt={images[activeImage].altText}
 							title={images[activeImage].title}
 						/>
@@ -97,8 +91,7 @@ const ImageViewer = ({
 						{images[activeImage].credit && <div className='credits'>{images[activeImage].credit}</div>}
 
 						{/* Image Previews */}
-
-						<div className='dots'>
+						{/* <div className='dots'>
 							{images.map((image: any, i: number) => (
 								<div
 									key={image.id || image.title}
@@ -112,137 +105,98 @@ const ImageViewer = ({
 									/>
 								</div>
 							))}
-						</div>
+						</div> */}
+					</>)}
 
-						<div className='key-hints'>Arrow keys to navigate, Esc to close</div>
-					</div>
+				</div>
+			</StyledImageContainer>
 
-					{/* Prev / Next Photo Buttons */}
-					<div
-						className='prev'
-						onClick={() => setActiveImage(decrement(activeImage, images.length))}
-					>
-						&lt;
-					</div>
-					<div
-						className='next'
-						onClick={() => setActiveImage(increment(activeImage, images.length))}
-					>
-						&gt;
-					</div>
-				</>
-			)}
+			<div className='key-hints'>Arrow keys to navigate, Esc to close</div>
+			<div className='image-count'>{activeImage + 1}/{images.length}</div>
+
+			<button onClick={closeAction} className='btn close-btn'>Close</button>
+
+
+			{/* Prev / Next Photo Buttons */}
+			<div
+				className='prev'
+				onClick={() => setActiveImage(decrement(activeImage, images.length))}
+			>
+				&lt;
+			</div>
+			<div
+				className='next'
+				onClick={() => setActiveImage(increment(activeImage, images.length))}
+			>
+				&gt;
+			</div>
 		</StyledImageViewer>
+	</>
 	);
 };
 
-export const ImageGrid = ({ previewImgs, parkId }: { previewImgs: any; parkId: string }) => {
-	const [open, setOpen] = useState(false);
-
-	const toggleOpen = () => {
-		setOpen(!open);
-		document.body.classList.toggle("no-scroll");
-	};
-
-	return (
-		<>
-			{/* <ImgGrid onClick={() => setOpen(true)}> */}
-			{previewImgs.slice(0, 1).map((image: any, i: number) => (
-				<ImgContainer
-					key={image.title}
-					className='img-container'
-					onClick={toggleOpen}
-				>
-					<img
-						src={image.fileInfo ? image.fileInfo.url : image.url}
-						alt={image.altText}
-						title={image.title}
-					/>
-					<div className='credits'>{image.credit}</div>
-						{/* OnClick Open Modal Gallery */}
-					{/* <div className='overlay'>
-						<button>View Photos</button>
-					</div> */}
-				</ImgContainer>
-			))}
-			{/* </ImgGrid> */}
-			{open && (
-				<ImageViewer
-					parkId={parkId}
-					previewImgs={previewImgs}
-					closeAction={toggleOpen}
-				/>
-			)}
-		</>
-	);
-};
-
-const ImgContainer = styled.div`
-	width: 100%;
-	height: 400px;
-
-
-	.overlay {
-		opacity: 0;
-		&:hover {
-			opacity: 1;
-			transition: opacity 0.3s ease-out;
-		}
-	}
-`;
-
-const StyledImageViewer = styled.div`
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-
-	cursor: pointer;
-	background: rgba(0, 0, 0, 0.8);
-	z-index: ${({ theme }) => theme.zIndex.overlay};
-
+const StyledImageContainer = styled.div`
+    width: clamp(300px, 80%, 1200px);
+	max-height: 75vh;
 	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
 
 	.loading {
 		color: #fff;
 		font-size: 2em;
 	}
 
-	.img-container {
-		position: relative;
-		width: 300px;
-		cursor: initial;
-		background: #000;
-
+	.img-container{
+		border-radius: ${({theme}) => theme.radius.sm};
+		overflow: hidden;
 		img {
 			object-fit: contain;
 		}
 	}
+`
+
+const StyledImageViewer = styled.div`
+	height: 100dvh;
+	width: 100vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+
+	.credits, .key-hints, .image-count, .close-btn {
+		position: absolute;
+		padding: 1em;
+		background: rgba(255, 255, 255, 0.8);
+		color: #000;
+		border-radius: ${({theme}) => theme.radius.sm};
+	}
 
 	.credits {
-		position: absolute;
 		bottom: 0;
 		left: 0;
 		width: 100%;
-		padding: 1em;
-		background: rgba(0, 0, 0, 0.8);
-		color: #fff;
-		font-size: 0.75em;
 	}
 
 	.key-hints {
-		position: absolute;
-		top: 0;
-		right: 0;
-		transform: translateY(-100%);
-		padding: 1em;
-		background: rgba(0, 0, 0, 0.8);
-		color: #fff;
-		font-size: 0.75em;
+		top: 2em;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	.image-count {
+		bottom: 2em;
+		right: 50%;
+		transform: translateX(50%);
+	}
+
+	.key-hints {
+		top: 2em;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	.close-btn {
+		top: 2em;
+		right: 2em;
 	}
 
 	.prev,
@@ -253,8 +207,8 @@ const StyledImageViewer = styled.div`
 		width: 50px;
 		height: 50px;
 		background: rgba(255, 255, 255, 0.8);
-		border-radius: 50%;
 		color: #000;
+		border-radius: 50%;
 		font-size: 1.5em;
 		display: flex;
 		justify-content: center;
@@ -265,14 +219,8 @@ const StyledImageViewer = styled.div`
 			background: rgba(255, 255, 255, 1);
 		}
 	}
-
-	.prev {
-		left: 1em;
-	}
-
-	.next {
-		right: 1em;
-	}
+	.prev {left: 1em;}
+	.next {right: 1em;}
 
 	.dots {
 		position: absolute;
@@ -280,9 +228,8 @@ const StyledImageViewer = styled.div`
 		left: 0;
 		width: 100%;
 		height: 100px;
-		/* padding: 1em; */
 		background: rgba(0, 0, 0, 0.8);
-		border-top: 1px solid ${({ theme }) => theme.colors.grey};
+		/* border-top: 1px solid ${({ theme }) => theme.colors.grey}; */
 		color: #fff;
 		font-size: 0.75em;
 		overflow-x: scroll;
@@ -311,18 +258,13 @@ const StyledImageViewer = styled.div`
 		}
 	}
 
-	.dots {
+	/* .dots {
 		display: none;
 	}
 
 	@media (min-width: 768px) {
-		.img-container {
-			max-height: 500px;
-			width: 80%;
-		}
-
 		.dots {
 			display: flex;
 		}
-	}
+	} */
 `;

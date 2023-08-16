@@ -10,9 +10,10 @@ const theme = {
       gray: '#f1f1f1',
     },
     zIndex: {
-      dropdown: 7500,
       overlay: 5000,
-      navbar: 10000,
+      dropdown: 7500,
+      navbar: 8000,
+      modal: 10000
     },
     boxShadow: {
       sm: '0 0 0.5em rgba(0, 0, 0, 0.25)',

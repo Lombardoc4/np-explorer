@@ -19,7 +19,6 @@ export const StyledCardContainer = styled.div`
         text-transform: uppercase;
         font-size: 2em;
         padding: 0 0.33em;
-        margin-bottom: -0.33em;
     }
 `
 
@@ -40,21 +39,6 @@ export const StyledCard = styled.div<StyledCardProps>`
 
     h1, h2, h3, h4, h5, h6 {
         font-weight: 700;
-    }
-
-    &.primary {
-        background-color: ${theme.colors.primary};
-        color: ${theme.colors.white};
-    }
-
-    &.b-w {
-        background-color: ${theme.colors.white};
-        border: 2px solid ${theme.colors.black};
-    }
-
-
-
-    @media (min-width: 768px) {
     }
 `;
 

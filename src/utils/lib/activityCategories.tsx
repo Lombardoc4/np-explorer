@@ -10,6 +10,7 @@ import { ReactComponent as Car } from "../../assets/icons/car-front-fill.svg";
 export interface ActivityDetails {
 	name: string,
 	icon: JSX.Element
+	count?: number
 }
 
 export interface ActivityCategory {
