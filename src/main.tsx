@@ -12,15 +12,15 @@ import { StatePage } from './pages/State';
 import { LandingPage } from './pages/Landing';
 import { ParkPage } from './pages/Park';
 
-import { ParkProvider } from './utils/hooks/ParkContext'
-import ThingsToDo from './pages/Park/ThingsToDo';
-import Camping from './pages/Park/Camping';
-import Events from './pages/Park/Events';
-import Tours from './pages/Park/Tours';
-import VisitorCenters from './pages/Park/VisitorCenters';
-// import Parking from './pages/Park/Parking';
+import ThingsToDo from './pages/ParkContent/ThingsToDo';
+import Camping from './pages/ParkContent/Camping';
+import Events from './pages/ParkContent/Events';
+import Tours from './pages/ParkContent/Tours';
+import VisitorCenters from './pages/ParkContent/VisitorCenters';
+import Parking from './pages/ParkContent/Parking';
+import Park from './pages/ParkContent/Park';
 import { fetcher } from './utils/fetch';
-import Park from './pages/Park/ParkInfo';
+import { ParkProvider } from './utils/hooks/ParkContext'
 
 // import "./index.css";
 
@@ -70,10 +70,10 @@ const parkRoutes = [
         path: "visitor-centers",
         element: <VisitorCenters/>
       },
-      // {
-      //   path: "parking-lots",
-      //   element: <Parking/>
-      // },
+      {
+        path: "parking-lots",
+        element: <Parking/>
+      },
     ]
   }
 

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { ParkProps } from "./ParkInfo";
+import { ParkProps } from "./Park";
 import { ShareModal } from "../../components/Modal/ShareModal";
 
 import { ReactComponent as Contact } from "../../assets/icons/person.svg";

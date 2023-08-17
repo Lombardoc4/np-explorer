@@ -102,11 +102,13 @@ const MapContent = ({ states, parkCoords, activeMarker }: LeafletMapProps) => {
 export const LeafletMap = ({ states, parkCoords, activeMarker }: LeafletMapProps) => {
     const [active, setActive] = useState(false);
     const overlayRef = useRef(null);
-    const offscreen = useOnScreen(overlayRef);
+    const onScreen = useOnScreen(overlayRef);
 
     useEffect(() => {
-        if (offscreen) setActive(false);
-    }, [offscreen]);
+        if (!onScreen) {
+            setActive(false);
+        }
+    }, [onScreen]);
 
 
     return (

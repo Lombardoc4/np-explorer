@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { useParams, Link, useLoaderData } from "react-router-dom";
 
-
 import ParkContext from "../../utils/hooks/ParkContext";
 import { ActivityDetails, activityCategories } from "../../utils/lib/activityCategories";
 
@@ -118,6 +117,13 @@ const WeatherSection = ({ weather }: any) => {
     );
 };
 
+const uniqueCategoryItems = (categories: any) => {
+    const unique = Array.from(new Set(categories.map((obj: any) => obj.name || obj.title))).map((id) => {
+        return categories.find((obj: any) => obj.name === id || obj.title === id);
+    });
+    return unique;
+};
+
 const CategoryCard = ({ category, data }: { category: string; data: any }) => {
     switch (category) {
         case "Visitor Centers":
@@ -193,23 +199,12 @@ const CategorySection = ({ activeCategories }: { activeCategories: ActiveCatergo
             <div style={{ display: "flex", flexDirection: "column", gap: "0.5em", marginTop: "0.5em" }}>
                 {uniqueCategoryItems(category.data).map((data) => (
                     <CategoryCard key={data.name || data.title} category={category.name} data={data} />
-                    ))}
+                ))}
             </div>
         </div>
-    ))
+    ));
 
-    return (<>{sections}</>);
-};
-
-
-
-
-
-const uniqueCategoryItems = (categories: any) => {
-    const unique = Array.from(new Set(categories.map((obj: any) => obj.name || obj.title))).map((id) => {
-        return categories.find((obj: any) => obj.name === id || obj.title === id);
-    });
-    return unique;
+    return <>{sections}</>;
 };
 
 const categories = (loaderData: LoaderProps) => {
@@ -222,7 +217,7 @@ const categories = (loaderData: LoaderProps) => {
         .filter((c) => c.count > 0);
 };
 
-const ParkPage = () => {
+const Park = () => {
     const parks = useContext(ParkContext);
     const loaderData = useLoaderData() as LoaderProps;
     const { parkId } = useParams();
@@ -232,7 +227,6 @@ const ParkPage = () => {
 
     return (
         <div className='content'>
-
             <ParkHeader park={park} activeCategories={activeCategories} />
 
             <p className='section'>{park.description}</p>
@@ -242,10 +236,8 @@ const ParkPage = () => {
             <WeatherSection weather={park.weatherInfo} />
 
             <CategorySection activeCategories={activeCategories} />
-
         </div>
-
     );
 };
 
-export default ParkPage;
+export default Park;

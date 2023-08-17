@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import ParkContext from "../utils/hooks/ParkContext";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { SetStateAction, useContext, useEffect, useMemo, useState } from "react";
 import { StateProps, stateMap } from "../utils/lib/stateMap";
 
 import styled from "styled-components";
@@ -10,11 +10,112 @@ import { Header } from "../components/Header";
 import { ParkCards } from "../components/ParkCards";
 import { ParkCardFilters } from "../components/ParkCardFilters";
 import { StyledCard } from "../components/styled/StyledCard";
+import { ParkProps } from "./ParkContent/Park";
 
-export interface FilterProps {
-	activities: string[];
-	cost: string;
+interface FilterProps {
+	entranceFees: string,
+	entrancePasses: string,
+	activities: string[]
 }
+
+interface StateParksProps {
+	states: StateProps[];
+	parks: any[];
+	currPark?: any;
+	title?: string;
+}
+
+export interface InputProps {
+	name: 'entranceFees'|'entrancePasses'|'activities',
+	value: string
+}
+
+const initFilters: FilterProps = {
+	entranceFees: '',
+	entrancePasses: '',
+	activities: []
+}
+
+const filterParks = (filters: FilterProps, parks: any[]) => {
+	return parks.filter((p: any) => {
+		const entranceFees = p.entranceFees.length > 0 ? 'paid' : 'free';
+		const entrancePasses = p.entrancePasses.length > 0 ? 'annual-pass' : '';
+		if (filters.entranceFees && entranceFees !== filters.entranceFees || filters.entrancePasses && entrancePasses !== filters.entrancePasses)
+			return false;
+
+		if (filters.activities && filters.activities.length > 0) {
+			const match = filters.activities.every(a => p.activities.find((pa: any) => pa.name === a))
+			if (!match)
+				return false
+		}
+		return true;
+	})
+}
+
+
+export const OtherParks = ({ states, parks, currPark, title }: StateParksProps) => {
+	const [filters, setFilters] = useState<FilterProps>(initFilters);
+
+	// const [filteredParks, setOtherParks] = useState(parks);
+	const filteredParks = filterParks(filters, parks)
+
+	// Coords for map
+	const parkCoords = filteredParks.map(p => ({
+		longitude: p.longitude,
+		latitude: p.latitude,
+		name: p.fullName,
+		id: p.parkCode,
+	}))
+
+
+	const toggleFilter = (input: InputProps) => {
+		const {name, value} = input;
+		if (name === 'activities') {
+			const newActivities = filters.activities.find(a => a === value) ? filters.activities.filter(a => a !== value) : [...filters.activities, value]
+			setFilters({...filters, activities: newActivities})
+		} else {
+			const newFilters = {...filters, [name]: value};
+			setFilters(newFilters);
+		}
+	}
+
+	return (
+		<MainContainer>
+
+			<h2 className="title">{title}</h2>
+
+			{/* Map with parks */}
+			<StyledCard className="container" style={{ position: "relative"}}>
+				<LeafletMap
+					states={states}
+					parkCoords={parkCoords}
+					activeMarker={currPark}
+				/>
+			</StyledCard>
+
+			<div id="other-parks">
+
+				{/* TWO COMPONENTS BELOW MIGHT BE COMBINABLE  */}
+				<ParkCardFilters
+					otherParks={filteredParks}
+					toggleFilter={toggleFilter}
+					// state={state}
+				/>
+
+				<div className="container">
+				{ filteredParks.length > 0 ?
+					<ParkCards grid={true} parks={filteredParks} showDescription={false} />
+					:
+					<h2>No parks match these filters</h2>
+				}
+				</div>
+			</div>
+
+
+		</MainContainer>
+	)
+}
+
 
 interface StateHeaderProps {
 	states: StateProps[];
@@ -52,75 +153,6 @@ const StateHeader = ({ states, parks }: StateHeaderProps) => {
 	);
 };
 
-interface StateParksProps {
-	states: StateProps[];
-	parks: any[];
-	activePark?: any;
-	title?: string;
-}
-
-export const StateParks = ({ states, parks, activePark, title }: StateParksProps) => {
-	const [filters, setFilters] = useState<FilterProps>({ activities: [], cost: "" });
-
-	const [activeParks, setActiveParks] = useState(parks);
-	const parkCoords = useMemo(() => activeParks.map(p => ({
-		longitude: p.longitude,
-		latitude: p.latitude,
-		name: p.fullName,
-		id: p.parkCode,
-	})), [activeParks])
-
-	const toggleFilter = (newFilters: FilterProps, filteredParks: any) => {
-		setFilters(newFilters);
-        // If there are no filters, set active parks to default parks
-		setActiveParks((newFilters.activities.length > 0 || newFilters.cost !== '') ? filteredParks : parks);
-	};
-
-
-	useEffect(() => {
-		setActiveParks(parks);
-	}, [parks]);
-
-
-
-	return (
-		<MainContainer>
-
-			<h2 className="title">{title}</h2>
-
-			{/* Map with parks */}
-			<StyledCard className="container" style={{ position: "relative"}}>
-				<LeafletMap
-					states={states}
-					parkCoords={parkCoords}
-					activeMarker={activePark}
-				/>
-			</StyledCard>
-
-			<div id="other-parks">
-
-				{/* TWO COMPONENTS BELOW MIGHT BE COMBINE ABLE  */}
-				<ParkCardFilters
-					filters={filters}
-					activeParks={activeParks}
-					defaultParks={parks}
-					toggleFilter={toggleFilter}
-					// state={state}
-				/>
-				<div className="container">
-				{ activeParks.length > 0 ?
-					<ParkCards grid={true} parks={activeParks} showDescription={false} />
-					:
-					<h2>No parks match these filters</h2>
-				}
-				</div>
-			</div>
-
-
-		</MainContainer>
-	)
-}
-
 export const StatePage = () => {
 	const parks = useContext(ParkContext);
 	const { stateId } = useParams();
@@ -130,9 +162,6 @@ export const StatePage = () => {
 		() => parks.filter((park: any) => park.states.toLowerCase().includes(stateId)),
 		[stateId]
 	);
-
-
-
 
 	const memoHeader = useMemo(
 		() => (
@@ -147,7 +176,7 @@ export const StatePage = () => {
 	return (
 		<>
 			{/* {memoHeader} */}
-			<StateParks states={states} parks={defaultParks} />
+			<OtherParks states={states} parks={defaultParks} />
 		</>
 	);
 };
@@ -159,7 +188,7 @@ const MainContainer = styled.div`
 	/* grid-template-columns: 250px auto; */
 	align-items: flex-start;
 	margin: 2em auto;
-	padding: 1em;
+	/* padding: 1em; */
 
 	.title {
 		font-size: 2.2em;
@@ -169,12 +198,14 @@ const MainContainer = styled.div`
 	.filters {
 		display: flex;
 		flex-direction: column;
-		/* gap: 0.5em; */
+		align-items: center;
 		margin-bottom: 1em;
+
 		position: sticky;
 		top: 0;
 		z-index: ${({ theme }) => theme.zIndex.dropdown};
 
+		background-color: ${({ theme }) => theme.colors.white};
 	}
 
 	/* @media (min-width: 768px) {

@@ -1,13 +1,13 @@
 import { useContext } from "react";
 import { useParams, Outlet } from "react-router-dom";
 
-import { StateParks } from "../State";
-import { ImgGrid } from "../../components/ImgGrid";
+import { OtherParks } from "./State";
+import { ImgGrid } from "../components/ImgGrid";
 
-import ParkContext from "../../utils/hooks/ParkContext";
-import { stateMap } from "../../utils/lib/stateMap";
-import { ParkHeader } from "./Header";
-import { Sidebar } from "./Sidebar";
+import ParkContext from "../utils/hooks/ParkContext";
+import { stateMap } from "../utils/lib/stateMap";
+import { ParkHeader } from "./ParkContent/Header";
+import { Sidebar } from "./ParkContent/Sidebar";
 
 export const ParkPage = () => {
     const parks = useContext(ParkContext);
@@ -40,7 +40,7 @@ export const ParkPage = () => {
                     <Sidebar park={park} />
                 </div>
 
-                <StateParks title={"Explore Other Parks"} states={states} parks={otherParks} activePark={park} />
+                <OtherParks title={"Explore Other Parks"} states={states} parks={otherParks} currPark={park} />
             </main>
         </>
     );

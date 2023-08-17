@@ -8,6 +8,13 @@ import { StyledCard } from "../styled/StyledCard";
 
 export const ShareModal = (park: any) => {
     const [isOpen, setIsOpen] = useState(false);
+	const link = window.location.href;
+	const copyClick = async () => {
+		navigator.clipboard.writeText(link)
+	}
+	const emailClick = () => {
+
+	}
 
 	const modal = (
 		<Modal
@@ -23,10 +30,10 @@ export const ShareModal = (park: any) => {
 					</div>
 					{park.fullName}
 				</div>
-				<ShareCard>
+				<ShareCard onClick={copyClick}>
 					Copy Link
 				</ShareCard>
-				<ShareCard>
+				<ShareCard as="a" href={`mailto:?subject=${park.fullName}?body=${link}`}>
 					Email
 				</ShareCard>
 			</>
@@ -46,4 +53,10 @@ export const ShareModal = (park: any) => {
 const ShareCard = styled(StyledCard)`
     border-radius: ${({theme}) => theme.radius.sm};
 	padding: 0.5em;
+	cursor: pointer;
+	text-decoration: none;
+
+	&:hover {
+		box-shadow: none;
+	}
 `;

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ParkProps } from "./ParkInfo";
+import { ParkProps } from "./Park";
 
 import { ParkAlert } from "../../components/ParkAlert";
 import { CardItem, StyledCardContainer, StyledCard } from "../../components/styled/StyledCard";
@@ -106,20 +106,17 @@ const ContactCard = ({ park }: ParkProps) => {
     );
 };
 
-export const Sidebar = ({park}: ParkProps) => {
+export const Sidebar = ({ park }: ParkProps) => {
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: "2em" }}>
-
             <ParkAlert parkId={park.parkCode} />
 
             <ContactCard park={park} />
 
             <FeeCard entranceFees={park.entranceFees} />
-
         </div>
-    )
-}
-
+    );
+};
 
 const StyledContactCard = styled(StyledCard).attrs((props) => ({
     $border: "2px solid " + props.theme.colors.black,

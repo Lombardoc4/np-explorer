@@ -17,8 +17,6 @@ import theme from './styles/theme'
 
 
 function App({children} : {children?: JSX.Element}) {
-  const parks = useContext(ParkContext);
-  if (!parks) return <div>Loading...</div>;
 
   return (
     <ThemeProvider theme={theme}>
