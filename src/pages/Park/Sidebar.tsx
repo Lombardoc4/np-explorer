@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ParkProps } from "./Park";
+import { ParkProps } from "./Main";
 
 import { ParkAlert } from "../../components/ParkAlert";
 import { CardItem, StyledCardContainer, StyledCard } from "../../components/styled/StyledCard";
@@ -10,6 +10,8 @@ import { ReactComponent as GlobeIcon } from "../../assets/icons/globe.svg";
 
 import { SymbolMap } from "../../utils/lib/symbolMap";
 import styled from "styled-components";
+import { IPark } from "../../utils/hooks/ParkContext";
+import { StyledSidebar } from "./components/StyledParkComponents";
 
 const FeeItem = ({ cost, title, description }: { cost: string; title: string; description: string }) => {
     title = title
@@ -54,7 +56,7 @@ const ContactPhone = ({ type, number }: { type: string; number: string }) => {
             <img
                 width={24}
                 height={24}
-                src={`https://raw.githubusercontent.com/nationalparkservice/symbol-library/gh-pages/src/standalone/${SymbolMap["text-telephone-service"]}-black-22.svg`}
+                src={`https://raw.githubusercontent.com/nationalparkservice/symbol-library/gh-pages/src/standalone/${SymbolMap["Text Telephone/TTY"]}-black-22.svg`}
             />
         ) : (
             <PhoneIcon width={24} height={24} />
@@ -63,36 +65,35 @@ const ContactPhone = ({ type, number }: { type: string; number: string }) => {
     if (type === "Fax") return <></>;
 
     return (
-        <CardItem>
+        <ContactItem>
             {icon}
             <a href={`tel:${number}`}>{number.replace("/", "-")}</a>
-        </CardItem>
+        </ContactItem>
     );
 };
 
 const ContactEmail = ({ email }: { email: string }) => (
     <>
         {email.length > 0 && email !== "0@0" && (
-            <CardItem>
+            <ContactItem>
                 <EmailIcon width={24} height={24} /> <a href={`mailto:${email}`}>{email}</a>
-            </CardItem>
+            </ContactItem>
         )}
     </>
 );
 
-const ContactCard = ({ park }: ParkProps) => {
-    const { contacts, url } = park;
+export const ContactCard = ({ contacts, url }: {contacts: IPark["contacts"], url: string}) => {
 
     return (
         <StyledCardContainer id='contact'>
             <h2>Contact</h2>
             <StyledContactCard>
-                {contacts.phoneNumbers.length > 0 &&
+                {contacts && contacts.phoneNumbers.length > 0 &&
                     contacts.phoneNumbers.map(({ type, phoneNumber }: { type: string; phoneNumber: string }) => (
                         <ContactPhone key={phoneNumber} type={type} number={phoneNumber} />
                     ))}
 
-                {contacts.emailAddresses.length > 0 &&
+                {contacts && contacts.emailAddresses.length > 0 &&
                     contacts.emailAddresses.map(({ emailAddress }: { emailAddress: string }) => (
                         <ContactEmail key={emailAddress} email={emailAddress} />
                     ))}
@@ -108,13 +109,13 @@ const ContactCard = ({ park }: ParkProps) => {
 
 export const Sidebar = ({ park }: ParkProps) => {
     return (
-        <div style={{ display: "flex", flexDirection: "column", gap: "2em" }}>
+        <StyledSidebar>
             <ParkAlert parkId={park.parkCode} />
 
-            <ContactCard park={park} />
+            <ContactCard contacts={park.contacts} url={park.url} />
 
             <FeeCard entranceFees={park.entranceFees} />
-        </div>
+        </StyledSidebar>
     );
 };
 
@@ -123,7 +124,6 @@ const StyledContactCard = styled(StyledCard).attrs((props) => ({
 }))`
     box-shadow: rgba(0, 0, 0, 0.26) 0px 2px 8px;
     font-size: 1.2em;
-    /* gap: 1em; */
 
     & > * {
         display: flex;
@@ -131,3 +131,7 @@ const StyledContactCard = styled(StyledCard).attrs((props) => ({
         gap: 0.5em;
     }
 `;
+
+const ContactItem = styled(CardItem)`
+    gap: 1em;
+`

@@ -25,20 +25,21 @@ app.use('/createIndex', (req, res, next) => {
 });
 
 // Check API Key
-app.use('/*', (req, res, next) => {
-    const apiKey = req.headers['x-api-key'];
-    
-    checkApiKey(apiKey)
-    .then((value: boolean) => {
-        if (!value) {
-            res.status(401).send('Unauthorized');
-        } else {
-            next();
-        }
-    });
-    
-    
-});
+// app.use('/*', (req, res, next) => {
+//     const apiKey = req.headers['x-api-key'];
+
+//     // checkApiKey(apiKey)
+//     // checkApiKey('XRJp7yE57VgDhz3ndpb3sgLnTKXIkIAxwTrYZkbn')
+//     // .then((value: boolean) => {
+//     //     if (!value) {
+//     //         res.status(401).send('Unauthorized');
+//     //     } else {
+//     //         next();
+//     //     }
+//     // });
+//     next();
+
+// });
 
 // Get example
 // app.get('/*', (req, res) => {
@@ -47,18 +48,19 @@ app.use('/*', (req, res, next) => {
 
 app.get('/parks', (req, res) => {
     const apiKey = req.headers['x-api-key'];
-    getAllParks(apiKey)
+    // getAllParks(apiKey)
+    getAllParks('XRJp7yE57VgDhz3ndpb3sgLnTKXIkIAxwTrYZkbn')
     .then((parks: any) => {
         console.log('parks', parks);
-        
+
         if (parks.length > 0) {
             res.send(parks);
             return;
         }
-        
-        
+
+
     });
-        
+
 });
 
 

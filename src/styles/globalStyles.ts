@@ -122,7 +122,7 @@ const GlobalStyles = createGlobalStyle`
     .content {
         font-size: 1.2em;
 
-        .section:not(:first-child) {
+        .section {
             padding: 1em 0;
             border-bottom: 1px solid;
             scroll-margin: 100px;

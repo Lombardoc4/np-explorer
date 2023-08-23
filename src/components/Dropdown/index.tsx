@@ -1,143 +1,104 @@
 import { useRef, useState } from "react";
-import styled from 'styled-components';
+
 import { useOutsideAlerter } from "../../utils/hooks/useOuterClick";
 
-interface DropdownProps {
+import { DropdownSearch, SearchForm, FormResults, Item } from "./styled";
+import { ReactComponent as Magnifier } from "../../assets/icons/magnifier.svg";
+import { ReactComponent as XIcon } from "../../assets/icons/x.svg";
+
+interface IItem {
+    value: string;
+    title: string;
+}
+
+interface IResults {
+    items: IItem[];
     onSelect: (value: string) => void;
-    placeholder: string;
-    options: {
-        value: string;
-        title: string;
-    }[];
 }
 
-interface DropdownSearchProps {
-    $open: boolean;
+interface IDropdown {
+    options: IItem[];
+    onSelect: (value: string) => void;
+    placeholder?: string;
 }
 
-const DropdownSearch = styled.div<DropdownSearchProps>`
-  position: absolute;
-  background-color: #fff;
-  /* background-color: ${({ theme }) => theme.colors.grey}; */
-  z-index: ${({ theme }) => theme.zIndex.dropdown};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-  border: 1px solid #bdbdbd;
-  border-radius: ${(props: { $open: any; }) =>  !props.$open ? 'var(--def-input-border-radius)' : 'var(--def-input-border-radius) var(--def-input-border-radius) 0 0'};
-  `;
+export const Dropdown = ({ onSelect, placeholder, options }: IDropdown) => {
+    const [searchVal, onSetSearchVal] = useState(""); // Input val
+    const [items, setItems] = useState(options); // Options appearing in list
+    const [focused, setFocused] = useState(false); // Input focus
 
-const SearchForm = styled.form`
-  background-color: #fff;
-
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  border-radius: var(--def-input-border-radius);
-
-  input {
-    /* background-color: ${({ theme }) => theme.colors.grey}; */
-
-  }
-`;
-
-const Border = styled.div`
-  height: 1px;
-  width: 90%;
-  /* border-top: 1px solid #bdbdbd; */
-  margin: 0 auto;
-`;
-
-const FormResults = styled.ul`
-  border: 1px solid #bdbdbd;
-  border-top: none;
-  border-radius: 0 0 var(--def-input-border-radius) var(--def-input-border-radius);
-  position: absolute;
-  top: 100%;
-    width: calc(100% + 2px);
-    max-height: 200px;
-    overflow-y: auto;
-    background-color: #fff;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-`;
-
-const Option = styled.li`
-    color: #000;
-    text-align: left;
-    padding: 0.75em 1.5em;
-    cursor: pointer;
-    &.hover {
-        background-color: #eee;
-    }
-`;
-
-
-export const Dropdown = ({ onSelect, placeholder, options }: DropdownProps) => {
-    const [searchVal, onSetSearchVal] = useState('');
-    const [focused, onSetFocused] = useState(false);
-    const [listOptions, setListOptions] = useState(options);
+    // Make input ref to allow focusing
     const searchInput = useRef<HTMLInputElement>(null);
+
+    // Click outside of search closes search
     const dropdownSearch = useRef<HTMLDivElement>(null);
+    useOutsideAlerter(dropdownSearch, () => setFocused(false));
 
-    useOutsideAlerter(dropdownSearch, () => onSetFocused(false));
-
-    const handleSelect = (e: React.MouseEvent, value: string) => {
-        e.stopPropagation();
+    const handleSelect = (value: string) => {
         onSelect(value);
-        onSetFocused(false);
-    }
+        setFocused(false);
+    };
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setListOptions(options.filter(option => option.title.toLowerCase().includes(e.target.value.toLowerCase())));
+        setItems(options.filter((option) => option.title.toLowerCase().includes(e.target.value.toLowerCase())));
         onSetSearchVal(e.target.value);
-    }
+    };
+
+    const clearInput = () => {
+        onSetSearchVal("");
+        setItems(options);
+    };
 
     return (
-        <DropdownSearch className="dropdown-search" ref={dropdownSearch} onClick={() => onSetFocused(true)} $open={focused}>
-          <SearchForm autoComplete="off">
-            <svg
-              onMouseDown={(e) => {e.preventDefault()}}
-              onClick={() => searchInput.current && searchInput.current.focus()}
-              xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#000" className="search-icon bi bi-search" viewBox="0 0 16 16">
-              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-            </svg>
-            <svg
-              onMouseDown={(e) => {e.preventDefault()}}
-              onClick={() => {onSetSearchVal(''); searchInput.current && searchInput.current.focus();}}
-              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000" className="close-icon bi bi-x" viewBox="0 0 16 16">
-              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-            </svg>
-            <input
-              ref={searchInput}
-              type="search"
-              value={searchVal}
-              placeholder={placeholder}
-              onChange={handleSearch} />
-          </SearchForm>
+        <DropdownSearch
+            className='dropdown-search'
+            $open={focused}
+            ref={dropdownSearch}
+            onClick={() => setFocused(true)}
+        >
+            <SearchForm autoComplete='off'>
+                <Magnifier />
+                <XIcon onClick={clearInput} />
+                <input
+                    type='search'
+                    value={searchVal}
+                    placeholder={placeholder}
+                    ref={searchInput}
+                    onChange={handleSearch}
+                />
+            </SearchForm>
 
-          {/* Results */}
-          { focused && <>
-            <Border />
-            <FormResults>
-              {/* Get Parks */}
-              {/* Make a list of parks with a click event that handles the select and innerHTML is the option title*/}
-              {listOptions.map((option) => (
-                <Option
-                onMouseEnter={(e: React.MouseEvent) => (e.target as HTMLLIElement).classList.add('hover')}
-                onMouseLeave={(e: React.MouseEvent) => (e.target as HTMLLIElement).classList.remove('hover')}
-                onClick={(event: React.MouseEvent) => handleSelect(event, option.value)} key={option.value}>{option.title}</Option>
-                ))}
-              {listOptions.length <= 0 &&
-                <Option>No Matches</Option>
-              }
-            </FormResults>
-          </>
-          }
+            {/* Results */}
+            {focused && (
+                <FormResults>
+                    <Results items={items} onSelect={(value) => handleSelect(value)} />
+                </FormResults>
+            )}
         </DropdownSearch>
+    );
+};
+
+const Results = ({ items, onSelect }: IResults) => {
+    const toggleClass = (e: React.MouseEvent) => {
+        (e.target as HTMLLIElement).classList.toggle("hover");
+    };
+
+    if (items.length <= 0) return <Item>No Matches</Item>;
+
+    return (
+        <>
+            {items.map((i) => (
+                <Item
+                    key={i.value}
+                    onMouseEnter={toggleClass}
+                    onMouseLeave={toggleClass}
+                    onClick={() => {
+                        onSelect(i.value);
+                    }}
+                >
+                    {i.title}
+                </Item>
+            ))}
+        </>
     );
 };

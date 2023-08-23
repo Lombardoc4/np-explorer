@@ -1,5 +1,4 @@
 import { styled } from "styled-components";
-import { StyledCardProps } from "./StyledCard";
 
 export const StyledParkHeader = styled.header`
     margin: 2rem auto 1em;
@@ -11,3 +10,10 @@ export const StyledParkHeader = styled.header`
         flex-direction: column;
     }
 `;
+
+
+export const StyledSidebar = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+`

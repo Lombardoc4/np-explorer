@@ -3,6 +3,7 @@ import { Modal } from ".";
 import styled from "styled-components";
 
 import { ReactComponent as Share } from "../../assets/icons/share.svg";
+import { ReactComponent as XIcon } from "../../assets/icons/x.svg";
 import { StyledCard } from "../styled/StyledCard";
 
 
@@ -26,7 +27,7 @@ export const ShareModal = (park: any) => {
 				<div style={{gridColumn: '1 / -1'}}>
 					<div style={{display: "flex", justifyContent: "space-between"}}>
 						<h3>Share:</h3>
-						<button style={{fontSize: '0.5em'}} onClick={() => setIsOpen(false)}>x</button>
+						<button style={{fontSize: '0.5em'}} onClick={() => setIsOpen(false)}><XIcon/></button>
 					</div>
 					{park.fullName}
 				</div>

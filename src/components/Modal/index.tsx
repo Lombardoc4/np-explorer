@@ -51,7 +51,7 @@ export const Modal = ({isOpen, closeAction, styles, overlayStyles, children}: Mo
 
 const Overlay = styled.div.attrs({className: 'overlay'})`
     position: fixed;
-    z-index: ${({theme}) => theme.zIndex.modal};
+    z-index: ${({theme}) => theme.zIndex.modal} !important;
 `
 
 const StyledModal = styled.div`

@@ -6,7 +6,8 @@ import { styled } from "styled-components";
 import { StateProps } from "../../utils/lib/stateMap";
 import { StyledCard } from "../styled/StyledCard";
 import useOnScreen from "../../utils/hooks/useOnScreen";
-import { ParkProps } from "../../pages/ParkContent/Park";
+import { ParkProps } from "../../pages/Park/Main";
+import { IPark } from "../../utils/hooks/ParkContext";
 
 interface ParkCardFiltersProps {
     otherParks: any;
@@ -21,24 +22,23 @@ const costFilters = [
 ];
 
 // Sort Activites by most common
-const sortActivities = (activeParks: any) => {
+const sortActivities = (activeParks: IPark[]) => {
     // Get Park Activity names and count
     // Reduce activity duplicates and keep count
     // !ouch
-    const activities = activeParks.reduce((acc: any, park: any) => {
-        // Loop 1
-        park.activities.forEach((activity: any) => {
-            // Loop 2
-            const existingItem = acc.find((obj: { name: string; count: number }) => obj.name === activity.name); // Loop 3
+    const activities = activeParks.reduce((acc: any, park: any) => {// Loop 1
+        park.activities.forEach((activity: string) => { // Loop 2
+            const existingItem = acc.find((obj: { name: string }) => obj.name === activity); // Loop 3
 
             if (existingItem) {
                 existingItem.count += 1;
             } else {
-                acc.push({ name: activity.name, count: 1 });
+                acc.push({ name: activity, count: 1 });
             }
         });
         return acc;
     }, []);
+
 
     // Return sorted array of activities by name
     return activities.sort((a: any, b: any) => {
@@ -64,6 +64,7 @@ export const ParkCardFilters = ({ otherParks, toggleFilter }: ParkCardFiltersPro
 
     // Sort Park Activities by with the most common first
     const activities = sortActivities(otherParks);
+
 
     useEffect(() => {
         if (!onScreen) setShowFilters(false);
