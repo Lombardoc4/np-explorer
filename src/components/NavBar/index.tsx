@@ -68,13 +68,13 @@ export const StyledNavBar = styled.nav<NavProps>`
     /* padding: 0.5em 0; */
 
     a {
-        display: inline-block;
+        display: flex;
     }
 
     .container {
         height: 100%;
         display: flex;
-        /* align-items: center; */
+        align-items: center;
         justify-content: center;
     }
 

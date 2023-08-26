@@ -1,12 +1,13 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useLoaderData } from "react-router-dom";
 
 import { ParkHeader, DirectionSection, WeatherSection, CategorySection } from "./components";
+import { MainGrid } from "./components/StyledParkComponents";
+import { Sidebar } from "./Sidebar";
 
 import ParkContext from "../../utils/hooks/ParkContext";
 import { activityCategories } from "../../utils/lib/activityCategories";
-import { MainGrid } from "../../components/styled/MainGrid";
-import { Sidebar } from "./Sidebar";
+import { WeatherDisplay } from "../../components/Weather";
 
 export interface ParkProps {
     park: any;
@@ -37,6 +38,8 @@ export const Park = () => {
     const loaderData = useLoaderData() as LoaderProps;
     const categories = updateCategories(loaderData);
 
+    useEffect(() => {}, [park]);
+
     return (
         <MainGrid>
             <div className='content'>
@@ -44,7 +47,9 @@ export const Park = () => {
 
                 <DirectionSection park={park} />
 
-                <WeatherSection weather={park.weatherInfo} />
+                <WeatherSection weather={park.weatherInfo}>
+                    <WeatherDisplay lat={park.latitude} long={park.longitude} />
+                </WeatherSection>
 
                 <CategorySection activeCategories={categories} />
             </div>

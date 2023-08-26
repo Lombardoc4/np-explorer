@@ -28,10 +28,10 @@ const npsImage = (
 const parkImage = (img: { url: string; altText: string }) => <img src={img.url} alt={img.altText} />;
 
 export const ParkCards = ({ parks, row = false, grid = false, showDescription = true }: ParkCardProps) => {
-    const [listLength, setListLength] = useState(12);
+    const [listLength, setListLength] = useState(10);
 
     const loadMoreItems = () => {
-        setListLength((prevListCount) => prevListCount + 12);
+        setListLength((prevListCount) => prevListCount + 10);
     };
 
     useEffect(() => {

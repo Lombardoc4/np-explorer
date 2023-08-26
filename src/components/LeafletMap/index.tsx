@@ -75,7 +75,7 @@ const CustomMap = ({ states, parkCoords }: IMap) => {
                 <StateBorder key={s.id} state={s} />
             ))}
             {parkCoords.map((park) => (
-                <MapMarker key={park.name} park={park} />
+                <MapMarker key={park.id} park={park} />
             ))}
         </>
     );

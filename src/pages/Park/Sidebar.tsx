@@ -4,14 +4,11 @@ import { ParkProps } from "./Main";
 import { ParkAlert } from "../../components/ParkAlert";
 import { CardItem, StyledCardContainer, StyledCard } from "../../components/styled/StyledCard";
 
-import { ReactComponent as EmailIcon } from "../../assets/icons/envelope-fill.svg";
-import { ReactComponent as PhoneIcon } from "../../assets/icons/telephone-fill.svg";
-import { ReactComponent as GlobeIcon } from "../../assets/icons/globe.svg";
-
 import { SymbolMap } from "../../utils/lib/symbolMap";
 import styled from "styled-components";
 import { IPark } from "../../utils/hooks/ParkContext";
 import { StyledSidebar } from "./components/StyledParkComponents";
+import { PhoneIcon, EmailIcon, GlobeIcon } from "../../assets/icons";
 
 const FeeItem = ({ cost, title, description }: { cost: string; title: string; description: string }) => {
     title = title
@@ -27,7 +24,7 @@ const FeeItem = ({ cost, title, description }: { cost: string; title: string; de
     );
 };
 
-const FeeCard = ({ entranceFees }: any) => {
+export const FeeCard = ({ entranceFees }: any) => {
     if (entranceFees.length === 0)
         return (
             <StyledCardContainer id='fees' className='no-fees'>
@@ -50,7 +47,7 @@ const FeeCard = ({ entranceFees }: any) => {
     );
 };
 
-const ContactPhone = ({ type, number }: { type: string; number: string }) => {
+export const ContactPhone = ({ type, number }: { type: string; number: string }) => {
     const icon =
         type === "TTY" ? (
             <img
@@ -62,7 +59,7 @@ const ContactPhone = ({ type, number }: { type: string; number: string }) => {
             <PhoneIcon width={24} height={24} />
         );
 
-    if (type === "Fax") return <></>;
+    if (type === "Fax" || number.length <= 0) return <></>;
 
     return (
         <ContactItem>
@@ -72,7 +69,7 @@ const ContactPhone = ({ type, number }: { type: string; number: string }) => {
     );
 };
 
-const ContactEmail = ({ email }: { email: string }) => (
+export const ContactEmail = ({ email }: { email: string }) => (
     <>
         {email.length > 0 && email !== "0@0" && (
             <ContactItem>
@@ -82,26 +79,39 @@ const ContactEmail = ({ email }: { email: string }) => (
     </>
 );
 
-export const ContactCard = ({ contacts, url }: {contacts: IPark["contacts"], url: string}) => {
-
+export const ContactCard = ({
+    contacts,
+    url,
+    children,
+}: {
+    contacts: IPark["contacts"];
+    url?: string;
+    children?: JSX.Element;
+}) => {
     return (
         <StyledCardContainer id='contact'>
             <h2>Contact</h2>
             <StyledContactCard>
-                {contacts && contacts.phoneNumbers.length > 0 &&
+                {contacts &&
+                    contacts.phoneNumbers.length > 0 &&
                     contacts.phoneNumbers.map(({ type, phoneNumber }: { type: string; phoneNumber: string }) => (
                         <ContactPhone key={phoneNumber} type={type} number={phoneNumber} />
                     ))}
 
-                {contacts && contacts.emailAddresses.length > 0 &&
+                {contacts &&
+                    contacts.emailAddresses.length > 0 &&
                     contacts.emailAddresses.map(({ emailAddress }: { emailAddress: string }) => (
                         <ContactEmail key={emailAddress} email={emailAddress} />
                     ))}
 
-                <CardItem>
-                    <GlobeIcon width={24} height={24} />
-                    <Link to={url}>Official National Parks Page</Link>
-                </CardItem>
+                {url && (
+                    <ContactItem>
+                        <GlobeIcon width={24} height={24} />
+                        <Link to={url}>Official National Parks Page</Link>
+                    </ContactItem>
+                )}
+
+                {children}
             </StyledContactCard>
         </StyledCardContainer>
     );
@@ -119,19 +129,15 @@ export const Sidebar = ({ park }: ParkProps) => {
     );
 };
 
-const StyledContactCard = styled(StyledCard).attrs((props) => ({
+export const StyledContactCard = styled(StyledCard).attrs((props) => ({
     $border: "2px solid " + props.theme.colors.black,
 }))`
     box-shadow: rgba(0, 0, 0, 0.26) 0px 2px 8px;
     font-size: 1.2em;
-
-    & > * {
-        display: flex;
-        align-items: center;
-        gap: 0.5em;
-    }
 `;
 
-const ContactItem = styled(CardItem)`
+export const ContactItem = styled(CardItem)`
+    display: flex;
+    align-items: center;
     gap: 1em;
-`
+`;

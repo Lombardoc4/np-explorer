@@ -27,7 +27,7 @@ export const ShareModal = (park: any) => {
 				<div style={{gridColumn: '1 / -1'}}>
 					<div style={{display: "flex", justifyContent: "space-between"}}>
 						<h3>Share:</h3>
-						<button style={{fontSize: '0.5em'}} onClick={() => setIsOpen(false)}><XIcon/></button>
+						<button style={{fontSize: '0.5em', padding: '0.25em'}} onClick={() => setIsOpen(false)}><XIcon fill={'#fff'}/></button>
 					</div>
 					{park.fullName}
 				</div>

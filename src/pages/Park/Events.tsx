@@ -1,95 +1,110 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+import { CardItem, StyledCard, StyledCardContainer } from "../../components/styled/StyledCard";
+import { MainGrid, StyledSidebar } from "./components/StyledParkComponents";
+import { ContactEmail, ContactItem, ContactPhone, StyledContactCard } from "./Sidebar";
+
 import ParkContext from "../../utils/hooks/ParkContext";
-import { stateMap } from "../../utils/lib/stateMap";
 import { fetcher } from "../../utils/helper";
-import { MainGrid } from "../../components/styled/MainGrid";
-import { StyledCard } from "../../components/styled/StyledCard";
-import { StyledSidebar } from "./components/StyledParkComponents";
-// import { ParkHeader } from "./Park";
+import { GlobeIcon } from "../../assets/icons";
+import { Loader } from "../../components/Loader";
 
 const Events = () => {
-    const { parkId } = useParams();
     const park = useContext(ParkContext);
-    const states = stateMap.filter((state) => park.states.includes(state.id.toUpperCase()));
-
     const [events, setEvents] = useState<any[]>([]);
 
     useEffect(() => {
-        // fetch events
-        fetcher(`events?parkCode=${parkId}`).then((data) => setEvents(data));
-        // const fetchCall = async () => {
-        //     const response = await fetch(`https://developer.nps.gov/api/v1/events?parkCode=${parkId}&api_key=${import.meta.env.VITE_NPS_API_KEY}`);
-        //     const data = await response.json();
-        //     setEvents(data.data);
-        // }
-        // fetchCall();
-        // setevents
+        // replace with localFetch()
+        fetcher(`events?parkCode=${park.parkCode}`).then((data) => setEvents(data));
     }, []);
 
-    if (!events) {
-        return <>Loading events</>;
+    if (events.length <= 0) {
+        return <Loader val={"Events"} />;
     }
-
-    console.log("events", events);
 
     return (
         <>
-            <h1>Events</h1>
-            {events.map((thing: any) => (
-                <div key={thing.id}>
-                    <MainGrid>
-                        <div className="content">
-                            <div className="section">
-
-                                <h2>{thing.title}</h2>
-                                <p className="bold">
-                                    {thing.location && <>{thing.location}<br/></>}
-                                    {new Date(thing.date.replace(/-/g, "/")).toLocaleDateString("en-US", {
-                                        weekday: "long",
-                                        year: "numeric",
-                                        month: "long",
-                                        day: "numeric",
-                                    })} @ {thing.times.map((t: any, i: number) => <span>{i !== 0 && '|'} {t.timestart.indexOf(0) === 0 ? t.timestart.slice(1) : t.timestart}</span>)}</p>
-                            </div>
-                            <div className="section"
-                                dangerouslySetInnerHTML={{
-                                    __html: thing.description.replaceAll("<br /><br />", "</p><p>").replaceAll('<p>&nbsp;</p>', '')
-                                }}
-                            />
-                        </div>
-                        <StyledSidebar>
-                            {thing.images.length > 0 && (
-                                // testImageSource(vc.images[0].url)) &&
-                                <StyledCard>
-                                    <div className='img-container'>
-                                        <img
-                                            src={"https://www.nps.gov" + thing.images[0].url}
-                                            alt={thing.images[0].altText}
-                                        />
-                                    </div>
-                                </StyledCard>
-                            )}
-
-                            <StyledCard>
-                                {/* ! CONTACT CARD */}
-                                {thing.feeInfo && <p>{thing.feeInfo}</p>}
-                                <p>{thing.isregresrequired ? ( thing.regresinfo || 'Registration required') : 'No registration required'}</p>
-                                {thing.regresurl && <p>Register at <Link to={thing.regresurl}>Here</Link></p>}
-                                <p>
-                                    Contact {thing.contactname || 'the park'} for more info
-                                    <br/>
-                                    <a href={"mailto:" + thing.contactemailaddress}>{thing.contactemailaddress}</a>
-                                    <br/>
-                                    {thing.contacttelephonenumber}
-                                </p>
-                                <p>{thing.infourl}</p>
-                            </StyledCard>
-                        </StyledSidebar>
-                    </MainGrid>
-                </div>
+            <h1 className='container'>Events</h1>
+            {events.map((event: any) => (
+                <EventSection key={event.title} event={event} />
             ))}
         </>
+    );
+};
+
+const EventSection = ({ event }: any) => {
+    const date = new Date(event.date.replace(/-/g, "/")).toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
+
+    const times = event.times.map((t: any, i: number) => (
+        <span key={"time" + i}>
+            {i !== 0 && "|"} {t.timestart.indexOf(0) === 0 ? t.timestart.slice(1) : t.timestart}
+        </span>
+    ));
+
+    const image = event.images.length > 0 && (
+        <StyledCard className='img-container'>
+            <img src={"https://www.nps.gov" + event.images[0].url} alt={event.images[0].altText} />
+        </StyledCard>
+    );
+
+    console.log("events", event);
+
+    return (
+        <MainGrid>
+            <div className='content'>
+                <div className='section'>
+                    <h2>{event.title}</h2>
+                    {event.location && <p className='bold'>{event.location}</p>}
+                    <p className='bold'>
+                        {date} @ {times}
+                    </p>
+                </div>
+                <div
+                    className='section'
+                    dangerouslySetInnerHTML={{
+                        __html: event.description.replaceAll("<br /><br />", "</p><p>").replaceAll("<p>&nbsp;</p>", ""),
+                    }}
+                />
+            </div>
+
+            <StyledSidebar>
+                {image}
+                <StyledCardContainer id='contact'>
+                    {/* <h2>Contact</h2> */}
+                    <StyledContactCard>
+                        {event.feeInfo && <CardItem>{event.feeInfo}</CardItem>}
+                        <CardItem>
+                            {event.isregresrequired === "true" ? (
+                                event.regresinfo || <span className='bold'>Registration required</span>
+                            ) : (
+                                <>
+                                    <b>NO</b> registration required
+                                </>
+                            )}
+                            {event.regresurl && (
+                                <p>
+                                    Register at <Link to={event.regresurl}>Here</Link>
+                                </p>
+                            )}
+                            <p>Contact {event.contactname || "the park"} for more info</p>
+                        </CardItem>
+
+                        <ContactEmail email={event.contactemailaddress} />
+                        <ContactPhone type='cell' number={event.contacttelephonenumber} />
+                        <ContactItem>
+                            <GlobeIcon width={24} height={24} />
+                            <Link to={event.infourl}>Official NPS Page</Link>
+                        </ContactItem>
+                    </StyledContactCard>
+                </StyledCardContainer>
+            </StyledSidebar>
+        </MainGrid>
     );
 };
 

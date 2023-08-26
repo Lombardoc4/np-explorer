@@ -1,18 +1,14 @@
-import { useContext, useMemo } from "react";
-import { Outlet, useLoaderData } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
 
-import { USMap } from "./components/USMap";
 import { NavBar } from "./components/NavBar";
 import ScrollToTop from "./components/ScrollToTop";
-
-import ParkContext, { ParkProvider } from "./utils/hooks/ParkContext";
-
-import "./styles/App.css";
 import { Footer } from "./components/Footer";
-import { ThemeProvider } from "styled-components";
+
+import { SearchProvider } from "./utils/hooks/SearchContext";
+
 import GlobalStyles from "./styles/globalStyles";
 import theme from "./styles/theme";
-import { SearchProvider } from "./utils/hooks/SearchContext";
 
 function App({ children }: { children?: JSX.Element }) {
     return (

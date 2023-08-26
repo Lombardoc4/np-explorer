@@ -11,9 +11,26 @@ export const StyledParkHeader = styled.header`
     }
 `;
 
-
 export const StyledSidebar = styled.div`
     display: flex;
     flex-direction: column;
     gap: 2em;
-`
+`;
+
+export const MainGrid = styled.div.attrs({
+    className: "container",
+})`
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-columns: minmax(0, 2fr) 1fr;
+    column-gap: 4em;
+    margin: 2em auto;
+
+    &:not(:last-child) {
+        border-bottom: 1px solid #000;
+    }
+
+    h1 {
+        grid-column: 1 / -1;
+    }
+`;

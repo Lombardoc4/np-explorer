@@ -15,7 +15,9 @@ export interface ISearch {
         title: string;
     }[];
     activites: string[];
-    states: string[]
+    states: string[];
+    longitude: string,
+    latitude: string,
 }
 
 const SearchContext = createContext<ISearch[]>([]);
@@ -28,8 +30,7 @@ function SearchProvider({ children }: { children: React.ReactNode }) {
             .catch((error) => console.error(error));
     }, []);
 
-    if (!myData)
-        return <>Loading Search Data</>
+    if (!myData) return <>Loading Search Data</>;
 
     return <SearchContext.Provider value={myData}>{children}</SearchContext.Provider>;
 }

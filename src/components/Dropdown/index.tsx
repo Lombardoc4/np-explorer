@@ -3,8 +3,7 @@ import { useRef, useState } from "react";
 import { useOutsideAlerter } from "../../utils/hooks/useOuterClick";
 
 import { DropdownSearch, SearchForm, FormResults, Item } from "./styled";
-import { ReactComponent as Magnifier } from "../../assets/icons/magnifier.svg";
-import { ReactComponent as XIcon } from "../../assets/icons/x.svg";
+import { MagnifierIcon, XIcon } from "../../assets/icons";
 
 interface IItem {
     value: string;
@@ -57,8 +56,8 @@ export const Dropdown = ({ onSelect, placeholder, options }: IDropdown) => {
             onClick={() => setFocused(true)}
         >
             <SearchForm autoComplete='off'>
-                <Magnifier />
-                <XIcon onClick={clearInput} />
+                <MagnifierIcon />
+                <XIcon className="close-icon" onClick={clearInput} />
                 <input
                     type='search'
                     value={searchVal}

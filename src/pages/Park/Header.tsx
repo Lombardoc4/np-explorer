@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 
-import { ParkProps } from "./Main";
 import { ShareModal } from "../../components/Modal/ShareModal";
 
 import { ReactComponent as Contact } from "../../assets/icons/person.svg";
@@ -15,11 +14,12 @@ const getVisitorCount = (parkId: string) => {
     return visitors.length >= 1 ? visitors[0].visitors : 0;
 };
 
-const StateLinks = (states : IPark["states"]) => states.map((state) => (
-	<Link key={state} to={"/" + state.toLowerCase()}>
-		{state}
-	</Link>
-));
+const StateLinks = (states: IPark["states"]) =>
+    states.map((state) => (
+        <Link key={state} to={"/" + state.toLowerCase()}>
+            {state}
+        </Link>
+    ));
 
 const ATM = (
     <img
@@ -29,23 +29,19 @@ const ATM = (
     />
 );
 
-
-
 export const ParkHeader = ({ park }: { park: IPark }) => {
     const visitCount = getVisitorCount(park.parkCode);
     const [modal, btn] = ShareModal(park);
 
-	return (
+    return (
         <>
             {modal}
-            <Header
-            >
+            <Header>
                 <div>
                     <p style={{ fontSize: "1.5em", display: "flex", gap: "0.25em" }}>
+                        {StateLinks(park.states)}
 
-						{StateLinks(park.states)}
-
-						{visitCount > 0 && <>- {visitCount} visitors in 2022</>}
+                        {visitCount > 0 && <>- {visitCount} visitors in 2022</>}
                     </p>
                 </div>
 
@@ -70,14 +66,14 @@ export const ParkHeader = ({ park }: { park: IPark }) => {
 };
 
 const Header = styled.div`
-	display: flex;
-	align-items: flex-end;
-	justify-content: space-between;
-	margin: 1em 0;
-`
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin: 1em 0;
+`;
 
 const HeaderBtnGroup = styled.div`
-	display: flex;
-	align-items: flex-end;
-	gap: 1em;
-`
+    display: flex;
+    align-items: flex-end;
+    gap: 1em;
+`;

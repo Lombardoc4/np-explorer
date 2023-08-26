@@ -2,7 +2,6 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
     /* Import fonts here */
-    /* @import url("https://use.typekit.net/lhn3rih.css"); */
 
     :root {
         font-family: "futura-pt", sans-serif;
@@ -42,9 +41,6 @@ const GlobalStyles = createGlobalStyle`
         }
     }
 
-    header {
-        margin: 2em auto 1em;
-    }
 
     button {
         border-radius: 8px;
@@ -57,6 +53,10 @@ const GlobalStyles = createGlobalStyle`
         color: #ffffff;
         cursor: pointer;
         transition: border-color 0.25s;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     button:hover {
         border-color: ${({ theme }) => theme.colors.primary};
@@ -123,15 +123,27 @@ const GlobalStyles = createGlobalStyle`
         font-size: 1.2em;
 
         .section {
-            padding: 1em 0;
-            border-bottom: 1px solid;
+            padding-bottom: 1em;
             scroll-margin: 100px;
 
             li {margin-left: 1em;}
 
-            p {margin-bottom: 0.25em;}
+            p:not(:last-child) {margin-bottom: 0.25em;}
         }
 
+        .section:not(:first-child) {
+            border-top: 1px solid;
+            padding: 1em 0;
+        }
+
+    }
+
+    .truncate {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* number of lines to show */
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
     }
 
 
@@ -190,7 +202,7 @@ const GlobalStyles = createGlobalStyle`
 
     @media (min-width: 768px) {
         .leaflet-container {
-            height: 500px;
+            height: 400px;
         }
     }
 `;

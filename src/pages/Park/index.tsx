@@ -1,13 +1,11 @@
-import { useContext, useMemo } from "react";
-import { useParams, Outlet, Link, useLocation } from "react-router-dom";
+import { useContext } from "react";
+import { Outlet, Link, useLocation } from "react-router-dom";
 
 import { ImgGrid } from "../../components/ImgGrid";
 
 import ParkContext, { IPark } from "../../utils/hooks/ParkContext";
 import { stateMap } from "../../utils/lib/stateMap";
 import { ParkHeader } from "./Header";
-import { Sidebar } from "./Sidebar";
-import SearchContext, { ISearch } from "../../utils/hooks/SearchContext";
 import { OtherParks } from "./components";
 
 export const ParkPage = () => {
@@ -27,11 +25,20 @@ export const ParkPage = () => {
             </header>
 
             <main>
-                <div className="container">
-                    <Outlet />
+                <div className='container'>
+                    {location.pathname.split("/").length >= 4 && (
+                        <div style={{ marginBottom: "1em" }}>
+                            <Link className='btn' to={`/park/${park.parkCode}`}>
+                                Back to {park.name}
+                            </Link>
+                        </div>
+                    )}
                 </div>
+                <Outlet />
 
-                <OtherParks title={"Explore Other Parks"} park={park} />
+                <div className='container'>
+                    <OtherParks title={"Explore Other Parks"} parks={[park]} />
+                </div>
             </main>
         </>
     );

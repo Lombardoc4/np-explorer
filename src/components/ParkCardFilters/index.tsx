@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { InputProps } from "../../pages/State";
-import { Dropdown } from "../Dropdown";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
-import { StateProps } from "../../utils/lib/stateMap";
+
+import { Dropdown } from "../Dropdown";
 import { StyledCard } from "../styled/StyledCard";
+
 import useOnScreen from "../../utils/hooks/useOnScreen";
-import { ParkProps } from "../../pages/Park/Main";
 import { IPark } from "../../utils/hooks/ParkContext";
+import { InputProps } from "../../pages/Park/components";
 
 interface ParkCardFiltersProps {
     otherParks: any;

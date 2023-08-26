@@ -15,8 +15,8 @@ const Main = styled.div`
         align-items: center;
         /* gap: 2em; */
     }
-    
-    
+
+
     h2{
         line-height: 1;
         font-size: 3em;
@@ -43,23 +43,23 @@ const Subtitle = styled.h3<SubtitleProps>`
     color: #6a9e3f;
     text-align: center;
     margin-bottom: 0.25em;
-    
+
     text-decoration: ${({ $active }) => $active ? 'underline' : 'none'};
-    
+
     @media (min-width: 768px) {
         font-size: 3em;
     }
-    
+
 `;
-    
+
 const USMapSVG = styled.svg`
     /* width: 320px; */
     width: 100%;
     max-width: 900px;
-    
+
     path {fill: none; cursor: pointer}
     .borders {stroke:#FFFFFF; stroke-width:1}    /* color and width of borders between states */
-    
+
     @media (min-width: 768px) {
     }
 `;
@@ -79,31 +79,31 @@ const Map = () => {
     const blankState = {name: '', id: ''};
     const [hoverState, setHoverState] = useState(blankState);
     const navigate = useNavigate();
-    
-    
+
+
     return (
         <>
             { hoverState.name && <Subtitle $active={true} onClick={() => navigate('/state/' + hoverState.id)}>{hoverState.name}</Subtitle> }
-            
+
             { !hoverState.name && <Subtitle>Pick a state</Subtitle>}
-        
-            <USMapSVG 
+
+            <USMapSVG
             onMouseLeave={() => setHoverState(blankState)}
-            xmlns="http://www.w3.org/2000/svg" 
+            xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 959 593"
             >
                 <StatePaths>
                     {stateMap.map((state) => (
                         <Link key={state.id} to={'state/' + state.id}>
-                            <path 
+                            <path
                                 onMouseEnter={() => setHoverState(state)}
                                 onTouchStart={() => setHoverState(state)}
-                                className={state.id} 
+                                className={state.id}
                                 d={state.data} />
                         </Link>
                     ))}
                 </StatePaths>
-                
+
                 <g className="borders">
                     {borderMap.map((state) => (
                         <path key={state.id} className={state.id} d={state.data} />
@@ -122,18 +122,18 @@ export const USMap = () => {
         <Main>
             <div className="container">
                 <Title>Where To?</Title>
-                
+
                 <Map/>
-            
+
                 {/* Dropdown is for mobile */}
                 {/* Mobile Context? */}
                     <p style={{textAlign: 'center', fontSize: '1.5em', margin: '1em 0'}}>OR</p>
-                
-                <div style={{padding: '0 1em', width: '100%'}}>
-                    
+
+                <div style={{padding: '0 1em', width: '100%', minHeight: '50px', position: 'relative', display: 'flex', justifyContent: 'center'}}>
+
                     <StateDropdown/>
                 </div>
-            
+
             </div>
         </Main>
     )
