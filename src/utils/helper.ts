@@ -1,13 +1,6 @@
 import { FilterProps } from "../pages/Park/components";
 import { IPark } from "./hooks/ParkContext";
-import { ISearch } from "./hooks/SearchContext";
 
-export const uniqueCategoryItems = (categories: any) => {
-    const unique = Array.from(new Set(categories.map((obj: any) => obj.name || obj.title))).map((id) => {
-        return categories.find((obj: any) => obj.name === id || obj.title === id);
-    });
-    return unique;
-};
 
 export const localFetch = async (input: RequestInfo, init?: RequestInit) => {
     const res = await fetch(`http://localhost:3000/${input}`, init);
@@ -44,6 +37,13 @@ export const filterParks = (filters: FilterProps, parks: any[]): IPark[] => {
         }
         return true;
     });
+};
+
+export const uniqueCategoryItems = (categories: any) => {
+    const unique = Array.from(new Set(categories.map((obj: any) => obj.name || obj.title))).map((id) => {
+        return categories.find((obj: any) => obj.name === id || obj.title === id);
+    });
+    return unique;
 };
 
 export const scrollToHash = () => {

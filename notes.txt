@@ -1,0 +1,10 @@
+It would be awesome to get some extra eyes on this and help with the scrapiness
+
+HIGH:
+Right now the site does not work because the "Local" API is not up and functioning
+
+
+LOW:
+Component Styles are very much inline
+There is no mobile look, some grids collapse others dont
+Comments to be added
