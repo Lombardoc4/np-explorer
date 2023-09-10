@@ -1,35 +1,37 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import ParkContext from "../../utils/hooks/ParkContext";
-import { MainGrid, StyledSidebar } from "./components/StyledParkComponents";
-import { Loader } from "../../components/Loader";
-import { CardItem, StyledCard, StyledCardContainer } from "../../components/styled/StyledCard";
-import { GlobeIcon } from "../../assets/icons";
-import { ContactItem } from "./Sidebar";
+import { Link, useLoaderData, useParams } from "react-router-dom";
+import ParkContext from "../utils/hooks/ParkContext";
+import { MainGrid, StyledSidebar } from "./Park/components/StyledParkComponents";
+import { Loader } from "../components/Loader";
+import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
+import { GlobeIcon } from "../assets/icons";
+import { ContactItem } from "./Park/Sidebar";
 // import { ParkHeader } from "./Park";
 
 const ThingsToDo = () => {
     const park = useContext(ParkContext);
-    const [thingsToDo, setThingsToDo] = useState<any[]>([]);
+    // const [thingsToDo, setThingsToDo] = useState<any[]>([]);
+    const {thingsToDo} = useLoaderData() as {thingsToDo: any[]};
 
-    useEffect(() => {
-        // fetch things to do
-        const fetchCall = async () => {
-            const response = await fetch(
-                `https://developer.nps.gov/api/v1/thingstodo?parkCode=${park.parkCode}&api_key=${
-                    import.meta.env.VITE_NPS_API_KEY
-                }`
-            );
-            const data = await response.json();
-            setThingsToDo(data.data);
-        };
-        fetchCall();
-        // setThingsToDo
-    }, []);
+    // useEffect(() => {
+    //     // fetch things to do
+    //     const fetchCall = async () => {
+    //         const response = await fetch(
+    //             `https://developer.nps.gov/api/v1/thingstodo?parkCode=${park.parkCode}&api_key=${
+    //                 import.meta.env.VITE_NPS_API_KEY
+    //             }`
+    //         );
+    //         const data = await response.json();
+    //         setThingsToDo(data.data);
+    //     };
+    //     fetchCall();
+    //     // setThingsToDo
+    // }, []);
 
+    // TODO : Change this to error page
     if (thingsToDo.length <= 0) return <Loader val={"things to do"} />;
 
-    console.log("thingsToDo", thingsToDo);
+    // console.log("thingsToDo", thingsToDo);
 
     return (
         <>

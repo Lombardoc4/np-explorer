@@ -1,22 +1,23 @@
 import { useContext, useEffect, useState } from "react";
-import ParkContext from "../../utils/hooks/ParkContext";
-import { fetcher } from "../../utils/helper";
-import { MainGrid, StyledSidebar } from "./components/StyledParkComponents";
-import { ContactCard, FeeCard } from "./Sidebar";
-import { DirectionSection } from "./components";
-import { CardItem, StyledCard, StyledCardContainer } from "../../components/styled/StyledCard";
-import { WeatherDisplay } from "../../components/Weather";
+import ParkContext from "../utils/hooks/ParkContext";
+import { fetcher } from "../utils/helper";
+import { MainGrid, StyledSidebar } from "./Park/components/StyledParkComponents";
+import { ContactCard, FeeCard } from "./Park/Sidebar";
+import { DirectionSection } from "./Park/components";
+import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
+import { WeatherDisplay } from "../components/Weather";
+import { useLoaderData } from "react-router-dom";
 
 const Camping = () => {
-    const park = useContext(ParkContext);
+    // const [camping, setCamping] = useState<any[]>([]);
+    const {camping} = useLoaderData() as {camping: any[]};
 
-    const [camping, setCamping] = useState<any[]>([]);
+    // useEffect(() => {
+    //     // fetch camping
+    //     fetcher(`campgrounds?parkCode=${park.parkCode}`).then((data) => setCamping(data));
+    // }, []);
 
-    useEffect(() => {
-        // fetch camping
-        fetcher(`campgrounds?parkCode=${park.parkCode}`).then((data) => setCamping(data));
-    }, []);
-
+    // TODO : Change this to error page
     if (camping.length <= 0) return <>Loading camping data</>;
 
     return (
@@ -30,7 +31,7 @@ const Camping = () => {
 };
 
 const CampingSection = ({ camp }: any) => {
-    console.log("camps", camp);
+    // console.log("camps", camp);
     // console.log("camps", camp.campsites, camp.accessibility);
     return (
         <MainGrid>

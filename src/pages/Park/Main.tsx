@@ -13,13 +13,13 @@ export interface ParkProps {
     park: any;
 }
 
-interface LoaderProps {
+export interface LoaderProps {
     thingsToDo: any[];
-    camping: any[];
+    campgrounds: any[];
     events: any[];
     tours: any[];
     visitorCenters: any[];
-    parking: any[];
+    parkingLots: any[];
 }
 
 // Adjust object to map it properly

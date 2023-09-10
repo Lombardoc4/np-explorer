@@ -6,11 +6,19 @@ import { ImgGrid } from "../../components/ImgGrid";
 import ParkContext, { IPark } from "../../utils/hooks/ParkContext";
 import { stateMap } from "../../utils/lib/stateMap";
 import { ParkHeader } from "./Header";
-import { OtherParks } from "./components";
+import { ParkCards } from "./components";
+import SearchContext from "../../utils/hooks/SearchContext";
 
 export const ParkPage = () => {
     const park = useContext(ParkContext);
     const location = useLocation();
+
+    const allParks = useContext(SearchContext);
+    const states = stateMap.filter((s) => park.states.includes(s.id.toUpperCase()));
+    const otherParks = allParks.filter((p: IPark) =>
+        states.some((s) => p.states.includes(s.id.toUpperCase()) && park.parkCode !== p.parkCode)
+    );
+
 
     if (!park) {
         // Go to error page
@@ -37,7 +45,7 @@ export const ParkPage = () => {
                 <Outlet />
 
                 <div className='container'>
-                    <OtherParks title={"Explore Other Parks"} parks={[park]} />
+                    <ParkCards title={"Explore Other Parks"} parks={otherParks}  states={states}/>
                 </div>
             </main>
         </>

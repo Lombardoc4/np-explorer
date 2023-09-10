@@ -27,7 +27,7 @@ const npsImage = (
 
 const parkImage = (img: { url: string; altText: string }) => <img src={img.url} alt={img.altText} />;
 
-export const ParkCards = ({ parks, row = false, grid = false, showDescription = true }: ParkCardProps) => {
+export const ParkCardGrid = ({ parks, row = false, grid = false, showDescription = true }: ParkCardProps) => {
     const [listLength, setListLength] = useState(10);
 
     const loadMoreItems = () => {

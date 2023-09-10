@@ -61,13 +61,23 @@ export const LeafletMap = ({ states, parkCoords }: IMap) => {
 
 const CustomMap = ({ states, parkCoords }: IMap) => {
     const map = useMap();
-    const active = parkCoords.find(p => p.active)
-    const baseView = active ? [active.latitude, active.longitude] as LatLngTuple : [37.8, -96] as LatLngTuple;
-    const baseZoom = active ? 7 : 3;
+    const active = parkCoords.filter(p => p.active)
+    const baseView = active.length === 1 ? [active[0].latitude, active[0].longitude] as LatLngTuple : [37.8, -96] as LatLngTuple;
+    const baseZoom = active.length === 1 ? 7 : 4;
 
     useEffect(() => {
         map.setView(baseView).setZoom(baseZoom);
     }, [states]);
+
+
+    // Remove duplicate states
+    states = states.reduce((acc : StateProps[], s) => {
+        if (!acc.find(obj => obj.id === s.id))
+            acc.push(s)
+        return acc;
+    }, [] )
+
+    // console.log('parkCoords', parkCoords)
 
     return (
         <>

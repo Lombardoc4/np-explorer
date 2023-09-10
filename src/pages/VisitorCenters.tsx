@@ -1,13 +1,14 @@
 import { useContext, useEffect, useState } from "react";
-import ParkContext from "../../utils/hooks/ParkContext";
-import { SymbolMap } from "../../utils/lib/symbolMap";
-import { fetcher } from "../../utils/helper";
-import { scrollToHash } from "../../utils/helper";
-import { ContactCard } from "./Sidebar";
-import { MainGrid, StyledSidebar } from "./components/StyledParkComponents";
-import { DirectionSection } from "./components";
-import { CardItem, StyledCard, StyledCardContainer } from "../../components/styled/StyledCard";
-import { Loader } from "../../components/Loader";
+import ParkContext from "../utils/hooks/ParkContext";
+import { SymbolMap } from "../utils/lib/symbolMap";
+import { fetcher } from "../utils/helper";
+import { scrollToHash } from "../utils/helper";
+import { ContactCard } from "./Park/Sidebar";
+import { MainGrid, StyledSidebar } from "./Park/components/StyledParkComponents";
+import { DirectionSection } from "./Park/components";
+import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
+import { Loader } from "../components/Loader";
+import { useLoaderData } from "react-router-dom";
 
 const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 
@@ -67,12 +68,13 @@ const getOperatingHours = (operatingHours: any) => {
 
 const VisitorCenters = () => {
     const park = useContext(ParkContext);
-    const [visitorCenters, setVisitorCenters] = useState<any[]>([]);
+    // const [visitorCenters, setVisitorCenters] = useState<any[]>([]);
+    const {visitorCenters} = useLoaderData() as {visitorCenters: any[]};
 
-    useEffect(() => {
-        // fetch visitorCenters
-        fetcher(`visitorcenters?parkCode=${park.parkCode}`).then((data) => setVisitorCenters(data));
-    }, []);
+    // useEffect(() => {
+    //     // fetch visitorCenters
+    //     fetcher(`visitorcenters?parkCode=${park.parkCode}`).then((data) => setVisitorCenters(data));
+    // }, []);
 
     useEffect(() => {
         scrollToHash();
@@ -86,6 +88,8 @@ const VisitorCenters = () => {
 
     //         return imageFound;
     // }
+
+    // TODO : Change this to error page
     if (visitorCenters.length <= 0) return <Loader val={"Visitor Centers"} />;
 
     return (
@@ -151,7 +155,7 @@ const VCSection = ({ vc }: { vc: any }) => {
                     <h2>Hours</h2>
                     <StyledCard>
                         {vc.operatingHours.map((operatingHours: any) => (
-                            <CardItem>{getOperatingHours(operatingHours)}</CardItem>
+                            <CardItem key={vc.id + 'hours'}>{getOperatingHours(operatingHours)}</CardItem>
                         ))}
                         <CardItem>{vc.operatingHours[0].description}</CardItem>
                     </StyledCard>

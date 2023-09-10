@@ -15,7 +15,7 @@ const getVisitorCount = (parkId: string) => {
 };
 
 const StateLinks = (states: IPark["states"]) =>
-    states.map((state) => (
+    states.split(',').map((state) => (
         <Link key={state} to={"/" + state.toLowerCase()}>
             {state}
         </Link>

@@ -1,36 +1,38 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import ParkContext from "../../utils/hooks/ParkContext";
-import { Loader } from "../../components/Loader";
-import { MainGrid, StyledSidebar } from "./components/StyledParkComponents";
-import { CardItem, StyledCard, StyledCardContainer } from "../../components/styled/StyledCard";
-import { ContactCard, ContactItem } from "./Sidebar";
-import { GlobeIcon } from "../../assets/icons";
+import { Link, useLoaderData } from "react-router-dom";
+import ParkContext from "../utils/hooks/ParkContext";
+import { Loader } from "../components/Loader";
+import { MainGrid, StyledSidebar } from "./Park/components/StyledParkComponents";
+import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
+import { ContactCard, ContactItem } from "./Park/Sidebar";
+import { GlobeIcon } from "../assets/icons";
 // import { ParkHeader } from "./Park";
 
 const Parking = () => {
     const park = useContext(ParkContext);
 
-    const [parking, setParking] = useState<any[]>([]);
+    // const [parking, setParking] = useState<any[]>([]);
+    const {parking} = useLoaderData() as {parking: any[]};
 
-    useEffect(() => {
-        // fetch parking
-        const fetchCall = async () => {
-            const response = await fetch(
-                `https://developer.nps.gov/api/v1/parkinglots?parkCode=${park.parkCode}&api_key=${
-                    import.meta.env.VITE_NPS_API_KEY
-                }`
-            );
-            const data = await response.json();
-            setParking(data.data);
-        };
-        fetchCall();
-        // setparking
-    }, []);
+    // useEffect(() => {
+    //     // fetch parking
+    //     const fetchCall = async () => {
+    //         const response = await fetch(
+    //             `https://developer.nps.gov/api/v1/parkinglots?parkCode=${park.parkCode}&api_key=${
+    //                 import.meta.env.VITE_NPS_API_KEY
+    //             }`
+    //         );
+    //         const data = await response.json();
+    //         setParking(data.data);
+    //     };
+    //     fetchCall();
+    //     // setparking
+    // }, []);
 
+    // TODO : Change this to error page
     if (parking.length <= 0) return <Loader val={"parking"} />;
 
-    console.log("parking", parking);
+    // console.log("parking", parking);
 
     return (
         <>

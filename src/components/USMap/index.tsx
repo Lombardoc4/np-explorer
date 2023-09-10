@@ -94,7 +94,7 @@ const Map = () => {
             >
                 <StatePaths>
                     {stateMap.map((state) => (
-                        <Link key={state.id} to={'state/' + state.id}>
+                        <Link key={state.id} to={'/' + state.id}>
                             <path
                                 onMouseEnter={() => setHoverState(state)}
                                 onTouchStart={() => setHoverState(state)}

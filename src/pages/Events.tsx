@@ -1,24 +1,21 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData, useRouteLoaderData } from "react-router-dom";
 
-import { CardItem, StyledCard, StyledCardContainer } from "../../components/styled/StyledCard";
-import { MainGrid, StyledSidebar } from "./components/StyledParkComponents";
-import { ContactEmail, ContactItem, ContactPhone, StyledContactCard } from "./Sidebar";
+import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
+import { MainGrid, StyledSidebar } from "./Park/components/StyledParkComponents";
+import { ContactEmail, ContactItem, ContactPhone, StyledContactCard } from "./Park/Sidebar";
 
-import ParkContext from "../../utils/hooks/ParkContext";
-import { fetcher } from "../../utils/helper";
-import { GlobeIcon } from "../../assets/icons";
-import { Loader } from "../../components/Loader";
+import ParkContext from "../utils/hooks/ParkContext";
+import { fetcher } from "../utils/helper";
+import { GlobeIcon } from "../assets/icons";
+import { Loader } from "../components/Loader";
 
 const Events = () => {
     const park = useContext(ParkContext);
-    const [events, setEvents] = useState<any[]>([]);
+    // const [events, setEvents] = useState<any[]>([]);
+    const {events} = useLoaderData() as {events: any[]};
 
-    useEffect(() => {
-        // replace with localFetch()
-        fetcher(`events?parkCode=${park.parkCode}`).then((data) => setEvents(data));
-    }, []);
-
+    // TODO : Change this to error page
     if (events.length <= 0) {
         return <Loader val={"Events"} />;
     }
@@ -53,7 +50,7 @@ const EventSection = ({ event }: any) => {
         </StyledCard>
     );
 
-    console.log("events", event);
+    // console.log("events", event);
 
     return (
         <MainGrid>

@@ -5,10 +5,10 @@ import { filterParks, uniqueCategoryItems } from "../../../utils/helper";
 import { useContext, useEffect, useState } from "react";
 import { IMarker, LeafletMap } from "../../../components/LeafletMap";
 import { ParkCardFilters } from "../../../components/ParkCardFilters";
-import { ParkCards } from "../../../components/ParkCards";
+import { ParkCardGrid } from "../../../components/ParkCards";
 import { StyledCard } from "../../../components/styled/StyledCard";
-import SearchContext, { ISearch } from "../../../utils/hooks/SearchContext";
-import { stateMap } from "../../../utils/lib/stateMap";
+import SearchContext from "../../../utils/hooks/SearchContext";
+import { StateProps, stateMap } from "../../../utils/lib/stateMap";
 import styled from "styled-components";
 import { IPark } from "../../../utils/hooks/ParkContext";
 
@@ -215,44 +215,26 @@ const initFilters: FilterProps = {
 };
 
 interface StateParksProps {
-    parks: ISearch[] | IPark[];
+    parks: IPark[] | IPark[];
     title?: string;
+    states: StateProps[];
     others?: boolean
 }
 
-export const OtherParks = ({ parks, title, others=true }: StateParksProps) => {
-    const allParks = useContext(SearchContext);
+export const ParkCards = ({ parks, title, states }: StateParksProps) => {
     const [filters, setFilters] = useState<FilterProps>(initFilters);
+    const filteredParks = filterParks(filters, parks);
 
-    // Get state data for park states
-    const states = stateMap.filter((s) => parks.some(p => p.states.includes(s.id.toUpperCase())));
-
-    // Get parks within the above state from all parks
-    const otherParks = allParks.filter((p: ISearch) =>
-        states.some((s) => p.states.includes(s.id.toUpperCase()) && parks.find(activePark => activePark.parkCode !== p.parkCode))
-    );
-
-    const filteredParks = filterParks(filters, otherParks);
+    // console.log('states', states)
 
     // Coords for map
-    const parkCoords: IMarker[] = parks.map(p => ({
-            longitude: parseFloat(p.longitude),
-            latitude: parseFloat(p.latitude),
-            name: p.fullName,
-            id: p.parkCode,
-            active: true,
+    const parkCoords: IMarker[] = filteredParks.filter(p => p.latitude && p.longitude).map(p => ({
+                longitude: parseFloat(p.longitude),
+                latitude: parseFloat(p.latitude),
+                name: p.fullName,
+                id: p.parkCode,
+                active: true,
     }))
-
-
-    others && filteredParks.map((p) => {
-        parkCoords.push({
-        longitude: parseFloat(p.longitude),
-        latitude: parseFloat(p.latitude),
-        name: p.fullName,
-        id: p.parkCode,
-        })
-    });
-
 
 
     const toggleFilter = (input: InputProps) => {
@@ -272,7 +254,7 @@ export const OtherParks = ({ parks, title, others=true }: StateParksProps) => {
 
     return (
         <MainContainer>
-            <h2 className='title'>{title}</h2>
+            {title && <h2 className='title'>{title}</h2>}
 
             {/* Map with parks */}
             <StyledCard style={{ position: "relative" }}>
@@ -281,7 +263,7 @@ export const OtherParks = ({ parks, title, others=true }: StateParksProps) => {
 
             <div id='other-parks'>
                 {/* TWO COMPONENTS BELOW MIGHT BE COMBINABLE  */}
-                {others && <ParkCardFilters
+                {<ParkCardFilters
                     otherParks={filteredParks}
                     toggleFilter={toggleFilter}
                     // state={state}
@@ -289,7 +271,7 @@ export const OtherParks = ({ parks, title, others=true }: StateParksProps) => {
 
                 <div>
                     {filteredParks.length > 0 ? (
-                        <ParkCards grid={true} parks={others ? filteredParks : parks} showDescription={false} />
+                        <ParkCardGrid grid={true} parks={filteredParks} showDescription={false} />
                     ) : (
                         <h2>No parks match these filters</h2>
                     )}
@@ -338,3 +320,4 @@ const MapBox = styled.div`
     align-items: center;
     height: 100%;
 `;
+export { ParkCardGrid };

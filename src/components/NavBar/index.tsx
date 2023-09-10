@@ -9,7 +9,7 @@ import useOnScreen from "../../utils/hooks/useOnScreen";
 
 export const NavBar = () => {
     const location = useLocation();
-    const showNavSearch = ['park', 'state'].some(el => location.pathname.includes(el))
+    const showNavSearch = location.pathname.length > 1;
 
     // Hide when offscreen
     const otherParksRef = useRef(document.querySelector('#other-parks'));

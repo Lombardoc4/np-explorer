@@ -2,10 +2,11 @@ import { ParksDropdown } from "../components/Dropdown/ParksDropdown";
 import { Header } from "../components/Header";
 import styled from "styled-components";
 import { USMap } from "../components/USMap";
-import { OtherParks } from "./Park/components";
+import { ParkCardGrid, ParkCards } from "./Park/components";
 import { useContext } from "react";
 import SearchContext from "../utils/hooks/SearchContext";
 import { ParkLocalStorage } from "../utils/hooks/ParkContext";
+import { StateProps, stateMap } from "../utils/lib/stateMap";
 
 const Container = styled.div`
     display: grid;
@@ -16,6 +17,14 @@ export const LandingPage = () => {
     const allParks = useContext(SearchContext);
     const lsParks = JSON.parse(localStorage.getItem('npe-recently-viewed') || '[]');
     const recentParks = allParks.filter(p => lsParks.find((lsPark: ParkLocalStorage) => lsPark.parkCode === p.parkCode))
+    const recentParksStates = recentParks.reduce((acc: StateProps[], p) => {
+        stateMap.map((s) => {
+            if (p.states.includes(s.id.toUpperCase()) )
+                acc.push(s)
+        })
+        return acc;
+    }, [])
+
 
     return (
         <>
@@ -62,7 +71,7 @@ export const LandingPage = () => {
 
 
             {recentParks.length > 0 && <div className="container">
-                <OtherParks parks={recentParks} title={'Recently Viewed Parks'} others={false} />
+                <ParkCards parks={recentParks} title={'Recently Viewed Parks'} states={recentParksStates}/>
             </div>}
 
         </>

@@ -4,22 +4,120 @@ import { createBrowserRouter, createRoutesFromElements, Params, Route, RouterPro
 
 import App from "./Layout";
 import ErrorPage from "./pages/Error";
-import { StatePage } from "./pages/State";
 import { LandingPage } from "./pages/Landing";
 import { ParkPage } from "./pages/Park";
 
-import ThingsToDo from "./pages/Park/ThingsToDo";
-import Camping from "./pages/Park/Camping";
-import Events from "./pages/Park/Events";
-import Tours from "./pages/Park/Tours";
-import VisitorCenters from "./pages/Park/VisitorCenters";
-import Parking from "./pages/Park/Parking";
+import ThingsToDo from "./pages/ThingsToDo";
+import Camping from "./pages/Camping";
+import Events from "./pages/Events";
+import Tours from "./pages/Tours";
+import VisitorCenters from "./pages/VisitorCenters";
+import Parking from "./pages/Parking";
 import { Park } from "./pages/Park/Main";
 import { fetcher } from "./utils/helper";
 import { ParkProvider } from "./utils/hooks/ParkContext";
 
 import "./styles/weather-icons-wind.min.css";
 import "./styles/weather-icons.min.css";
+import { StatePage } from "./pages/State";
+import { State } from "./pages/State/Main";
+
+
+
+const stateRoutes = [
+    {
+        path: ":stateId/",
+        element: <StatePage />,
+        children: [
+            {
+                path: '',
+                loader: async ({ params }: { params: Params }) => {
+                    const thingtodo = await fetcher(`thingstodo?stateCode=${params.stateId}`);
+                    const campgrounds = await fetcher(`campgrounds?stateCode=${params.stateId}`);
+                    const events = await fetcher(`events?stateCode=${params.stateId}`);
+                    const tours = await fetcher(`tours?stateCode=${params.stateId}`);
+                    const visitorCenters = await fetcher(`visitorcenters?stateCode=${params.stateId}`);
+                    const parkingLots = await fetcher(`parkinglots?stateCode=${params.stateId}`);
+
+                    return {
+                        thingsToDo: thingtodo,
+                        campgrounds,
+                        events,
+                        tours,
+                        visitorCenters,
+                        parkingLots,
+                    };
+                },
+                element: <State />,
+            },
+            {
+                path: "things-to-do",
+                loader: async ({ params }: { params: Params }) => {
+                    const thingtodo = await fetcher(`thingstodo?stateCode=${params.stateId}`);
+                    return {
+                        thingsToDo: thingtodo,
+                    };
+                },
+                element: <ThingsToDo />,
+            },
+            {
+                path: "camping",
+                loader: async ({ params }: { params: Params }) => {
+                    const campgrounds = await fetcher(`campgrounds?stateCode=${params.stateId}`);
+
+                    return {
+                        campgrounds,
+                    };
+                },
+                element: <Camping />,
+            },
+            {
+                path: "events",
+                loader: async ({ params }: { params: Params }) => {
+                    const events = await fetcher(`events?stateCode=${params.stateId}`);
+
+                    return {
+                        events,
+                    };
+                },
+                element: <Events />,
+            },
+            {
+                path: "tours",
+                loader: async ({ params }: { params: Params }) => {
+                    const tours = await fetcher(`tours?stateCode=${params.stateId}`);
+
+                    return {
+                        tours,
+                    };
+                },
+                element: <Tours />,
+            },
+            {
+                path: "visitor-centers",
+                loader: async ({ params }: { params: Params }) => {
+                    const visitorCenters = await fetcher(`visitorcenters?stateCode=${params.stateId}`);
+
+                    return {
+                        visitorCenters,
+                    };
+                },
+                element: <VisitorCenters />,
+            },
+            {
+                path: "parking",
+                loader: async ({ params }: { params: Params }) => {
+                    const parkingLots = await fetcher(`parkinglots?stateCode=${params.stateId}`);
+
+                    return {
+                        parkingLots,
+                    };
+                },
+                element: <Parking />,
+            },
+        ],
+    },
+];
 
 const parkRoutes = [
     {
@@ -53,26 +151,67 @@ const parkRoutes = [
             },
             {
                 path: "things-to-do",
+                loader: async ({ params }: { params: Params }) => {
+                    const thingtodo = await fetcher(`thingstodo?parkCode=${params.parkId}`);
+                    return {
+                        thingsToDo: thingtodo,
+                    };
+                },
                 element: <ThingsToDo />,
             },
             {
                 path: "camping",
+                loader: async ({ params }: { params: Params }) => {
+                    const campgrounds = await fetcher(`campgrounds?parkCode=${params.parkId}`);
+
+                    return {
+                        campgrounds,
+                    };
+                },
                 element: <Camping />,
             },
             {
                 path: "events",
+                loader: async ({ params }: { params: Params }) => {
+                    const events = await fetcher(`events?parkCode=${params.parkId}`);
+
+                    return {
+                        events,
+                    };
+                },
                 element: <Events />,
             },
             {
                 path: "tours",
+                loader: async ({ params }: { params: Params }) => {
+                    const tours = await fetcher(`tours?parkCode=${params.parkId}`);
+
+                    return {
+                        tours,
+                    };
+                },
                 element: <Tours />,
             },
             {
                 path: "visitor-centers",
+                loader: async ({ params }: { params: Params }) => {
+                    const visitorCenters = await fetcher(`visitorcenters?parkCode=${params.parkId}`);
+
+                    return {
+                        visitorCenters,
+                    };
+                },
                 element: <VisitorCenters />,
             },
             {
                 path: "parking",
+                loader: async ({ params }: { params: Params }) => {
+                    const parkingLots = await fetcher(`parkinglots?parkCode=${params.parkId}`);
+
+                    return {
+                        parkingLots,
+                    };
+                },
                 element: <Parking />,
             },
         ],
@@ -111,10 +250,7 @@ const router = createBrowserRouter([
                         element: <LandingPage />,
                     },
                     ...parkRoutes,
-                    {
-                        path: ":stateId",
-                        element: <StatePage />,
-                    },
+                    ...stateRoutes
                 ],
             },
         ],

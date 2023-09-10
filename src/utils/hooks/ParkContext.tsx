@@ -1,10 +1,14 @@
 import React, { createContext, useEffect, useState } from "react";
-import { localFetch } from "../helper";
+import { fetcher, localFetch } from "../helper";
 import { useParams } from "react-router-dom";
 
 export interface IPark {
     id: string;
-    activites: string[];
+    // activites: string[];
+    activites: {
+        id: string,
+        name: string,
+    }
     addresses?: {
         line1: string;
         line2: string;
@@ -72,7 +76,8 @@ export interface IPark {
         }[];
     }[];
     parkCode: string;
-    states: string[];
+    // states: string[];
+    states: string,
     images: {
         credit: string;
         altText: string;
@@ -121,15 +126,18 @@ function ParkProvider({ children }: { children: React.ReactNode }) {
     const { parkId } = useParams();
 
     useEffect(() => {
-        localFetch("park/" + parkId)
-            .then((data: IPark) => {
+
+        // localFetch("park/" + parkId)
+        fetcher('parks?parkCode=' + parkId)
+            .then((data: IPark[]) => {
+                // console.log('fetchData', data);
                 // Set Context
-                setMyData(data)
+                setMyData(data[0])
 
                 // Set/Update Local Storage
                 SetLocalStorage({
-                    name: data.fullName,
-                    parkCode: data.parkCode
+                    name: data[0].fullName,
+                    parkCode: data[0].parkCode
                 })
 
             })

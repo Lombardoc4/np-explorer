@@ -4,11 +4,11 @@ import { stateMap } from "../../utils/lib/stateMap";
 
 export const StateDropdown = () => {
     const navigate = useNavigate();
-    
+
     const handleStateSelect = (state: string) => {
-      navigate(`/state/${state}`)
+      navigate(`/${state}`)
     }
-    
+
     return(
         <Dropdown
         placeholder='Search for a state'

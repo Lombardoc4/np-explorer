@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { fetcher, localFetch } from "../helper";
+import { IPark } from "./ParkContext";
 
 export interface ISearch {
     fullName: string;
@@ -20,12 +21,13 @@ export interface ISearch {
     latitude: string,
 }
 
-const SearchContext = createContext<ISearch[]>([]);
+const SearchContext = createContext<IPark[]>([]);
 
 function SearchProvider({ children }: { children: React.ReactNode }) {
-    const [myData, setMyData] = useState<ISearch[]>();
+    const [myData, setMyData] = useState<IPark[]>();
     useEffect(() => {
-        localFetch("parks")
+        // localFetch("parks")
+        fetcher('parks?')
             .then((data) => setMyData(data))
             .catch((error) => console.error(error));
     }, []);

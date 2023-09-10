@@ -1,34 +1,36 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import ParkContext from "../../utils/hooks/ParkContext";
-import { Loader } from "../../components/Loader";
-import { MainGrid, StyledSidebar } from "./components/StyledParkComponents";
-import { CardItem, StyledCard, StyledCardContainer } from "../../components/styled/StyledCard";
-import { FireIcon, HeadPhoneIcon } from "../../assets/icons";
+import { Link, useLoaderData, useParams } from "react-router-dom";
+import ParkContext from "../utils/hooks/ParkContext";
+import { Loader } from "../components/Loader";
+import { MainGrid, StyledSidebar } from "./Park/components/StyledParkComponents";
+import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
+import { FireIcon, HeadPhoneIcon } from "../assets/icons";
 // import { ParkHeader } from "./Park";
 
 const Tours = () => {
     const park = useContext(ParkContext);
-    const [tours, setTours] = useState<any[]>([]);
+    // const [tours, setTours] = useState<any[]>([]);
+    const {tours} = useLoaderData() as {tours: any[]};
 
-    useEffect(() => {
-        // fetch tours
-        const fetchCall = async () => {
-            const response = await fetch(
-                `https://developer.nps.gov/api/v1/tours?parkCode=${park.parkCode}&api_key=${
-                    import.meta.env.VITE_NPS_API_KEY
-                }`
-            );
-            const data = await response.json();
-            setTours(data.data);
-        };
-        fetchCall();
-        // settours
-    }, []);
+    // useEffect(() => {
+    //     // fetch tours
+    //     const fetchCall = async () => {
+    //         const response = await fetch(
+    //             `https://developer.nps.gov/api/v1/tours?parkCode=${park.parkCode}&api_key=${
+    //                 import.meta.env.VITE_NPS_API_KEY
+    //             }`
+    //         );
+    //         const data = await response.json();
+    //         setTours(data.data);
+    //     };
+    //     fetchCall();
+    //     // settours
+    // }, []);
 
+    // TODO : Change this to error page
     if (tours.length <= 0) return <Loader val={"Tours"} />;
 
-    console.log("tours", tours);
+    // console.log("tours", tours);
     return (
         <>
             <h1 className='container'>Tours</h1>
