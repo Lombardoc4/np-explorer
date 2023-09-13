@@ -5,10 +5,8 @@ interface DropdownSearchProps {
 }
 
 export const DropdownSearch = styled.div<DropdownSearchProps>`
-    position: absolute;
     background-color: #fff;
     /* background-color: ${({ theme }) => theme.colors.grey}; */
-    z-index: ${({ theme }) => theme.zIndex.dropdown};
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -18,8 +16,15 @@ export const DropdownSearch = styled.div<DropdownSearchProps>`
     border: 1px solid #bdbdbd;
     border-radius: ${(props: { $open: any }) =>
         !props.$open
-            ? "var(--def-input-border-radius)"
-            : "var(--def-input-border-radius) var(--def-input-border-radius) 0 0"};
+        ? "var(--def-input-border-radius)"
+        : "var(--def-input-border-radius) var(--def-input-border-radius) 0 0"};
+
+    @media (min-width: 768px) {
+        position: absolute;
+        z-index: ${({ theme }) => theme.zIndex.dropdown};
+        left: 50%;
+        transform: translateX(-50%);
+    }
 `;
 
 export const SearchForm = styled.form`

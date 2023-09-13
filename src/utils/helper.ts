@@ -1,5 +1,6 @@
 import { FilterProps } from "../pages/Park/components";
 import { IPark } from "./hooks/ParkContext";
+import { parkVistors } from "./lib/parkVisitors";
 
 
 export const localFetch = async (input: RequestInfo, init?: RequestInit) => {
@@ -52,4 +53,10 @@ export const scrollToHash = () => {
         const el = document.querySelector(hash) as HTMLElement;
         el?.scrollIntoView();
     }
+};
+
+
+export const getVisitorCount = (parkId: string) => {
+    const visitors = parkVistors.filter((park) => park.parkCode === parkId?.toUpperCase());
+    return visitors.length >= 1 ? visitors[0].visitors : 0;
 };

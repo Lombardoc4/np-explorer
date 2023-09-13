@@ -94,7 +94,7 @@ export const ParkCardFilters = ({ otherParks, toggleFilter }: ParkCardFiltersPro
                         justifyContent: "center",
                         alignItems: "flex-end",
                         height: "var(--def-input-height)",
-                        margin: "1em 0",
+                        // margin: "1em 0",
                     }}
                 >
                     <button
@@ -121,13 +121,14 @@ export const ParkCardFilters = ({ otherParks, toggleFilter }: ParkCardFiltersPro
                     </button>
 
                     <h3>{otherParks.length} Parks</h3>
+                </div>
 
                     <Dropdown
+                        style={{top: '1rem'}}
                         placeholder={`Find a park`}
                         options={dropdownOptions}
                         onSelect={(option) => handleParkSelect(option)}
                     />
-                </div>
             </div>
 
             <FilterCard ref={filterRef} className='container' style={{ opacity: showFilters ? 1 : 0, pointerEvents: showFilters ? 'all' : 'none' }}>

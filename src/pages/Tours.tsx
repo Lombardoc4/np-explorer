@@ -5,6 +5,7 @@ import { Loader } from "../components/Loader";
 import { MainGrid, StyledSidebar } from "./Park/components/StyledParkComponents";
 import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
 import { FireIcon, HeadPhoneIcon } from "../assets/icons";
+import { scrollToHash } from "../utils/helper";
 // import { ParkHeader } from "./Park";
 
 const Tours = () => {
@@ -26,6 +27,10 @@ const Tours = () => {
     //     fetchCall();
     //     // settours
     // }, []);
+
+    useEffect(() => {
+        scrollToHash();
+    }, [tours]);
 
     // TODO : Change this to error page
     if (tours.length <= 0) return <Loader val={"Tours"} />;

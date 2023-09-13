@@ -20,22 +20,20 @@ export const StyledSidebar = styled.div`
 export const MainGrid = styled.div.attrs({
     className: "container",
 })`
-    display: grid;
     grid-template-columns: 1fr;
 
     column-gap: 4em;
     padding-block: 2rem;
     margin-block: 1rem;
+    border-bottom: 1px solid #000;
 
-    &:not(:last-child) {
-        border-bottom: 1px solid #000;
-    }
 
     h1 {
         grid-column: 1 / -1;
     }
 
     @media (min-width: 768px) {
+        display: grid;
         grid-template-columns: minmax(0, 2fr) 1fr;
     }
 `;

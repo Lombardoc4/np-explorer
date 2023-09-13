@@ -119,21 +119,10 @@ export const WeatherDisplay = ({ lat, long }: { lat: string; long: string }) => 
     // console.log("seven", sevenDay.map(d => ([d.startTime, d.shortForecast])));
     // console.log("hourly", hourly.map(d => ([d.name, d.shortForecast])));
 
-    if (hourly.length <= 0 || sevenDay.length <= 0 || location.city.length <= 0) return <>Loading Weather</>;
+    if (hourly.length <= 0 || sevenDay.length <= 0 || location.city.length <= 0) return <div className="weather-display">Loading Weather</div>;
 
     return (
-        <div
-            className='weather-display'
-            style={{
-                backgroundColor: "#ffffff",
-                border: "1px solid #000",
-                padding: "1em",
-                borderRadius: "1em",
-                marginTop: "1em",
-                display: "flex",
-                flexDirection: "column",
-            }}
-        >
+        <div className='weather-display'>
             <div style={{ borderBottom: "1px solid #000", paddingBottom: "0.5em", marginBottom: '0.5em' }}>
                 <h4 style={{ fontSize: "2em", textAlign: "center" }}>
                     {location.city}, {location.state}
@@ -188,7 +177,7 @@ export const WeatherDisplay = ({ lat, long }: { lat: string; long: string }) => 
                         gridTemplateColumns: `repeat(${view==='24' ? hourly.length : sevenDay.length}, ${view === '24' ? '90px' : '120px'})`,
                         overflow: "scroll",
                         paddingBottom: "0.5em",
-                        gridColumn: "1 / -1",
+                        // gridColumn: "1 / -1",
                     }}
                 >
                     {view === "24" &&

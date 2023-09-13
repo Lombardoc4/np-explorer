@@ -9,6 +9,7 @@ import { DirectionSection } from "./Park/components";
 import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
 import { Loader } from "../components/Loader";
 import { useLoaderData } from "react-router-dom";
+import { styled } from "styled-components";
 
 const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 
@@ -126,18 +127,18 @@ const VCSection = ({ vc }: { vc: any }) => {
                 {vc.amenities.length > 0 && (
                     <div className='section'>
                         <h3 style={{ gridColumn: "1 / -1" }}>Amenities</h3>
-                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1em", padding: "1em" }}>
+                        <StyledAmenities>
                             {vc.amenities.map((amenity: any) => (
-                                <div style={{ display: "flex", alignItems: "center", gap: "1em" }} key={amenity}>
+                                <div className="amenity" key={amenity}>
                                     <img
-                                        width={32}
-                                        height={32}
+                                        width={24}
+                                        height={24}
                                         src={`https://raw.githubusercontent.com/nationalparkservice/symbol-library/gh-pages/src/standalone/${SymbolMap[amenity]}-black-22.svg`}
                                     />{" "}
-                                    <p className='bold'>{amenity}</p>
+                                    <span className='bold'>{amenity}</span>
                                 </div>
                             ))}
-                        </div>
+                        </StyledAmenities>
                     </div>
                 )}
 
@@ -165,3 +166,24 @@ const VCSection = ({ vc }: { vc: any }) => {
         </MainGrid>
     );
 };
+
+const StyledAmenities = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
+    .amenity {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    @media (min-width: 768px) {
+        .amenity {
+            flex-direction: row;
+        }
+    }
+`

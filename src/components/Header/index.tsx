@@ -77,7 +77,6 @@ export const Header = ({ title, description, subtitle, style, children  }: Heade
         <HeaderBox style={style}>
             {children  &&  <div className='children'> {children} </div> }
                 <div className="container">
-                    <div className="content">
 
                     {subtitle &&
                         <Link to={subtitle.link}>
@@ -88,7 +87,6 @@ export const Header = ({ title, description, subtitle, style, children  }: Heade
                     <hr/>
                     {description}
                     </div>
-                </div>
         </HeaderBox>
     )
 }

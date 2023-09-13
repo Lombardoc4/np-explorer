@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { ActivityDetails } from "../../../utils/lib/activityCategories";
-import { filterParks, uniqueCategoryItems } from "../../../utils/helper";
+import { filterParks, getVisitorCount, uniqueCategoryItems } from "../../../utils/helper";
 import { useContext, useEffect, useState } from "react";
 import { IMarker, LeafletMap } from "../../../components/LeafletMap";
 import { ParkCardFilters } from "../../../components/ParkCardFilters";
@@ -10,7 +10,7 @@ import { StyledCard } from "../../../components/styled/StyledCard";
 import SearchContext from "../../../utils/hooks/SearchContext";
 import { StateProps, stateMap } from "../../../utils/lib/stateMap";
 import styled from "styled-components";
-import { IPark } from "../../../utils/hooks/ParkContext";
+import ParkContext, { IPark } from "../../../utils/hooks/ParkContext";
 
 export interface ParkProps {
     park: any;
@@ -31,6 +31,8 @@ interface HeaderProps extends ParkProps {
 }
 
 export const ParkHeader = ({ park, categories }: HeaderProps) => {
+    const visitCount = getVisitorCount(park.parkCode);
+
     const categoryEls = categories.map((category: ActivityDetails, i: number) => (
         <span key={category.name}>
             {i > 0 && <> - </> /*this is a divider*/}
@@ -45,6 +47,7 @@ export const ParkHeader = ({ park, categories }: HeaderProps) => {
         <>
             <div className='section' style={{ display: "flex", flexDirection: "column" }}>
                 <h2>{park.fullName}</h2>
+                {visitCount > 0 && <span>{visitCount} visitors in 2022</span>}
                 <div style={{ margin: "auto 0", display: "flex", flexWrap: "wrap", gap: "0.25em" }}>{categoryEls}</div>
             </div>
             <div className='section'>
@@ -67,10 +70,12 @@ export const DirectionSection = ({ park, children }: { park: any; children?: JSX
             </a>
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr  1fr", margin: "0.5em 0", gap: "1em" }}>
-                <div>
-                    <h4>Address</h4>
-                    <DirectionAddress addresses={addresses} />
-                </div>
+                {addresses.length > 0 && (
+                    <div>
+                        <h4>Address</h4>
+                        <DirectionAddress addresses={addresses} />
+                    </div>
+                )}
                 <div>
                     <h4>Coordinates</h4>
                     <p>
@@ -135,7 +140,14 @@ const CategoryCard = ({ category, data, path }: { category: string; data: any; p
             <Link to={`./${path}/#${href}`}>{name}</Link>
         </p>
     );
-    const description = <p>{data.description || data.shortDescription}</p>;
+    const description = (
+        <>
+            <p className='truncate'>{data.description || data.shortDescription}</p>
+            <Link to={`./${path}/#${href}`} className='btn'>
+                Read more
+            </Link>
+        </>
+    );
 
     switch (category) {
         case "Events":
@@ -167,6 +179,7 @@ const CategoryCard = ({ category, data, path }: { category: string; data: any; p
                             />
                         )}
                     </div>
+
                     {description}
                 </div>
             );
@@ -218,24 +231,28 @@ interface StateParksProps {
     parks: IPark[] | IPark[];
     title?: string;
     states: StateProps[];
-    others?: boolean
+    others?: boolean;
 }
 
 export const ParkCards = ({ parks, title, states }: StateParksProps) => {
+    const park = useContext(ParkContext);
     const [filters, setFilters] = useState<FilterProps>(initFilters);
     const filteredParks = filterParks(filters, parks);
 
     // console.log('states', states)
 
     // Coords for map
-    const parkCoords: IMarker[] = filteredParks.filter(p => p.latitude && p.longitude).map(p => ({
-                longitude: parseFloat(p.longitude),
-                latitude: parseFloat(p.latitude),
-                name: p.fullName,
-                id: p.parkCode,
-                active: true,
-    }))
+    const parkCoords: IMarker[] = filteredParks
+        .filter((p) => p.latitude && p.longitude)
+        .map((p) => ({
+            longitude: parseFloat(p.longitude),
+            latitude: parseFloat(p.latitude),
+            name: p.fullName,
+            id: p.parkCode,
+            active: park ? park.id === p.id : true,
+        }));
 
+    console.log(parkCoords)
 
     const toggleFilter = (input: InputProps) => {
         const { name, value } = input;
@@ -254,6 +271,8 @@ export const ParkCards = ({ parks, title, states }: StateParksProps) => {
 
     return (
         <MainContainer>
+            <div className="container">
+
             {title && <h2 className='title'>{title}</h2>}
 
             {/* Map with parks */}
@@ -261,15 +280,19 @@ export const ParkCards = ({ parks, title, states }: StateParksProps) => {
                 <LeafletMap states={states} parkCoords={parkCoords} />
             </StyledCard>
 
+            </div>
+
             <div id='other-parks'>
                 {/* TWO COMPONENTS BELOW MIGHT BE COMBINABLE  */}
-                {<ParkCardFilters
-                    otherParks={filteredParks}
-                    toggleFilter={toggleFilter}
-                    // state={state}
-                />}
+                {
+                    <ParkCardFilters
+                        otherParks={filteredParks}
+                        toggleFilter={toggleFilter}
+                        // state={state}
+                    />
+                }
 
-                <div>
+                <div className="container">
                     {filteredParks.length > 0 ? (
                         <ParkCardGrid grid={true} parks={filteredParks} showDescription={false} />
                     ) : (
@@ -299,19 +322,20 @@ const MainContainer = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-bottom: 1em;
+        margin-bottom: 1rem;
+        padding-block: 1rem;
 
         position: sticky;
-        top: 0;
         z-index: ${({ theme }) => theme.zIndex.dropdown};
 
         background-color: ${({ theme }) => theme.colors.white};
     }
 
-    /* @media (min-width: 768px) {
-		padding: 2em;
-		gap: 1em;
-	} */
+    @media (min-width: 768px) {
+		.filters {
+            top: calc(70px);
+        }
+	}
 `;
 
 const MapBox = styled.div`

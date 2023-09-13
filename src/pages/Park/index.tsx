@@ -16,7 +16,7 @@ export const ParkPage = () => {
     const allParks = useContext(SearchContext);
     const states = stateMap.filter((s) => park.states.includes(s.id.toUpperCase()));
     const otherParks = allParks.filter((p: IPark) =>
-        states.some((s) => p.states.includes(s.id.toUpperCase()) && park.parkCode !== p.parkCode)
+        states.some((s) => p.states.includes(s.id.toUpperCase()))
     );
 
 
@@ -35,7 +35,7 @@ export const ParkPage = () => {
             <main>
                 <div className='container'>
                     {location.pathname.split("/").length >= 4 && (
-                        <div style={{ marginBottom: "1em" }}>
+                        <div style={{ marginBlock: "1em" }}>
                             <Link className='btn' to={`/park/${park.parkCode}`}>
                                 Back to {park.name}
                             </Link>
@@ -44,9 +44,9 @@ export const ParkPage = () => {
                 </div>
                 <Outlet />
 
-                <div className='container'>
+                {/* <div className='container'> */}
                     <ParkCards title={"Explore Other Parks"} parks={otherParks}  states={states}/>
-                </div>
+                {/* </div> */}
             </main>
         </>
     );

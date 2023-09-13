@@ -40,9 +40,9 @@ export const StatePage = () => {
 
                 <Outlet />
 
-                <div className="container">
+                {/* <div className="container"> */}
                     <ParkCards parks={stateParks} states={states} />
-                </div>
+                {/* </div> */}
             </main>
         </>
     );

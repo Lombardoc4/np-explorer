@@ -6,7 +6,7 @@ import { MainGrid, StyledSidebar } from "./Park/components/StyledParkComponents"
 import { ContactEmail, ContactItem, ContactPhone, StyledContactCard } from "./Park/Sidebar";
 
 import ParkContext from "../utils/hooks/ParkContext";
-import { fetcher } from "../utils/helper";
+import { fetcher, scrollToHash } from "../utils/helper";
 import { GlobeIcon } from "../assets/icons";
 import { Loader } from "../components/Loader";
 
@@ -14,6 +14,10 @@ const Events = () => {
     const park = useContext(ParkContext);
     // const [events, setEvents] = useState<any[]>([]);
     const {events} = useLoaderData() as {events: any[]};
+
+    useEffect(() => {
+        scrollToHash();
+    }, [events]);
 
     // TODO : Change this to error page
     if (events.length <= 0) {

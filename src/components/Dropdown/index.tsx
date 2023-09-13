@@ -19,9 +19,10 @@ interface IDropdown {
     options: IItem[];
     onSelect: (value: string) => void;
     placeholder?: string;
+    style?: React.CSSProperties
 }
 
-export const Dropdown = ({ onSelect, placeholder, options }: IDropdown) => {
+export const Dropdown = ({ onSelect, placeholder, options, style }: IDropdown) => {
     const [searchVal, onSetSearchVal] = useState(""); // Input val
     const [items, setItems] = useState(options); // Options appearing in list
     const [focused, setFocused] = useState(false); // Input focus
@@ -50,6 +51,7 @@ export const Dropdown = ({ onSelect, placeholder, options }: IDropdown) => {
 
     return (
         <DropdownSearch
+            style={style}
             className='dropdown-search'
             $open={focused}
             ref={dropdownSearch}

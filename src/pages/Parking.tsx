@@ -6,6 +6,7 @@ import { MainGrid, StyledSidebar } from "./Park/components/StyledParkComponents"
 import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
 import { ContactCard, ContactItem } from "./Park/Sidebar";
 import { GlobeIcon } from "../assets/icons";
+import { scrollToHash } from "../utils/helper";
 // import { ParkHeader } from "./Park";
 
 const Parking = () => {
@@ -28,6 +29,10 @@ const Parking = () => {
     //     fetchCall();
     //     // setparking
     // }, []);
+
+    useEffect(() => {
+        scrollToHash();
+    }, [parking]);
 
     // TODO : Change this to error page
     if (parking.length <= 0) return <Loader val={"parking"} />;

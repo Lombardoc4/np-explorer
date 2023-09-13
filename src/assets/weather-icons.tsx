@@ -8,6 +8,7 @@ interface IWeatherProps extends React.HTMLProps<HTMLElement> {
 }
 
 const icons: IWeatherIcons = {
+    "Chance Light Rain": "day-rain",
     "Chance Rain Showers": 'day-storm-showers',
     "Chance Showers And Thunderstorms": 'day-thunderstorm',
     "Chance Showers And Thunderstorms then Partly Cloudy": 'day-showers',
@@ -17,14 +18,24 @@ const icons: IWeatherIcons = {
     "Isolated Showers And Thunderstorms": 'storm-showers',
     "Mostly Clear": 'day-sunny',
     "Mostly Cloudy": 'day-cloudy',
+    "Mostly Sunny then Slight Chance Rain Showers": 'day-rain',
     "Mostly Sunny then Chance Showers And Thunderstorms": 'day-storm-showers',
     "Mostly Sunny then Slight Chance Showers And Thunderstorms": 'day-showers',
     "Mostly Sunny": 'day-sunny',
     "Partly Sunny": 'day-cloudy',
+    "Partly Sunny then Slight Chance Rain Showers": "day-showers",
+    "Partly Sunny then Chance Showers And Thunderstorms": "day-showers",
     "Partly Cloudy": 'day-cloudy',
+    "Patchy Fog": "day-fog",
+    "Patchy Fog then Scattered Rain Showers": "rain",
+    "Patchy Fog then Slight Chance Rain Showers": 'day-fog',
     "Scattered Rain Showers": 'day-showers',
+    "Isolated Rain Showers": 'day-showers',
+    "Rain Showers Likely": 'showers',
+    "Showers And Thunderstorms": "storm-showers",
     "Slight Chance Showers And Thunderstorms": 'day-storm-showers',
     "Slight Chance Showers And Thunderstorms then Partly Sunny": 'day-shower',
+    "Slight Chance Rain Showers": "day-showers",
     "Slight Chance Rain Showers then Slight Chance Showers And Thunderstorms": 'rain',
     "Slight Chance Rain Showers then Chance Showers And Thunderstorms": 'showers',
     "Slight Chance Showers And Thunderstorms then Showers And Thunderstorms Likely": 'storm-showers',
@@ -39,6 +50,7 @@ const nightIcons: IWeatherIcons = {
     "Chance Rain Showers": 'night-alt-storm-showers',
     "Chance Showers And Thunderstorms": 'night-alt-thunderstorm',
     "Chance Showers And Thunderstorms then Partly Cloudy": 'night-alt-showers',
+    "Cloudy": 'night-alt-cloudy',
     "Mostly Clear": 'night-clear',
     "Mostly Cloudy": 'night-alt-cloudy',
     "Mostly Sunny then Chance Showers And Thunderstorms": 'night-alt-storm-showers',
@@ -46,7 +58,11 @@ const nightIcons: IWeatherIcons = {
     "Mostly Sunny": 'night-clear',
     "Partly Sunny": 'night-alt-cloudy',
     "Partly Cloudy": 'night-alt-cloudy',
+    "Patchy Fog": "night-fog",
+    "Rain Showers Likely": 'showers',
     "Scattered Rain Showers": 'night-alt-showers',
+    "Isolated Rain Showers": 'night-alt-showers',
+    "Slight Chance Rain Showers": "night-alt-showers",
     "Slight Chance Showers And Thunderstorms": 'night-alt-storm-showers',
     "Slight Chance Showers And Thunderstorms then Partly Sunny": 'night-alt-shower',
     "Sunny": 'night-clear',
@@ -56,9 +72,11 @@ const nightIcons: IWeatherIcons = {
 }
 
 
+// Icons found here https://erikflowers.github.io/weather-icons/
+
 export const WeatherIcon = ({id, isDay = true, ...rest }: IWeatherProps) => {
 
-    if (!isDay) {
+    if (!isDay && nightIcons[id]) {
         return <i className={`wi wi-${nightIcons[id]}`}  style={{fontSize: '2em', padding: '0.25em 0'}} {...rest}/>
     }
 

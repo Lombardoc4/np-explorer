@@ -9,11 +9,6 @@ import { parkVistors } from "../../utils/lib/parkVisitors";
 import { IPark } from "../../utils/hooks/ParkContext";
 import { styled } from "styled-components";
 
-const getVisitorCount = (parkId: string) => {
-    const visitors = parkVistors.filter((park) => park.parkCode === parkId?.toUpperCase());
-    return visitors.length >= 1 ? visitors[0].visitors : 0;
-};
-
 const StateLinks = (states: IPark["states"]) =>
     states.split(',').map((state) => (
         <Link key={state} to={"/" + state.toLowerCase()}>
@@ -30,22 +25,20 @@ const ATM = (
 );
 
 export const ParkHeader = ({ park }: { park: IPark }) => {
-    const visitCount = getVisitorCount(park.parkCode);
     const [modal, btn] = ShareModal(park);
 
     return (
         <>
             {modal}
             <Header>
-                <div>
-                    <p style={{ fontSize: "1.5em", display: "flex", gap: "0.25em" }}>
+                <div className="title">
+                    <span style={{ display: "flex", gap: "0.25em" }}>
                         {StateLinks(park.states)}
+                    </span>
 
-                        {visitCount > 0 && <>- {visitCount} visitors in 2022</>}
-                    </p>
                 </div>
 
-                <HeaderBtnGroup style={{ textAlign: "right" }}>
+                <HeaderBtnGroup>
                     <a className='btn' href='#alerts'>
                         <Alert width={10} height={10} />
                         Alerts
@@ -67,13 +60,35 @@ export const ParkHeader = ({ park }: { park: IPark }) => {
 
 const Header = styled.div`
     display: flex;
-    align-items: flex-end;
+    flex-direction: column;
     justify-content: space-between;
-    margin: 1em 0;
+    margin-block: 2rem 1rem;
+
+    .title {
+        font-size: 1.5em;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25em;
+    }
+
+    @media (min-width: 768px) {
+        flex-direction: row;
+        align-items: flex-end;
+    }
+
+    @media (min-width: 768px) {
+        .title {
+            flex-direction: row;
+            /* align-items: flex-end; */
+        }
+    }
 `;
 
 const HeaderBtnGroup = styled.div`
     display: flex;
-    align-items: flex-end;
     gap: 1em;
+
+    @media (min-width: 768px) {
+        align-items: flex-end;
+    }
 `;

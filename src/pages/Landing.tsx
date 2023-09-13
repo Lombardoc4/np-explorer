@@ -28,9 +28,9 @@ export const LandingPage = () => {
 
     return (
         <>
-            <header style={{backgroundColor: '#000', color: '#fff', padding: '4em 0'}}>
-                <div className="container" style={{display: 'flex', gap: '1em',  flexDirection: 'column', justifyContent: "center", textAlign: 'center'}}>
-                    <h1 style={{fontSize: '3em', textTransform: 'uppercase'}}>Explore Your Favorite National&nbsp;Parks</h1>
+            <header style={{backgroundColor: '#000', color: '#fff', padding: '4em 0',}}>
+                <div className="container" style={{ maxWidth: '420px', display: 'flex', gap: '1em',  flexDirection: 'column', justifyContent: "center", textAlign: 'center'}}>
+                    <h1 style={{fontSize: '2rem', textTransform: 'uppercase'}}>Explore Your Favorite National&nbsp;Parks</h1>
                     <div style={{position: 'relative', minHeight: '50px', width: '100%', display: 'flex', justifyContent: 'center'}}>
 
                     <ParksDropdown/>

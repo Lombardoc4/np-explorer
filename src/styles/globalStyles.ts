@@ -135,7 +135,6 @@ const GlobalStyles = createGlobalStyle`
             border-top: 1px solid;
             padding: 1em 0;
         }
-
     }
 
     .truncate {
@@ -198,6 +197,14 @@ const GlobalStyles = createGlobalStyle`
     .leaflet-container {
         height: 300px;
         width: 100%;
+    }
+
+    .weather-display {
+        background-color: #ffffff;
+        border: 1px solid #000;
+        padding: 1em;
+        border-radius: 1em;
+        margin-top: 1em;
     }
 
     @media (min-width: 768px) {

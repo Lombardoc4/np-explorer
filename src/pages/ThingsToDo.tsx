@@ -6,6 +6,7 @@ import { Loader } from "../components/Loader";
 import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
 import { GlobeIcon } from "../assets/icons";
 import { ContactItem } from "./Park/Sidebar";
+import { scrollToHash } from "../utils/helper";
 // import { ParkHeader } from "./Park";
 
 const ThingsToDo = () => {
@@ -27,6 +28,10 @@ const ThingsToDo = () => {
     //     fetchCall();
     //     // setThingsToDo
     // }, []);
+
+    useEffect(() => {
+        scrollToHash();
+    }, [thingsToDo]);
 
     // TODO : Change this to error page
     if (thingsToDo.length <= 0) return <Loader val={"things to do"} />;
