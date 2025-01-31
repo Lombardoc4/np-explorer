@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, useLoaderData, useRouteLoaderData } from "react-router-dom";
+import { Link, useLoaderData, useRouteLoaderData } from "react-router";
 
 import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
 import { MainGrid, StyledSidebar } from "./Park/components/StyledParkComponents";

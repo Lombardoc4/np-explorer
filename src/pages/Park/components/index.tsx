@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import { ActivityDetails } from "../../../utils/lib/activityCategories";
 import { filterParks, getVisitorCount, uniqueCategoryItems } from "../../../utils/helper";
@@ -270,16 +270,14 @@ export const ParkCards = ({ parks, title, states }: StateParksProps) => {
     };
 
     return (
-        <MainContainer>
-            <div className="container">
+        <div className='grid gap-1 items-start my-8 justify-center'>
+            <div className='container'>
+                {title && <h2 className='text-4xl text-center'>{title}</h2>}
 
-            {title && <h2 className='title'>{title}</h2>}
-
-            {/* Map with parks */}
-            <StyledCard style={{ position: "relative" }}>
-                <LeafletMap states={states} parkCoords={parkCoords} />
-            </StyledCard>
-
+                {/* Map with parks */}
+                {/* <div className="relative overflow-hidden">
+                    <LeafletMap states={states} parkCoords={parkCoords} />
+                </div> */}
             </div>
 
             <div id='other-parks'>
@@ -292,15 +290,15 @@ export const ParkCards = ({ parks, title, states }: StateParksProps) => {
                     />
                 }
 
-                <div className="container">
+                {/* <div className='container'>
                     {filteredParks.length > 0 ? (
                         <ParkCardGrid grid={true} parks={filteredParks} showDescription={false} />
                     ) : (
                         <h2>No parks match these filters</h2>
                     )}
-                </div>
+                </div> */}
             </div>
-        </MainContainer>
+        </div>
     );
 };
 

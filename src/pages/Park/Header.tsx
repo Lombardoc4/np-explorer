@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import { ShareModal } from "../../components/Modal/ShareModal";
 
-import { ReactComponent as Contact } from "../../assets/icons/person.svg";
-import { ReactComponent as Alert } from "../../assets/icons/alert.svg";
+import Contact from "../../assets/icons/person.svg";
+import Alert from "../../assets/icons/alert.svg";
 
-import { parkVistors } from "../../utils/lib/parkVisitors";
+// import { parkVistors } from "../../utils/lib/parkVisitors";
 import { IPark } from "../../utils/hooks/ParkContext";
 import { styled } from "styled-components";
 

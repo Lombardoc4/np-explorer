@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { CardItem, StyledCard, StyledCardContainer } from "../styled/StyledCard";

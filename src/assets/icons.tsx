@@ -1,18 +1,18 @@
-import { ReactComponent as AlertIcon } from "./icons/alert.svg";
-import { ReactComponent as CalendarIcon } from "./icons/calendar-check-fill.svg";
-import { ReactComponent as CarIcon } from "./icons/car-front-fill.svg";
-import { ReactComponent as EmailIcon } from "./icons/envelope-fill.svg";
-import { ReactComponent as FireIcon } from "./icons/fire.svg";
-import { ReactComponent as GlobeIcon } from "./icons/globe.svg";
-import { ReactComponent as HouseIcon } from "./icons/house-fill.svg";
-import { ReactComponent as ListIcon } from "./icons/list-stars.svg";
-import { ReactComponent as MagnifierIcon } from "./icons/magnifier.svg";
-import { ReactComponent as PeopleIcon } from "./icons/people-fill.svg";
-import { ReactComponent as PersonIcon } from "./icons/person.svg";
-import { ReactComponent as PhoneIcon } from "./icons/telephone-fill.svg";
-import { ReactComponent as ShareIcon } from "./icons/share.svg";
-import { ReactComponent as XIcon } from "./icons/x.svg";
-import { ReactComponent as HeadPhoneIcon } from "./icons/headphones.svg";
+import AlertIcon from "./icons/alert.svg";
+import CalendarIcon from "./icons/calendar-check-fill.svg";
+import CarIcon from "./icons/car-front-fill.svg";
+import EmailIcon from "./icons/envelope-fill.svg";
+import FireIcon from "./icons/fire.svg";
+import GlobeIcon from "./icons/globe.svg";
+import HouseIcon from "./icons/house-fill.svg";
+import ListIcon from "./icons/list-stars.svg";
+import MagnifierIcon from "./icons/magnifier.svg";
+import PeopleIcon from "./icons/people-fill.svg";
+import PersonIcon from "./icons/person.svg";
+import PhoneIcon from "./icons/telephone-fill.svg";
+import ShareIcon from "./icons/share.svg";
+import XIcon from "./icons/x.svg";
+import HeadPhoneIcon from "./icons/headphones.svg";
 
 
 export {

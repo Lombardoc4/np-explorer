@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { fetcher, localFetch } from "../helper";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 
 export interface IPark {
     id: string;

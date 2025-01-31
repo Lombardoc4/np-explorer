@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FireIcon } from "../../assets/icons";
+// import { FireIcon } from "../../assets/icons";
 import { WeatherIcon } from "../../assets/weather-icons";
 
 const todayAlts = ["Tonight", "This Afternoon"];

@@ -1,35 +1,41 @@
 {
-  "name": "art-sale",
+  "name": "np-explorer",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
-    "build": "tsc && vite build",
-    "build-prod": "tsc && vite build --base=/np-explorer/",
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@types/geojson": "^7946.0.10",
-    "csstype": "^3.1.2",
-    "leaflet": "^1.9.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-leaflet": "^4.2.1",
-    "react-router-dom": "^6.10.0",
-    "styled-components": "^6.0.0-rc.3",
-    "vite-plugin-svgr": "^3.2.0"
+    "@tailwindcss/postcss": "^4.0.1",
+    "@tailwindcss/vite": "^4.0.1",
+    "@tanstack/react-query": "^5.66.0",
+    "clsx": "^2.1.1",
+    "leaflet": "latest",
+    "postcss": "^8.5.1",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-leaflet": "latest",
+    "react-router": "latest",
+    "styled-components": "latest",
+    "tailwindcss": "^4.0.1"
   },
   "devDependencies": {
-    "@types/leaflet": "^1.9.3",
-    "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.11",
-    "@types/styled-components": "^5.1.26",
-    "@vitejs/plugin-react": "^3.1.0",
-    "typescript": "^4.9.3",
-    "vite": "^4.2.0"
-  },
-  "resolutions": {
-    "styled-components": "^5"
+    "@eslint/js": "latest",
+    "@types/leaflet": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@vitejs/plugin-react-swc": "latest",
+    "eslint": "latest",
+    "eslint-plugin-react-hooks": "latest",
+    "eslint-plugin-react-refresh": "latest",
+    "globals": "latest",
+    "typescript": "latest",
+    "typescript-eslint": "latest",
+    "vite": "latest",
+    "vite-plugin-svgr": "latest"
   }
 }

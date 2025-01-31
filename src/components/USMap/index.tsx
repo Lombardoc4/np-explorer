@@ -1,140 +1,22 @@
-import {  useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'
-import styled from 'styled-components';
-
-import { stateMap, borderMap, otherMap } from '../../utils/lib/stateMap';
-import { StateDropdown } from '../Dropdown/StateDropdown';
-
-const Main = styled.div`
-    background-color: ${({ theme }) => theme.colors.gray};
-    padding: 3em 0;
-
-    .container{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        /* gap: 2em; */
-    }
-
-
-    h2{
-        line-height: 1;
-        font-size: 3em;
-        text-transform: uppercase;
-    }
-`;
-
-const Title = styled.h2`
-    line-height: 1;
-    font-size: 6em;
-    text-transform: uppercase;
-    font-weight: 600;
-    fontStyle: italic;
-`;
-
-interface SubtitleProps {
-    $active?: boolean
-}
-
-const Subtitle = styled.h3<SubtitleProps>`
-    line-height: 1;
-    font-size: 2.5em;
-    text-transform: uppercase;
-    color: #6a9e3f;
-    text-align: center;
-    margin-bottom: 0.25em;
-
-    text-decoration: ${({ $active }) => $active ? 'underline' : 'none'};
-
-    @media (min-width: 768px) {
-        font-size: 3em;
-    }
-
-`;
-
-const USMapSVG = styled.svg`
-    /* width: 320px; */
-    width: 100%;
-    max-width: 900px;
-
-    path {fill: none; cursor: pointer}
-    .borders {stroke:#FFFFFF; stroke-width:1}    /* color and width of borders between states */
-
-    @media (min-width: 768px) {
-    }
-`;
-
-const StatePaths = styled.g`
-    path {
-        fill: ${({ theme }) => theme.colors.primary};
-        &:hover {
-            fill: ${({ theme }) => theme.colors.accent};
-            box-shadow: 5px 2px 10px #000;
-            z-index: 1000;
-        }
-    }
-`;
-
-const Map = () => {
-    const blankState = {name: '', id: ''};
-    const [hoverState, setHoverState] = useState(blankState);
-    const navigate = useNavigate();
-
-
-    return (
-        <>
-            { hoverState.name && <Subtitle $active={true} onClick={() => navigate('/state/' + hoverState.id)}>{hoverState.name}</Subtitle> }
-
-            { !hoverState.name && <Subtitle>Pick a state</Subtitle>}
-
-            <USMapSVG
-            onMouseLeave={() => setHoverState(blankState)}
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 959 593"
-            >
-                <StatePaths>
-                    {stateMap.map((state) => (
-                        <Link key={state.id} to={'/' + state.id}>
-                            <path
-                                onMouseEnter={() => setHoverState(state)}
-                                onTouchStart={() => setHoverState(state)}
-                                className={state.id}
-                                d={state.data} />
-                        </Link>
-                    ))}
-                </StatePaths>
-
-                <g className="borders">
-                    {borderMap.map((state) => (
-                        <path key={state.id} className={state.id} d={state.data} />
-                    ))}
-                </g>
-                {otherMap.map((state) => (
-                    <path key={state.id} className={state.id} d={state.data} />
-                ))}
-            </USMapSVG>
-        </>
-    )
-}
+import { StateDropdown } from "../Dropdown/StateDropdown";
+import { Map } from "./Map"
 
 export const USMap = () => {
     return (
-        <Main>
-            <div className="container">
-                <Title>Where To?</Title>
+        <div className='py-12'>
+            <div className='container mx-auto grid items-center'>
+                <h2 className='text-6xl uppercase font-semibold italic'>Where To?</h2>
 
-                <Map/>
+                <Map />
 
                 {/* Dropdown is for mobile */}
                 {/* Mobile Context? */}
-                    <p style={{textAlign: 'center', fontSize: '1.5em', margin: '1em 0'}}>OR</p>
+                <p className='text-center text-2xl my-4'>OR</p>
 
-                <div style={{padding: '0 1em', width: '100%', minHeight: '50px', position: 'relative', display: 'flex', justifyContent: 'center'}}>
-
-                    <StateDropdown/>
+                <div className='px-4 w-full min-h-[50px] relative flex justify-center'>
+                    <StateDropdown />
                 </div>
-
             </div>
-        </Main>
-    )
-}
+        </div>
+    );
+};

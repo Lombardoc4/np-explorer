@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router";
 
 import { ParkHeader, DirectionSection, WeatherSection, CategorySection } from "./components";
 import { MainGrid } from "./components/StyledParkComponents";

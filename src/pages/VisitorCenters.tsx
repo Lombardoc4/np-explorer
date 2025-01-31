@@ -8,7 +8,7 @@ import { MainGrid, StyledSidebar } from "./Park/components/StyledParkComponents"
 import { DirectionSection } from "./Park/components";
 import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
 import { Loader } from "../components/Loader";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router";
 import { styled } from "styled-components";
 
 const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];

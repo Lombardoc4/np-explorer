@@ -4,7 +4,7 @@ import { USMapCords } from "../../utils/lib/USMap";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { StateProps } from "../../utils/lib/stateMap";
 
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import useOnScreen from "../../utils/hooks/useOnScreen";
 import { Icon, LatLngBoundsExpression, LatLngTuple } from "leaflet";
 
@@ -40,7 +40,7 @@ export const LeafletMap = ({ states, parkCoords }: IMap) => {
 
     return (
         <>
-            <MapContainer center={[37.8, -96]} zoom={3}>
+            <MapContainer center={[37.8, -96]} zoom={3} className="w-full max-h-[500px]">
                 <TileLayer
                     attribution='Map data ©2023 Google'
                     url='http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}'

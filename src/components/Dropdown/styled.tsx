@@ -4,38 +4,38 @@ interface DropdownSearchProps {
     $open: boolean;
 }
 
-export const DropdownSearch = styled.div<DropdownSearchProps>`
-    background-color: #fff;
-    /* background-color: ${({ theme }) => theme.colors.grey}; */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-    border: 1px solid #bdbdbd;
-    border-radius: ${(props: { $open: any }) =>
-        !props.$open
-        ? "var(--def-input-border-radius)"
-        : "var(--def-input-border-radius) var(--def-input-border-radius) 0 0"};
+// export const DropdownSearch = styled.div<DropdownSearchProps>`
+//     background-color: #fff;
+//     /* background-color: ${({ theme }) => theme.colors.grey}; */
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     width: 100%;
+//     max-width: 500px;
+//     margin: 0 auto;
+//     border: 1px solid #bdbdbd;
+//     border-radius: ${(props: { $open: any }) =>
+//         !props.$open
+//         ? "var(--def-input-border-radius)"
+//         : "var(--def-input-border-radius) var(--def-input-border-radius) 0 0"};
 
-    @media (min-width: 768px) {
-        position: absolute;
-        z-index: ${({ theme }) => theme.zIndex.dropdown};
-        left: 50%;
-        transform: translateX(-50%);
-    }
-`;
+//     @media (min-width: 768px) {
+//         position: absolute;
+//         z-index: ${({ theme }) => theme.zIndex.dropdown};
+//         left: 50%;
+//         transform: translateX(-50%);
+//     }
+// `;
 
-export const SearchForm = styled.form`
-    background-color: #fff;
-    /* background-color: ${({ theme }) => theme.colors.grey}; */
+// export const SearchForm = styled.form`
+//     background-color: #fff;
+//     /* background-color: ${({ theme }) => theme.colors.grey}; */
 
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    border-radius: var(--def-input-border-radius);
-`;
+//     position: relative;
+//     width: 100%;
+//     overflow: hidden;
+//     border-radius: var(--def-input-border-radius);
+// `;
 
 
 export const FormResults = styled.ul`

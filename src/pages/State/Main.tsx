@@ -1,4 +1,4 @@
-import { Link, Outlet, useLoaderData, useParams } from "react-router-dom";
+import { Link, Outlet, useLoaderData, useParams } from "react-router";
 import { useContext } from "react";
 import SearchContext from "../../utils/hooks/SearchContext";
 import { IPark } from "../../utils/hooks/ParkContext";

@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import type * as CSS from 'csstype';
+import { Link } from 'react-router';
 
 
 const HeaderBox = styled.header`
@@ -63,7 +62,7 @@ const HeaderBox = styled.header`
 interface HeaderProps {
     children?: any,
     description?: JSX.Element,
-    style? : CSS.Properties
+    style? : React.CSSProperties
     subtitle?: {
         text: string,
         link: string

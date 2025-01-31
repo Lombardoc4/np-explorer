@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Outlet, Link, useLocation, useParams } from "react-router-dom";
+import { Outlet, Link, useLocation, useParams } from "react-router";
 
 import { ImgGrid } from "../../components/ImgGrid";
 

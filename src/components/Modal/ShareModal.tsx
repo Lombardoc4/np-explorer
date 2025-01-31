@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Modal } from ".";
 import styled from "styled-components";
 
-import { ReactComponent as Share } from "../../assets/icons/share.svg";
-import { ReactComponent as XIcon } from "../../assets/icons/x.svg";
+import Share from "../../assets/icons/share.svg";
+import XIcon from "../../assets/icons/x.svg";
 import { StyledCard } from "../styled/StyledCard";
 
 

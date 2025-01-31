@@ -6,7 +6,7 @@ import { ContactCard, FeeCard } from "./Park/Sidebar";
 import { DirectionSection } from "./Park/components";
 import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
 import { WeatherDisplay } from "../components/Weather";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router";
 
 const Camping = () => {
     // const [camping, setCamping] = useState<any[]>([]);

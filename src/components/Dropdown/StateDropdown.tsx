@@ -1,5 +1,5 @@
 import { Dropdown } from "../Dropdown";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { stateMap } from "../../utils/lib/stateMap";
 
 export const StateDropdown = () => {
@@ -12,7 +12,6 @@ export const StateDropdown = () => {
     return(
         <Dropdown
         placeholder='Search for a state'
-        // options={allParks.map((park) => ({value: park.id, title: park.fullName}))}
         options={stateMap.map((state) => ({value: state.id, title: state.name}))}
         onSelect={(option) => handleStateSelect(option)}
         />

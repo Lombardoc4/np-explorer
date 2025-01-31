@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { styled } from "styled-components";
 
 import { Dropdown } from "../Dropdown";
@@ -26,8 +26,10 @@ const sortActivities = (activeParks: IPark[]) => {
     // Get Park Activity names and count
     // Reduce activity duplicates and keep count
     // !ouch
-    const activities = activeParks.reduce((acc: any, park: any) => {// Loop 1
-        park.activities.forEach((activity: { name: string }) => { // Loop 2
+    const activities = activeParks.reduce((acc: any, park: any) => {
+        // Loop 1
+        park.activities.forEach((activity: { name: string }) => {
+            // Loop 2
 
             const existingItem = acc.find((obj: { name: string }) => obj.name === activity.name); // Loop 3
 
@@ -39,7 +41,6 @@ const sortActivities = (activeParks: IPark[]) => {
         });
         return acc;
     }, []);
-
 
     // Return sorted array of activities by name
     return activities.sort((a: any, b: any) => {
@@ -68,8 +69,6 @@ export const ParkCardFilters = ({ otherParks, toggleFilter }: ParkCardFiltersPro
     // Sort Park Activities by with the most common first
     const activities = sortActivities(otherParks);
 
-
-
     useEffect(() => {
         if (!onScreen) setShowFilters(false);
     }, [onScreen]);
@@ -79,23 +78,18 @@ export const ParkCardFilters = ({ otherParks, toggleFilter }: ParkCardFiltersPro
     };
 
     const handleInput = (e: React.MouseEvent) => {
-        const { name, value }= e.target as HTMLInputElement;
-		if (name === 'entranceFees' || name === 'entrancePasses'||name === 'activities') { //typescript 🫡
-			toggleFilter({ name: name, value: value });
-		}
+        const { name, value } = e.target as HTMLInputElement;
+        if (name === "entranceFees" || name === "entrancePasses" || name === "activities") {
+            //typescript 🫡
+            toggleFilter({ name: name, value: value });
+        }
     };
 
     return (
-        <div className='filters'>
-            <div className='container' style={{ backgroundColor: "#fff" }}>
+        <div className='grid px-4 mb-4 items-center sticky z-20 bg-white'>
+            <div className='container bg-white mx-auto'>
                 <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "flex-end",
-                        height: "var(--def-input-height)",
-                        // margin: "1em 0",
-                    }}
+                className="flex items-end justify-center h-[50px]"
                 >
                     <button
                         style={{ marginRight: "auto" }}
@@ -123,21 +117,25 @@ export const ParkCardFilters = ({ otherParks, toggleFilter }: ParkCardFiltersPro
                     <h3>{otherParks.length} Parks</h3>
                 </div>
 
-                    <Dropdown
-                        style={{top: '1rem'}}
-                        placeholder={`Find a park`}
-                        options={dropdownOptions}
-                        onSelect={(option) => handleParkSelect(option)}
-                    />
+                <Dropdown
+                    style={{ top: "1rem" }}
+                    placeholder={`Find a park`}
+                    options={dropdownOptions}
+                    onSelect={(option) => handleParkSelect(option)}
+                />
             </div>
 
-            <FilterCard ref={filterRef} className='container' style={{ opacity: showFilters ? 1 : 0, pointerEvents: showFilters ? 'all' : 'none' }}>
-                <FilterCell>
+            <div
+                ref={filterRef}
+                className='absolute top-full border-b-lg p-4 '
+                style={{ opacity: showFilters ? 1 : 0, pointerEvents: showFilters ? "all" : "none" }}
+            >
+                <div className='grid items-start gap-2'>
                     <h3>Cost</h3>
                     <h4>Fees:</h4>
 
                     <div className='checkbox'>
-                        <input onClick={handleInput} type='radio' id='all' name='entranceFees' value=''  />
+                        <input onClick={handleInput} type='radio' id='all' name='entranceFees' value='' />
                         <label htmlFor='all'>All</label>
                     </div>
                     <div className='checkbox'>
@@ -160,9 +158,10 @@ export const ParkCardFilters = ({ otherParks, toggleFilter }: ParkCardFiltersPro
                         />
                         <label htmlFor='annual-pass'>Annual Pass</label>
                     </div>
-                </FilterCell>
+                </div>
 
-                <FilterCell>
+                <div className='grid items-start gap-2'>
+                    {" "}
                     <h3>Activities</h3>
                     {activities.map(({ name, count }: { name: string; count: number }) => (
                         <div key={name} className='checkbox'>
@@ -172,8 +171,8 @@ export const ParkCardFilters = ({ otherParks, toggleFilter }: ParkCardFiltersPro
                             </label>
                         </div>
                     ))}
-                </FilterCell>
-            </FilterCard>
+                </div>
+            </div>
         </div>
     );
 };

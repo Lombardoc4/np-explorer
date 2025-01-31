@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, useLoaderData, useParams } from "react-router-dom";
+import { Link, useLoaderData, useParams } from "react-router";
 import ParkContext from "../utils/hooks/ParkContext";
 import { MainGrid, StyledSidebar } from "./Park/components/StyledParkComponents";
 import { Loader } from "../components/Loader";
