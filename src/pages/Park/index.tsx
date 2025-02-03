@@ -10,14 +10,17 @@ import { ParkCards } from "./components";
 import SearchContext from "../../utils/hooks/SearchContext";
 
 export const ParkPage = () => {
-    const park = useContext(ParkContext);
+    const { status, error, data: park} = useContext(ParkContext);
     const location = useLocation();
 
-    const allParks = useContext(SearchContext);
-    const states = stateMap.filter((s) => park.states.includes(s.id.toUpperCase()));
-    const otherParks = allParks.filter((p: IPark) =>
-        states.some((s) => p.states.includes(s.id.toUpperCase()))
-    );
+    if (status === 'pending') {
+        return <>Loading...</>
+    }
+
+    // const states = stateMap.filter((s) => park.states.includes(s.id.toUpperCase()));
+    // const otherParks = allParks.filter((p: IPark) =>
+    //     states.some((s) => p.states.includes(s.id.toUpperCase()))
+    // );
 
 
     if (!park) {
@@ -27,7 +30,7 @@ export const ParkPage = () => {
 
     return (
         <>
-            <header className='container'>
+            <header className='mt-20 mx-4'>
                 <ParkHeader park={park} />
                 {park.images.length > 0 && <ImgGrid images={park.images} />}
             </header>
@@ -45,7 +48,7 @@ export const ParkPage = () => {
                 <Outlet />
 
                 {/* <div className='container'> */}
-                    <ParkCards title={"Explore Other Parks"} parks={otherParks}  states={states}/>
+                    {/* <ParkCards title={"Explore Other Parks"} parks={otherParks}  states={states}/> */}
                 {/* </div> */}
             </main>
         </>

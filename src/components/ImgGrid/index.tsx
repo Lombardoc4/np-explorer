@@ -44,10 +44,16 @@ export const ImgGrid = ({ images }: ImgGridProps) => {
 
     return (
         <>
-            <StyledGrid $item={previewImages.length}>
+            <div
+                className='grid relative overflow-hidden rounded-lg cursor-pointer my-4'
+                style={{
+                    gridTemplateColumns: `2fr ${previewImages.length <= 2 ? "1fr" : "1fr 1fr"}`,
+                    gridTemplateRows: `repeat(${previewImages.length <= 3 ? "1, 500px" : "2, 250px"})`,
+                }}
+            >
                 {previewImages.map((image: any) => (
-                    <div key={image.url} className='img-container'  onClick={() => setModalOpen(true)}>
-                        <img src={image.url} alt={image.altText} />
+                    <div key={image.url} className='first:row-span-full overflow-hidden' onClick={() => setModalOpen(true)}>
+                        <img className="h-full w-full object-cover" src={image.url} alt={image.altText} />
                     </div>
                 ))}
                 <div
@@ -64,7 +70,7 @@ export const ImgGrid = ({ images }: ImgGridProps) => {
                 >
                     View all photos
                 </div>
-            </StyledGrid>
+            </div>
             {modal}
         </>
     );

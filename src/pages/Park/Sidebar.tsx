@@ -9,72 +9,75 @@ import styled from "styled-components";
 import { IPark } from "../../utils/hooks/ParkContext";
 import { StyledSidebar } from "./components/StyledParkComponents";
 import { PhoneIcon, EmailIcon, GlobeIcon } from "../../assets/icons";
+import { Speech, Phone, Globe, Mail, Info } from "lucide-react";
+import { useState } from "react";
 
 const FeeItem = ({ cost, title, description }: { cost: string; title: string; description: string }) => {
+    const [showDescription, setShowDescription] = useState(false)
+
     title = title
         .replace("-", "\u2011")
         .replace("/", " ")
         .slice(title.indexOf("-") + 1, title.length);
     return (
-        <CardItem>
-            <h3>{title}</h3>
-            <p className='bold'>${cost}</p>
-            <p>{description}</p>
-        </CardItem>
+        <div className='w-full relative border rounded-lg flex flex-col text-center justify-center items-center min-h-24'>
+                <h3 className='text-xl'>{title}</h3>
+            <div className='flex gap-2 items-center justify-center'>
+            <p className='font-bold'>${cost}</p>
+                <Info onMouseEnter={() => setShowDescription(true)} onMouseLeave={() => setShowDescription(false)} />
+            </div>
+            {showDescription && <p className='absolute bottom-full bg-white rounded p-2 text-sm text-black'>{description}</p>}
+        </div>
     );
 };
 
 export const FeeCard = ({ entranceFees }: any) => {
     if (entranceFees.length === 0)
         return (
-            <StyledCardContainer id='fees' className='no-fees'>
-                <h2>No Entrance Fees</h2>
+            <div  id='fees' className="scroll-m-24">
+                <h2 className="text-4xl font-bold mb-4">No Entrance Fees</h2>
                 <div className='img-container' style={{ padding: "1em 0 0" }}>
                     <img src='/hiking.svg' />
                 </div>
-            </StyledCardContainer>
+            </div>
         );
 
     return (
-        <StyledCardContainer id='fees'>
-            <h2>Entrance Fees</h2>
-            <StyledCard $bg='#ffffff'>
+        <div className='scroll-m-24' id='fees'>
+            <h2 className='text-4xl font-bold mb-4'>Entrance Fees</h2>
+            <div className="grid grid-cols-4 gap-4">
                 {entranceFees.map((fee: any) => (
                     <FeeItem key={fee.title} cost={fee.cost} title={fee.title} description={fee.description} />
                 ))}
-            </StyledCard>
-        </StyledCardContainer>
+            </div>
+        </div>
     );
 };
 
 export const ContactPhone = ({ type, number }: { type: string; number: string }) => {
     const icon =
         type === "TTY" ? (
-            <img
-                width={24}
-                height={24}
-                src={`https://raw.githubusercontent.com/nationalparkservice/symbol-library/gh-pages/src/standalone/${SymbolMap["Text Telephone/TTY"]}-black-22.svg`}
-            />
+            <Speech />
         ) : (
-            <PhoneIcon width={24} height={24} />
+            <Phone width={24} height={24} />
         );
 
     if (type === "Fax" || number.length <= 0) return <></>;
 
     return (
-        <ContactItem>
+        <div className="w-full flex items-center gap-4">
             {icon}
-            <a href={`tel:${number}`}>{number.replace("/", "-")}</a>
-        </ContactItem>
+            <a href={`tel:${number}`}>{type}: {number.replace("/", "-")}</a>
+        </div>
     );
 };
 
 export const ContactEmail = ({ email }: { email: string }) => (
     <>
         {email.length > 0 && email !== "0@0" && (
-            <ContactItem>
-                <EmailIcon width={24} height={24} /> <a href={`mailto:${email}`}>{email}</a>
-            </ContactItem>
+            <div className='w-full flex items-center gap-4'>
+                <Mail width={24} height={24} /> <a href={`mailto:${email}`}>Email:{email}</a>
+            </div>
         )}
     </>
 );
@@ -89,9 +92,9 @@ export const ContactCard = ({
     children?: JSX.Element;
 }) => {
     return (
-        <StyledCardContainer id='contact'>
-            <h2>Contact</h2>
-            <StyledContactCard>
+        <div id='contact'>
+            <h2 className="font-semibold text-xl">Contact</h2>
+            <div>
                 {contacts &&
                     contacts.phoneNumbers.length > 0 &&
                     contacts.phoneNumbers.map(({ type, phoneNumber }: { type: string; phoneNumber: string }) => (
@@ -105,32 +108,30 @@ export const ContactCard = ({
                     ))}
 
                 {url && (
-                    <ContactItem>
-                        <GlobeIcon width={24} height={24} />
+                    <div className="w-full flex items-center gap-4">
+                        <Globe width={24} height={24} />
                         <Link to={url}>Official National Parks Page</Link>
-                    </ContactItem>
+                    </div>
                 )}
 
                 {children}
-            </StyledContactCard>
-        </StyledCardContainer>
+            </div>
+        </div>
     );
 };
 
 export const Sidebar = ({ park }: ParkProps) => {
     return (
-        <StyledSidebar>
-            <ParkAlert parkId={park.parkCode} />
+        <div className="grid gap-8">
 
-            <ContactCard contacts={park.contacts} url={park.url} />
 
             <FeeCard entranceFees={park.entranceFees} />
-        </StyledSidebar>
+        </div>
     );
 };
 
 export const StyledContactCard = styled(StyledCard).attrs((props) => ({
-    $border: "2px solid " + props.theme.colors.black,
+    // $border: "2px solid " + props.theme.colors.black,
 }))`
     box-shadow: rgba(0, 0, 0, 0.26) 0px 2px 8px;
     font-size: 1.2em;

@@ -1,28 +1,31 @@
 export const Footer = () => {
     return (
-        <footer style={{ backgroundColor: "#000", color: "#fff", padding: "2em 0" }}>
-            <div className='container' style={{ textAlign: "center" }}>
+        <footer className='bg-black text-white py-8'>
+            <div className='container mx-auto text-center'>
                 <p>
                     This site was built by{" "}
-                    <a href='https://github.com/Lombardoc4' target='_blank'>
+                    <a className='underline' href='https://github.com/Lombardoc4' target='_blank'>
                         Cris Lombardo
                     </a>{" "}
                     -{" "}
-                    <a href='https://github.com/Lombardoc4/np-explorer' target='_blank'>
-                        View Code
+                    <a className='underline' href='https://github.com/Lombardoc4/np-explorer' target='_blank'>
+                        Code
                     </a>{" "}
                 </p>
-                <p>
-                    Special thanks to{" "}
-                    <a href='https://nps.gov' target='_blank'>
-                        National Parks Service
-                    </a>
-                    {" "}
-                    <a href='https://www.weather.gov/' target='_blank'>
-                        National Weather Service
-                    </a>
+                <p className="text-sm">Special thanks to</p>
+                <ul className="text-sm">
+                    <li>
+                        <a className='underline' href='https://nps.gov' target='_blank'>
+                            National Parks Service
+                        </a>
+                    </li>
+                    <li>
+                        <a className='underline' href='https://www.weather.gov/' target='_blank'>
+                            National Weather Service
+                        </a>
+                    </li>
                     {/* <a href="https://github.com/erikflowers" target="_blank">Eric Flowers</a> */}
-                </p>
+                </ul>
             </div>
         </footer>
     );

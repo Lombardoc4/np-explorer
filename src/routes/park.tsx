@@ -16,7 +16,7 @@ import { ParkProvider } from "../utils/hooks/ParkContext";
 export const parkRoutes = (
     <>
      <Route path="park/:parkId/" element={<ParkProvider><ParkPage/></ParkProvider>}  >
-        <Route path="" element={<Park/>}/>
+        <Route index element={<Park/>}/>
         <Route path="things-to-do" element={<ThingsToDo/>}/>
         <Route path="camping" element={<Camping/>}/>
         <Route path="events" element={<Events/>}/>

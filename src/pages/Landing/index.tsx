@@ -1,31 +1,7 @@
-import { ParksDropdown } from "../components/Dropdown/ParksDropdown";
-import { Header } from "../components/Header";
-import styled from "styled-components";
-import { USMap } from "../components/USMap";
-import { ParkCardGrid, ParkCards } from "./Park/components";
-import { useContext } from "react";
-import SearchContext from "../utils/hooks/SearchContext";
-import { ParkLocalStorage } from "../utils/hooks/ParkContext";
-import { StateProps, stateMap } from "../utils/lib/stateMap";
-
-const Container = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-`;
+import { ParksDropdown } from "../../components/Dropdown/ParksDropdown";
+import { USMap } from "../../components/USMap";
 
 export const LandingPage = () => {
-    const allParks = useContext(SearchContext);
-    const lsParks = JSON.parse(localStorage.getItem('npe-recently-viewed') || '[]');
-    const recentParks = allParks.filter(p => lsParks.find((lsPark: ParkLocalStorage) => lsPark.parkCode === p.parkCode))
-    const recentParksStates = recentParks.reduce((acc: StateProps[], p) => {
-        stateMap.map((s) => {
-            if (p.states.includes(s.id.toUpperCase()) )
-                acc.push(s)
-        })
-        return acc;
-    }, [])
-
-
     return (
         <>
             <header className='bg-[url(https://www.nps.gov/common/uploads/structured_data/3C7FA4C5-1DD8-B71B-0B7FCC54E43FEE79.jpg)] bg-center bg-cover min-h-dvh grid'>
@@ -91,10 +67,6 @@ export const LandingPage = () => {
             </div>
 
             <USMap />
-
-            {recentParks.length > 0 && (
-                <ParkCards parks={recentParks} title={"Recently Viewed Parks"} states={recentParksStates} />
-            )}
         </>
     );
 };

@@ -28,11 +28,12 @@ export const ParkAlert = ({ parkId }: { parkId: string }) => {
             });
     }, [parkId]);
 
-    if (alerts.length <= 0) return (
-        <StyledCardContainer id='alerts'>
-            <h2>NO ALERTS</h2>
-        </StyledCardContainer>
-    )
+    if (alerts.length <= 0) return
+    // if (alerts.length <= 0) return (
+    //     <StyledCardContainer id='alerts'>
+    //         <h2>NO ALERTS</h2>
+    //     </StyledCardContainer>
+    // )
 
     return (
         <StyledCardContainer id='alerts'>

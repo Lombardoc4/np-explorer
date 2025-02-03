@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 // import { FireIcon } from "../../assets/icons";
 import { WeatherIcon } from "../../assets/weather-icons";
-
+import "../../styles/weather-icons.min.css"
+import "../../styles/weather-icons-wind.min.css"
 const todayAlts = ["Tonight", "This Afternoon"];
 
 const reduceForecast = (periods: any[]) => {
@@ -19,8 +20,7 @@ const reduceForecast = (periods: any[]) => {
             // Update high and low temperatures in the existing entry
             existingDayEntry.high = Math.max(existingDayEntry.high, forecast.temperature);
             existingDayEntry.low = Math.min(existingDayEntry.low, forecast.temperature);
-
-        } else if (isDay || !acc.find((item) => item.name === 'Today')) {
+        } else if (isDay || !acc.find((item) => item.name === "Today")) {
             acc.push({
                 ...forecast,
                 high: forecast.temperature,
@@ -97,6 +97,7 @@ export const WeatherDisplay = ({ lat, long }: { lat: string; long: string }) => 
     const [hourly, setHourly] = useState<IForecast[]>([]);
     const [location, setLocation] = useState<ILocation>({ city: "", state: "" });
     const [view, setView] = useState<"24" | "7">("24");
+    const [dayView, setDayView] = useState(true);
 
     const current = hourly[0];
 
@@ -119,18 +120,20 @@ export const WeatherDisplay = ({ lat, long }: { lat: string; long: string }) => 
     // console.log("seven", sevenDay.map(d => ([d.startTime, d.shortForecast])));
     // console.log("hourly", hourly.map(d => ([d.name, d.shortForecast])));
 
-    if (hourly.length <= 0 || sevenDay.length <= 0 || location.city.length <= 0) return <div className="weather-display">Loading Weather</div>;
+    if (hourly.length <= 0 || sevenDay.length <= 0 || location.city.length <= 0)
+        return <div className='weather-display'>Loading Weather</div>;
 
     return (
-        <div className='weather-display'>
-            <div style={{ borderBottom: "1px solid #000", paddingBottom: "0.5em", marginBottom: '0.5em' }}>
-                <h4 style={{ fontSize: "2em", textAlign: "center" }}>
+        <div className='grid border p-4 rounded-lg'>
+            <div className="text-center mb-4">
+                <h4 className="text-4xl">
                     {location.city}, {location.state}
                 </h4>
 
-                <div style={{ display: "grid", alignItems: "center", textAlign: "center", gap: "0.25em" }}>
-                    <p style={{ fontSize: "3em" }}>
-                        <WeatherIcon id={current.shortForecast} style={{fontSize: 'inherit'}} /> {current.temperature}&deg;{current.temperatureUnit}
+                <div className="grid items-center gap-1" >
+                    <p className="text-5xl" style={{ fontSize: "3em" }}>
+                        <WeatherIcon id={current.shortForecast} style={{ fontSize: "inherit" }} /> {current.temperature}
+                        &deg;{current.temperatureUnit}
                     </p>
                     <p>{current.shortForecast}</p>
                     <p>
@@ -138,7 +141,7 @@ export const WeatherDisplay = ({ lat, long }: { lat: string; long: string }) => 
                         {sevenDay[0].low}&deg;{sevenDay[0].temperatureUnit} <b>L:</b>
                         {sevenDay[0].high}&deg;{sevenDay[0].temperatureUnit}
                     </p>
-                    <div style={{display: 'flex', gap: '1em', margin: 'auto'}}>
+                    <div className="flex gap-4 mx-auto">
                         <p>
                             <WeatherIcon id={"umbrella"} /> {current.probabilityOfPrecipitation.value}% Percipitation
                         </p>
@@ -146,41 +149,44 @@ export const WeatherDisplay = ({ lat, long }: { lat: string; long: string }) => 
                             <WeatherIcon id={"humidity"} /> {current.relativeHumidity.value}% Humidity
                         </p>
                         <p>
-                            <WeatherIcon id={"wind-" + current.windDirection} /> {current.windSpeed} {current.windDirection}
+                            <WeatherIcon id={"wind-" + current.windDirection} /> {current.windSpeed}{" "}
+                            {current.windDirection}
                         </p>
                     </div>
                 </div>
             </div>
-
-                <div>
+            <div className='overflow-scroll'>
+                <div className="flex gap-4 justify-center">
                     <a
                         onClick={() => {
-                            setView("24");
+                            setDayView(true);
                         }}
-                        className={(view === "24" ? "bold " : "") + "btn"}
+                        className='rounded-xl px-2 py-1 border'
                     >
-                        24 Hour Forecast
+                        24 Hour
                     </a>
                     <a
                         onClick={() => {
-                            setView("7");
+                            setDayView(false);
                         }}
-                        className={(view === "7" ? "bold " : "") + "btn"}
+                        className='border rounded-xl px-2 py-1'
                     >
-                        7 Day Forecast
+                        7 Day
                     </a>
                 </div>
                 <div
                     style={{
                         marginTop: "0.5em",
                         display: "grid",
-                        gridTemplateColumns: `repeat(${view==='24' ? hourly.length : sevenDay.length}, ${view === '24' ? '90px' : '120px'})`,
+                        gridTemplateColumns: `repeat(${dayView ? hourly.length : sevenDay.length}, ${
+                            dayView ? "90px" : "120px"
+                        })`,
                         overflow: "scroll",
                         paddingBottom: "0.5em",
                         // gridColumn: "1 / -1",
                     }}
                 >
-                    {view === "24" &&
+                    {dayView &&
                         hourly.map((forecast: any) => (
                             <div
                                 key={forecast.startTime}
@@ -201,7 +207,7 @@ export const WeatherDisplay = ({ lat, long }: { lat: string; long: string }) => 
                                 </p>
                             </div>
                         ))}
-                    {view === "7" &&
+                    {!dayView &&
                         sevenDay.map((ww: any) => (
                             <div
                                 key={ww.name}
@@ -226,6 +232,7 @@ export const WeatherDisplay = ({ lat, long }: { lat: string; long: string }) => 
                         ))}
                 </div>
                 {/* <small>Updated: {view === "24" ? updates.hourly : updates.sevenDay}</small> */}
+            </div>
         </div>
     );
 };

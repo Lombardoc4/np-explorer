@@ -23,13 +23,13 @@ export const NavBar = () => {
     }, [offscreen]);
 
     return (
-        <nav className='bg-white top-0 h-[70px] shadow fixed start-0 end-0 flex'>
+        <nav className='z-30 bg-white top-0 h-[64px] shadow fixed start-0 end-0 flex'>
             <div className='container mx-auto flex justify-center items-center'>
                 {/* Left */}
                 <div className='mr-auto'>
                     <Link to='/' className='flex'>
                         {/* <Logo src={logo} alt="National Park Exp Logo"/> */}
-                        <img src={logo} alt='NPS Logo' className="max-w-24" />
+                        <img src={logo} alt='NPS Logo' className="max-w-20" />
                     </Link>
                 </div>
 

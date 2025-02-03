@@ -24,6 +24,18 @@ body {
   min-height: 100vh;
 }
 
+.no-scroll {
+  overflow: hidden
+}
+
+.lucide {
+  /* Change this! */
+  /* color: #ffadff; */
+  /* width: 24px;
+  height: 24px; */
+  stroke-width: 2px;
+}
+
 /*
 a {
   font-weight: 500;

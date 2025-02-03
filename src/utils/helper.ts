@@ -13,7 +13,9 @@ export const localFetch = async (input: RequestInfo, init?: RequestInit) => {
 };
 
 export const fetcher = async (input: RequestInfo, init?: RequestInit) => {
-    const url = `https://developer.nps.gov/api/v1/${input}&limit=500&api_key=${import.meta.env.VITE_NPS_API_KEY}`;
+    console.log('input', input.toString())
+    const limit = !input.toString().includes('&limit=') ? '&limit=500' : ''
+    const url = `https://developer.nps.gov/api/v1/${input}${limit}&api_key=${import.meta.env.VITE_NPS_API_KEY}`;
     const res = await fetch(url, init);
     const data = await res.json();
 

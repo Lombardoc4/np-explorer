@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { fetcher, localFetch } from "../helper";
 import { useParams } from "react-router";
+import { useQuery } from "@tanstack/react-query";
 
 export interface IPark {
     id: string;
@@ -96,7 +97,13 @@ export interface ParkLocalStorage {
     parkCode: string,
 }
 
-const ParkContext = createContext<IPark>({} as IPark);
+const initContext = {
+    status: "pending" as "error" | "success" | "pending",
+    error: null as Error | null,
+    data: undefined as IPark | undefined
+}
+
+const ParkContext = createContext(initContext);
 
 const SetLocalStorage = (data: ParkLocalStorage) => {
     // Get Local Storage Value
@@ -122,33 +129,38 @@ const SetLocalStorage = (data: ParkLocalStorage) => {
 }
 
 function ParkProvider({ children }: { children: React.ReactNode }) {
-    const [myData, setMyData] = useState<IPark>();
     const { parkId } = useParams();
+    const [context, setContext] = useState(initContext);
+
+    const { status, data, error } = useQuery<IPark[]>({
+        queryKey: ["parks", { parkCode: parkId }],
+        queryFn: async ({ queryKey }) => {
+            const { parkCode } = queryKey[1] as { parkCode: string };
+            if (!parkCode) return [];
+
+            const data = await fetcher(`parks?parkCode=${parkCode}`);
+            console.log("data", data)
+            SetLocalStorage({
+                name: data[0].fullName,
+                parkCode: data[0].parkCode
+            })
+            return data[0];
+        },
+        // enabled: !!parkId, // Enable query execution only if parkId exists
+    });
 
     useEffect(() => {
 
-        // localFetch("park/" + parkId)
-        fetcher('parks?parkCode=' + parkId)
-            .then((data: IPark[]) => {
-                // console.log('fetchData', data);
-                // Set Context
-                setMyData(data[0])
+        if (status === "success") {
+            setContext({ status: "success", data, error: null });
+        } else if (status === "error") {
+            setContext({ status: "error", data: undefined, error });
+        } else if (status === "pending") {
+            setContext((prev) => ({ ...prev, status: "pending" }));
+        }
+    }, [status, data, error]);
 
-                // Set/Update Local Storage
-                SetLocalStorage({
-                    name: data[0].fullName,
-                    parkCode: data[0].parkCode
-                })
-
-            })
-            .catch((error) => console.error(error));
-    }, [parkId]);
-
-    if (!myData) {
-        return <>Loading Park Data</>;
-    }
-
-    return <ParkContext.Provider value={myData}>{children}</ParkContext.Provider>;
+    return <ParkContext.Provider value={context}>{children}</ParkContext.Provider>;
 }
 
 export default ParkContext;

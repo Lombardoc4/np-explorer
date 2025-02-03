@@ -41,27 +41,15 @@ export const Modal = ({isOpen, closeAction, styles, overlayStyles, children}: Mo
     }
 
     return (
-        <Overlay onClick={handleClose} id="modal-overlay" style={{...overlayStyles}}>
-            <StyledModal style={{...styles}}>
+        <div
+            className='z-50 absolute inset-0  bg-black/30'
+            onClick={handleClose}
+            id='modal-overlay'
+            style={{ ...overlayStyles }}
+        >
+            {/* <div style={{ ...styles }}> */}
                 {children}
-            </StyledModal>
-        </Overlay>
-    )
+            {/* </div> */}
+        </div>
+    );
 }
-
-const Overlay = styled.div.attrs({className: 'overlay'})`
-    position: fixed;
-    z-index: ${({theme}) => theme.zIndex.modal} !important;
-`
-
-const StyledModal = styled.div`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    right: auto;
-    bottom: auto;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
-    background-color: ${({theme}) => theme.colors.white};
-    border-radius: ${({theme}) => theme.radius.md};
-`

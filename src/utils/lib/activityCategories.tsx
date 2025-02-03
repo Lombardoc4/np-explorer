@@ -1,13 +1,8 @@
-import ListStar from "../../assets/icons/list-stars.svg";
-import Fire from "../../assets/icons/fire.svg";
-import CalendarCheck from "../../assets/icons/calendar-check-fill.svg";
-import People from "../../assets/icons/people-fill.svg";
-import House from "../../assets/icons/house-fill.svg";
-import Car from "../../assets/icons/car-front-fill.svg";
+import { Bus, CalendarCheck2, Car, FlameKindling, House, List } from "lucide-react";
 
 export interface ActivityDetails {
     name: string;
-    icon: JSX.Element;
+    icon?: JSX.Element;
     path: string;
     count?: number;
 }
@@ -20,31 +15,31 @@ export const activityCategories: ActivityCategory = {
     visitorCenters: {
         name: "Visitor Centers",
         path: "visitor-centers",
-        icon: <House width={32} height={32} />,
+        icon: <House size={48}/>,
     },
     tours: {
         name: "Tours",
         path: "tours",
-        icon: <People width={32} height={32} />,
+        icon: <Bus size={48}/>,
     },
     campgrounds: {
         name: "Campgrounds",
         path: "camping",
-        icon: <Fire width={32} height={32} />,
+        icon: <FlameKindling size={48}/>,
     },
     events: {
         name: "Events",
         path: "events",
-        icon: <CalendarCheck width={32} height={32} />,
+        icon: <CalendarCheck2  size={48}/>,
     },
     thingsToDo: {
         name: "Things to do",
         path: "things-to-do",
-        icon: <ListStar width={32} height={32} />,
+        icon: <List  size={48} />,
     },
     parkingLots: {
         name: "Parking",
         path: "parking",
-        icon: <Car width={32} height={32} />,
+        icon: <Car  size={48} />,
     },
 };

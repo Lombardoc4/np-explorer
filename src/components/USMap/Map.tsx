@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { stateMap, borderMap, otherMap } from "../../utils/lib/stateMap";
+import { StateDropdown } from "../Dropdown/StateDropdown";
 
 export const Map = () => {
     const blankState = { name: "", id: "" };
@@ -9,12 +10,21 @@ export const Map = () => {
 
     return (
         <>
-            <h3
-                className='text-4xl uppercase text-center underline'
-                onClick={() => hoverState.name && navigate("/state/" + hoverState.id)}
-            >
-                {hoverState.name || "Pick a state"}
-            </h3>
+            <div className='grid grid-cols-2 items-center mb-4 '>
+                <div>
+                    <h2 className='text-6xl uppercase font-semibold italic'>Where To?</h2>
+                    <h3
+                        className='text-4xl uppercase underline'
+                        onClick={() => hoverState.name && navigate("/state/" + hoverState.id)}
+                    >
+                        {hoverState.name || "Pick a state"}
+                    </h3>
+                </div>
+
+                <div className='w-full min-h-[50px] relative flex justify-center'>
+                    <StateDropdown />
+                </div>
+            </div>
 
             <svg
                 className='w-full max-w-[750px] mx-auto'
@@ -26,10 +36,9 @@ export const Map = () => {
                     {stateMap.map((state) => (
                         <Link key={state.id} to={"/" + state.id}>
                             <path
-                                fill='#6a9e3f'
+                                className='fill-green-700 hover:fill-green-900'
                                 onMouseEnter={() => setHoverState(state)}
                                 onTouchStart={() => setHoverState(state)}
-                                className={state.id}
                                 d={state.data}
                             />
                         </Link>

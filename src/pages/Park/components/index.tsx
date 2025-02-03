@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 
-import { ActivityDetails } from "../../../utils/lib/activityCategories";
-import { filterParks, getVisitorCount, uniqueCategoryItems } from "../../../utils/helper";
+import { activityCategories, ActivityDetails } from "../../../utils/lib/activityCategories";
+import { fetcher, filterParks, getVisitorCount, uniqueCategoryItems } from "../../../utils/helper";
 import { useContext, useEffect, useState } from "react";
 import { IMarker, LeafletMap } from "../../../components/LeafletMap";
 import { ParkCardFilters } from "../../../components/ParkCardFilters";
@@ -11,6 +11,9 @@ import SearchContext from "../../../utils/hooks/SearchContext";
 import { StateProps, stateMap } from "../../../utils/lib/stateMap";
 import styled from "styled-components";
 import ParkContext, { IPark } from "../../../utils/hooks/ParkContext";
+import { ContactCard } from "../Sidebar";
+import { useQueries, useQuery } from "@tanstack/react-query";
+import { Button } from "../../../components/Button";
 
 export interface ParkProps {
     park: any;
@@ -26,33 +29,26 @@ export interface InputProps {
     value: string;
 }
 
-interface HeaderProps extends ParkProps {
-    categories: ActiveCatergory[];
-}
+export const ParkHeader = ({ park }: ParkProps) => {
+    // const visitCount = getVisitorCount(park.parkCode);
+    const categories = activityCategories;
 
-export const ParkHeader = ({ park, categories }: HeaderProps) => {
-    const visitCount = getVisitorCount(park.parkCode);
-
-    const categoryEls = categories.map((category: ActivityDetails, i: number) => (
-        <span key={category.name}>
-            {i > 0 && <> - </> /*this is a divider*/}
-
-            <a href={"#" + category.name.replaceAll(" ", "-").toLowerCase()}>
-                {category.count} {category.name}
-            </a>
-        </span>
+    const categoryEls = Object.values(categories).map((category: ActivityDetails) => (
+        <a
+            key={category.name}
+            className='underline text-xl'
+            href={"#" + category.name.replace(/ /g, "-").toLowerCase()}
+        >
+            {/* {category.count}  */}
+            {category.name}
+        </a>
     ));
 
     return (
         <>
-            <div className='section' style={{ display: "flex", flexDirection: "column" }}>
-                <h2>{park.fullName}</h2>
-                {visitCount > 0 && <span>{visitCount} visitors in 2022</span>}
-                <div style={{ margin: "auto 0", display: "flex", flexWrap: "wrap", gap: "0.25em" }}>{categoryEls}</div>
-            </div>
-            <div className='section'>
-                <p>{park.description}</p>
-            </div>
+            {/* {visitCount > 0 && <span>{visitCount} visitors in 2022</span>} */}
+            <p className='text-3xl'>{park.description}</p>
+            <div className='my-4 flex justify-evenly p-2 border rounded'>{categoryEls}</div>
         </>
     );
 };
@@ -61,30 +57,31 @@ export const DirectionSection = ({ park, children }: { park: any; children?: JSX
     const { addresses } = park;
 
     return (
-        <div className='section'>
-            <h3>Directions</h3>
+        <div className='container grid grid-cols-3 gap-x-8 items-center'>
+            <div className='col-span-2'>
+                <h3 className='text-4xl font-bold'>Directions</h3>
 
-            <p>{park.directionsInfo || children}</p>
-            <a target='_blank' href={park.directionsUrl}>
-                Official National Park Directions
-            </a>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr  1fr", margin: "0.5em 0", gap: "1em" }}>
-                {addresses.length > 0 && (
-                    <div>
-                        <h4>Address</h4>
-                        <DirectionAddress addresses={addresses} />
-                    </div>
-                )}
+                <p className='text-lg'>{park.directionsInfo || children}</p>
+                <a className='italic underline text-sm ' target='_blank' href={park.directionsUrl}>
+                    Official National Park Directions
+                </a>
+            </div>
+            <div className='grid border rounded py-2 gap-4 px-4 divide-y'>
+                <ContactCard contacts={park.contacts} url={park.url} />
                 <div>
-                    <h4>Coordinates</h4>
+                    {addresses.length > 0 && (
+                        <>
+                            <h4 className='text-xl font-semibold'>Address</h4>
+                            <DirectionAddress addresses={addresses} />
+                        </>
+                    )}
+                    {/* <h4 className='text-xl font-semibold'>Coordinates</h4> */}
                     <p>
                         <a
                             target='_blank'
                             href={`https://www.google.com/maps/search/?api=1&query=${park.latitude},${park.longitude}`}
                         >
-                            Latitude: {park.latitude.slice(0, 8)},<br />
-                            Longitude: {park.longitude.slice(0, 8)}
+                            {park.latitude.slice(0, 8)}, {park.longitude.slice(0, 8)}
                         </a>
                     </p>
                 </div>
@@ -124,10 +121,12 @@ const DirectionAddress = ({ addresses }: { addresses: any[] }) => {
 
 export const WeatherSection = ({ weather, children }: any) => {
     return (
-        <div className='section'>
-            <h3>Weather</h3>
-            <p className='mb-1'>{weather}</p>
+        <div className='container grid grid-cols-2 gap-8 items-center'>
             {children}
+            <div>
+                <h3 className='text-4xl font-bold'>Weather</h3>
+                <p className='text-lg'>{weather}</p>
+            </div>
         </div>
     );
 };
@@ -136,16 +135,18 @@ const CategoryCard = ({ category, data, path }: { category: string; data: any; p
     const name = data.name || data.title;
     const href = name.replace(/\ /g, "-").toLowerCase();
     const link = (
-        <p className='bold'>
+        <p className='bold text-xl font-medium underline'>
             <Link to={`./${path}/#${href}`}>{name}</Link>
         </p>
     );
     const description = (
         <>
-            <p className='truncate'>{data.description || data.shortDescription}</p>
-            <Link to={`./${path}/#${href}`} className='btn'>
-                Read more
-            </Link>
+            <p className='text-clip'>{data.description || data.shortDescription}</p>
+            <Button className='bg-gray-800'>
+                <Link to={`./${path}/#${href}`} className='btn'>
+                    Read more
+                </Link>
+            </Button>
         </>
     );
 
@@ -158,7 +159,7 @@ const CategoryCard = ({ category, data, path }: { category: string; data: any; p
                 day: "numeric",
             });
             return (
-                <div>
+                <div className="border rounded p-4">
                     <span className='bold'>{date}</span>
                     {link}
                     <div dangerouslySetInnerHTML={{ __html: data.description.replaceAll("<br /><br />", "</p><p>") }} />
@@ -167,7 +168,7 @@ const CategoryCard = ({ category, data, path }: { category: string; data: any; p
 
         default:
             return (
-                <div>
+                <div className="border rounded p-4">
                     <div style={{ display: "flex", alignItems: "center", gap: "1em" }}>
                         {link}
                         {data.isPassportStampLocation === "1" && (
@@ -186,33 +187,48 @@ const CategoryCard = ({ category, data, path }: { category: string; data: any; p
     }
 };
 
-export const CategorySection = ({ activeCategories }: { activeCategories: ActiveCatergory[] }) => {
-    const sections = activeCategories.map((category) => (
-        <div className='section' key={category.name} id={category.name.replaceAll(" ", "-").toLowerCase()}>
-            <h3 style={{ display: "flex", alignItems: "center", gap: "0.25em" }}>
-                {category.icon}
-                <br />
-                <Link to={category.path}>{category.name}</Link> ({category.count})
+export const CategorySection = ({ parkCode, endpoint }: { parkCode: string; endpoint: string }) => {
+    const {
+        status,
+        data: categories,
+        error,
+    } = useQuery({
+        queryKey: ["park", { catergory: endpoint, parkCode: parkCode }],
+        queryFn: async() => await fetcher(`${endpoint}?parkCode=${parkCode}`)
+    });
+
+    const activeCat = activityCategories[endpoint]
+
+    if (status === 'error') return <>{error.message}</>
+
+    if (status !== 'success') return
+
+
+    console.log('cat', categories)
+
+    return (
+        <div className='container mx-auto' id={activeCat.name.replace(/\ /g, "-").toLowerCase()}>
+            <h3 className="flex items-center gap-1 text-4xl font-bold">
+                {activeCat.icon}
+                <Link to={activeCat.path}>{activeCat.name}</Link> ({categories.length})
             </h3>
 
             {/* Accordian */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.5em", marginTop: "0.5em" }}>
-                {uniqueCategoryItems(category.data).map((data) => (
+            <div className="grid grid-cols-2 gap-8 mt-4">
+                {uniqueCategoryItems(categories).slice(0,5).map((data) => (
                     <CategoryCard
                         key={data.name || data.title}
-                        category={category.name}
+                        category={activeCat.name}
                         data={data}
-                        path={category.path}
+                        path={activeCat.path}
                     />
                 ))}
-                <button>
-                    <Link to={category.path}>Read more about {category.name}</Link>
-                </button>
+                <Button>
+                    <Link to={activeCat.path}>Read more about {activeCat.name}</Link>
+                </Button>
             </div>
         </div>
-    ));
-
-    return <>{sections}</>;
+    );
 };
 
 export interface FilterProps {
@@ -252,7 +268,7 @@ export const ParkCards = ({ parks, title, states }: StateParksProps) => {
             active: park ? park.id === p.id : true,
         }));
 
-    console.log(parkCoords)
+    console.log(parkCoords);
 
     const toggleFilter = (input: InputProps) => {
         const { name, value } = input;
@@ -330,10 +346,10 @@ const MainContainer = styled.div`
     }
 
     @media (min-width: 768px) {
-		.filters {
+        .filters {
             top: calc(70px);
         }
-	}
+    }
 `;
 
 const MapBox = styled.div`

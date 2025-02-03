@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Modal } from ".";
 import styled from "styled-components";
 
-import Share from "../../assets/icons/share.svg";
-import XIcon from "../../assets/icons/x.svg";
+import Share from "../../assets/icons/share.svg?react";
+import XIcon from "../../assets/icons/x.svg?react";
 import { StyledCard } from "../styled/StyledCard";
+import { Share2 } from "lucide-react";
+import { Button } from "../Button";
 
 
 export const ShareModal = (park: any) => {
@@ -31,22 +33,24 @@ export const ShareModal = (park: any) => {
 					</div>
 					{park.fullName}
 				</div>
-				<ShareCard onClick={copyClick}>
+				{/* <ShareCard onClick={copyClick}>
 					Copy Link
 				</ShareCard>
 				<ShareCard as="a" href={`mailto:?subject=${park.fullName}?body=${link}`}>
 					Email
-				</ShareCard>
+				</ShareCard> */}
 			</>
 		</Modal>
 	)
 
 	const btn = (
-		<a onClick={() => setIsOpen(true)} className="btn" href="#">
-			<Share width={10} height={10}/>
-			Share
-		</a>
-	)
+        <a onClick={() => setIsOpen(true)} href='#'>
+            <Button>
+                <Share2 />
+                Share
+            </Button>
+        </a>
+    );
 
 	return [modal, btn]
 }
