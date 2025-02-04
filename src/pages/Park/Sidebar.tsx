@@ -26,7 +26,7 @@ const FeeItem = ({ cost, title, description }: { cost: string; title: string; de
             <p className='font-bold'>${cost}</p>
                 <Info onMouseEnter={() => setShowDescription(true)} onMouseLeave={() => setShowDescription(false)} />
             </div>
-            {showDescription && <p className='absolute bottom-full bg-white rounded p-2 text-sm text-black'>{description}</p>}
+            {showDescription && <p className='absolute m-[4px] bottom-full border border-black bg-white rounded p-2 text-sm text-black'>{description}</p>}
         </div>
     );
 };

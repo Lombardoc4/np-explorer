@@ -4,10 +4,7 @@ import { Outlet, Link, useLocation } from "react-router";
 import { ImgGrid } from "../../components/ImgGrid";
 
 import ParkContext, { IPark } from "../../utils/hooks/ParkContext";
-import { stateMap } from "../../utils/lib/stateMap";
 import { ParkHeader } from "./Header";
-import { ParkCards } from "./components";
-import SearchContext from "../../utils/hooks/SearchContext";
 
 export const ParkPage = () => {
     const { status, error, data: park} = useContext(ParkContext);
@@ -30,7 +27,7 @@ export const ParkPage = () => {
 
     return (
         <>
-            <header className='mt-20 mx-4'>
+            <header className='mt-20 mx-auto container'>
                 <ParkHeader park={park} />
                 {park.images.length > 0 && <ImgGrid images={park.images} />}
             </header>

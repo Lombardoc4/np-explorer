@@ -5,16 +5,15 @@ import { ImgGrid } from "../../components/ImgGrid";
 
 import { IPark } from "../../utils/hooks/ParkContext";
 import { stateMap } from "../../utils/lib/stateMap";
-import SearchContext from "../../utils/hooks/SearchContext";
+// import SearchContext from "../../utils/hooks/SearchContext";
 import { ParkCards } from "../Park/components";
 
 export const StatePage = () => {
-    const allParks = useContext(SearchContext);
     const { stateId } = useParams();
     const location = useLocation();
     const states = stateMap.filter((state) => state.id === stateId);
 
-    const stateParks = allParks.filter((p: IPark) => states.some((s) => p.states.includes(s.id.toUpperCase())));
+    const stateParks = [];
 
     if (stateParks.length <= 0) {
         // Go to error page

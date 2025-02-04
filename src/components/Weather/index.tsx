@@ -124,7 +124,7 @@ export const WeatherDisplay = ({ lat, long }: { lat: string; long: string }) => 
         return <div className='weather-display'>Loading Weather</div>;
 
     return (
-        <div className='grid border p-4 rounded-lg'>
+        <div className='grid border rounded-xl bg-green-200 py-4'>
             <div className="text-center mb-4">
                 <h4 className="text-4xl">
                     {location.city}, {location.state}

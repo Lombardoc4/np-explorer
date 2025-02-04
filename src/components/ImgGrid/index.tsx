@@ -45,7 +45,7 @@ export const ImgGrid = ({ images }: ImgGridProps) => {
     return (
         <>
             <div
-                className='grid relative overflow-hidden rounded-lg cursor-pointer my-4'
+                className='grid relative overflow-hidden rounded-lg cursor-pointer my-4 border shadow-lg'
                 style={{
                     gridTemplateColumns: `2fr ${previewImages.length <= 2 ? "1fr" : "1fr 1fr"}`,
                     gridTemplateRows: `repeat(${previewImages.length <= 3 ? "1, 500px" : "2, 250px"})`,

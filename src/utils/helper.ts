@@ -1,5 +1,4 @@
 import { FilterProps } from "../pages/Park/components";
-import { IPark } from "./hooks/ParkContext";
 import { parkVistors } from "./lib/parkVisitors";
 
 

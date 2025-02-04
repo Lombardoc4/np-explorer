@@ -12,7 +12,7 @@ export interface ActivityCategory {
 }
 
 export const activityCategories: ActivityCategory = {
-    visitorCenters: {
+    visitorcenters: {
         name: "Visitor Centers",
         path: "visitor-centers",
         icon: <House size={48}/>,
@@ -32,12 +32,12 @@ export const activityCategories: ActivityCategory = {
         path: "events",
         icon: <CalendarCheck2  size={48}/>,
     },
-    thingsToDo: {
+    thingstodo: {
         name: "Things to do",
         path: "things-to-do",
         icon: <List  size={48} />,
     },
-    parkingLots: {
+    parkinglots: {
         name: "Parking",
         path: "parking",
         icon: <Car  size={48} />,

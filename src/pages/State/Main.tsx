@@ -1,10 +1,18 @@
 import { Link, Outlet, useLoaderData, useParams } from "react-router";
 import { useContext } from "react";
-import SearchContext from "../../utils/hooks/SearchContext";
+// import SearchContext from "../../utils/hooks/SearchContext";
 import { IPark } from "../../utils/hooks/ParkContext";
 import { stateMap } from "../../utils/lib/stateMap";
-import { LoaderProps } from "../Park/Main";
 import { ParkCards } from "../Park/components";
+
+export interface LoaderProps {
+    thingsToDo: any[];
+    campgrounds: any[];
+    events: any[];
+    tours: any[];
+    visitorCenters: any[];
+    parkingLots: any[];
+}
 
 export const State = () => {
     const { events, thingsToDo, campgrounds, tours, visitorCenters, parkingLots } = useLoaderData() as LoaderProps;
