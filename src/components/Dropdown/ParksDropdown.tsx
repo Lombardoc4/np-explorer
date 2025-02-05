@@ -6,8 +6,8 @@ import debounce from "lodash.debounce";
 import { Results } from "./Results";
 import { Input } from "./Input";
 
-import { useOutsideAlerter } from "../../utils/hooks/useOuterClick";
 import { fetcher } from "../../utils/helper";
+import { useOutsideAlerter } from "../../utils/hooks/useOuterClick";
 
 const dropdownValues = async (term: string) => {
     const data = await fetcher(`parks?q=${term}`) as IPark[];
