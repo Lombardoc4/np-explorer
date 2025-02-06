@@ -3,7 +3,7 @@ import { Outlet, Link, useLocation } from "react-router";
 
 import { ImgGrid } from "../../components/ImgGrid";
 
-import ParkContext, { IPark } from "../../utils/hooks/ParkContext";
+import ParkContext from "../../utils/hooks/ParkContext";
 import { ParkHeader } from "./Header";
 
 export const ParkPage = () => {
@@ -28,24 +28,24 @@ export const ParkPage = () => {
     return (
         <>
             <header className='mt-20 mx-auto container'>
-                <ParkHeader park={park} />
                 {park.images.length > 0 && <ImgGrid images={park.images} />}
+                <ParkHeader park={park} />
             </header>
 
             <main>
-                <div className='container'>
-                    {location.pathname.split("/").length >= 4 && (
+                {location.pathname.split("/").length >= 4 && (
+                    <div className='container'>
                         <div style={{ marginBlock: "1em" }}>
                             <Link className='btn' to={`/park/${park.parkCode}`}>
                                 Back to {park.name}
                             </Link>
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
                 <Outlet />
 
                 {/* <div className='container'> */}
-                    {/* <ParkCards title={"Explore Other Parks"} parks={otherParks}  states={states}/> */}
+                {/* <ParkCards title={"Explore Other Parks"} parks={otherParks}  states={states}/> */}
                 {/* </div> */}
             </main>
         </>

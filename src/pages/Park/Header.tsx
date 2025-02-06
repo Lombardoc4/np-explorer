@@ -1,11 +1,11 @@
 import { Link } from "react-router";
 
-import { TriangleAlert, UserRound, Wallet } from "lucide-react";
+// import { TriangleAlert, UserRound, Wallet } from "lucide-react";
   import { ShareModal } from "../../components/Modal/ShareModal";
 
 // import { parkVistors } from "../../utils/lib/parkVisitors";
-import { IPark } from "../../utils/hooks/ParkContext";
-import { Button } from "../../components/Button";
+// import { IPark } from "../../utils/hooks/ParkContext";
+// import { Button } from "../../components/Button";
 
 const StateLinks = (states: IPark["states"]) =>
     states.split(",").map((state) => (
@@ -19,16 +19,16 @@ export const ParkHeader = ({ park }: { park: IPark }) => {
     return (
         <>
             {modal}
-            <div className='container mx-auto flex flex-col md:flex-row justify-between items-center my-4'>
+            <div className='container mx-auto max-w-5xl flex flex-col md:flex-row justify-between items-center my-4'>
                 <div>
-                    <h1 className='text-4xl font-bold'>{park.fullName}</h1>
-                    <div className='text-2xl flex flex-col md:flex-row gap-1'>
+                    <h1 className='text-5xl font-thin'>{park.fullName}</h1>
+                    <div className='text-xl flex flex-col md:flex-row gap-1'>
                         <span style={{ display: "flex", gap: "0.25em" }}>{StateLinks(park.states)}</span>
                     </div>
                 </div>
 
                 <div className='flex gap-4 md:items-end text-center'>
-                    <a href='#alerts'>
+                    {/* <a href='#alerts'>
                         <Button>
                             <TriangleAlert /> Alerts
                         </Button>
@@ -43,7 +43,7 @@ export const ParkHeader = ({ park }: { park: IPark }) => {
                             <Wallet />
                             Fees
                         </Button>
-                    </a>
+                    </a> */}
                     {btn}
                 </div>
             </div>

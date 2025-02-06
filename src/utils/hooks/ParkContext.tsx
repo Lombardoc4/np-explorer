@@ -28,10 +28,12 @@ function ParkProvider({ children }: { children: React.ReactNode }) {
             const data = await fetcher(`parks?parkCode=${parkCode}`);
             SetLocalStorage({
                 name: data[0].fullName,
-                parkCode: data[0].parkCode
-            })
+                parkCode: data[0].parkCode,
+            });
             return data[0];
         },
+        retry: 1,
+        staleTime: 5 * 60 * 1000,
         enabled: !!parkId, // Enable query execution only if parkId exists
     });
 

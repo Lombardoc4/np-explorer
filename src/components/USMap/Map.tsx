@@ -10,7 +10,7 @@ export const Map = () => {
 
     return (
         <>
-            <div className='grid grid-cols-2 items-center mb-4 '>
+            <div className='grid grid-cols-2 items-center mb-8 '>
                 <div>
                     <h2 className='text-6xl uppercase font-semibold italic'>Where To?</h2>
                     <h3

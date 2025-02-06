@@ -124,24 +124,28 @@ export const WeatherDisplay = ({ lat, long }: { lat: string; long: string }) => 
         return <div className='weather-display'>Loading Weather</div>;
 
     return (
-        <div className='grid border rounded-xl bg-green-200 py-4'>
-            <div className="text-center mb-4">
-                <h4 className="text-4xl">
-                    {location.city}, {location.state}
-                </h4>
-
-                <div className="grid items-center gap-1" >
-                    <p className="text-5xl" style={{ fontSize: "3em" }}>
-                        <WeatherIcon id={current.shortForecast} style={{ fontSize: "inherit" }} /> {current.temperature}
-                        &deg;{current.temperatureUnit}
-                    </p>
-                    <p>{current.shortForecast}</p>
-                    <p>
-                        <b>H:</b>
-                        {sevenDay[0].low}&deg;{sevenDay[0].temperatureUnit} <b>L:</b>
-                        {sevenDay[0].high}&deg;{sevenDay[0].temperatureUnit}
-                    </p>
-                    <div className="flex gap-4 mx-auto">
+        <div className='grid border rounded-xl bg-green-200 dark:bg-green-900 dark:text-white py-4'>
+            <div className='grid grid-cols-2 px-4'>
+                <div className="text-center">
+                    <h4 className='text-2xl'>
+                        {location.city}, {location.state}
+                    </h4>
+                    <div className='grid items-center mt-4'>
+                        <p className='text-5xl' style={{ fontSize: "3em" }}>
+                            <WeatherIcon id={current.shortForecast} style={{ fontSize: "42px" }} />{" "}
+                            {current.temperature}
+                            &deg;{current.temperatureUnit}
+                        </p>
+                        <p>{current.shortForecast}</p>
+                        <p>
+                            <b>H:</b>
+                            {sevenDay[0].high}&deg;{sevenDay[0].temperatureUnit} <b>L:</b>
+                            {sevenDay[0].low}&deg;{sevenDay[0].temperatureUnit}
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <div className='grid mx-auto'>
                         <p>
                             <WeatherIcon id={"umbrella"} /> {current.probabilityOfPrecipitation.value}% Percipitation
                         </p>
@@ -153,27 +157,27 @@ export const WeatherDisplay = ({ lat, long }: { lat: string; long: string }) => 
                             {current.windDirection}
                         </p>
                     </div>
+                    <div className='flex gap-4 pt-4'>
+                        <a
+                            onClick={() => {
+                                setDayView(true);
+                            }}
+                            className='rounded-xl px-2 py-1 border'
+                        >
+                            24 Hour
+                        </a>
+                        <a
+                            onClick={() => {
+                                setDayView(false);
+                            }}
+                            className='border rounded-xl px-2 py-1'
+                        >
+                            7 Day
+                        </a>
+                    </div>
                 </div>
             </div>
             <div className='overflow-scroll'>
-                <div className="flex gap-4 justify-center">
-                    <a
-                        onClick={() => {
-                            setDayView(true);
-                        }}
-                        className='rounded-xl px-2 py-1 border'
-                    >
-                        24 Hour
-                    </a>
-                    <a
-                        onClick={() => {
-                            setDayView(false);
-                        }}
-                        className='border rounded-xl px-2 py-1'
-                    >
-                        7 Day
-                    </a>
-                </div>
                 <div
                     style={{
                         marginTop: "0.5em",

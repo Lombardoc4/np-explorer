@@ -12,9 +12,7 @@ function App({ children }: { children?: React.ReactNode }) {
             {/* This scrolls to top of page when the path changes */}
             <ScrollToTop />
 
-            {/* <SearchProvider> */}
-                <NavBar />
-            {/* </SearchProvider> */}
+            <NavBar />
 
             <Outlet />
             {children}

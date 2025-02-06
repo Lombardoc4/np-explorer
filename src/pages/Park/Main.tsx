@@ -27,23 +27,20 @@ export const Park = () => {
     const endpoints = Object.keys(activityCategories)
 
     return (
-        <div>
-            <div className='container mx-auto max-w-5xl md:grid gap-16 my-8'>
-                <ParkHeader park={park} />
+        <div className='container mx-auto max-w-5xl md:grid gap-16 my-16'>
+            <ParkHeader description={park.description} />
+            <ParkAlert parkId={park.parkCode} />
 
-                <ParkAlert parkId={park.parkCode} />
+            <DirectionSection park={park} />
 
-                <DirectionSection park={park} />
+            <WeatherSection weather={park.weatherInfo}>
+                <WeatherDisplay lat={park.latitude} long={park.longitude} />
+            </WeatherSection>
 
-                <WeatherSection weather={park.weatherInfo}>
-                    <WeatherDisplay lat={park.latitude} long={park.longitude} />
-                </WeatherSection>
-
-                <FeeCard entranceFees={park.entranceFees} />
-                {endpoints.map((e) => (
-                    <CategorySection key={e} parkCode={park.parkCode} endpoint={e} />
-                ))}
-            </div>
+            <FeeCard entranceFees={park.entranceFees} />
+            {endpoints.map((e) => (
+                <CategorySection key={e} parkCode={park.parkCode} endpoint={e} />
+            ))}
         </div>
     );
 };

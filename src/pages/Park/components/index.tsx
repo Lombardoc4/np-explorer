@@ -12,47 +12,43 @@ import ParkContext, { IPark } from "../../../utils/hooks/ParkContext";
 import { ContactCard } from "../Sidebar";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { Button } from "../../../components/Button";
+import { LinkIcon } from "lucide-react";
 
 export interface ParkProps {
     park: any;
 }
 
-interface ActiveCatergory extends ActivityDetails {
-    data: any[];
-    count: number;
-}
 
 export interface InputProps {
     name: "entranceFees" | "entrancePasses" | "activities";
     value: string;
 }
 
-export const ParkHeader = ({ park }: ParkProps) => {
+export const ParkHeader = ({ description }: {description: string}) => {
     // const visitCount = getVisitorCount(park.parkCode);
-    const categories = activityCategories;
-
-    const categoryEls = Object.values(categories).map((category: ActivityDetails) => (
-            <a key={category.name} className='border rounded-lg flex items-center justify-center text-xl hover:bg-green-200' href={"#" + category.name.replace(/ /g, "-").toLowerCase()}>
-        {/* <Button className=""> */}
-                {/* {category.count}  */}
-                {category.name}
-        {/* </Button> */}
-            </a>
+    // const categories = activityCategories;
+    const categoryEls = Object.values(activityCategories).map((category: ActivityDetails) => (
+        <a
+            key={category.name}
+            className='uppercase min-h-16 h-full border-r border-b rounded  border-dashed flex items-center justify-center text-2xl font-black hover:bg-green-200 dark:hover:bg-green-900 hover:underline'
+            href={"#" + category.name.replace(/ /g, "-").toLowerCase()}
+        >
+            {/* <Button className=""> */}
+            {/* {category.count}  */}
+            {category.name}
+            {/* </Button> */}
+        </a>
     ));
 
     return (
-        <div className='grid grid-cols-2 gap-8'>
+        <div className='grid grid-cols-2 gap-8 items-center'>
             {/* {visitCount > 0 && <span>{visitCount} visitors in 2022</span>} */}
             <div>
-                <h3 className='text-3xl font-bold mb-2'>Overview</h3>
-                <p className='text-xl p-4 text-justify border rounded-lg bg-green-200'>{park.description}</p>
+                {/* <h3 className='text-3xl font-thin mb-2'>Overview</h3> */}
+                <p className='font-stretch-condensed text-xl p-4 text-justify border border-dashed rounded bg-green-200 dark:bg-green-900 dark:text-white'>{description}</p>
             </div>
-            <div className="flex flex-col">
-
-            <h3 className='h-fit font-semibold text-2xl mb-2'>Table of Contents</h3>
-            <div className='grid gap-2 grid-cols-2 h-full'>
+            <div className='grid grid-cols-2 gap-4 h-full'>
                 {categoryEls}
-            </div>
             </div>
             {/* <div className='py-16'> */}
             {/* <div className="container mx-auto max-w-5xl"> */}
@@ -66,34 +62,38 @@ export const DirectionSection = ({ park, children }: { park: any; children?: JSX
     const { addresses } = park;
 
     return (
-        <div className='container mx-auto grid grid-cols-2 gap-x-8 items-center'>
+        <div className='container my-16  mx-auto grid grid-cols-2 gap-8'>
+            <h3 className='text-8xl col-span-2 font-thin  border-b mb-2'>Directions</h3>
             <div>
-                <h3 className='text-4xl font-bold  border-b mb-2'>Directions</h3>
-
                 <p className='text-lg'>{park.directionsInfo || children}</p>
                 <a className='italic underline text-sm ' target='_blank' href={park.directionsUrl}>
                     Official National Park Directions
                 </a>
             </div>
-            <div className="flex gap-8">
-                <ContactCard contacts={park.contacts} url={park.url} />
-            <div>
-                {addresses.length > 0 && (
-                    <>
-                        <h4 className='text-xl font-semibold'>Address</h4>
-                        <DirectionAddress addresses={addresses} />
-                    </>
+            <div className=' h-fit border rounded p-4'>
+                <div className='grid grid-cols-2'>
+                    <div>
+                        <h3 className='font-thin text-2xl underline'>Address</h3>
+                        {addresses.length > 0 && <DirectionAddress addresses={addresses} />}
+                        <a
+                            target='_blank'
+                            href={`https://www.google.com/maps/search/?api=1&query=${park.latitude},${park.longitude}`}
+                        >
+                            {park.latitude.slice(0, 8)}, {park.longitude.slice(0, 8)}
+                        </a>
+                    </div>
+                    <div>
+                        <h3 className='font-thin text-2xl  underline'>Contact</h3>
+                        <ContactCard contacts={park.contacts} />
+                    </div>
+                </div>
+                {park.url && (
+                    <div className='col-span-2 mt-4 '>
+                        <Link to={park.url} className='text-lg hover:underline flex font-black items-center gap-1'>
+                            <LinkIcon className='inline' size={16} /> Official National Parks Page
+                        </Link>
+                    </div>
                 )}
-                {/* <h4 className='text-xl font-semibold'>Coordinates</h4> */}
-                <p>
-                    <a
-                        target='_blank'
-                        href={`https://www.google.com/maps/search/?api=1&query=${park.latitude},${park.longitude}`}
-                    >
-                        {park.latitude.slice(0, 8)}, {park.longitude.slice(0, 8)}
-                    </a>
-                </p>
-            </div>
             </div>
         </div>
     );
@@ -130,12 +130,12 @@ const DirectionAddress = ({ addresses }: { addresses: any[] }) => {
 
 export const WeatherSection = ({ weather, children }: any) => {
     return (
-        <div className='container mx-auto grid md:grid-cols-2 gap-8 items-center'>
-            {children}
+        <div className='container mx-auto my-16 grid md:grid-cols-2 gap-8'>
+            <h3 className='text-8xl col-span-2 font-thin  border-b mb-2'>Weather</h3>
             <div>
-                <h3 className='text-4xl font-bold border-b mb-2'>Weather</h3>
                 <p className='text-lg'>{weather}</p>
             </div>
+            {children}
         </div>
     );
 };
@@ -144,12 +144,12 @@ const CategoryCard = ({ category, data, path }: { category: string; data: any; p
     const name = data.name || data.title;
     const href = name.replace(/\ /g, "-").toLowerCase();
     const button = (
-        <Button className='border mt-auto w-full cursor-pointer'>
-            <Link to={`./${path}/#${href}`}>Read more</Link>
-        </Button>
+        // <Button className='mt-auto cursor-pointer'>
+            <Link className="group-hover:underline" to={`./${path}/#${href}`}>Read more...</Link>
+        // </Button>
     );
     const link = (
-        <p className='bold text-xl font-medium underline'>
+        <p className='text-2xl'>
             <Link to={`./${path}/#${href}`}>{name}</Link>
         </p>
     );
@@ -169,9 +169,12 @@ const CategoryCard = ({ category, data, path }: { category: string; data: any; p
                 day: "numeric",
             });
             return (
-                <div className='border rounded p-4 grid item-start gap-2'>
-                    <span className='bold'>{date}</span>
+                <div className='grid gap-2 items-start'>
+                    <div className="border-b">
+
                     {link}
+                    </div>
+                    <span className='font-bold'>{date}</span>
                     <div
                         className='line-clamp-4'
                         dangerouslySetInnerHTML={{ __html: data.description.replaceAll("<br /><br />", "</p><p>") }}
@@ -183,8 +186,8 @@ const CategoryCard = ({ category, data, path }: { category: string; data: any; p
 
         default:
             return (
-                <div className="border rounded p-4 grid item-start gap-2">
-                    <div >
+                <div className="grid item-end gap-2 group">
+                    <div className="flex justify-between border-b pb-1" >
                     {/* style={{ display: "flex", alignItems: "center", gap: "1em" }}> */}
                         {link}
                         {data.isPassportStampLocation === "1" && (
@@ -192,7 +195,7 @@ const CategoryCard = ({ category, data, path }: { category: string; data: any; p
                                 title='Passport Stamp Location'
                                 src='/passport-book.webp'
                                 alt='Passport Stamp'
-                                style={{ height: "22px" }}
+                                style={{ height: "36px" }}
                             />
                         )}
                     </div>
@@ -212,6 +215,7 @@ export const CategorySection = ({ parkCode, endpoint }: { parkCode: string; endp
         queryKey: ["park", { catergory: endpoint, parkCode: parkCode }],
         queryFn: async() => await fetcher(`${endpoint}?parkCode=${parkCode}`),
         retry: 0,
+        staleTime: 5 * 60 * 1000
     });
 
     const activeCat = activityCategories[endpoint]
@@ -225,17 +229,15 @@ export const CategorySection = ({ parkCode, endpoint }: { parkCode: string; endp
     const uniqueCats = uniqueCategoryItems(categories);
 
     return (
-        <div className='container mx-auto' id={activeCat.name.replace(/\ /g, "-").toLowerCase()}>
-            <h3 className='flex items-center gap-1 text-4xl font-bold'>
+        <div className='container mx-auto  scroll-m-20' id={activeCat.name.replace(/\ /g, "-").toLowerCase()}>
+            <h3 className='text-8xl font-thin border-b pb-1'>
                 {activeCat.icon}
-                <Link className='hover:underline' to={activeCat.path}>
-                    {activeCat.name}
-                </Link>{" "}
-                ({categories.length})
+                <Link to={activeCat.path}>{activeCat.name}</Link>{" "}
+                <span className='text-4xl'>({categories.length})</span>
             </h3>
 
             {/* Accordian */}
-            <div className='grid grid-cols-2 gap-8 mt-4'>
+            <div className='grid grid-cols-2 gap-16 mt-16'>
                 {uniqueCats.slice(0, 6).map((data) => (
                     <CategoryCard
                         key={data.name || data.title}
@@ -245,8 +247,8 @@ export const CategorySection = ({ parkCode, endpoint }: { parkCode: string; endp
                     />
                 ))}
                 {uniqueCats.length > 6 && (
-                    <Button className="col-span-2 hover:underline">
-                        <Link to={activeCat.path}>Read more about {activeCat.name}</Link>
+                    <Button className='col-span-2 hover:underline border border-current w-fit mx-auto text-2xl'>
+                        <Link to={activeCat.path}>Explore all {activeCat.name}</Link>
                     </Button>
                 )}
             </div>

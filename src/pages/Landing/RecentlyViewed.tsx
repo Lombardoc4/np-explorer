@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { ParkLocalStorage } from "../../utils/hooks/ParkContext";
 import { ParkCards } from "../Park/components";
 
 

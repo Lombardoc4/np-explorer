@@ -23,7 +23,7 @@ export const NavBar = () => {
     }, [offscreen]);
 
     return (
-        <nav className='bg-white dark:bg-zinc-900  z-30 top-0 h-[64px] shadow fixed start-0 end-0 flex'>
+        <nav className='bg-white/25 backdrop-filter backdrop-blur-lg dark:bg-zinc-900/10  z-30 top-0 h-[64px] shadow fixed start-0 end-0 flex'>
             <div className='container mx-auto flex justify-center items-center'>
                 {/* Left */}
                 <div className='mr-auto'>

@@ -1,16 +1,14 @@
 import { Link } from "react-router";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
-import { CardItem, StyledCard, StyledCardContainer } from "../styled/StyledCard";
 
 const ParkAlertItem = (alert: any) => {
     return (
-        <CardItem>
-            <h3>{alert.category}</h3>
-            <p className='bold'>{alert.title}</p>
+        <div className="border rounded-xl border-dashed p-4 bg-yellow-500 text-black">
+            <h3 className="font-black">{alert.category}</h3>
+            <p className='border-b pb-2 mb-2'>{alert.title}</p>
             <p>{alert.description}</p>
             <Link to={alert.url}>NPS Info</Link>
-        </CardItem>
+        </div>
     );
 };
 
@@ -36,18 +34,13 @@ export const ParkAlert = ({ parkId }: { parkId: string }) => {
     // )
 
     return (
-        <StyledCardContainer id='alerts'>
-            <h2>ALERTS</h2>
-            <StyledAlertBox onClick={(e) => e.stopPropagation()}>
-                { alerts.map((alert: any) => <ParkAlertItem key={alert.id} {...alert} />)}
-            </StyledAlertBox>
-        </StyledCardContainer>
+        <div id='alerts'>
+            {/* <h2 className="col-span-2 text-6xl font-thin mb-4">Alerts</h2> */}
+            <div className='grid grid-cols-2 gap-8'>
+                {alerts.map((alert: any) => (
+                    <ParkAlertItem key={alert.id} {...alert} />
+                ))}
+            </div>
+        </div>
     );
 };
-
-const StyledAlertBox = styled(StyledCard).attrs((props) => ({
-    $bg: props.theme.colors.secondary,
-    $border: "2px solid " + props.theme.colors.black,
-}))`
-    box-shadow: rgba(0, 0, 0, 0.26) 0px 2px 8px;
-`;
