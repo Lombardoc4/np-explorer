@@ -7,6 +7,7 @@ import { IPark } from "../../utils/hooks/ParkContext";
 import { stateMap } from "../../utils/lib/stateMap";
 // import SearchContext from "../../utils/hooks/SearchContext";
 import { ParkCards } from "../Park/components";
+import ErrorPage from "../Error";
 
 export const StatePage = () => {
     const { stateId } = useParams();
@@ -16,8 +17,7 @@ export const StatePage = () => {
     const stateParks = [];
 
     if (stateParks.length <= 0) {
-        // Go to error page
-        return <>No Park</>;
+        return <ErrorPage error={'No Park'}/>
     }
 
     return (

@@ -26,16 +26,20 @@ function ParkProvider({ children }: { children: React.ReactNode }) {
             if (!parkCode) return [];
 
             const data = await fetcher(`parks?parkCode=${parkCode}`);
+            if (!data[0]) throw Error('No matching park')
             SetLocalStorage({
                 name: data[0].fullName,
                 parkCode: data[0].parkCode,
             });
+
             return data[0];
         },
         retry: 1,
         staleTime: 5 * 60 * 1000,
         enabled: !!parkId, // Enable query execution only if parkId exists
     });
+
+
 
     useEffect(() => {
         if (status === "success") {

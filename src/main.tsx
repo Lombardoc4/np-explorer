@@ -17,15 +17,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <BrowserRouter>
             <QueryClientProvider client={queryClient}>
                 <Routes>
-                    <Route
-                        element={<App />}
-                        errorElement={
-                            <App>
-                                <ErrorPage />
-                            </App>
-                        }
-                    >
-                        <Route index element={<LandingPage />} errorElement={<ErrorPage />} />
+                    <Route element={<App />}>
+                        <Route index element={<LandingPage />} />
                         {parkRoutes}
                         {stateRoutes}
                     </Route>

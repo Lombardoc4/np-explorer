@@ -12,7 +12,7 @@ export const localFetch = async (input: RequestInfo, init?: RequestInit) => {
 };
 
 export const fetcher = async (input: RequestInfo, init?: RequestInit) => {
-    console.log('input', input.toString())
+    // console.log('input', input.toString())
     const limit = !input.toString().includes('&limit=') ? '&limit=500' : ''
     const url = `https://developer.nps.gov/api/v1/${input}${limit}&api_key=${import.meta.env.VITE_NPS_API_KEY}`;
     const res = await fetch(url, init);

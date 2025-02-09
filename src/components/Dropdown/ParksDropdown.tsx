@@ -59,6 +59,7 @@ export const ParksDropdown = () => {
             const { search } = queryKey[1] as { search: string };
             if (!search) return [];
             setFocused(true);
+            console.log('do it')
             return dropdownValues(search);
         },
         enabled: false, // Disable initial query execution
@@ -70,7 +71,7 @@ export const ParksDropdown = () => {
             onClick={() => setFocused(true)}
             className={clsx(
                 "z-20 bg-white text-black md:absolute w-full max-w-md border rounded-lg",
-                focused && status === "success" && "rounded-b-none"
+                focused && (isPending || status === "success") && "rounded-b-none"
             )}
         >
             {/* Input form */}

@@ -8,6 +8,7 @@ import { FeeCard } from "./Sidebar";
 
 import ParkContext from "../../utils/hooks/ParkContext";
 import { activityCategories } from "../../utils/lib/activityCategories";
+import ErrorPage from "../Error";
 
 export interface ParkProps {
     park: any;
@@ -15,13 +16,12 @@ export interface ParkProps {
 
 export const Park = () => {
     const {error, data: park} = useContext(ParkContext);
-
     if (error) {
-        return <>Errror: {error.message}</>
+        return <ErrorPage error={error} />
     }
 
     if (!park) {
-        return <>No Park</>
+        return <ErrorPage error={'No Park'} />;
     }
 
     const endpoints = Object.keys(activityCategories)

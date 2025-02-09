@@ -8,6 +8,7 @@ import ThingsToDo from "../pages/ThingsToDo";
 import Tours from "../pages/Tours";
 import VisitorCenters from "../pages/VisitorCenters";
 import { fetcher } from "../utils/helper";
+import ErrorPage from "../pages/Error";
 
 
 export const stateRoutes = (
