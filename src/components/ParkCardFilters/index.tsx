@@ -7,7 +7,7 @@ import { StyledCard } from "../styled/StyledCard";
 
 import useOnScreen from "../../utils/hooks/useOnScreen";
 import { IPark } from "../../utils/hooks/ParkContext";
-import { InputProps } from "../../pages/Park/components";
+import { InputProps } from "../../pages/Park/components/Card";
 
 interface ParkCardFiltersProps {
     otherParks: any;

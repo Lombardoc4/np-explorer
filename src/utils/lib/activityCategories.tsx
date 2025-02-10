@@ -2,7 +2,7 @@ import { Bus, CalendarCheck2, Car, FlameKindling, House, List } from "lucide-rea
 
 export interface ActivityDetails {
     name: string;
-    icon?: JSX.Element;
+    icon?: React.ReactNode;
     path: string;
     count?: number;
 }
@@ -15,7 +15,7 @@ export const activityCategories: ActivityCategory = {
     visitorcenters: {
         name: "Visitor Centers",
         path: "visitor-centers",
-        icon: <House size={48}/>,
+        icon: <House className="size-8 md:size-12"/>,
     },
     tours: {
         name: "Tours",

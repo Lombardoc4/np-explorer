@@ -3,7 +3,7 @@ import { useContext } from "react";
 // import SearchContext from "../../utils/hooks/SearchContext";
 import { IPark } from "../../utils/hooks/ParkContext";
 import { stateMap } from "../../utils/lib/stateMap";
-import { ParkCards } from "../Park/components";
+import { ParkCards } from "../Park/components/Card";
 
 export interface LoaderProps {
     thingsToDo: any[];

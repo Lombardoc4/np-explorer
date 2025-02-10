@@ -6,7 +6,7 @@ import { ImgGrid } from "../../components/ImgGrid";
 import { IPark } from "../../utils/hooks/ParkContext";
 import { stateMap } from "../../utils/lib/stateMap";
 // import SearchContext from "../../utils/hooks/SearchContext";
-import { ParkCards } from "../Park/components";
+import { ParkCards } from "../Park/components/Card";
 import ErrorPage from "../Error";
 
 export const StatePage = () => {

@@ -1,12 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Link, useLoaderData } from "react-router";
 import ParkContext from "../utils/hooks/ParkContext";
 import { Loader } from "../components/Loader";
 import { MainGrid, StyledSidebar } from "./Park/components/StyledParkComponents";
-import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
-import { ContactCard, ContactItem } from "./Park/Sidebar";
+import { CardItem,  StyledCardContainer } from "../components/styled/StyledCard";
 import { GlobeIcon } from "../assets/icons";
 import { scrollToHash } from "../utils/helper";
+import { ContactCard } from "./Park/Sections/Contact";
 // import { ParkHeader } from "./Park";
 
 const Parking = () => {

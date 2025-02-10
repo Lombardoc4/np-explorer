@@ -1,12 +1,12 @@
-import { useContext, useEffect, useState } from "react";
-import ParkContext from "../utils/hooks/ParkContext";
-import { fetcher, scrollToHash } from "../utils/helper";
+import { useEffect } from "react";
+import { scrollToHash } from "../utils/helper";
 import { MainGrid, StyledSidebar } from "./Park/components/StyledParkComponents";
-import { ContactCard, FeeCard } from "./Park/Sidebar";
-import { DirectionSection } from "./Park/components";
 import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
-import { WeatherDisplay } from "../components/Weather";
+import { WeatherDisplay } from "./Park/components/weather";
 import { useLoaderData } from "react-router";
+import { ContactCard } from "./Park/Sections/Contact";
+import { DirectionSection } from "./Park/Sections/Direction";
+import { FeeCard } from "./Park/Sections/Fees";
 
 const Camping = () => {
     // const [camping, setCamping] = useState<any[]>([]);

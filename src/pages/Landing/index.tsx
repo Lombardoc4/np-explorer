@@ -20,15 +20,15 @@ export const LandingPage = () => {
 const bgUrl = "/Grand_Teton_Landing_BG.jpg";
 const Header = () => (
     <header className='min-h-dvh grid items-center'>
-        <div className='container max-w-5xl mx-auto'>
+        <div className='container max-w-5xl px-4 md:mx-auto'>
             <h1 className='hidden'>Explore Your Favorite National Park</h1>
-            <p className='text-6xl font-black uppercase'>Explore Your</p>
-            <div className={`bg-[url(${bgUrl})] bg-center bg-cover h-[500px] border-2 rounded-xl overflow-hidden`}>
-                <div className='w-full h-full bg-black/25 text-white flex items-center justify-center'>
+            <p className='text-3xl md:text-6xl font-black uppercase'>Explore Your</p>
+            <div className={`bg-[url(${bgUrl})] bg-center bg-cover h-[300px] md:h-[500px] border-2 rounded-xl overflow-hidden`}>
+                <div className='relative w-full px-4 xl:px-0 h-full bg-black/25 text-white flex items-center justify-center'>
                     <ParksDropdown />
                 </div>
             </div>
-            <p className='text-6xl font-black uppercase text-right'>Favorite National Parks</p>
+            <p className='text-3xl md:text-6xl font-black uppercase text-right'>Favorite National Parks</p>
         </div>
     </header>
 );

@@ -45,28 +45,24 @@ export const ImgGrid = ({ images }: ImgGridProps) => {
     return (
         <>
             <div
-                className='grid relative overflow-hidden rounded-lg cursor-pointer my-4 border shadow-lg'
+                className='md:grid relative overflow-hidden rounded-lg cursor-pointer my-4 border shadow-lg'
                 style={{
                     gridTemplateColumns: `2fr ${previewImages.length <= 2 ? "1fr" : "1fr 1fr"}`,
                     gridTemplateRows: `repeat(${previewImages.length <= 3 ? "1, 500px" : "2, 250px"})`,
                 }}
             >
                 {previewImages.map((image: any) => (
-                    <div key={image.url} className='first:row-span-full overflow-hidden' onClick={() => setModalOpen(true)}>
-                        <img className="h-full w-full object-cover" src={image.url} alt={image.altText} />
+                    <div
+                        key={image.url}
+                        className='first:row-span-full overflow-hidden not-first:hidden md:not-first:block'
+                        onClick={() => setModalOpen(true)}
+                    >
+                        <img className='h-full w-full object-cover' src={image.url} alt={image.altText} />
                     </div>
                 ))}
                 <div
                     onClick={() => setModalOpen(true)}
-                    style={{
-                        cursor: "pointer",
-                        position: "absolute",
-                        bottom: "1em",
-                        left: "1em",
-                        backgroundColor: "#fff",
-                        padding: "0.25em 0.75em",
-                        borderRadius: "0.5em",
-                    }}
+                    className='bg-white text-black absolute bottom-4 left-4 px-3 py-1 rounded cursor-pointer'
                 >
                     View all photos
                 </div>

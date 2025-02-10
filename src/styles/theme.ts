@@ -18,7 +18,7 @@ const theme = {
     boxShadow: {
       sm: '0 0 0.5em rgba(0, 0, 0, 0.25)',
       md: '0 0 1em rgba(0, 0, 0, 0.25)',
-      lg: '0 0 2em rgba(0, 0, 0, 0.25)',
+      md: '0 0 2em rgba(0, 0, 0, 0.25)',
       far: '0 0 3em -1.5em rgba(0, 0, 0, 0.25)',
     },
     radius : {

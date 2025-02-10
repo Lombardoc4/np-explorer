@@ -1,12 +1,11 @@
-import { useContext, useEffect, useState } from "react";
-import { Link, useLoaderData, useRouteLoaderData } from "react-router";
+import { useContext, useEffect } from "react";
+import { Link, useLoaderData  } from "react-router";
 
 import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
 import { MainGrid, StyledSidebar } from "./Park/components/StyledParkComponents";
-import { ContactEmail, ContactItem, ContactPhone, StyledContactCard } from "./Park/Sidebar";
 
 import ParkContext from "../utils/hooks/ParkContext";
-import { fetcher, scrollToHash } from "../utils/helper";
+import {  scrollToHash } from "../utils/helper";
 import { GlobeIcon } from "../assets/icons";
 import { Loader } from "../components/Loader";
 

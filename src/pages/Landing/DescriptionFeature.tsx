@@ -49,26 +49,24 @@ export const featureInfo: featureInfoProps[] = [
 
 export const Description = () => (
     <div className='min-h-svh bg-black text-white grid items-center'>
-        <div className='container mx-auto py-16 my-16'>
-            <h2 className='text-6xl uppercase font-thin mb-16'>
+        <div className='container px-4 xl:px-0 mx-auto py-16 mb-16 md:mt-16 '>
+            <h2 className='text-3xl md:text-6xl uppercase font-thin mb-8 md:mb-16'>
                 A modern look to
                 <br /> the National Parks Service...
             </h2>
             <div className='grid md:grid-cols-2 xl:grid-cols-3 w-fit mx-auto gap-16 xl:gap-[96px]'>
-                {featureInfo.map((info) => (
-                    <Feature key={info.title} {...info} />
-                ))}
+                <Features />
             </div>
         </div>
     </div>
 );
 
-const Feature = () => {
+const Features = () => {
     return featureInfo.map(({ icon, title, description }) => (
         <div className='max-w-3xl container'>
             <div className='grid'>
                 {icon}
-                <h3 className='text-4xl xl:text-5xl font-thin'>{title}</h3>
+                <h3 className='text-2xl md:text-4xl xl:text-5xl font-thin'>{title}</h3>
             </div>
             <p className='col-span-2 grow-1 text-justify border-t mt-1 pt-1'>{description}</p>
         </div>

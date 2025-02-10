@@ -51,7 +51,7 @@ export const Dropdown = ({ onSelect, placeholder, options, style }: IDropdown) =
         <div
             style={style}
             className={clsx(
-                "text-left z-20 bg-white text-black lg:absolute w-full max-w-md border rounded-lg mx-auto flex justify-center items-center",
+                "text-left z-20 bg-white text-black md:absolute w-full max-w-md border rounded-lg mx-auto flex justify-center items-center",
                 focused && "rounded-b-none"
             )}
             ref={dropdownSearch}

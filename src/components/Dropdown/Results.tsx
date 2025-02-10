@@ -23,7 +23,7 @@ export const Results = ({ items, isPending, error, type }: IResults) => {
         navigate(`/${type}/${park}`);
     };
     return (
-        <ul className='bg-white border rounded-b-lg absolute top-full w-full max-h-[200px] max-w-md overflow-auto list-none'>
+        <ul className='bg-white border rounded-b-lg absolute md:top-full w-full max-h-[200px] max-w-md overflow-auto list-none'>
             {error && <li className={resultClass}>An error has occurred: {error.message}</li>}
             {isPending && <li className={resultClass}>Loading</li>}
             {items?.map((i) => (

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 // import { FireIcon } from "../../assets/icons";
-import { WeatherIcon } from "../../assets/weather-icons";
-import "../../styles/weather-icons.min.css"
-import "../../styles/weather-icons-wind.min.css"
+import { WeatherIcon } from "../../../assets/weather-icons";
+import "../../../styles/weather-icons.min.css"
+import "../../../styles/weather-icons-wind.min.css"
 const todayAlts = ["Tonight", "This Afternoon"];
 
 const reduceForecast = (periods: any[]) => {
@@ -137,15 +137,15 @@ export const WeatherDisplay = ({ lat, long }: { lat: string; long: string }) => 
                             &deg;{current.temperatureUnit}
                         </p>
                         <p>{current.shortForecast}</p>
+                    </div>
+                </div>
+                <div>
+                    <div className='grid mx-auto'>
                         <p>
                             <b>H:</b>
                             {sevenDay[0].high}&deg;{sevenDay[0].temperatureUnit} <b>L:</b>
                             {sevenDay[0].low}&deg;{sevenDay[0].temperatureUnit}
                         </p>
-                    </div>
-                </div>
-                <div>
-                    <div className='grid mx-auto'>
                         <p>
                             <WeatherIcon id={"umbrella"} /> {current.probabilityOfPrecipitation.value}% Percipitation
                         </p>

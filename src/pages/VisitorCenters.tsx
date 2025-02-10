@@ -1,15 +1,14 @@
-import { useContext, useEffect, useState } from "react";
-import ParkContext from "../utils/hooks/ParkContext";
+import { useEffect, useState } from "react";
 import { SymbolMap } from "../utils/lib/symbolMap";
 import { fetcher } from "../utils/helper";
 import { scrollToHash } from "../utils/helper";
-import { ContactCard } from "./Park/Sidebar";
-import { MainGrid, StyledSidebar } from "./Park/components/StyledParkComponents";
-import { DirectionSection } from "./Park/components";
-import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
 import { Loader } from "../components/Loader";
-import { useLoaderData } from "react-router";
+import { useParams } from "react-router";
 import { styled } from "styled-components";
+import { DirectionSection } from "./Park/Sections/Direction";
+import { AnchorLink } from "./Park/Page";
+import { ParkSection, ParkSectionTitle } from "./Park/Sections";
+import clsx from "clsx";
 
 const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 
@@ -68,14 +67,20 @@ const getOperatingHours = (operatingHours: any) => {
 };
 
 const VisitorCenters = () => {
-    const park = useContext(ParkContext);
-    // const [visitorCenters, setVisitorCenters] = useState<any[]>([]);
-    const {visitorCenters} = useLoaderData() as {visitorCenters: any[]};
+    // const park = useContext(ParkContext);
+    const { parkId } = useParams();
 
-    // useEffect(() => {
-    //     // fetch visitorCenters
-    //     fetcher(`visitorcenters?parkCode=${park.parkCode}`).then((data) => setVisitorCenters(data));
-    // }, []);
+    const [visitorCenters, setVisitorCenters] = useState<any[]>([]);
+    // const {visitorCenters} = useLoaderData() as {visitorCenters: any[]};
+
+    useEffect(() => {
+        // fetch visitorCenters
+        // const fetchVCs = async () => {
+        //     await fetcher(`visitorcenters?parkCode=${parkId}`).then((data) => setVisitorCenters(data));
+        // };
+        // fetchVCs();
+        fetcher(`visitorcenters?parkCode=${parkId}`).then((data) => setVisitorCenters(data));
+    }, []);
 
     useEffect(() => {
         scrollToHash();
@@ -91,79 +96,82 @@ const VisitorCenters = () => {
     // }
 
     // TODO : Change this to error page
-    if (visitorCenters.length <= 0) return <Loader val={"Visitor Centers"} />;
+    if (!visitorCenters || visitorCenters.length <= 0) return <Loader val={"Visitor Centers"} />;
 
     return (
-        <>
-            <h1 className='container'>Visitor Centers</h1>
+        <div className="container mx-auto px-4 xl:px-0">
+                        <h2 className='text-4xl md:text-8xl font-thin'>Visitor Centers</h2>
 
+            <div className='grid grid-cols-2 md:grid-cols-4 gap-4 h-full mt-4 md:mt-8 mb-16'>
+                {visitorCenters.map((vc: any) => (
+                    <AnchorLink key={vc.name} id={vc.name}/>
+                ))}
+            </div>
             {visitorCenters.map((vc: any) => (
                 <VCSection key={vc.id} vc={vc} />
             ))}
-        </>
+        </div>
     );
 };
 
 export default VisitorCenters;
 
+const AmentyItem = ({ amenity }: { amenity: string }) => {
+    const isDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const imageColor = isDarkMode ? "white" : "black";
+    return (
+        <div className='flex items-center gap-4'>
+            <img
+                width={32}
+                height={32}
+                src={`https://raw.githubusercontent.com/nationalparkservice/symbol-library/gh-pages/src/standalone/${SymbolMap[amenity]}-${imageColor}-22.svg`}
+            />{" "}
+            <span className='bold'>{amenity}</span>
+        </div>
+    );
+};
+
 const VCSection = ({ vc }: { vc: any }) => {
     return (
-        <MainGrid id={vc.name.replaceAll(" ", "-").toLowerCase()}>
-            <div className='content'>
-                <div className='section'>
-                    <div style={{ display: "flex", gap: "1em", alignItems: "center" }}>
-                        {vc.isPassportStampLocation === "1" && (
-                            <img
-                                title='Passport Stamp'
-                                src='/passport-book.webp'
-                                alt='Passport Stamp'
-                                style={{ height: "30px" }}
-                            />
-                        )}
-                        <h2>{vc.name}</h2>
+        <div className='my-16'>
+            <ParkSection name={vc.name}>
+                <div className='col-span-2 grid md:grid-cols-2 gap-4 md:gap-8'>
+                    {vc.images.length > 0 && (
+                        <div className='md:order-2 border border-dashed rounded-xl overflow-hidden h-fit'>
+                            <img src={vc.images[0].url} className='w-full mx-auto' alt={vc.images[0].altText} />
+                        </div>
+                    )}
+                    <div className='grid gap-8 items-stretch'>
+                        <p className='text-xl'>{vc.description}</p>
                     </div>
-                    <p>{vc.description}</p>
+                </div>
+                <div className='col-span-2'>
+                    <ParkSectionTitle>
+                        Hours
+                        </ParkSectionTitle>
+
+                    <div className="my-4">
+                        {vc.operatingHours.map((operatingHours: any) => (
+                            <p key={vc.id + "hours"}>{getOperatingHours(operatingHours)}</p>
+                        ))}
+                    </div>
+                    <p className="text-xl">{vc.operatingHours[0].description}</p>
                 </div>
                 {vc.amenities.length > 0 && (
-                    <div className='section'>
-                        <h3 style={{ gridColumn: "1 / -1" }}>Amenities</h3>
-                        <StyledAmenities>
+                    <div className='col-span-2'>
+                        <ParkSectionTitle>Amenities</ParkSectionTitle>
+                        <div className='grid sm:grid-cols-2 lg:grid-cols-4 gap-4 my-4'>
                             {vc.amenities.map((amenity: any) => (
-                                <div className="amenity" key={amenity}>
-                                    <img
-                                        width={24}
-                                        height={24}
-                                        src={`https://raw.githubusercontent.com/nationalparkservice/symbol-library/gh-pages/src/standalone/${SymbolMap[amenity]}-black-22.svg`}
-                                    />{" "}
-                                    <span className='bold'>{amenity}</span>
-                                </div>
+                                <AmentyItem key={amenity} amenity={amenity} />
                             ))}
-                        </StyledAmenities>
+                        </div>
                     </div>
                 )}
-
-                <DirectionSection park={vc} />
-            </div>
-
-            <StyledSidebar>
-                {vc.images.length > 0 && (
-                    // testImageSource(vc.images[0].url)) &&
-                    <StyledCard className='img-container'>
-                        <img src={vc.images[0].url} alt={vc.images[0].altText} />
-                    </StyledCard>
-                )}
-                <StyledCardContainer>
-                    <h2>Hours</h2>
-                    <StyledCard>
-                        {vc.operatingHours.map((operatingHours: any) => (
-                            <CardItem key={vc.id + 'hours'}>{getOperatingHours(operatingHours)}</CardItem>
-                        ))}
-                        <CardItem>{vc.operatingHours[0].description}</CardItem>
-                    </StyledCard>
-                </StyledCardContainer>
-                <ContactCard contacts={vc.contacts} url={vc.url} />
-            </StyledSidebar>
-        </MainGrid>
+                <div className='col-span-2'>
+                    <DirectionSection park={vc} />
+                </div>
+            </ParkSection>
+        </div>
     );
 };
 
@@ -186,4 +194,4 @@ const StyledAmenities = styled.div`
             flex-direction: row;
         }
     }
-`
+`;

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { ParkCards } from "../Park/components";
+import { ParkCards } from "../Park/components/Card";
 
 
 

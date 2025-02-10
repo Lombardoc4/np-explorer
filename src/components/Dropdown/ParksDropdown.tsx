@@ -70,7 +70,7 @@ export const ParksDropdown = () => {
             ref={dropdownSearch}
             onClick={() => setFocused(true)}
             className={clsx(
-                "z-20 bg-white text-black md:absolute w-full max-w-md border rounded-lg",
+                "z-20 bg-white text-black absolute md:w-full max-w-md border rounded-lg",
                 focused && (isPending || status === "success") && "rounded-b-none"
             )}
         >

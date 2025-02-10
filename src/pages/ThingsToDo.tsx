@@ -5,7 +5,6 @@ import { MainGrid, StyledSidebar } from "./Park/components/StyledParkComponents"
 import { Loader } from "../components/Loader";
 import { CardItem, StyledCard, StyledCardContainer } from "../components/styled/StyledCard";
 import { GlobeIcon } from "../assets/icons";
-import { ContactItem } from "./Park/Sidebar";
 import { scrollToHash } from "../utils/helper";
 // import { ParkHeader } from "./Park";
 

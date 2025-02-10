@@ -10,20 +10,20 @@ export const Map = () => {
 
     return (
         <>
-            <div className='grid grid-cols-2 items-center mb-8 '>
+            <div className='grid md:grid-cols-2 items-center mb-8 '>
+                <div className='md:order-2 w-full min-h-[50px] relative flex justify-center mb-8 md:mb-0'>
+                    <StateDropdown />
+                </div>
                 <div>
-                    <h2 className='text-6xl uppercase font-semibold italic'>Where To?</h2>
+                    <h2 className='text-4xl md:text-6xl uppercase font-thin italic'>Where To?</h2>
                     <h3
-                        className='text-4xl uppercase underline'
+                        className='md:text-4xl uppercase underline'
                         onClick={() => hoverState.name && navigate("/state/" + hoverState.id)}
                     >
                         {hoverState.name || "Pick a state"}
                     </h3>
                 </div>
 
-                <div className='w-full min-h-[50px] relative flex justify-center'>
-                    <StateDropdown />
-                </div>
             </div>
 
             <svg
