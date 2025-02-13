@@ -41,8 +41,6 @@ export const VisitorCenterPage = () => {
       const data = await fetcher(`${catergory}?parkCode=${parkId}`);
       return data.filter((vc: any) => (vc.id = activityId))[0];
     },
-    retry: 0,
-    staleTime: 5 * 60 * 1000,
   });
 
   if (status === 'pending') {

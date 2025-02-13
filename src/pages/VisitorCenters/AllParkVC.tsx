@@ -20,8 +20,6 @@ export const AllParkVCs = () => {
   } = useQuery({
     queryKey: ['park', { catergory: catergory, parkCode: parkId }],
     queryFn: async () => await fetcher(`${catergory}?parkCode=${parkId}`),
-    retry: 0,
-    staleTime: 5 * 60 * 1000,
   });
 
   if (status === 'pending') {

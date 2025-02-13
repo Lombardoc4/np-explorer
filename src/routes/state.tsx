@@ -1,23 +1,23 @@
 import { Params, Route } from 'react-router';
-import Camping from '../pages/Camping';
+import { AllParkCamping } from '../pages/Camping';
 import Events from '../pages/Events';
 import Parking from '../pages/Parking';
 import { StatePage } from '../pages/State';
 import { State } from '../pages/State/Main';
 import ThingsToDo from '../pages/ThingsToDo';
 import Tours from '../pages/Tours';
-import ParkVisitorCenters from '../pages/VisitorCenters';
 import { fetcher } from '../utils/helper';
 import ErrorPage from '../pages/Error';
+import { AllParkVCs } from '../pages/VisitorCenters';
 
 export const stateRoutes = (
   <Route path=':stateId' element={<StatePage />}>
     <Route path='' element={<State />} />
     <Route path='things-to-do' element={<ThingsToDo />} />
-    <Route path='camping' element={<Camping />} />
+    <Route path='camping' element={<AllParkCamping />} />
     <Route path='events' element={<Events />} />
     <Route path='tours' element={<Tours />} />
-    <Route path='visitor-centers' element={<ParkVisitorCenters />} />
+    <Route path='visitor-centers' element={<AllParkVCs />} />
     <Route path='parking' element={<Parking />} />
   </Route>
 );
