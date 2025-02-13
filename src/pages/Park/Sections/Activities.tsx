@@ -19,8 +19,6 @@ export const CategorySection = ({
   const { status, data: categories } = useQuery({
     queryKey: ['park', { catergory: endpoint, parkCode: parkCode }],
     queryFn: async () => await fetcher(`${endpoint}?parkCode=${parkCode}`),
-    retry: 0,
-    staleTime: 5 * 60 * 1000,
   });
 
   if (status !== 'success' || categories.length <= 0) return;
@@ -53,7 +51,7 @@ const CategoryCard = ({
   name: string;
   path: string;
 }) => {
-  const href = `./${path}/${name.replace(/\ /g, '-').toLowerCase()}/${data.id}`;
+  const href = `./${name.replace(/\ /g, '-').toLowerCase()}/${data.id}`;
   const date =
     data.date &&
     new Date(data.date.replace(/-/g, '/')).toLocaleDateString('en-US', {

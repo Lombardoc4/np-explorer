@@ -32,7 +32,6 @@ function ParkProvider({ children }: { children: React.ReactNode }) {
       return data[0];
     },
     retry: 1,
-    staleTime: 5 * 60 * 1000,
     enabled: !!parkId, // Enable query execution only if parkId exists
   });
 
