@@ -83,24 +83,3 @@ export const ImgGrid = ({ images }: { images: ImageProps[] }) => {
     </>
   );
 };
-
-const ImageWithFallback = ({
-  url,
-  altText,
-}: {
-  url: string;
-  altText: string;
-}) => {
-  const [isLoaded, setIsLoaded] = useState(true);
-
-  return isLoaded ? (
-    <img
-      src={url}
-      alt={altText}
-      onError={() => setIsLoaded(false)} // Hide image if loading fails
-      className='h-full w-full object-cover'
-    />
-  ) : null; // Return null to hide the image if it fails
-};
-
-export default ImageWithFallback;

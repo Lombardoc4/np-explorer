@@ -36,7 +36,6 @@ export const RandomPark = () => {
       return data[0];
     },
     retry: 1,
-    staleTime: 5 * 60 * 1000,
     enabled: !!start, // Enable query execution only if parkId exists
   });
 

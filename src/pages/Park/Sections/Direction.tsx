@@ -16,7 +16,7 @@ export const DirectionSection = ({
   return (
     <ParkSection name={'Directions'}>
       <div>
-        <p className='text-xl'>{park.directionsInfo || children}</p>
+        <p className='text-xl'>{children || park.directionsInfo}</p>
         <a
           className='text-sm italic underline'
           target='_blank'

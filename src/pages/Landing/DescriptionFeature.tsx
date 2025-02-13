@@ -72,7 +72,7 @@ export const Description = () => (
 
 const Features = () => {
   return featureInfo.map(({ icon, title, description }) => (
-    <div className='container max-w-3xl'>
+    <div key={title} className='container max-w-3xl'>
       <div className='grid'>
         {icon}
         <h3 className='text-2xl font-thin md:text-4xl xl:text-5xl'>{title}</h3>

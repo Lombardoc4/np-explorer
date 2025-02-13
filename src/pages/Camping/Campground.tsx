@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetcher, getOperatingHours, scrollToHash } from '../../utils/helper';
+import { fetcher, getOperatingHours } from '../../utils/helper';
 import {
   MainGrid,
   StyledSidebar,
