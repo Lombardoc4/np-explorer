@@ -6,7 +6,7 @@ import {
   ActivityDetails,
 } from '../../utils/lib/activityCategories';
 import ErrorPage from '../Error';
-import { WeatherDisplay } from './components/weather';
+import { WeatherDisplay } from '../../components/Weather/WeatherReport';
 import {
   ParkAlert,
   DirectionSection,
@@ -22,6 +22,7 @@ import { ParkTitle } from './components/title';
 import { FullHeightLoader } from '../../components/Loader';
 import SEO from '../../components/SEO';
 import { useParams } from 'react-router';
+import { WeatherSection } from '../../components/Weather';
 
 export const ParkPage = () => {
   const { parkId } = useParams();

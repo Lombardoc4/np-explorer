@@ -101,3 +101,22 @@ interface IPark {
   url?: string;
   weatherInfo?: string;
 }
+
+interface IForecast {
+  name: string;
+  temperature: number;
+  high: number;
+  low: number;
+  temperatureUnit: string;
+  windSpeed: string;
+  windDirection: string;
+  shortForecast: string;
+  startTime: string;
+  isDaytime: boolean;
+  probabilityOfPrecipitation: {
+    value: string;
+  };
+  relativeHumidity: {
+    value: string;
+  };
+}

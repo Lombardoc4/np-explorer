@@ -1,7 +1,7 @@
 import { FilterProps } from '../pages/Park/components/Card';
 import { parkVistors } from './lib/parkVisitors';
 
-const daysOfWeek = [
+export const daysOfWeek = [
   'monday',
   'tuesday',
   'wednesday',
