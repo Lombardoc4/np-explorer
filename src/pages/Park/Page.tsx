@@ -20,23 +20,35 @@ import { ShareModal } from '../../components/Modal/ShareModal';
 import { ImgGrid } from '../../components/ImgGrid';
 import { ParkTitle } from './components/title';
 import { FullHeightLoader } from '../../components/Loader';
+import SEO from '../../components/SEO';
+import { useParams } from 'react-router';
 
 export const ParkPage = () => {
+  const { parkId } = useParams();
   const { status, error, data: park } = useContext(ParkContext);
 
-  if (status === 'pending') {
-    return <FullHeightLoader />;
-  }
+  const title =
+    status === 'success' && park
+      ? park.fullName
+      : (parkId?.toUpperCase() as string);
 
-  if (error) {
-    return <ErrorPage error={error} />;
-  }
+  const description =
+    status === 'success' && park ? park.description : 'Explore this park'; // Default description
 
-  if (!park) {
-    return <ErrorPage error={'No Park'} />;
-  }
+  return (
+    <>
+      {/* SEO */}
+      <SEO title={title} description={description} />
 
-  return <ParkLayout {...park} />;
+      {/* Content */}
+      {status === 'pending' && <FullHeightLoader />}
+      {error && <ErrorPage error={error} />}
+      {status === 'success' && park && <ParkLayout {...park} />}
+      {status === 'success' && !park && (
+        <ErrorPage error={'No park data available'} />
+      )}
+    </>
+  );
 };
 
 export const ParkLayout = (park: IPark) => {

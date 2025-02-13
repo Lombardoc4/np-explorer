@@ -1,9 +1,12 @@
 import { ParksDropdown } from '../../components/Dropdown/ParksDropdown';
+import SEO from '../../components/SEO';
 import { Description } from './DescriptionFeature';
 
 export const LandingPage = () => {
   return (
     <>
+      <SEO title='Home' description='Explore Your Favorite National Park' />
+
       {/* Section 1 - Header */}
       <Header />
 
