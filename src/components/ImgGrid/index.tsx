@@ -2,6 +2,7 @@ import { Dispatch, useState } from 'react';
 import { styled } from 'styled-components';
 import { Modal } from '../Modal';
 import { ImageViewer } from '../ImageViewer';
+import clsx from 'clsx';
 // import { Modal } from "../Modal";
 
 const ImgModalStyles = {
@@ -38,28 +39,36 @@ const imgModal = (
 };
 
 export const ImgGrid = ({ images }: { images: ImageProps[] }) => {
-  const previewImages = images.slice(0, 5);
+  const [previewImgs, setPreviewImages] = useState(images);
+  const sliceEnd = images.length >= 5 ? 5 : images.length >= 3 ? 3 : 1;
   const [modal, setModalOpen] = imgModal(images);
+
+  const handleError = (failedImage: string) => {
+    setPreviewImages((prevImages) =>
+      prevImages.filter((img) => img.url !== failedImage),
+    );
+  };
 
   return (
     <>
       <div
-        className='relative cursor-pointer overflow-hidden rounded-lg border shadow-lg md:grid'
-        style={{
-          gridTemplateColumns: `2fr ${previewImages.length <= 2 ? '1fr' : '1fr 1fr'}`,
-          gridTemplateRows: `repeat(${previewImages.length <= 3 ? '1, 500px' : '2, 250px'})`,
-        }}
+        className={clsx(
+          'relative cursor-pointer grid-rows-[repeat(2,250px)] overflow-hidden rounded-lg border shadow-lg md:grid',
+          sliceEnd === 5 && 'grid-cols-[2fr_1fr_1fr]',
+          sliceEnd === 3 && 'grid-cols-[2fr_1fr]',
+        )}
       >
-        {previewImages.map((image: any) => (
+        {previewImgs.slice(0, sliceEnd).map((img) => (
           <div
-            key={image.url}
+            key={img.url}
             className='overflow-hidden not-first:hidden first:row-span-full md:not-first:block'
             onClick={() => setModalOpen(true)}
           >
             <img
+              src={img.url}
+              alt={img.altText}
+              onError={() => handleError(img.url || '')} // Hide image if loading fails
               className='h-full w-full object-cover'
-              src={image.url}
-              alt={image.altText}
             />
           </div>
         ))}
@@ -75,29 +84,23 @@ export const ImgGrid = ({ images }: { images: ImageProps[] }) => {
   );
 };
 
-interface StyledGridProps {
-  $item: number;
-}
+const ImageWithFallback = ({
+  url,
+  altText,
+}: {
+  url: string;
+  altText: string;
+}) => {
+  const [isLoaded, setIsLoaded] = useState(true);
 
-const StyledGrid = styled.div<StyledGridProps>`
-  display: grid;
-  position: relative;
+  return isLoaded ? (
+    <img
+      src={url}
+      alt={altText}
+      onError={() => setIsLoaded(false)} // Hide image if loading fails
+      className='h-full w-full object-cover'
+    />
+  ) : null; // Return null to hide the image if it fails
+};
 
-  grid-template-columns: 2fr ${({ $item }) => ($item <= 2 ? '1fr' : '1fr 1fr')};
-  grid-template-rows: repeat(
-    ${({ $item }) => ($item <= 3 ? '1, 500px' : '2, 250px')}
-  );
-
-  gap: 0.5em;
-  overflow: hidden;
-  border-radius: 1em;
-  cursor: pointer;
-
-  .img-container:nth-child(1) {
-    grid-row: 1 / -1;
-  }
-
-  .img-container:nth-child(2) {
-    grid-column: ${({ $item }) => $item === 4 && '2 / -1'};
-  }
-`;
+export default ImageWithFallback;
