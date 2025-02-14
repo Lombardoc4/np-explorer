@@ -5,22 +5,22 @@ import { ContactCard } from './Contact';
 import { ParkSection } from '.';
 
 export const DirectionSection = ({
-  park,
+  location,
   children,
 }: {
-  park: any;
+  location: any;
   children?: JSX.Element;
 }) => {
-  const { addresses } = park;
+  const { addresses } = location;
 
   return (
     <ParkSection name={'Directions'}>
       <div>
-        <p className='text-xl'>{children || park.directionsInfo}</p>
+        <p className='text-xl'>{children || location.directionsInfo}</p>
         <a
           className='text-sm italic underline'
           target='_blank'
-          href={park.directionsUrl}
+          href={location.directionsUrl}
         >
           Official National Park Directions
         </a>
@@ -28,26 +28,26 @@ export const DirectionSection = ({
 
       {/* Address and Contact Info */}
       <div className='h-fit rounded border p-4'>
-        <div className='grid gap-4 md:gap-0 lg:grid-cols-2'>
+        <div className='grid gap-4 xl:grid-cols-2'>
           <div>
             <h3 className='text-2xl font-thin underline'>Address</h3>
             {addresses.length > 0 && <DirectionAddress addresses={addresses} />}
             <a
               target='_blank'
-              href={`https://www.google.com/maps/search/?api=1&query=${park.latitude},${park.longitude}`}
+              href={`https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}`}
             >
-              {park.latitude.slice(0, 8)}, {park.longitude.slice(0, 8)}
+              {location.latitude.slice(0, 8)}, {location.longitude.slice(0, 8)}
             </a>
           </div>
           <div>
             <h3 className='text-2xl font-thin underline'>Contact</h3>
-            <ContactCard contacts={park.contacts} />
+            <ContactCard contacts={location.contacts} />
           </div>
         </div>
-        {park.url && (
+        {location.url && (
           <div className='col-span-2 mt-4'>
             <Link
-              to={park.url}
+              to={location.url}
               className='flex items-center gap-1 text-lg font-black hover:underline'
             >
               <LinkIcon className='inline' size={16} /> Official National Parks

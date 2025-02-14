@@ -10,7 +10,6 @@ import { WeatherDisplay } from '../../components/Weather/WeatherReport';
 import {
   ParkAlert,
   DirectionSection,
-  WeatherSection,
   FeeCard,
   CategorySection,
 } from './Sections';
@@ -65,7 +64,7 @@ export const ParkLayout = (park: IPark) => {
         <ParkHeader name={park.fullName} description={park.description} />
         <ParkAlert parkId={park.parkCode} />
 
-        <DirectionSection park={park} />
+        <DirectionSection location={park} />
 
         <WeatherSection weather={park.weatherInfo}>
           <WeatherDisplay lat={park.latitude} long={park.longitude} />
