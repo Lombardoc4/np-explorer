@@ -9,38 +9,19 @@ import {
   StyledCard,
   StyledCardContainer,
 } from '../../components/styled/StyledCard';
-import { WeatherDisplay } from '../Park/components/weather';
 import { Link, useLoaderData, useParams } from 'react-router';
 import { ContactCard } from '../Park/Sections/Contact';
 import { DirectionSection } from '../Park/Sections/Direction';
 import { FeeCard } from '../Park/Sections/Fees';
-import {
-  ParkSection,
-  ParkSectionTitle,
-  WeatherSection,
-} from '../Park/Sections';
-import { AnchorLink } from '../Park/Page';
-import { catergory } from '.';
+import { ParkSection, ParkSectionTitle } from '../Park/Sections';
+import { category, endpoint } from '.';
 import { useQuery } from '@tanstack/react-query';
-import { ChevronRight } from 'lucide-react';
 import { Button } from '../../components/Button';
 import { FullHeightLoader } from '../../components/Loader';
 import ErrorPage from '../Error';
 import { ImgGrid } from '../../components/ImgGrid';
-
-const Breadcrumbs = ({ parkId, name }: { parkId?: string; name: string }) => (
-  <div className='mb-4 flex items-center gap-2'>
-    <Button className='uppercase hover:underline'>
-      <Link to={`/park/${parkId}`}>{parkId}</Link>
-    </Button>
-    <ChevronRight />
-    <Button className='hover:underline'>
-      <Link to={`/park/${parkId}/camping`}>Camping</Link>
-    </Button>
-    <ChevronRight />
-    <Button className='hover:underline'>{name}</Button>
-  </div>
-);
+import { Breadcrumbs } from '../../components/Breadcrumbs';
+import { WeatherDisplay, WeatherSection } from '../../components/Weather';
 
 export const Campground = () => {
   const { parkId, activityId } = useParams();
@@ -51,10 +32,10 @@ export const Campground = () => {
   } = useQuery({
     queryKey: [
       'park',
-      { catergory: catergory, parkCode: parkId, activityId: activityId },
+      { catergory: endpoint, parkCode: parkId, activityId: activityId },
     ],
     queryFn: async () => {
-      const data = await fetcher(`${catergory}?parkCode=${parkId}`);
+      const data = await fetcher(`${endpoint}?parkCode=${parkId}`);
       return data.filter((campground: any) => (campground.id = activityId))[0];
     },
   });
@@ -72,7 +53,7 @@ export const Campground = () => {
 
   return (
     <div className='container mx-auto min-h-svh px-4 py-24 lg:px-0 xl:max-w-5xl'>
-      <Breadcrumbs parkId={parkId} name={campground.name} />
+      <Breadcrumbs parkId={parkId} category={category} name={campground.name} />
       <CampingSection key={campground.id} campground={campground} />
     </div>
   );
@@ -145,7 +126,7 @@ const CampingSection = ({ campground }: { campground: any }) => {
       </div>
 
       <div className='col-span-2'>
-        <DirectionSection park={campground}>
+        <DirectionSection location={campground}>
           {campground.directionsOverview}
         </DirectionSection>
       </div>

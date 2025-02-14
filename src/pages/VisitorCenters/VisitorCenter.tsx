@@ -9,22 +9,9 @@ import ErrorPage from '../Error';
 import { Button } from '../../components/Button';
 import { ChevronRight } from 'lucide-react';
 import { ImgGrid } from '../../components/ImgGrid';
-import { catergory } from '.';
+import { category, endpoint } from '.';
 import SEO from '../../components/SEO';
-
-const Breadcrumbs = ({ parkId, name }: { parkId?: string; name: string }) => (
-  <div className='mb-4 flex items-center gap-2'>
-    <Button className='uppercase hover:underline'>
-      <Link to={`/park/${parkId}`}>{parkId}</Link>
-    </Button>
-    <ChevronRight />
-    <Button className='hover:underline'>
-      <Link to={`/park/${parkId}/visitor-centers`}>Visitor Centers</Link>
-    </Button>
-    <ChevronRight />
-    <Button className='hover:underline'>{name}</Button>
-  </div>
-);
+import { Breadcrumbs } from '../../components/Breadcrumbs';
 
 export const VisitorCenterPage = () => {
   const { parkId, activityId } = useParams();
@@ -35,10 +22,10 @@ export const VisitorCenterPage = () => {
   } = useQuery({
     queryKey: [
       'park',
-      { catergory: catergory, parkCode: parkId, activityId: activityId },
+      { catergory: endpoint, parkCode: parkId, activityId: activityId },
     ],
     queryFn: async () => {
-      const data = await fetcher(`${catergory}?parkCode=${parkId}`);
+      const data = await fetcher(`${endpoint}?parkCode=${parkId}`);
       return data.filter((vc: any) => (vc.id = activityId))[0];
     },
   });
@@ -66,7 +53,11 @@ export const VisitorCenterPage = () => {
     <>
       <SEO title={visitorCenter.name} description={visitorCenter.description} />
       <div className='container mx-auto min-h-svh px-4 py-24 lg:px-0 xl:max-w-5xl'>
-        <Breadcrumbs parkId={parkId} name={visitorCenter.name} />
+        <Breadcrumbs
+          parkId={parkId}
+          category={category}
+          name={visitorCenter.name}
+        />
         <main>
           <VCSection key={visitorCenter.id} vc={visitorCenter} />
         </main>
@@ -110,7 +101,7 @@ const VCSection = ({ vc }: { vc: any }) => {
 
       {/* Directions */}
       <div className='col-span-2'>
-        <DirectionSection park={vc} />
+        <DirectionSection location={vc} />
       </div>
     </ParkSection>
   );

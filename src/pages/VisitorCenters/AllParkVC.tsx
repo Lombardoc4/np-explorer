@@ -7,8 +7,9 @@ import { useQuery } from '@tanstack/react-query';
 import ErrorPage from '../Error';
 import { Button } from '../../components/Button';
 import { ChevronRight } from 'lucide-react';
-import { catergory } from '.';
+import { category, endpoint } from '.';
 import SEO from '../../components/SEO';
+import { Breadcrumbs } from '../../components/Breadcrumbs';
 
 export const AllParkVCs = () => {
   const { parkId } = useParams();
@@ -18,8 +19,8 @@ export const AllParkVCs = () => {
     error,
     data: visitorCenters,
   } = useQuery({
-    queryKey: ['park', { catergory: catergory, parkCode: parkId }],
-    queryFn: async () => await fetcher(`${catergory}?parkCode=${parkId}`),
+    queryKey: ['park', { catergory: endpoint, parkCode: parkId }],
+    queryFn: async () => await fetcher(`${endpoint}?parkCode=${parkId}`),
   });
 
   if (status === 'pending') {
@@ -49,7 +50,7 @@ export const AllParkVCs = () => {
       />
       <div className='container mx-auto min-h-svh px-4 py-24 lg:px-0 xl:max-w-5xl'>
         <header>
-          <Breadcrumbs parkId={parkId} />
+          <Breadcrumbs parkId={parkId} category={category} />
           <h1 className='mb-8 text-6xl font-thin md:text-8xl'>
             Visitor Centers
           </h1>
@@ -72,16 +73,6 @@ export const AllParkVCs = () => {
     </>
   );
 };
-
-const Breadcrumbs = ({ parkId }: { parkId?: string }) => (
-  <div className='mb-4 flex items-center gap-2'>
-    <Button className='uppercase hover:underline'>
-      <Link to={`/park/${parkId}`}>{parkId}</Link>
-    </Button>
-    <ChevronRight />
-    <Button className='hover:underline'>Visitor Centers</Button>
-  </div>
-);
 
 const VCSection = ({ vc }: { vc: any }) => {
   return (

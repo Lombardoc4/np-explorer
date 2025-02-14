@@ -1,4 +1,5 @@
 export * from './AllParkVC';
 export * from './VisitorCenter';
 
-export const catergory = 'visitorcenters';
+export const endpoint = 'visitorcenters';
+export const category = 'Visitor Centers';

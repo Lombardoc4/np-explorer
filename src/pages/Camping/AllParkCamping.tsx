@@ -7,7 +7,8 @@ import { fetcher } from '../../utils/helper';
 import { Link, useParams } from 'react-router';
 import { AnchorLink } from '../Park/Page';
 import { ParkSection } from '../Park/Sections';
-import { catergory } from '.';
+import { category, endpoint } from '.';
+import { Breadcrumbs } from '../../components/Breadcrumbs';
 
 export const AllParkCamping = () => {
   const { parkId } = useParams();
@@ -17,8 +18,8 @@ export const AllParkCamping = () => {
     error,
     data: campgrounds,
   } = useQuery({
-    queryKey: ['park', { catergory: catergory, parkCode: parkId }],
-    queryFn: async () => await fetcher(`${catergory}?parkCode=${parkId}`),
+    queryKey: ['park', { catergory: endpoint, parkCode: parkId }],
+    queryFn: async () => await fetcher(`${endpoint}?parkCode=${parkId}`),
   });
 
   if (status === 'pending') {
@@ -34,7 +35,7 @@ export const AllParkCamping = () => {
 
   return (
     <div className='container mx-auto min-h-svh px-4 py-24 lg:px-0 xl:max-w-5xl'>
-      <Breadcrumbs parkId={parkId} />
+      <Breadcrumbs parkId={parkId} category={category} />
 
       <h2 className='mb-8 text-6xl font-thin md:text-8xl'>Camping</h2>
       {campgrounds.length > 1 && (
@@ -52,16 +53,6 @@ export const AllParkCamping = () => {
     </div>
   );
 };
-
-const Breadcrumbs = ({ parkId }: { parkId?: string }) => (
-  <div className='mb-4 flex items-center gap-2'>
-    <Button className='uppercase hover:underline'>
-      <Link to={`/park/${parkId}`}>{parkId}</Link>
-    </Button>
-    <ChevronRight />
-    <Button className='hover:underline'>Camping</Button>
-  </div>
-);
 
 const CampingSection = ({ camp }: any) => {
   return (
