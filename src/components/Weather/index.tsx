@@ -1,2 +1,2 @@
-export * from './WeatherReport';
-export * from './WeatherSection';
+export { WeatherDisplay } from './WeatherReport';
+export { WeatherSection } from './WeatherSection';

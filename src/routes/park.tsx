@@ -1,4 +1,4 @@
-import { Outlet, Route, useLocation } from 'react-router';
+import { Route } from 'react-router';
 
 import Events from '../pages/Events';
 import { ParkLayout } from '../pages/Park/Layout';

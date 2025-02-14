@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { WeatherIcon } from '../../assets/weather-icons';
-import '../../../styles/weather-icons.min.css';
-import '../../../styles/weather-icons-wind.min.css';
+import '../../styles/weather-icons-wind.min.css';
+import '../../styles/weather-icons-wind.min.css';
 import clsx from 'clsx';
 import { Loader } from '../Loader';
 import { SevenDayForecast } from './SevenDay';
@@ -52,17 +52,19 @@ export const WeatherDisplay = (latLong: { lat: string; long: string }) => {
   }, [latLong]);
 
   useEffect(() => {
+    if (!hourlyUrl) return;
     fetchHourly(hourlyUrl).then((hourlyForecast) =>
       setHourly(hourlyForecast.properties.periods.slice(0, 24)),
     );
   }, [hourlyUrl]);
 
-  if (!location)
+  if (!location) {
     return (
-      <div className='h-full'>
+      <div className='flex h-full items-center justify-center'>
         <Loader />
       </div>
     );
+  }
 
   return (
     <div className='grid grid-cols-2 gap-4'>

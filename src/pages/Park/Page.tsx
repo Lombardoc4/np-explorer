@@ -7,12 +7,7 @@ import {
 } from '../../utils/lib/activityCategories';
 import ErrorPage from '../Error';
 import { WeatherDisplay } from '../../components/Weather/WeatherReport';
-import {
-  ParkAlert,
-  DirectionSection,
-  FeeCard,
-  CategorySection,
-} from './Sections';
+import { ParkAlert, FeeCard, CategorySection } from './Sections';
 import { TriangleAlert, Wallet } from 'lucide-react';
 import { Button } from '../../components/Button';
 import { ShareModal } from '../../components/Modal/ShareModal';
@@ -22,6 +17,7 @@ import { FullHeightLoader } from '../../components/Loader';
 import SEO from '../../components/SEO';
 import { useParams } from 'react-router';
 import { WeatherSection } from '../../components/Weather';
+import { DirectionSection } from '../../components/Direction';
 
 export const ParkPage = () => {
   const { parkId } = useParams();

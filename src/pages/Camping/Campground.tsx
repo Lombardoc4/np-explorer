@@ -1,18 +1,5 @@
-import { useEffect, useState } from 'react';
 import { fetcher, getOperatingHours } from '../../utils/helper';
-import {
-  MainGrid,
-  StyledSidebar,
-} from '../Park/components/StyledParkComponents';
-import {
-  CardItem,
-  StyledCard,
-  StyledCardContainer,
-} from '../../components/styled/StyledCard';
-import { Link, useLoaderData, useParams } from 'react-router';
-import { ContactCard } from '../Park/Sections/Contact';
-import { DirectionSection } from '../Park/Sections/Direction';
-import { FeeCard } from '../Park/Sections/Fees';
+import { Link, useParams } from 'react-router';
 import { ParkSection, ParkSectionTitle } from '../Park/Sections';
 import { category, endpoint } from '.';
 import { useQuery } from '@tanstack/react-query';
@@ -22,6 +9,7 @@ import ErrorPage from '../Error';
 import { ImgGrid } from '../../components/ImgGrid';
 import { Breadcrumbs } from '../../components/Breadcrumbs';
 import { WeatherDisplay, WeatherSection } from '../../components/Weather';
+import { DirectionSection } from '../../components/Direction';
 
 export const Campground = () => {
   const { parkId, activityId } = useParams();

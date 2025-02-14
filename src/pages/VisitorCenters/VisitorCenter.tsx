@@ -1,13 +1,11 @@
 import { SymbolMap } from '../../utils/lib/symbolMap';
 import { fetcher, getOperatingHours } from '../../utils/helper';
 import { FullHeightLoader } from '../../components/Loader';
-import { Link, useParams } from 'react-router';
-import { DirectionSection } from '../Park/Sections/Direction';
+import { useParams } from 'react-router';
+import { DirectionSection } from '../../components/Direction';
 import { ParkSection, ParkSectionTitle } from '../Park/Sections';
 import { useQuery } from '@tanstack/react-query';
 import ErrorPage from '../Error';
-import { Button } from '../../components/Button';
-import { ChevronRight } from 'lucide-react';
 import { ImgGrid } from '../../components/ImgGrid';
 import { category, endpoint } from '.';
 import SEO from '../../components/SEO';

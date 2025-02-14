@@ -19,6 +19,18 @@ interface ImageProps {
   };
 }
 
+interface IAddress {
+  line1: string;
+  line2: string;
+  line3: string;
+  city: string;
+  stateCode: string;
+  countryCode: string;
+  provinceTerritoryCode: string;
+  postalCode: string;
+  type: string;
+}
+
 interface IPark {
   id: string;
   // activites: string[];
@@ -26,17 +38,7 @@ interface IPark {
     id: string;
     name: string;
   };
-  addresses?: {
-    line1: string;
-    line2: string;
-    line3: string;
-    city: string;
-    stateCode: string;
-    countryCode: string;
-    provinceTerritoryCode: string;
-    postalCode: string;
-    type: string;
-  };
+  addresses?: IAddress[];
   contacts?: {
     phoneNumbers: {
       phoneNumber: string;

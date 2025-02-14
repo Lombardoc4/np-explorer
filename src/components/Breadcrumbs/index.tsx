@@ -1,7 +1,6 @@
 import { ChevronRight } from 'lucide-react';
 import { Link } from 'react-router';
 import { Button } from '../Button';
-import { endpoint } from '../../pages/Camping';
 
 export const Breadcrumbs = ({
   parkId,
@@ -12,7 +11,7 @@ export const Breadcrumbs = ({
   category?: string;
   name?: string;
 }) => {
-  category = endpoint.replace(/ /g, '-').toLowerCase();
+  category = category?.replace(/ /g, '-').toLowerCase();
   return (
     <div className='mb-4 flex items-center gap-2'>
       {parkId && (
