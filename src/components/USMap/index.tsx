@@ -1,4 +1,3 @@
-import { StateDropdown } from '../Dropdown/StateDropdown';
 import { Map } from './Map';
 
 export const USMap = () => {

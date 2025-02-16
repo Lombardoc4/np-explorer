@@ -1,50 +1,49 @@
-import { Link, useLocation } from "react-router";
-import styled from "styled-components";
+import { Link, useLocation } from 'react-router';
 
-import { ParksDropdown } from "../Dropdown/ParksDropdown";
-import logo from "../../assets/npe-green.svg";
-import { useEffect, useRef } from "react";
-import useOnScreen from "../../utils/hooks/useOnScreen";
+import logo from '../../assets/npe-green.svg';
+import { useEffect, useRef } from 'react';
+import useOnScreen from '../../utils/hooks/useOnScreen';
+import { Dropdown } from '../Dropdown';
 
 export const NavBar = () => {
+  const location = useLocation();
 
-    const location = useLocation();
+  // Hide when offscreen
+  const otherParksRef = useRef(document.querySelector('#other-parks'));
+  const offscreen = useOnScreen(otherParksRef, -50);
 
-    // Hide when offscreen
-    const otherParksRef = useRef(document.querySelector("#other-parks"));
-    const offscreen = useOnScreen(otherParksRef, -50);
+  useEffect(() => {
+    // Confirms ref is set
+    if (!otherParksRef.current)
+      otherParksRef.current = document.querySelector('#other-parks');
 
-    useEffect(() => {
-        // Confirms ref is set
-        if (!otherParksRef.current) otherParksRef.current = document.querySelector("#other-parks");
+    // This close the dropdown
+    document.documentElement.click();
+  }, [offscreen]);
 
-        // This close the dropdown
-        document.documentElement.click();
-    }, [offscreen]);
+  return (
+    <nav className='fixed start-0 end-0 top-0 z-30 flex h-[64px] bg-white/25 shadow backdrop-blur-lg backdrop-filter dark:bg-zinc-900/10'>
+      <div className='container mx-auto flex items-center justify-center'>
+        {/* Left */}
+        <div className='mr-auto'>
+          <Link to='/' className='flex'>
+            {/* <Logo src={logo} alt="National Park Exp Logo"/> */}
+            <img src={logo} alt='NPS Logo' className='max-w-20' />
+          </Link>
+        </div>
 
-    return (
-        <nav className='bg-white/25 backdrop-filter backdrop-blur-lg dark:bg-zinc-900/10  z-30 top-0 h-[64px] shadow fixed start-0 end-0 flex'>
-            <div className='container mx-auto flex justify-center items-center'>
-                {/* Left */}
-                <div className='mr-auto'>
-                    <Link to='/' className='flex'>
-                        {/* <Logo src={logo} alt="National Park Exp Logo"/> */}
-                        <img src={logo} alt='NPS Logo' className="max-w-20" />
-                    </Link>
-                </div>
+        {/* Middle */}
+        {location.pathname !== '/' && <Dropdown type='park' />}
 
-                {/* Middle */}
-                {location.pathname !== "/" && <ParksDropdown />}
-
-                {/* Right */}
-                {/* <div className="side right">
+        {/* Right */}
+        {/* <div className="side right">
                         <Link to='/about' >
                             <button>
                                 About
                             </button>
                         </Link>
                     </div> */}
-            </div>
-        </nav>
-    );
+      </div>
+    </nav>
+  );
 };

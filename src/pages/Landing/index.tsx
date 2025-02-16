@@ -1,4 +1,4 @@
-import { ParksDropdown } from '../../components/Dropdown/ParksDropdown';
+import { Dropdown } from '../../components/Dropdown';
 import SEO from '../../components/SEO';
 import { Description } from './DescriptionFeature';
 
@@ -30,7 +30,7 @@ const Header = () => (
         className={`h-[300px] overflow-hidden rounded-xl border-2 bg-cover bg-center md:h-[500px]`}
       >
         <div className='relative flex h-full w-full items-center justify-center bg-black/25 px-4 text-white lg:px-0'>
-          <ParksDropdown />
+          <Dropdown type='park' />
         </div>
       </div>
       <p className='text-right text-3xl font-black uppercase md:text-6xl'>
