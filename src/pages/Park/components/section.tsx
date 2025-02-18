@@ -18,7 +18,7 @@ const ParkSectionContainer = ({
   name: string;
   children: React.ReactNode;
 }) => (
-  <div className='scroll-m-20' id={name.replace(/\ /g, '-').toLowerCase()}>
+  <div className='scroll-m-20' id={name.replace(/ /g, '-').toLowerCase()}>
     {children}
   </div>
 );
@@ -45,9 +45,7 @@ export const ParkSection = ({
     <ParkSectionContainer name={name}>
       <ParkSectionTitle>
         {icon}
-        <p>
-          {path ? <Link to={path}>{name}</Link> : name} {count && ` - ${count}`}
-        </p>
+        {path ? <Link to={path}>{name}</Link> : name} {count && ` - ${count}`}
       </ParkSectionTitle>
       <ParkChildrenContainer>{children}</ParkChildrenContainer>
     </ParkSectionContainer>

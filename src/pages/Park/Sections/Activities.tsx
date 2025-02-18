@@ -51,7 +51,7 @@ const CategoryCard = ({
   name: string;
   path: string;
 }) => {
-  const href = `./${name.replace(/\ /g, '-').toLowerCase()}/${data.id}`;
+  const href = `./${path.replace(/ /g, '-').toLowerCase()}/${data.id}`;
   const date =
     data.date &&
     new Date(data.date.replace(/-/g, '/')).toLocaleDateString('en-US', {

@@ -1,5 +1,4 @@
 import { Dispatch, useState } from 'react';
-import { styled } from 'styled-components';
 import { Modal } from '../Modal';
 import { ImageViewer } from '../ImageViewer';
 import clsx from 'clsx';
@@ -72,12 +71,14 @@ export const ImgGrid = ({ images }: { images: ImageProps[] }) => {
             />
           </div>
         ))}
-        <div
-          onClick={() => setModalOpen(true)}
-          className='absolute bottom-4 left-4 cursor-pointer rounded bg-white px-3 py-1 text-black'
-        >
-          View all photos
-        </div>
+        {previewImgs.length > 1 && (
+          <div
+            onClick={() => setModalOpen(true)}
+            className='absolute bottom-4 left-4 cursor-pointer rounded bg-white px-3 py-1 text-black'
+          >
+            View all photos
+          </div>
+        )}
       </div>
       {modal}
     </>

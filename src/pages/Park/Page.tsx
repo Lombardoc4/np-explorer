@@ -7,7 +7,7 @@ import {
 } from '../../utils/lib/activityCategories';
 import ErrorPage from '../Error';
 import { WeatherDisplay } from '../../components/Weather/WeatherReport';
-import { ParkAlert, FeeCard, CategorySection } from './Sections';
+import { ParkAlert, FeeSection, CategorySection } from './Sections';
 import { TriangleAlert, Wallet } from 'lucide-react';
 import { Button } from '../../components/Button';
 import { ShareModal } from '../../components/Modal/ShareModal';
@@ -66,7 +66,7 @@ export const ParkLayout = (park: IPark) => {
           <WeatherDisplay lat={park.latitude} long={park.longitude} />
         </WeatherSection>
 
-        <FeeCard entranceFees={park.entranceFees} />
+        <FeeSection entranceFees={park.entranceFees} />
         {endpoints.map((e) => (
           <CategorySection key={e} parkCode={park.parkCode} endpoint={e} />
         ))}

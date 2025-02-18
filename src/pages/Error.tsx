@@ -1,6 +1,5 @@
 import { Link } from 'react-router';
-import Layout from '../Layout';
-import { ParksDropdown } from '../components/Dropdown/ParksDropdown';
+import Layout from './Layout';
 import { House } from 'lucide-react';
 import { Dropdown } from '../components/Dropdown';
 

@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 
-export const ParkTitle = ({ parkCode, fullName, states }: IPark) => {
+export const ParkTitle = ({ fullName, states }: IPark) => {
   return (
     <>
       <div className='container mx-auto my-4 flex max-w-5xl flex-col justify-between md:flex-row md:items-center'>

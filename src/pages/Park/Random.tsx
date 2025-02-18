@@ -3,11 +3,8 @@ import { fetcher } from '../../utils/helper';
 import { SetLocalStorage } from '../../utils/localStorage';
 import { useState } from 'react';
 import ErrorPage from '../Error';
-import { LoaderCircle } from 'lucide-react';
 import { Button } from '../../components/Button';
-import { ParkTitle } from './components/title';
 import { ParkLayout } from './Page';
-import { clsx } from 'clsx';
 import { FullHeightLoader } from '../../components/Loader';
 
 const parkCount = 496;
