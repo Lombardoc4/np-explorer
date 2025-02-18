@@ -6,7 +6,6 @@ import { ParkSection } from '../Park/Sections';
 import { useQuery } from '@tanstack/react-query';
 import ErrorPage from '../Error';
 import { Button } from '../../components/Button';
-import { ChevronRight } from 'lucide-react';
 import { category, endpoint } from '.';
 import SEO from '../../components/SEO';
 import { Breadcrumbs } from '../../components/Breadcrumbs';
@@ -18,7 +17,7 @@ export const AllParkVCs = () => {
     status,
     error,
     data: visitorCenters,
-  } = useQuery({
+  } = useQuery<IVisitorCenter[]>({
     queryKey: ['park', { catergory: endpoint, parkCode: parkId }],
     queryFn: async () => await fetcher(`${endpoint}?parkCode=${parkId}`),
   });
@@ -28,7 +27,7 @@ export const AllParkVCs = () => {
       <>
         <SEO
           title={`Visitor Centers of ${parkId?.toUpperCase()}`}
-          description='Explore visitor centers in the park'
+          description='Explore visitor centers of the USNP'
         />
         <FullHeightLoader />;
       </>
@@ -58,13 +57,13 @@ export const AllParkVCs = () => {
         <main>
           {visitorCenters.length > 1 && (
             <div className='mt-4 mb-16 grid h-full grid-cols-2 gap-4 md:grid-cols-4'>
-              {visitorCenters.map((vc: any) => (
+              {visitorCenters.map((vc: IVisitorCenter) => (
                 <AnchorLink key={vc.name} id={vc.name} />
               ))}
             </div>
           )}
           <div className='grid gap-16'>
-            {visitorCenters.map((vc: any) => (
+            {visitorCenters.map((vc: IVisitorCenter) => (
               <VCSection key={vc.id} vc={vc} />
             ))}
           </div>
@@ -74,7 +73,7 @@ export const AllParkVCs = () => {
   );
 };
 
-const VCSection = ({ vc }: { vc: any }) => {
+const VCSection = ({ vc }: { vc: IVisitorCenter }) => {
   return (
     <ParkSection name={vc.name}>
       <div className='col-span-2 grid gap-8 md:grid-cols-2 md:gap-8'>

@@ -17,14 +17,14 @@ export const VisitorCenterPage = () => {
     status,
     error,
     data: visitorCenter,
-  } = useQuery({
+  } = useQuery<IVisitorCenter>({
     queryKey: [
       'park',
       { catergory: endpoint, parkCode: parkId, activityId: activityId },
     ],
     queryFn: async () => {
       const data = await fetcher(`${endpoint}?parkCode=${parkId}`);
-      return data.filter((vc: any) => (vc.id = activityId))[0];
+      return data.filter((vc: IVisitorCenter) => vc.id === activityId)[0];
     },
   });
 
@@ -64,7 +64,7 @@ export const VisitorCenterPage = () => {
   );
 };
 
-const VCSection = ({ vc }: { vc: any }) => {
+const VCSection = ({ vc }: { vc: IVisitorCenter }) => {
   return (
     <ParkSection name={vc.name}>
       {vc.images.length > 0 && (
@@ -78,12 +78,12 @@ const VCSection = ({ vc }: { vc: any }) => {
         </div>
 
         {/* Hours */}
-        {vc.operatingHours.length > 0 && (
+        {vc.operatingHours && vc.operatingHours.length > 0 && (
           <div>
             <ParkSectionTitle>Hours</ParkSectionTitle>
 
             <div className='my-4'>
-              {vc.operatingHours.map((operatingHours: any) => (
+              {vc.operatingHours.map((operatingHours: IOperatingHours) => (
                 <div key={vc.id + 'hours'}>
                   {getOperatingHours(operatingHours)}
                 </div>
@@ -105,12 +105,12 @@ const VCSection = ({ vc }: { vc: any }) => {
   );
 };
 
-const Amenities = ({ amenities }: { amenities: any[] }) => (
+const Amenities = ({ amenities }: { amenities: string[] }) => (
   <div className='col-span-2'>
     <ParkSectionTitle>Amenities</ParkSectionTitle>
     <div className='mt-8'>
       <div className='my-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
-        {amenities.map((amenity: any) => (
+        {amenities.map((amenity: string) => (
           <AmentyItem key={amenity} amenity={amenity} />
         ))}
       </div>

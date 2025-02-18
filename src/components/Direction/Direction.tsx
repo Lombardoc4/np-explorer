@@ -1,26 +1,26 @@
 import { LinkIcon } from 'lucide-react';
-import { JSX } from 'react';
 import { Link } from 'react-router';
 import { ContactCard } from '../../pages/Park/Sections/Contact';
 import { ParkSection } from '../../pages/Park/Sections';
 
 export const DirectionSection = ({
   location,
-  children,
 }: {
-  location: IPark;
-  children?: JSX.Element;
+  location: IPark | ICampground | IVisitorCenter;
 }) => {
   const { addresses } = location;
 
   return (
     <ParkSection name={'Directions'}>
       <div>
-        <p className='text-xl'>{children || location.directionsInfo}</p>
+        <p className='text-xl'>
+          {'directionsOverview' in location && location.directionsOverview}
+          {'directionsInfo' in location && location.directionsInfo}
+        </p>
         <a
           className='mt-4 flex items-center gap-1 text-sm italic hover:underline'
           target='_blank'
-          href={location.directionUrl}
+          href={location.directionsUrl}
         >
           <LinkIcon className='inline' size={16} /> Official Directions
         </a>
@@ -37,7 +37,12 @@ const AddressContact = ({
   location,
 }: {
   addresses: IAddress[];
-  location: any;
+  location: {
+    latitude?: string;
+    longitude?: string;
+    url?: string;
+    contacts?: IContacts;
+  };
 }) => {
   const { latitude, longitude, url, contacts } = location;
   return (
@@ -54,7 +59,7 @@ const AddressContact = ({
             target='_blank'
             href={`https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`}
           >
-            {latitude.slice(0, 8)}, {longitude.slice(0, 8)}
+            {latitude?.slice(0, 8)}, {longitude?.slice(0, 8)}
           </a>{' '}
         </div>
 

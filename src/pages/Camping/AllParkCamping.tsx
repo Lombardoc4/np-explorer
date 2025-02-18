@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { ChevronRight } from 'lucide-react';
 import { Button } from '../../components/Button';
 import { FullHeightLoader } from '../../components/Loader';
 import ErrorPage from '../Error';
@@ -17,7 +16,7 @@ export const AllParkCamping = () => {
     status,
     error,
     data: campgrounds,
-  } = useQuery({
+  } = useQuery<ICampground[]>({
     queryKey: ['park', { catergory: endpoint, parkCode: parkId }],
     queryFn: async () => await fetcher(`${endpoint}?parkCode=${parkId}`),
   });
@@ -40,21 +39,21 @@ export const AllParkCamping = () => {
       <h2 className='mb-8 text-6xl font-thin md:text-8xl'>Camping</h2>
       {campgrounds.length > 1 && (
         <div className='mt-4 mb-16 grid h-full grid-cols-2 gap-4 md:mt-8 md:grid-cols-4'>
-          {campgrounds.map((campground: any) => (
+          {campgrounds.map((campground: ICampground) => (
             <AnchorLink key={campground.name} id={campground.name} />
           ))}
         </div>
       )}
       <div className='grid gap-16'>
-        {campgrounds.map((camp: any, i: number) => (
-          <CampingSection key={camp.name} camp={camp} />
+        {campgrounds.map((camp: ICampground) => (
+          <CampingSection key={camp.name} {...camp} />
         ))}
       </div>
     </div>
   );
 };
 
-const CampingSection = ({ camp }: any) => {
+const CampingSection = (camp: ICampground) => {
   return (
     <ParkSection name={camp.name}>
       <div className='col-span-2 grid gap-8 md:grid-cols-2 md:gap-8'>

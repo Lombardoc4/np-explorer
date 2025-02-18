@@ -17,14 +17,16 @@ export const Campground = () => {
     status,
     error,
     data: campground,
-  } = useQuery({
+  } = useQuery<ICampground>({
     queryKey: [
       'park',
       { catergory: endpoint, parkCode: parkId, activityId: activityId },
     ],
     queryFn: async () => {
       const data = await fetcher(`${endpoint}?parkCode=${parkId}`);
-      return data.filter((campground: any) => (campground.id = activityId))[0];
+      return data.filter(
+        (campground: ICampground) => campground.id === activityId,
+      )[0];
     },
   });
 
@@ -47,7 +49,7 @@ export const Campground = () => {
   );
 };
 
-const CampingSection = ({ campground }: { campground: any }) => {
+const CampingSection = ({ campground }: { campground: ICampground }) => {
   return (
     <ParkSection name={campground.name}>
       {campground.images.length > 0 && (
@@ -66,11 +68,13 @@ const CampingSection = ({ campground }: { campground: any }) => {
             <ParkSectionTitle>Hours</ParkSectionTitle>
 
             <div className='my-4'>
-              {campground.operatingHours.map((operatingHours: any) => (
-                <div key={campground.id + 'hours'}>
-                  {getOperatingHours(operatingHours)}
-                </div>
-              ))}
+              {campground.operatingHours.map(
+                (operatingHours: IOperatingHours) => (
+                  <div key={campground.id + 'hours'}>
+                    {getOperatingHours(operatingHours)}
+                  </div>
+                ),
+              )}
             </div>
             <p className='mb-4 text-xl'>
               {campground.operatingHours[0].description}
@@ -114,9 +118,7 @@ const CampingSection = ({ campground }: { campground: any }) => {
       </div>
 
       <div className='col-span-2'>
-        <DirectionSection location={campground}>
-          {campground.directionsOverview}
-        </DirectionSection>
+        <DirectionSection location={campground} />
       </div>
 
       <div className='col-span-2'>
@@ -191,7 +193,13 @@ const CampingSection = ({ campground }: { campground: any }) => {
   );
 };
 
-const Campsites = ({ campsites, fcfs }: { campsites: any; fcfs: string }) => (
+const Campsites = ({
+  campsites,
+  fcfs,
+}: {
+  campsites: ICampground['campsites'];
+  fcfs: number;
+}) => (
   <div className='my-4 grid items-center gap-4 divide-x text-center md:grid-cols-4'>
     <SiteCount title='Total' count={campsites.totalSites} />
     <SiteCount title='First Come, First Serve' count={fcfs} />
@@ -205,8 +213,8 @@ const Campsites = ({ campsites, fcfs }: { campsites: any; fcfs: string }) => (
   </div>
 );
 
-const SiteCount = ({ title, count }: { title: string; count: string }) => {
-  if (count === '0') return;
+const SiteCount = ({ title, count }: { title: string; count: number }) => {
+  if (!count) return;
   return (
     <div className='grid gap-1 text-2xl'>
       <p>{title}</p>
