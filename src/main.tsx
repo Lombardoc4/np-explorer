@@ -1,28 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router';
 
-import Layout from './Layout';
+import Layout from './pages/Layout';
 import { LandingPage } from './pages/Landing';
 import './index.css';
 import { parkRoutes } from './routes/park';
 import { stateRoutes } from './routes/state';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60 * 60 * 1000, // 1 hour
-      retry: false, // Disable retries by default, handle them manually if necessary
-    },
-  },
-});
-
-const Providers = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
-};
+import { Providers } from './providers';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   // <React.StrictMode>
