@@ -15,7 +15,7 @@ import { ImgGrid } from '../../components/ImgGrid';
 import { ParkTitle } from './components/title';
 import { FullHeightLoader } from '../../components/Loader';
 import SEO from '../../components/SEO';
-import { useParams } from 'react-router';
+import { Link, useParams } from 'react-router';
 import { WeatherSection } from '../../components/Weather';
 import { DirectionSection } from '../../components/Direction';
 
@@ -49,15 +49,43 @@ export const ParkPage = () => {
 
 export const ParkLayout = (park: IPark) => {
   const endpoints = Object.keys(activityCategories);
+  const [_modal, btn] = ShareModal(park.fullName);
 
   return (
     <>
       <header className='container mx-auto mt-24 px-4 lg:px-0'>
-        <ParkTitle {...park} />
+        <div className='my-4 flex gap-4'>
+          {Object.values(activityCategories).map((category) => (
+            <a
+              href={'#' + category.name.replace(/ /g, '-').toLowerCase()}
+              className='btn btn-outline w-full text-center'
+            >
+              {category.name}
+            </a>
+          ))}
+        </div>
+
         {park.images.length > 0 && <ImgGrid images={park.images} />}
+        <div className='my-4 flex flex-col items-center justify-between gap-4 md:flex-row'>
+          <ParkTitle {...park} />
+          <div className='flex gap-4 text-center md:col-span-2 md:items-end'>
+            <a href='#alerts'>
+              <Button>
+                <TriangleAlert /> Alerts
+              </Button>
+            </a>
+            <a href='#entrance-fees'>
+              <Button>
+                <Wallet />
+                Fees
+              </Button>
+            </a>
+            {btn}
+          </div>
+        </div>
       </header>
       <div className='container mx-auto grid gap-16 px-4 md:my-8 lg:px-0 xl:max-w-5xl'>
-        <ParkHeader name={park.fullName} description={park.description} />
+        <ParkHeader description={park.description} />
         <ParkAlert parkId={park.parkCode} />
 
         <DirectionSection location={park} />
@@ -79,45 +107,15 @@ export const ParkLayout = (park: IPark) => {
   );
 };
 
-const ParkHeader = ({
-  name,
-  description,
-}: {
-  name: string;
-  description: string;
-}) => {
-  const [_modal, btn] = ShareModal(name);
-
-  // const visitCount = getVisitorCount(park.parkCode);
-  const categoryEls = Object.values(activityCategories).map(
-    (category: ActivityDetails) => (
-      <AnchorLink key={category.name} id={category.name} />
-    ),
-  );
-
+const ParkHeader = ({ description }: { description: string }) => {
+  {
+    /* {visitCount > 0 && <span>{visitCount} visitors in 2022</span>} */
+  }
   return (
-    <div className='grid items-center gap-4 md:grid-cols-2 md:gap-8'>
-      {/* {visitCount > 0 && <span>{visitCount} visitors in 2022</span>} */}
-      <div className='flex gap-4 text-center md:col-span-2 md:items-end'>
-        <a href='#alerts'>
-          <Button>
-            <TriangleAlert /> Alerts
-          </Button>
-        </a>
-        <a href='#entrance-fees'>
-          <Button>
-            <Wallet />
-            Fees
-          </Button>
-        </a>
-        {btn}
-      </div>
-      <div>
-        <p className='rounded border border-dashed bg-green-200 p-4 text-justify text-xl font-stretch-condensed dark:bg-green-900 dark:text-white'>
-          {description}
-        </p>
-      </div>
-      <div className='grid h-full grid-cols-2 gap-4'>{categoryEls}</div>
+    <div>
+      <p className='rounded border border-dashed bg-green-200 p-4 text-justify text-xl font-stretch-condensed dark:bg-green-900 dark:text-white'>
+        {description}
+      </p>
     </div>
   );
 };

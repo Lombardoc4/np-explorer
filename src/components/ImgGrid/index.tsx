@@ -37,7 +37,13 @@ const imgModal = (
   return [modal, setIsOpen];
 };
 
-export const ImgGrid = ({ images }: { images: ImageProps[] }) => {
+export const ImgGrid = ({
+  images,
+  parallax,
+}: {
+  images: ImageProps[];
+  parallax?: boolean;
+}) => {
   const [previewImgs, setPreviewImages] = useState(images);
   const sliceEnd = images.length >= 5 ? 5 : images.length >= 3 ? 3 : 1;
   const [modal, setModalOpen] = imgModal(images);
@@ -60,15 +66,19 @@ export const ImgGrid = ({ images }: { images: ImageProps[] }) => {
         {previewImgs.slice(0, sliceEnd).map((img) => (
           <div
             key={img.url}
-            className='overflow-hidden not-first:hidden first:row-span-full md:not-first:block'
+            className={clsx(
+              'overflow-hidden not-first:hidden first:row-span-full md:not-first:block',
+              'bg-cover bg-center bg-no-repeat',
+            )}
+            style={{ backgroundImage: `url(${img.url})` }}
             onClick={() => setModalOpen(true)}
           >
-            <img
+            {/* {!parallax &&<img
               src={img.url}
               alt={img.altText}
               onError={() => handleError(img.url || '')} // Hide image if loading fails
               className='h-full w-full object-cover'
-            />
+            />} */}
           </div>
         ))}
         {previewImgs.length > 1 && (

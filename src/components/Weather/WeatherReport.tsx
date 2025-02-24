@@ -124,7 +124,7 @@ const ToggleButton = ({
   );
 };
 
-const CurrentWeather = (current: IForecast) => (
+const CurrentWeather = (current: Forecast) => (
   <>
     <p className='text-5xl' style={{ fontSize: '3em' }}>
       <WeatherIcon id={current.shortForecast} style={{ fontSize: '42px' }} />{' '}

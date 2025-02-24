@@ -24,7 +24,7 @@ const ParkSectionContainer = ({
 );
 
 const ParkChildrenContainer = ({ children }: { children: React.ReactNode }) => (
-  <div className='my-4 grid gap-8 md:mt-8 md:gap-16 lg:grid-cols-2'>
+  <div className='my-4 grid gap-8 md:mt-8 md:gap-12 lg:grid-cols-2'>
     {children}
   </div>
 );

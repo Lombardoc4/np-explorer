@@ -4,7 +4,7 @@ export const WeatherSection = ({
   weather,
   children,
 }: {
-  weather: string;
+  weather?: string;
   children: React.ReactNode;
 }) => {
   return (

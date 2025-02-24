@@ -72,7 +72,7 @@ const VCSection = ({ vc }: { vc: IVisitorCenter }) => {
           <ImgGrid images={vc.images} />
         </div>
       )}
-      <div className='col-span-2 grid gap-8 md:grid-cols-2 md:gap-8'>
+      <div className='col-span-2 grid gap-8 md:grid-cols-2'>
         <div>
           <p className='text-xl'>{vc.description}</p>
         </div>
@@ -83,7 +83,7 @@ const VCSection = ({ vc }: { vc: IVisitorCenter }) => {
             <ParkSectionTitle>Hours</ParkSectionTitle>
 
             <div className='my-4'>
-              {vc.operatingHours.map((operatingHours: IOperatingHours) => (
+              {vc.operatingHours.map((operatingHours: OperatingHours) => (
                 <div key={vc.id + 'hours'}>
                   {getOperatingHours(operatingHours)}
                 </div>

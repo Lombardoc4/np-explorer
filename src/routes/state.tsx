@@ -4,16 +4,16 @@ import Events from '../pages/Events';
 import Parking from '../pages/Parking';
 import { StatePage } from '../pages/State';
 import { State } from '../pages/State/Main';
-import ThingsToDo from '../pages/ThingsToDo';
 import { fetcher } from '../utils/helper';
 import ErrorPage from '../pages/Error';
 import { AllParkVCs } from '../pages/VisitorCenters';
 import { AllTours } from '../pages/Tours';
+import { AllThingsToDo } from '../pages/ThingsToDo';
 
 export const stateRoutes = (
   <Route path=':stateId' element={<StatePage />}>
     <Route path='' element={<State />} />
-    <Route path='things-to-do' element={<ThingsToDo />} />
+    <Route path='things-to-do' element={<AllThingsToDo />} />
     <Route path='camping' element={<AllParkCamping />} />
     <Route path='events' element={<Events />} />
     <Route path='tours' element={<AllTours />} />

@@ -1,50 +1,39 @@
-interface ParkLocalStorage {
-  name: string;
-  parkCode: string;
+// Common types
+interface LatLong {
+  lat: string;
+  lng: string;
 }
 
-interface DropdownItem {
-  value: string;
-  title: string;
-}
-
-interface ImageProps {
-  url?: string;
-  altText?: string;
-  caption?: string;
-  credit?: string;
-  title?: string;
-  fileInfo?: {
-    url?: string;
-  };
-}
-
-interface IAddress {
+interface Address {
   line1: string;
-  line2: string;
-  line3: string;
+  line2?: string;
+  line3?: string;
   city: string;
   stateCode: string;
   countryCode: string;
-  provinceTerritoryCode: string;
+  provinceTerritoryCode?: string;
   postalCode: string;
   type: string;
 }
 
-interface IContacts {
-  phoneNumbers: {
-    phoneNumber: string;
-    description: string;
-    extension: string;
-    type: ' Voice' | 'Fax' | 'TTY';
-  }[];
-  emailAddresses: {
-    emailAddress: string;
-    description: string;
-  }[];
+interface ContactPhone {
+  phoneNumber: string;
+  description: string;
+  extension?: string;
+  type: 'Voice' | 'Fax' | 'TTY';
 }
 
-interface IOperatingHours {
+interface ContactEmail {
+  emailAddress: string;
+  description: string;
+}
+
+interface Contacts {
+  phoneNumbers: ContactPhone[];
+  emailAddresses: ContactEmail[];
+}
+
+interface OperatingHours {
   name: string;
   description: string;
   standardHours: {
@@ -56,7 +45,7 @@ interface IOperatingHours {
     friday: string;
     saturday: string;
   };
-  exceptions: {
+  exceptions: Array<{
     name: string;
     startDate: string;
     endDate: string;
@@ -69,29 +58,65 @@ interface IOperatingHours {
       friday: string;
       saturday: string;
     };
-  }[];
+  }>;
 }
 
-interface IPassportImages {
-  credit: string;
-  description: string;
-  crops: {
-    aspectRatio: number;
-    url: string;
-  }[];
-  altText: string;
-  title: string;
-  caption: string;
+interface ImageProps {
+  url?: string;
+  altText?: string;
+  caption?: string;
+  credit?: string;
+  title?: string;
+  fileInfo?: {
+    url?: string;
+  };
+  crops?: Crop[]; // Moved crops here so that ImageProps can optionally include them
+}
+
+interface Crop {
+  aspectratio: string; // or number if you can transform this
   url: string;
 }
 
-interface IFee {
+interface Fee {
   cost: string;
   description: string;
   title: string;
 }
 
-interface IForecast {
+// Shared entities
+interface Activity {
+  id: string;
+  name: string;
+}
+
+interface Topic {
+  id: string;
+  name: string;
+}
+
+interface RelatedPark {
+  states: string;
+  fullName: string;
+  url: string;
+  parkCode: string;
+  designation: string;
+  name: string;
+}
+
+// Other utility interfaces
+interface DropdownItem {
+  value: string;
+  title: string;
+}
+
+interface ParkLocalStorage {
+  name: string;
+  parkCode: string;
+}
+
+// Forecast & Tour related
+interface Forecast {
   name: string;
   temperature: number;
   high: number;
@@ -122,28 +147,14 @@ interface TourStop {
   audioFileUrl?: string;
 }
 
-interface TourPark {
-  states: string;
-  parkCode: string;
-  designation: string;
-  fullName: string;
-  url: string;
-  name: string;
-}
-
-interface TourActivity {
-  id: string;
-  name: string;
-}
-
 interface ITour {
   id: string;
   title: string;
   description: string;
-  park: TourPark;
+  park: RelatedPark;
   tags: string[];
   type: string;
-  activities: TourActivity[];
+  activities: Activity[];
   topics?: any[];
   durationMin: number;
   durationMax: number;
@@ -153,6 +164,45 @@ interface ITour {
   relevanceScore: number;
 }
 
+// Thing To Do
+interface IThingToDo {
+  location: string;
+  seasonDescription?: string;
+  accessibilityInformation: string;
+  longitude: string;
+  geometryPoiId: string;
+  relatedParks: RelatedPark[];
+  isReservationRequired: string;
+  ageDescription?: string;
+  url: string;
+  petsDescription: string;
+  timeOfDayDescription?: string;
+  images: ImageProps[];
+  feeDescription?: string;
+  id: string;
+  age?: string;
+  relatedOrganizations: unknown[]; // if always empty, you might set to an empty array type
+  arePetsPermittedWithRestrictions: string;
+  activities: Activity[];
+  activityDescription: string;
+  locationDescription: string;
+  doFeesApply: string;
+  longDescription: string;
+  reservationDescription?: string;
+  season: string[];
+  topics: Topic[];
+  durationDescription?: string;
+  arePetsPermitted: string;
+  timeOfDay: string[];
+  title: string;
+  latitude: string;
+  shortDescription: string;
+  duration: string;
+  relevanceScore: number;
+  tags: string[];
+}
+
+// Campground
 interface ICampground {
   id: string;
   url: string;
@@ -161,7 +211,7 @@ interface ICampground {
   description: string;
   latitude: string;
   longitude: string;
-  latLong: { lat: string; lng: string };
+  latLong: LatLong;
   audioDescription: string;
   isPassportStampLocation: number;
   passportStampLocationDescription: string;
@@ -172,12 +222,12 @@ interface ICampground {
   regulationsurl: string;
   regulationsOverview: string;
   amenities: { [key: string]: string };
-  contacts: IContacts;
-  fees: IFee[];
+  contacts: Contacts;
+  fees: Fee[];
   directionsOverview: string;
   directionsUrl: string;
-  operatingHours: IOperatingHours[];
-  addresses: IAddress[];
+  operatingHours: OperatingHours[];
+  addresses: Address[];
   images: ImageProps[];
   weatherOverview: string;
   numberOfSitesReservable: number;
@@ -207,11 +257,12 @@ interface ICampground {
     accessRoads: string[];
     classifications: string[];
   };
-  multimedia: any[];
+  multimedia: unknown[];
   relevanceScore: number;
   lastIndexedDate: string;
 }
 
+// Visitor Center
 interface IVisitorCenter {
   id: string;
   url: string;
@@ -220,44 +271,54 @@ interface IVisitorCenter {
   description: string;
   latitude: string;
   longitude: string;
-  latLong: { lat: string; lng: string };
+  latLong: LatLong;
   audioDescription: string;
   isPassportStampLocation: number;
   passportStampLocationDescription: string;
   passportStampImages: IPassportImages[];
   geometryPoiId: string;
   amenities: string[];
-  contacts: IContacts;
+  contacts: Contacts;
   directionsInfo: string;
   directionsUrl: string;
-  operatingHours?: IOperatingHours[];
-  addresses?: IAddress[];
+  operatingHours?: OperatingHours[];
+  addresses?: Address[];
   images: ImageProps[];
-  multimedia: any[];
+  multimedia: unknown[];
   relevanceScore: number;
   lastIndexedDate: string;
 }
 
+// Passport Images
+interface IPassportImages {
+  credit: string;
+  description: string;
+  crops: Array<{
+    aspectRatio: number;
+    url: string;
+  }>;
+  altText: string;
+  title: string;
+  caption: string;
+  url: string;
+}
+
+// Park
 interface IPark {
   id: string;
-  // activites: string[];
-  activites: {
-    id: string;
-    name: string;
-  };
-  addresses?: IAddress[];
-  contacts?: IContacts;
+  activities: Activity[];
+  addresses?: Address[];
+  contacts?: Contacts;
   description: string;
   designation: string;
   directionsInfo: string;
   directionsUrl: string;
-  entranceFees: IFee[];
-  entrancePasses: IFee[];
+  entranceFees: Fee[];
+  entrancePasses: Fee[];
   fullName: string;
   name: string;
-  operatingHours?: IOperatingHours[];
+  operatingHours?: OperatingHours[];
   parkCode: string;
-  // states: string[];
   states: string;
   images: ImageProps[];
   latitude: string;

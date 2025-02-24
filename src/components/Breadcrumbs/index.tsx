@@ -20,7 +20,10 @@ export const Breadcrumbs = ({
       {category && (
         <>
           <ChevronRight />
-          <Crumb link={`/park/${parkId}/${category}`} title={category} />
+          <Crumb
+            link={`/park/${parkId}/${category}`}
+            title={category.replace(/-/g, ' ')}
+          />
         </>
       )}
       {name && (

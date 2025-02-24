@@ -1,5 +1,5 @@
-@import "tailwindcss";
-
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Lora:wght@600&family=Playfair+Display:wght@700&display=swap');
+@import 'tailwindcss';
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -7,8 +7,6 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  /* color: rgba(255, 255, 255, 0.87); */
-  /* background-color: #242424; */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -16,22 +14,121 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  /* margin: 0; */
-  /* display: flex; */
-  /* place-items: center; */
-  /* min-width: 320px; */
-  min-height: 100vh;
-}
-
 .no-scroll {
-  overflow: hidden
+  overflow: hidden;
 }
 
+/* Lucide Icons */
 .lucide {
-  /* Change this! */
-  /* color: #ffadff; */
-  /* width: 24px;
-  height: 24px; */
   stroke-width: 1px;
+}
+
+/* CHATGPT GENERATED STYLES */
+
+/* Define CSS Variables for Colors */
+:root {
+  --color-bg-light: #fafaf5;
+  --color-text-light: #1c2a22;
+  --color-secondary-light: #7f8c8d;
+
+  --color-bg-dark: #101010;
+  --color-text-dark: #edede9;
+  --color-secondary-dark: #b0b0b0;
+
+  --color-navbar-light: #ffffff;
+  --color-navbar-dark: #181818;
+
+  --color-shadow-light: rgba(0, 0, 0, 0.08);
+  --color-shadow-dark: rgba(0, 0, 0, 0.4);
+
+  --color-green: #1a7340;
+  --color-green-hover-light: #16803a;
+  --color-green-hover-dark: #16803a;
+
+  --color-accent: #d89a3c;
+  --color-accent-hover-light: #c07f24;
+  --color-accent-hover-dark: #c07f24;
+
+  --color-divider-light: #e5e1d5;
+  --color-divider-dark: #303030;
+}
+
+/* Base Styles */
+body {
+  @apply bg-[var(--color-bg-light)] font-sans text-[var(--color-text-light)] dark:bg-[var(--color-bg-dark)] dark:text-[var(--color-text-dark)];
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Typography */
+h1 {
+  @apply font-bold;
+  font-family: 'Playfair Display', serif;
+}
+h2 {
+  @apply font-semibold;
+  font-family: 'Lora', serif;
+}
+
+/* Navigation Bar */
+.navbar {
+  @apply fixed top-0 right-0 left-0 z-50 flex items-center justify-between bg-[var(--color-navbar-light)] px-6 py-4 shadow-md dark:bg-[var(--color-navbar-dark)] dark:shadow-lg;
+}
+.navbar a {
+  @apply mx-4 font-medium text-[var(--color-text-light)] hover:text-[var(--color-green)] dark:text-[var(--color-text-dark)] dark:hover:text-[var(--color-green-hover-dark)];
+}
+
+/* Hero Section */
+.hero {
+  @apply relative flex h-[50vh] items-center justify-center bg-cover bg-center;
+}
+.hero::after {
+  content: '';
+  @apply absolute inset-0 bg-black opacity-25;
+}
+.hero h1 {
+  @apply relative text-5xl font-bold text-white;
+}
+
+/* Quick Facts Component */
+.quick-facts {
+  @apply my-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3;
+}
+.quick-facts .fact-item {
+  @apply flex items-center space-x-3;
+}
+.quick-facts .fact-item .icon {
+  @apply text-xl;
+}
+.quick-facts .fact-item .fact-info {
+  @apply text-base text-[var(--color-text-light)] dark:text-[var(--color-text-dark)];
+}
+
+/* Buttons */
+.btn {
+  @apply cursor-pointer rounded-lg px-3 py-2 font-medium transition-all duration-300;
+}
+.btn-primary {
+  @apply bg-[var(--color-green)] text-white hover:bg-[var(--color-green-hover-light)] dark:hover:bg-[var(--color-green-hover-dark)];
+}
+.btn-secondary {
+  @apply rounded-lg bg-[var(--color-orange)] px-3 py-2 font-medium text-white transition-all duration-300 hover:bg-[var(--color-orange-hover-light)] dark:hover:bg-[var(--color-orange-hover-dark)];
+}
+.btn-outline {
+  @apply rounded-lg border border-[var(--color-green)] bg-inherit px-3 py-2 font-medium text-[var(--color-green)] transition-all duration-300 hover:bg-[var(--color-green-hover-light)] hover:text-white dark:border-[var(--color-green)] dark:text-white dark:hover:bg-[var(--color-green-hover-dark)];
+}
+
+/* Cards */
+.card {
+  @apply mb-8 rounded-lg bg-white p-8 shadow-lg dark:bg-[var(--color-navbar-dark)];
+}
+
+/* Section Dividers */
+.section-divider {
+  @apply my-8 border-t border-[var(--color-divider-light)] dark:border-[var(--color-divider-dark)];
+}
+
+/* Grid for Content Cards */
+.grid-cards {
+  @apply grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3;
 }

@@ -27,7 +27,7 @@ const Header = () => (
       <p className='text-3xl font-black uppercase md:text-6xl'>Explore Your</p>
       <div
         style={{ backgroundImage: `url(${bgUrl})` }}
-        className={`h-[300px] overflow-hidden rounded-xl border-2 bg-cover bg-center md:h-[500px]`}
+        className={`my-2 h-[300px] overflow-hidden rounded-xl border-3 bg-cover bg-center shadow-[0_0_4rem_-2rem_black] md:h-[500px] dark:shadow-[0_0_3rem_-1rem_white]`}
       >
         <div className='relative flex h-full w-full items-center justify-center bg-black/25 px-4 text-white lg:px-0'>
           <Dropdown type='park' />
