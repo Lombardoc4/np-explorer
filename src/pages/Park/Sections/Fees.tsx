@@ -1,27 +1,28 @@
 import { Info } from 'lucide-react';
 import { useState } from 'react';
-import { ParkSection } from '../components/section';
 
-export const FeeSection = ({ entranceFees }: { entranceFees: IFee[] }) => {
-  return (
-    <ParkSection name='Entrance Fees'>
-      <div className='col-span-2 grid grid-cols-2 gap-8 md:grid-cols-4'>
-        {entranceFees.length === 0 ? (
-          <p className='mb-4 text-xl font-black'>No Entrance Fees</p>
-        ) : (
-          <>
-            {entranceFees.map((fee: IFee) => (
-              <FeeItem
-                key={fee.title}
-                cost={fee.cost}
-                title={fee.title}
-                description={fee.description}
-              />
-            ))}
-          </>
-        )}
+export const FeeSection = ({ entranceFees }: { entranceFees: Fee[] }) => {
+  if (!entranceFees || entranceFees.length <= 0) {
+    return (
+      <div className='border-green -mb-8 rounded border-2 px-4 py-2'>
+        <h2 className='text-xl font-black md:text-2xl'>No Entrance Fees</h2>
       </div>
-    </ParkSection>
+    );
+  }
+
+  return (
+    <div id='fees' className='w-full'>
+      <div className='col-span-2 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-8'>
+        {entranceFees.map((fee: Fee) => (
+          <FeeItem
+            key={fee.title}
+            cost={fee.cost}
+            title={fee.title}
+            description={fee.description}
+          />
+        ))}
+      </div>
+    </div>
   );
 };
 
@@ -36,16 +37,15 @@ const FeeItem = ({
 }) => {
   const [showDescription, setShowDescription] = useState(false);
 
-  title = title
-    .replace('-', '\u2011')
-    .replace('/', ' ')
-    .slice(title.indexOf('-') + 1, title.length);
+  const subtitle = title.slice(0, title.indexOf('-'));
+  title = title.slice(title.indexOf('-') + 1, title.length);
 
   return (
-    <div className='relative w-full'>
-      <h3 className='text-xl'>{title}</h3>
+    <div className='relative w-full rounded-lg border-2 border-green-700 p-2'>
+      <h3 className='text-xs'>{subtitle}</h3>
+      <h3 className='text-base font-black md:text-xl'>{title}</h3>
       <div className='flex gap-2'>
-        <p className='font-bold'>${cost}</p>
+        <p className='font'>${cost}</p>
         <Info
           onMouseEnter={() => setShowDescription(true)}
           onMouseLeave={() => setShowDescription(false)}

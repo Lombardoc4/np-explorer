@@ -20,7 +20,7 @@ const getNameOfDay = (name: string) => {
 // This is used to create a list of all the weather results
 const reduceForecast = (periods: any[]) => {
   return periods.reduce(
-    (acc: any[], { name, isDaytime, ...forecast }: IForecast) => {
+    (acc: any[], { name, isDaytime, ...forecast }: Forecast) => {
       const dayName = getNameOfDay(name);
 
       // Random edge case where we get a random value: Washington's Birthday
@@ -65,7 +65,7 @@ const reduceForecast = (periods: any[]) => {
 };
 
 export const SevenDayForecast = ({ url }: { url: string }) => {
-  const [sevenDay, setSevenDay] = useState<IForecast[]>([]);
+  const [sevenDay, setSevenDay] = useState<Forecast[]>([]);
 
   useEffect(() => {
     fetchSevenDay(url).then((forecast: any) => {

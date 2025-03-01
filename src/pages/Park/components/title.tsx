@@ -3,12 +3,10 @@ import { Link } from 'react-router';
 export const ParkTitle = ({ fullName, states }: IPark) => {
   return (
     <>
-      <div>
-        <h1 className='font-thin md:text-4xl'>{fullName}</h1>
-        <div className='flex flex-col gap-1 text-xl md:flex-row'>
-          {StateLinks(states)}
-        </div>
+      <div className='flex flex-1 flex-col gap-1 md:flex-row md:text-xl'>
+        {StateLinks(states)}
       </div>
+      <h1 className='text-2xl font-thin md:text-6xl'>{fullName}</h1>
     </>
   );
 };

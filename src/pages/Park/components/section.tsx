@@ -6,7 +6,7 @@ export const ParkSectionTitle = ({
 }: {
   children: React.ReactNode;
 }) => (
-  <h2 className='border-b text-4xl font-thin md:col-span-2 md:text-6xl'>
+  <h2 className='item-center flex justify-between border-b text-4xl font-thin md:col-span-2 md:text-6xl'>
     {children}
   </h2>
 );
@@ -18,13 +18,13 @@ const ParkSectionContainer = ({
   name: string;
   children: React.ReactNode;
 }) => (
-  <div className='scroll-m-20' id={name.replace(/ /g, '-').toLowerCase()}>
+  <div className='scroll-m-24' id={name.replace(/ /g, '-').toLowerCase()}>
     {children}
   </div>
 );
 
 const ParkChildrenContainer = ({ children }: { children: React.ReactNode }) => (
-  <div className='my-4 grid gap-8 md:mt-8 md:gap-12 lg:grid-cols-2'>
+  <div className='my-4 grid gap-8 md:mt-8 md:mb-0 md:gap-12 lg:grid-cols-2'>
     {children}
   </div>
 );
@@ -35,7 +35,6 @@ interface ParkSectionProps extends Omit<ActivityDetails, 'path'> {
 }
 
 export const ParkSection = ({
-  icon,
   name,
   count,
   path,
@@ -44,8 +43,12 @@ export const ParkSection = ({
   return (
     <ParkSectionContainer name={name}>
       <ParkSectionTitle>
-        {icon}
-        {path ? <Link to={path}>{name}</Link> : name} {count && ` - ${count}`}
+        <p>{name}</p>
+        {path && count && count > 4 && (
+          <Link className='btn btn-primary h-fit text-lg' to={path}>
+            View All
+          </Link>
+        )}
       </ParkSectionTitle>
       <ParkChildrenContainer>{children}</ParkChildrenContainer>
     </ParkSectionContainer>

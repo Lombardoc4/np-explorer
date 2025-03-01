@@ -5,16 +5,12 @@ export const WeatherSection = ({
   children,
 }: {
   weather?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }) => {
   return (
     <ParkSection name='Weather'>
-      {weather && (
-        <div>
-          <p className='text-xl'>{weather}</p>
-        </div>
-      )}
       {children}
+      {weather && <p className='text-xl'>{weather}</p>}
     </ParkSection>
   );
 };

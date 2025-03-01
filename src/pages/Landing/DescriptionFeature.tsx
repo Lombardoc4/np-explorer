@@ -1,29 +1,53 @@
-import { featureInfo } from './descriptions';
+import { Search } from 'lucide-react';
+import { iconMap } from '../../utils/lib/iconMap';
+import { featureInfo, featureInfoProps } from './descriptions';
+import { Link } from 'react-scroll';
 
 export const Description = () => (
-  <div className='grid min-h-svh items-center bg-black text-white'>
-    <div className='container mx-auto mb-16 px-4 py-16 md:mt-16 lg:px-0'>
-      <h2 className='mb-8 text-3xl font-thin uppercase md:mb-16 md:text-6xl'>
-        A modern look to
-        <br /> the National Parks Service...
+  <section className='bg-[var(--color-green)] py-16 text-[var(--color-text)] md:py-24 dark:bg-[var(--color-green)] dark:text-[var(--color-text)]'>
+    <div className='container mx-auto px-6 text-center lg:px-0'>
+      {/* Section Heading */}
+      <h2 className='mb-12 text-3xl tracking-wide uppercase md:text-6xl'>
+        A Modern take on <br className='hidden md:inline' /> National Parks
       </h2>
-      <div className='mx-auto grid w-fit gap-16 md:grid-cols-2 xl:grid-cols-3 xl:gap-[96px]'>
-        <Features />
+
+      {/* Feature Grid */}
+      <div className='mx-auto grid max-w-7xl gap-8 md:grid-cols-2 lg:gap-16'>
+        {featureInfo.map((feat) => (
+          <Feature key={feat.id} {...feat} />
+        ))}
+      </div>
+      <div className='mt-16'>
+        <Link
+          to={'home'}
+          duration={600}
+          className='btn btn-secondary mx-auto flex w-fit gap-2'
+        >
+          <Search /> Begin Your Search Now
+        </Link>
       </div>
     </div>
-  </div>
+  </section>
 );
 
-const Features = () => {
-  return featureInfo.map(({ icon, title, description }) => (
-    <div key={title} className='container max-w-3xl'>
-      <div className='grid'>
-        {icon}
-        <h3 className='text-2xl font-thin md:text-4xl xl:text-5xl'>{title}</h3>
+const Feature = ({ id, title, description }: featureInfoProps) => {
+  const Icon = iconMap[id];
+
+  return (
+    <div className='flex flex-col items-center rounded-lg bg-[var(--color-navbar)] p-6 shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-2xl dark:bg-[var(--color-navbar)] dark:shadow-lg'>
+      {/* Icon - Centered Above Content */}
+      <div className='flex h-20 w-20 items-center justify-center rounded-full bg-[var(--color-bg-2)] p-3 shadow-md md:h-24 md:w-24'>
+        <Icon className='h-12 w-12 text-[var(--color-text)] md:h-14 md:w-14 dark:text-[var(--color-text)]' />
       </div>
-      <p className='col-span-2 mt-1 grow-1 border-t pt-1 text-justify'>
-        {description}
-      </p>
+
+      {/* Text Content */}
+      <div className='mx-auto mt-6 max-w-lg text-center'>
+        <h3 className='text-2xl font-bold md:text-3xl'>{title}</h3>
+        <hr className='my-4 rounded border-2 border-[var(--color-green)] dark:border-[var(--color-green)]' />
+        <p className='leading-relaxed text-[var(--color-secondary)] md:text-xl dark:text-[var(--color-secondary)]'>
+          {description}
+        </p>
+      </div>
     </div>
-  ));
+  );
 };

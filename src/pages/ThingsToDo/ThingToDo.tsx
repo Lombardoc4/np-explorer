@@ -1,9 +1,7 @@
-import { SymbolMap } from '../../utils/lib/symbolMap';
-import { fetcher, getOperatingHours } from '../../utils/helper';
+import { fetcher } from '../../utils/helper';
 import { FullHeightLoader } from '../../components/Loader';
 import { Link, useParams } from 'react-router';
-import { DirectionSection } from '../../components/Direction';
-import { ParkSection, ParkSectionTitle } from '../Park/Sections';
+import { ParkSectionTitle } from '../Park/Sections';
 import { useQuery } from '@tanstack/react-query';
 import ErrorPage from '../Error';
 import { ImgGrid } from '../../components/ImgGrid';
@@ -11,7 +9,6 @@ import { category, endpoint } from '.';
 import SEO from '../../components/SEO';
 import { Breadcrumbs } from '../../components/Breadcrumbs';
 import { LinkIcon, Tag } from 'lucide-react';
-import { WeatherDisplay } from '../../components/Weather';
 import QuickFacts from './QuickFacts';
 import { Button } from '../../components/Button';
 

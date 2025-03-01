@@ -24,15 +24,15 @@ export const parkRoutes = (
           </ParkProvider>
         }
       />
-      {/* <Route path='visitor-centers' element={<AllParkVCs />} />
+      <Route path='visitor-centers' element={<AllParkVCs />} />
       <Route
         path='visitor-centers/:activityId'
         element={<VisitorCenterPage />}
-      /> */}
-      {/* <Route path='camping' element={<AllParkCamping />} />
+      />
+      <Route path='camping' element={<AllParkCamping />} />
       <Route path='camping/:activityId' element={<Campground />} />
-      <Route path='things-to-do' element={<AllThingsToDo />}/>
-      <Route path='things-to-do/:activityId' element={<ThingToDo />} /> */}
+      <Route path='things-to-do' element={<AllThingsToDo />} />
+      <Route path='things-to-do/:activityId' element={<ThingToDo />} />
       {/* <Route path='events' element={<Events />} /> */}
       {/* <Route path='tours' element={<AllTours />} />
       <Route path='tours/:activityId' element={<Tour />} /> */}

@@ -7,7 +7,7 @@ import debounce from 'lodash.debounce';
 
 import { fetcher } from '../../utils/helper';
 import { useOutsideAlerter } from '../../utils/hooks/useOuterClick';
-import { stateMap, StateProps } from '../../utils/lib/stateMap';
+import { stateMap } from '../../utils/lib/stateMap';
 
 const dropdownTypes = {
   park: {

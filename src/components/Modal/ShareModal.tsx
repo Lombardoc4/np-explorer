@@ -53,11 +53,13 @@ export const ShareModal = (name: string) => {
   );
 
   const btn = (
-    <a onClick={() => setIsOpen(true)} href='#'>
-      <Button>
-        <Share2 />
-        Share
-      </Button>
+    <a
+      className='flex flex-col items-center justify-center'
+      onClick={() => setIsOpen(true)}
+      href='#'
+    >
+      <Share2 className='size-4 lg:size-8' />
+      Share
     </a>
   );
 

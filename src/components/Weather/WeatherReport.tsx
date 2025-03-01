@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { WeatherIcon } from '../../assets/weather-icons';
-import '../../styles/weather-icons-wind.min.css';
+import '../../styles/weather-icons.min.css';
 import '../../styles/weather-icons-wind.min.css';
 import clsx from 'clsx';
 import { Loader } from '../Loader';
@@ -37,7 +37,7 @@ const fetchHourly = async (url: string) => {
 export const WeatherDisplay = (latLong: { lat: string; long: string }) => {
   const [sevenDayUrl, setSevenDayUrl] = useState<string>('');
   const [hourlyUrl, setHourlyUrl] = useState<string>('');
-  const [hourly, setHourly] = useState<IForecast[]>([]);
+  const [hourly, setHourly] = useState<Forecast[]>([]);
   const [location, setLocation] = useState<ILocation | null>(null);
   const [dayView, setDayView] = useState(true);
 
@@ -67,9 +67,9 @@ export const WeatherDisplay = (latLong: { lat: string; long: string }) => {
   }
 
   return (
-    <div className='grid grid-cols-2 gap-4'>
+    <div className='grid gap-4 md:order-2 md:grid-cols-2'>
       <div className='grid gap-2'>
-        <h4 className='text-2xl'>
+        <h4 className='text-2xl font-black'>
           {location.city}, {location.state}
         </h4>
         {hourly.length > 0 && <CurrentWeather {...hourly[0]} />}
@@ -126,18 +126,15 @@ const ToggleButton = ({
 
 const CurrentWeather = (current: Forecast) => (
   <>
-    <p className='text-5xl' style={{ fontSize: '3em' }}>
-      <WeatherIcon id={current.shortForecast} style={{ fontSize: '42px' }} />{' '}
-      {current.temperature}
-      &deg;{current.temperatureUnit}
+    <p className='text-6xl font-light'>
+      <WeatherIcon id={current.shortForecast} style={{ fontSize: '48px' }} />{' '}
+      <span className='text-6xl font-thin'>
+        {current.temperature}
+        &deg;{current.temperatureUnit}
+      </span>
     </p>
     <div>
       <p>{current.shortForecast}</p>
-      {/* <p>
-            <b>H:</b>
-            {sevenDay[0].high}&deg;{sevenDay[0].temperatureUnit} <b>L:</b>
-            {sevenDay[0].low}&deg;{sevenDay[0].temperatureUnit}
-          </p> */}
     </div>
     <hr />
     <div>

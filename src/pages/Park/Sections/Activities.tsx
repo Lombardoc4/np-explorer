@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router';
-import { Button } from '../../../components/Button';
 import { fetcher, uniqueCategoryItems } from '../../../utils/helper';
 import { activityCategories } from '../../../utils/lib/activityCategories';
 import { ParkSection } from '.';
@@ -27,22 +26,16 @@ export const CategorySection = ({
 
   return (
     <ParkSection {...activeCat} count={categories.length}>
-      {/* Accordian */}
-      {uniqueCats.slice(0, itemLimit).map((cat) => (
-        <CategoryCard key={cat.name || cat.title} data={cat} {...activeCat} />
-      ))}
-      {uniqueCats.length > itemLimit && (
-        <Button className='col-span-2 mx-auto w-fit border border-current text-2xl hover:underline'>
-          <Link to={activeCat.path}>
-            Explore {categories.length} {activeCat.name}
-          </Link>
-        </Button>
-      )}
+      <div className='col-span-2 grid gap-8 sm:grid-cols-2 xl:grid-cols-4'>
+        {uniqueCats.slice(0, itemLimit).map((cat) => (
+          <CategoryCard key={cat.name || cat.title} data={cat} {...activeCat} />
+        ))}
+      </div>
     </ParkSection>
   );
 };
 
-const CategoryCard = ({
+export const CategoryCard = ({
   data,
   name,
   path,
@@ -62,34 +55,51 @@ const CategoryCard = ({
     });
 
   return (
-    <div className='group flex flex-col justify-start gap-2'>
-      {/* Title Row w Passport Location */}
-      <div className='w-full border-b pb-1'>
-        {date && <p className='font-bold'>{date}</p>}
-        <div className='flex items-center justify-between gap-4'>
-          <h4 className='text-xl font-black'>
-            <Link to={href}>{data.name || data.title}</Link>
-          </h4>
-          {data.isPassportStampLocation === '1' && <PassportImg />}
-        </div>
-      </div>
-
-      {/* Content */}
-      {name === 'Events' ? (
+    <div className='group flex flex-col overflow-hidden rounded-lg border-2 border-green-700 shadow-md transition-transform hover:scale-[101%] hover:shadow'>
+      {/* Image */}
+      {data.images[0]?.url && data.images[0]?.url.startsWith('https://') && (
         <div
-          className='line-clamp-4'
-          dangerouslySetInnerHTML={{
-            __html: data.description.replaceAll('<br /><br />', '</p><p>'),
-          }}
-        />
-      ) : (
-        <p className='line-clamp-4'>
-          {data.description || data.shortDescription}
-        </p>
+          className='relative h-64 bg-cover bg-center bg-no-repeat'
+          style={{ backgroundImage: `url(${data.images[0].url})` }}
+        >
+          {data.isPassportStampLocation === '1' && (
+            <div className='absolute top-2 right-2 flex h-10 w-10 items-center justify-center rounded-full border border-green-700 bg-white'>
+              <PassportImg />
+            </div>
+          )}
+        </div>
       )}
-      <Link className='mt-auto group-hover:underline' to={href}>
-        Read more...
-      </Link>
+      <div className='flex flex-col gap-2 p-4 md:min-h-48'>
+        {/* Title Row w Passport Location */}
+        <div className='w-full'>
+          {date && <p className='text-sm'>{date}</p>}
+          {/* <div className='flex items-center justify-between gap-4'> */}
+          <h3
+            className='line-clamp-2 text-xl font-black'
+            title={data.name || data.title}
+          >
+            <Link to={href}>{data.name || data.title}</Link>
+          </h3>
+          {/* </div> */}
+        </div>
+
+        {/* Content */}
+        {name === 'Events' ? (
+          <div
+            className='line-clamp-4'
+            dangerouslySetInnerHTML={{
+              __html: data.description.replaceAll('<br /><br />', '</p><p>'),
+            }}
+          />
+        ) : (
+          <p className='line-clamp-4'>
+            {data.description || data.shortDescription}
+          </p>
+        )}
+        <Link className='mt-2 group-hover:underline' to={href}>
+          Read more...
+        </Link>
+      </div>
     </div>
   );
 };
@@ -99,6 +109,6 @@ const PassportImg = () => (
     title='Passport Stamp Location'
     src='/passport-book.webp'
     alt='Passport Stamp'
-    style={{ height: '36px' }}
+    style={{ height: '24px' }}
   />
 );

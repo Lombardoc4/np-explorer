@@ -1,57 +1,46 @@
-import {
-  CalendarCheck2,
-  House,
-  Car,
-  FlameKindling,
-  TriangleAlert,
-  Bus,
-} from 'lucide-react';
+import { iconMap } from '../../utils/lib/iconMap';
 
-const iconProps = {
-  strokeWidth: 1,
-};
-
-type featureInfoProps = {
-  icon: React.ReactNode;
+export type featureInfoProps = {
+  id: keyof typeof iconMap;
   title: string;
   description: string;
 };
 
 export const featureInfo: featureInfoProps[] = [
   {
-    icon: <CalendarCheck2 {...iconProps} />,
-    title: 'Events',
+    id: 'events',
+    title: 'Exciting Events',
     description:
-      'Sign up for upcoming events, like movies under the stars. There are plenty of suggested things to do recommended by and for specific national parks.',
+      'Discover special events happening in your favorite national parks, from movies under the stars to guided night hikes. Explore, engage, and experience the parks like never before!',
   },
   {
-    icon: <House {...iconProps} />,
+    id: 'visitor-centers',
     title: 'Visitor Centers',
     description:
-      'Visit one of the over 550 visitor centers managed by the NPS to get even more information from an educated park range. There are plenty of chances to get your NPS Passport stamped',
+      'Stop by one of over 550 visitor centers managed by the NPS to meet knowledgeable park rangers, get expert recommendations, and collect stamps for your NPS Passport.',
   },
   {
-    icon: <Car {...iconProps} />,
-    title: 'Parking',
+    id: 'campgrounds',
+    title: 'Find Your Campsite',
     description:
-      'Never get lost in the vast road system of our great National Parks. Get direction to your favorite parks and accessible parking lots',
+      'From first-come, first-serve sites to reservable campgrounds, find the perfect place to set up camp and enjoy nature. Plan ahead and make the most of your trip.',
   },
   {
-    icon: <FlameKindling {...iconProps} />,
-    title: 'Camping',
+    id: 'alerts',
+    title: 'Stay Informed',
     description:
-      'Whether first-come first-serve or requiring reservation, find your next campground and hit the roads.',
+      "Don't get caught off guard! Stay up-to-date with real-time park alerts, closures, and safety updates before you go, so you're always prepared for your adventure.",
   },
   {
-    icon: <TriangleAlert {...iconProps} />,
-    title: 'Alerts',
+    id: 'tours',
+    title: 'Explore with a Tour',
     description:
-      "Get the heads up before you go, with update to date alerts, you're ahead of the game",
+      'Immerse yourself in the rich history and breathtaking landscapes of our national parks. Join an expert-led guided tour and uncover hidden gems along the way.',
   },
   {
-    icon: <Bus {...iconProps} />,
-    title: 'Tours',
+    id: 'parking',
+    title: 'Seamless Parking',
     description:
-      'Interesting in learning about the rich history of our national parks, book a tour with the NPS.',
+      'Never struggle with parking again! Get real-time directions to accessible parking lots in your favorite parks so you can start your adventure stress-free.',
   },
 ];

@@ -273,7 +273,7 @@ interface IVisitorCenter {
   longitude: string;
   latLong: LatLong;
   audioDescription: string;
-  isPassportStampLocation: number;
+  isPassportStampLocation: string | number;
   passportStampLocationDescription: string;
   passportStampImages: IPassportImages[];
   geometryPoiId: string;

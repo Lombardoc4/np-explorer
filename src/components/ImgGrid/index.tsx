@@ -37,13 +37,7 @@ const imgModal = (
   return [modal, setIsOpen];
 };
 
-export const ImgGrid = ({
-  images,
-  parallax,
-}: {
-  images: ImageProps[];
-  parallax?: boolean;
-}) => {
+export const ImgGrid = ({ images }: { images: ImageProps[] }) => {
   const [previewImgs, setPreviewImages] = useState(images);
   const sliceEnd = images.length >= 5 ? 5 : images.length >= 3 ? 3 : 1;
   const [modal, setModalOpen] = imgModal(images);
@@ -58,18 +52,15 @@ export const ImgGrid = ({
     <>
       <div
         className={clsx(
-          'relative cursor-pointer grid-rows-[repeat(2,250px)] overflow-hidden rounded-lg border shadow-lg md:grid',
-          sliceEnd === 5 && 'grid-cols-[2fr_1fr_1fr]',
-          sliceEnd === 3 && 'grid-cols-[2fr_1fr]',
+          'relative grid cursor-pointer grid-rows-[repeat(1,300px)] overflow-hidden rounded-lg border shadow-lg md:grid-rows-[repeat(2,200px)] 2xl:grid-rows-[repeat(2,300px)]',
+          sliceEnd === 5 && 'md:grid-cols-[2fr_1fr_1fr]',
+          sliceEnd === 3 && 'md:grid-cols-[2fr_1fr]',
         )}
       >
         {previewImgs.slice(0, sliceEnd).map((img) => (
           <div
             key={img.url}
-            className={clsx(
-              'overflow-hidden not-first:hidden first:row-span-full md:not-first:block',
-              'bg-cover bg-center bg-no-repeat',
-            )}
+            className='overflow-hidden bg-cover bg-center bg-no-repeat not-first:hidden first:row-span-full md:not-first:block'
             style={{ backgroundImage: `url(${img.url})` }}
             onClick={() => setModalOpen(true)}
           >
@@ -84,7 +75,7 @@ export const ImgGrid = ({
         {previewImgs.length > 1 && (
           <div
             onClick={() => setModalOpen(true)}
-            className='absolute bottom-4 left-4 cursor-pointer rounded bg-white px-3 py-1 text-black'
+            className='absolute bottom-4 left-4 cursor-pointer rounded bg-white px-3 py-1 text-xs text-black md:text-sm'
           >
             View all photos
           </div>

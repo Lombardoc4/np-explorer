@@ -28,6 +28,7 @@
     "react-dom": "latest",
     "react-leaflet": "latest",
     "react-router": "latest",
+    "react-scroll": "^1.9.3",
     "styled-components": "latest",
     "tailwindcss": "latest"
   },
@@ -37,6 +38,7 @@
     "@types/lodash.debounce": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "@types/react-scroll": "^1.8.10",
     "@vitejs/plugin-react-swc": "latest",
     "eslint": "latest",
     "eslint-config-prettier": "latest",

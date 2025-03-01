@@ -4,6 +4,7 @@ import logo from '../../assets/npe-green.svg';
 import { useEffect, useRef } from 'react';
 import useOnScreen from '../../utils/hooks/useOnScreen';
 import { Dropdown } from '../Dropdown';
+import { ThemeSwitcher } from './ThemeToggler';
 
 export const NavBar = () => {
   const location = useLocation();
@@ -23,7 +24,7 @@ export const NavBar = () => {
 
   return (
     <nav className='fixed start-0 end-0 top-0 z-30 flex h-[64px] bg-white/25 shadow backdrop-blur-lg backdrop-filter dark:bg-zinc-900/10'>
-      <div className='container mx-auto flex items-center justify-center'>
+      <div className='mx-auto flex w-full items-center justify-center px-6'>
         {/* Left */}
         <div className='mr-auto'>
           <Link to='/' className='flex'>
@@ -33,7 +34,13 @@ export const NavBar = () => {
         </div>
 
         {/* Middle */}
-        {location.pathname !== '/' && <Dropdown type='park' />}
+        <div className='relative h-10 w-md'>
+          {location.pathname !== '/' && <Dropdown type='park' />}
+        </div>
+
+        <div className='ml-4'>
+          <ThemeSwitcher />
+        </div>
 
         {/* Right */}
         {/* <div className="side right">
