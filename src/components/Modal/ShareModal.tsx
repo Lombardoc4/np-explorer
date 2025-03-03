@@ -58,7 +58,7 @@ export const ShareModal = (name: string) => {
       onClick={() => setIsOpen(true)}
       href='#'
     >
-      <Share2 className='size-4 lg:size-8' />
+      <Share2 className='size-4 lg:size-6' />
       Share
     </a>
   );

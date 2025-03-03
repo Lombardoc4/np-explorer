@@ -81,12 +81,10 @@ const SidebarContent = ({
               smooth={true}
               duration={300}
               offset={-90}
-              className='flex w-full cursor-pointer items-center justify-start text-green-700 hover:text-green-900 dark:text-green-600 dark:hover:text-green-400'
+              className='hover:text-secondary flex w-full cursor-pointer items-center justify-start'
             >
               <Icon size={24} className={collapsed ? 'mx-auto' : ''} />
-              {!collapsed && (
-                <span className='ml-2 w-fit overflow-hidden'>{label}</span>
-              )}
+              {!collapsed && <span className='ml-2'>{label}</span>}
             </ScrollLink>
           </li>
         );
@@ -118,7 +116,7 @@ export const ParkLayout = (park: IPark) => {
     IVisitorCenter[]
   >({
     queryKey: ['park', { catergory: 'visitorcenters', parkCode: parkCode }],
-    queryFn: () => fetchCustomData('visitor-centers', parkCode),
+    queryFn: () => fetchCustomData('visitorcenters', parkCode),
   });
   const { data: tours, isFetching: toursFetching } = useQuery<ITour[]>({
     queryKey: ['park', { catergory: 'tours', parkCode: parkCode }],
@@ -200,41 +198,54 @@ export const ParkLayout = (park: IPark) => {
         <SidebarContent sections={sections} collapsed={false} />
       </Sidebar>
 
-      <div
-        id='main-content'
-        className='mt-4 flex-1 overflow-scroll bg-[var(--color-bg)] md:mt-0'
-      >
-        <div className='container mx-auto p-4 md:p-8'>
+      <div id='main-content' className='mt-4 flex-1 overflow-scroll md:mt-0'>
+        <div className=''>
           <header
             id='overview'
-            className='container mx-auto mt-12 md:mt-16 lg:px-0'
+            className='container mx-auto mt-12 px-4 md:mt-16'
           >
             {StateLinks(park.states)}
-            <div className='item-center flex justify-between gap-2'>
+            <div className='flex items-end justify-between gap-2'>
               <h1 className='text-2xl font-thin md:text-6xl'>
                 {park.fullName}
               </h1>
               {btn}
             </div>
-            <div className='mt-4 rounded-lg bg-[var(--color-bg-2)] p-4 pb-0'>
-              {park.images.length > 0 && <ImgGrid images={park.images} />}
-              <p className='py-4 md:text-xl'>{park.description}</p>
+            <div className='bg-primary mt-4 grid gap-4 rounded-lg p-4 xl:grid-cols-4'>
+              <div className='xl:order-2 xl:col-span-3'>
+                {park.images.length > 0 && <ImgGrid images={park.images} />}
+              </div>
+              <p className='md:text-xl'>{park.description}</p>
             </div>
           </header>
-          <main className='my-8 grid gap-8 xl:gap-16'>
+          <main className='mt-8 grid gap-8 xl:gap-16'>
             {/* Mobile QuickNav */}
             <QuickNav sections={sections} />
 
-            {/* Alerts */}
-            <ParkAlert parkId={park.parkCode} />
-            {/* Fees */}
-            <FeeSection
-              entranceFees={[...park.entrancePasses, ...park.entranceFees]}
-            />
+            <div className='container mx-auto grid gap-8 px-4'>
+              {/* Alerts */}
+              <ParkAlert parkId={park.parkCode} />
+              {/* Fees */}
+              <FeeSection
+                entranceFees={[...park.entrancePasses, ...park.entranceFees]}
+              />
+            </div>
             {/* Weather */}
-            <WeatherSection weather={park.weatherInfo}>
-              <WeatherDisplay lat={park.latitude} long={park.longitude} />
-            </WeatherSection>
+            <div className='my-8'>
+              <WaveDivider reverse={false} />
+              <div className='bg-primary'>
+                <div className='container mx-auto px-4 py-16'>
+                  <WeatherSection weather={park.weatherInfo}>
+                    <WeatherDisplay
+                      lat={park.latitude}
+                      long={park.longitude}
+                      weather={park.weatherInfo}
+                    />
+                  </WeatherSection>
+                </div>
+              </div>
+              <WaveDivider reverse={true} />
+            </div>
 
             {/* Events */}
             <CategorySection
@@ -255,7 +266,7 @@ export const ParkLayout = (park: IPark) => {
             <CategorySection
               key={'camping'}
               parkCode={park.parkCode}
-              endpoint={'camping'}
+              endpoint={'campgrounds'}
             />
 
             <DirectionSection location={park} />
@@ -300,3 +311,19 @@ export const AnchorLink = ({ id }: { id: string }) => {
     </a>
   );
 };
+
+const WaveDivider = ({ reverse }: { reverse?: boolean }) => (
+  <div className={'w-full ' + (reverse ? 'rotate-z-180' : '')}>
+    <svg
+      width='100%'
+      height='60' // Reduced height
+      viewBox='0 0 1440 120' // Adjusted viewBox to match height
+      fill='currentColor'
+      xmlns='http://www.w3.org/2000/svg'
+      preserveAspectRatio='none'
+      className='text-primary block'
+    >
+      <path d='M0,96L80,80C160,64,320,32,480,37.3C640,43,800,85,960,90.7C1120,96,1280,64,1360,48L1440,32V120H0Z'></path>
+    </svg>
+  </div>
+);

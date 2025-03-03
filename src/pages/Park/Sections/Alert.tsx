@@ -2,6 +2,8 @@ import { Link } from 'react-router';
 import { useEffect, useState } from 'react';
 import { ParkSection } from '../components/section';
 import { LinkIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Modal from '@/components/Modal/modal';
 
 export const ParkAlert = ({ parkId }: { parkId: string }) => {
   const [alerts, setAlerts] = useState<any>([]);
@@ -22,19 +24,37 @@ export const ParkAlert = ({ parkId }: { parkId: string }) => {
   if (alerts.length <= 0) return;
 
   return (
-    <ParkSection name='Alerts'>
+    // <ParkSection name='Alerts'>
+    <div id='alerts' className='grid gap-8 md:grid-cols-2 2xl:grid-cols-4'>
       {alerts.map((alert: any) => (
         <ParkAlertItem key={alert.id} {...alert} />
       ))}
-    </ParkSection>
+    </div>
+    // </ParkSection>
   );
 };
 
 const ParkAlertItem = (alert: any) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const closeModal = () => setIsModalOpen(false);
+
   return (
-    <div className='border-accent h-fit rounded-lg border border-dashed p-4'>
-      <h3 className='text-lg font-black'>{alert.category}</h3>
-      <p>{alert.title}</p>
-    </div>
+    <>
+      <div
+        className='bg-accent h-fit cursor-pointer rounded-lg border-2 p-4'
+        onClick={() => setIsModalOpen(true)}
+      >
+        <h3 className='text-lg font-black'>{alert.category}</h3>
+        <p className='line-clamp-1'>{alert.title}</p>
+      </div>
+      <Modal
+        type={'alert'}
+        title={alert.title}
+        subtitle={alert.category}
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        content={alert.description}
+      />
+    </>
   );
 };

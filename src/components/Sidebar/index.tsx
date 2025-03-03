@@ -14,12 +14,12 @@ export const Sidebar = ({ children }: SidebarProps) => {
 
   return (
     <nav
-      className={`relative hidden bg-[var(--color-bg-2)] p-4 pt-24 shadow-md transition-all md:block ${
+      className={`bg-primary relative hidden p-4 pt-24 shadow-md transition-all sm:block ${
         collapsed ? 'w-16' : 'w-48'
       } hidden`}
     >
       <div
-        className='absolute top-18 right-0 translate-x-[50%] cursor-pointer rounded-full bg-[var(--color-accent)] opacity-50 shadow hover:opacity-100'
+        className='bg-accent absolute top-18 right-0 translate-x-[50%] cursor-pointer rounded-full opacity-50 shadow hover:opacity-100'
         onClick={() => setCollapsed(!collapsed)}
       >
         {collapsed ? (

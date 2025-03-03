@@ -52,7 +52,7 @@ export const ImgGrid = ({ images }: { images: ImageProps[] }) => {
     <>
       <div
         className={clsx(
-          'relative grid cursor-pointer grid-rows-[repeat(1,300px)] overflow-hidden rounded-lg border shadow-lg md:grid-rows-[repeat(2,200px)] 2xl:grid-rows-[repeat(2,300px)]',
+          'relative grid cursor-pointer grid-rows-[repeat(1,300px)] overflow-hidden rounded-lg border shadow-lg md:grid-rows-[repeat(2,200px)] xl:grid-rows-[repeat(2,250px)]',
           sliceEnd === 5 && 'md:grid-cols-[2fr_1fr_1fr]',
           sliceEnd === 3 && 'md:grid-cols-[2fr_1fr]',
         )}

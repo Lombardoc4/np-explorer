@@ -1,5 +1,3 @@
-import { ParkSection } from '../../pages/Park/Sections';
-
 export const WeatherSection = ({
   weather,
   children,
@@ -8,9 +6,12 @@ export const WeatherSection = ({
   children?: React.ReactNode;
 }) => {
   return (
-    <ParkSection name='Weather'>
+    <div
+      id='weather'
+      className='grid items-end gap-8 lg:grid-cols-2 lg:items-center'
+    >
       {children}
-      {weather && <p className='text-xl'>{weather}</p>}
-    </ParkSection>
+      {weather && <p className='lg:text-xl'>{weather}</p>}
+    </div>
   );
 };

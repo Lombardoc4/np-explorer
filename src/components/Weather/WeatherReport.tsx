@@ -34,22 +34,29 @@ const fetchHourly = async (url: string) => {
   return hourly;
 };
 
-export const WeatherDisplay = (latLong: { lat: string; long: string }) => {
+export const WeatherDisplay = ({
+  lat,
+  long,
+  weather,
+}: {
+  lat: string;
+  long: string;
+  weather?: string;
+}) => {
   const [sevenDayUrl, setSevenDayUrl] = useState<string>('');
   const [hourlyUrl, setHourlyUrl] = useState<string>('');
   const [hourly, setHourly] = useState<Forecast[]>([]);
   const [location, setLocation] = useState<ILocation | null>(null);
-  const [dayView, setDayView] = useState(true);
 
   useEffect(() => {
-    fetchLocation(latLong).then(
+    fetchLocation({ lat, long }).then(
       ({ forecast, forecastHourly, relativeLocation }: ILocationInfo) => {
         setLocation(relativeLocation.properties);
         setSevenDayUrl(forecast);
         setHourlyUrl(forecastHourly);
       },
     );
-  }, [latLong]);
+  }, [lat, long]);
 
   useEffect(() => {
     if (!hourlyUrl) return;
@@ -67,89 +74,34 @@ export const WeatherDisplay = (latLong: { lat: string; long: string }) => {
   }
 
   return (
-    <div className='grid gap-4 md:order-2 md:grid-cols-2'>
-      <div className='grid gap-2'>
-        <h4 className='text-2xl font-black'>
-          {location.city}, {location.state}
-        </h4>
+    <div>
+      <h2 className='mb-2 text-4xl font-black'>
+        {location.city}, {location.state}
+      </h2>
+      <div className='flex items-center gap-4'>
         {hourly.length > 0 && <CurrentWeather {...hourly[0]} />}
+        {hourly.length > 0 && <HourlyForecast hours={hourly} />}
       </div>
-      <div className='flex flex-col'>
-        <div className='flex text-center'>
-          <ToggleButton
-            title={'24 hours'}
-            onClick={() => {
-              setDayView(true);
-            }}
-            active={dayView}
-          />
-          <ToggleButton
-            title={'7 day'}
-            onClick={() => {
-              setDayView(false);
-            }}
-            active={!dayView}
-          />
-        </div>
-        <div className='grid h-[250px] grow-1 divide-y overflow-scroll rounded-b-xl border'>
-          {dayView && <HourlyForecast hours={hourly} />}
-          {!dayView && <SevenDayForecast url={sevenDayUrl} />}
-        </div>
-      </div>
-
+      <SevenDayForecast url={sevenDayUrl} />
       {/* <small>Updated: {view === "24" ? updates.hourly : updates.sevenDay}</small> */}
     </div>
   );
 };
 
-const ToggleButton = ({
-  title,
-  onClick,
-  active,
-}: {
-  title: string;
-  onClick: () => void;
-  active: boolean;
-}) => {
-  return (
-    <button
-      onClick={onClick}
-      className={clsx(
-        'w-full rounded-xl rounded-b-none border border-b-0 px-2 py-1',
-        active && 'bg-green-400',
-      )}
-    >
-      {title}
-    </button>
-  );
-};
-
 const CurrentWeather = (current: Forecast) => (
-  <>
-    <p className='text-6xl font-light'>
-      <WeatherIcon id={current.shortForecast} style={{ fontSize: '48px' }} />{' '}
-      <span className='text-6xl font-thin'>
+  <div>
+    <div className='my-4 flex'>
+      <WeatherIcon id={current.shortForecast} style={{ fontSize: '48px' }} />
+      <p className='text-5xl tracking-tighter'>
         {current.temperature}
         &deg;{current.temperatureUnit}
-      </span>
-    </p>
-    <div>
-      <p>{current.shortForecast}</p>
-    </div>
-    <hr />
-    <div>
-      <p>
-        <WeatherIcon id={'umbrella'} /> Percipitation{' '}
-        {current.probabilityOfPrecipitation.value}%
-      </p>
-      <p>
-        <WeatherIcon id={'humidity'} /> Humidity{' '}
-        {current.relativeHumidity.value}%
-      </p>
-      <p>
-        <WeatherIcon id={'wind-' + current.windDirection} /> Wind{' '}
-        {current.windSpeed} {current.windDirection}
       </p>
     </div>
-  </>
+    <div className='text-sm'>
+      <p className='font-black'>{current.shortForecast}</p>
+      <p>Percipitation: {current.probabilityOfPrecipitation.value}%</p>
+      <p>Humidity: {current.relativeHumidity.value}%</p>
+      <p>Wind: {current.windSpeed}</p>
+    </div>
+  </div>
 );

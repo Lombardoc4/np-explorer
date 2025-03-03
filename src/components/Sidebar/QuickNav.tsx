@@ -11,7 +11,7 @@ export const QuickNav = ({ sections }: QuickNavProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className='fixed bottom-4 left-1/2 z-50 w-[90%] max-w-md -translate-x-1/2 rounded-lg bg-[var(--color-bg-2)] shadow-lg'>
+    <div className='fixed bottom-4 left-1/2 z-50 w-[90%] max-w-md -translate-x-1/2 rounded-lg bg-[var(--color-bg-2)] shadow-lg sm:hidden'>
       {/* Dropdown Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}

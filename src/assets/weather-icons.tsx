@@ -14,15 +14,36 @@ const weatherIconMap: IWeatherIcons = {
   humidity: { day: 'humidity', night: 'humidity' },
 
   // Personally generated
+  'partly sunny then slight chance rain showers': {
+    day: 'day-rain',
+    night: 'night-alt-rain',
+  },
   'chance light snow': { day: 'day-snow', night: 'night-alt-snow' },
   'light snow likely': { day: 'day-snow', night: 'night-alt-snow' },
   'light snow': { day: 'day-snow', night: 'night-alt-snow' },
+
+  'slight chance light snow': { day: 'day-snow', night: 'night-alt-snow' },
+  'slight chance snow showers': { day: 'day-sleet', night: 'night-alt-sleet' },
+  'snow showers likely': { day: 'sleet', night: 'sleet' },
+  'chance snow showers': { day: 'day-sleet', night: 'night-alt-sleet' },
   'snow likely': { day: 'snow', night: 'night-alt-snow' },
-  'heavy snow': { day: 'snow', night: 'night-alt-snow' },
+  'heavy snow': { day: 'snow', night: 'snow' },
+  'chance snow showers and patchy blowing snow': { day: 'snow', night: 'snow' },
+  'rain showers': { day: 'rain', night: 'rain' },
   'chance light rain': { day: 'day-rain', night: 'night-alt-rain' },
+  'chance rain and snow showers': { day: 'day-rain', night: 'night-alt-rain' },
+  'mostly sunny then slight chance rain showers': {
+    day: 'day-rain',
+    night: 'night-alt-rain',
+  },
+  'mostly sunny then chance rain showers': {
+    day: 'day-rain',
+    night: 'night-alt-rain',
+  },
+  'slight chance light rain': { day: 'day-rain', night: 'night-alt-rain' },
   'isolated rain showers': {
-    day: 'day-storm-showers',
-    night: 'night-alt-storm-showers',
+    day: 'storm-showers',
+    night: 'storm-showers',
   },
   'chance rain showers': {
     day: 'day-storm-showers',
@@ -42,7 +63,7 @@ const weatherIconMap: IWeatherIcons = {
   'rain showers likely': { day: 'showers', night: 'night-alt-showers' },
   'showers and thunderstorms': {
     day: 'storm-showers',
-    night: 'night-alt-thunderstorm',
+    night: 'storm-showers',
   },
   'slight chance showers and thunderstorms': {
     day: 'day-storm-showers',
@@ -89,16 +110,16 @@ const weatherIconMap: IWeatherIcons = {
   },
   drizzle: { day: 'sprinkle', night: 'night-alt-sprinkle' },
   frigid: { day: 'thermometer-exterior', night: 'thermometer-exterior' },
-  overcast: { day: 'cloudy', night: 'night-alt-cloudy' },
+  overcast: { day: 'cloudy', night: 'loudy' },
   'scattered snow showers': { day: 'day-snow', night: 'night-alt-snow' },
   'scattered thunderstorms': {
     day: 'day-thunderstorm',
     night: 'night-alt-thunderstorm',
   },
-  thunderstorms: { day: 'thunderstorm', night: 'night-alt-thunderstorm' },
-  'rain and snow': { day: 'rain-mix', night: 'night-alt-rain-mix' },
-  'snow and sleet': { day: 'sleet', night: 'night-alt-sleet' },
-  'freezing drizzle': { day: 'rain-mix', night: 'night-alt-rain-mix' },
+  thunderstorms: { day: 'thunderstorm', night: 'thunderstorm' },
+  'rain and snow': { day: 'rain-mix', night: 'rain-mix' },
+  'snow and sleet': { day: 'sleet', night: 'sleet' },
+  'freezing drizzle': { day: 'rain-mix', night: 'rain-mix' },
   'blowing snow': { day: 'snow-wind', night: 'snow-wind' },
   'blowing dust': { day: 'dust', night: 'dust' },
   'blowing sand': { day: 'sandstorm', night: 'sandstorm' },
@@ -120,7 +141,7 @@ export const WeatherIcon = ({ id, isDay = true, ...rest }: IWeatherProps) => {
     return (
       <i
         title={id}
-        className={`wi wi-${isDay ? weatherIconMap[normalizedId].day : weatherIconMap[normalizedId].night}`}
+        className={`before:text-secondary wi wi-${isDay ? weatherIconMap[normalizedId].day : weatherIconMap[normalizedId].night}`}
         // style={{ fontSize: '2em', padding: '0.25em 0' }}
         {...rest}
       />
@@ -133,12 +154,12 @@ export const WeatherIcon = ({ id, isDay = true, ...rest }: IWeatherProps) => {
     return (
       <i
         title={id}
-        className={`wi wi-wind wi-towards-${direction.toLowerCase()}`}
+        className={`before:text-secondary wi wi-wind wi-towards-${direction.toLowerCase()}`}
         {...rest}
       />
     );
   }
-  console.log('id', id);
+  console.log('id', id.toLowerCase().trim());
   // Fallback Icon
-  return <i className='wi wi-na' {...rest} />;
+  return <i className='before:text-secondary wi wi-na' {...rest} />;
 };

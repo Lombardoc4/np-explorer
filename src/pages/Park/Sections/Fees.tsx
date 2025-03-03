@@ -1,3 +1,9 @@
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { Info } from 'lucide-react';
 import { useState } from 'react';
 
@@ -41,21 +47,26 @@ const FeeItem = ({
   title = title.slice(title.indexOf('-') + 1, title.length);
 
   return (
-    <div className='relative w-full rounded-lg border-2 border-green-700 p-2'>
-      <h3 className='text-xs'>{subtitle}</h3>
-      <h3 className='text-base font-black md:text-xl'>{title}</h3>
-      <div className='flex gap-2'>
-        <p className='font'>${cost}</p>
-        <Info
-          onMouseEnter={() => setShowDescription(true)}
-          onMouseLeave={() => setShowDescription(false)}
-        />
+    <div className='border-secondary relative w-full rounded-lg border-2 p-4'>
+      <div className='flex items-center justify-between gap-2'>
+        <p className='text-sm'>{subtitle}</p>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <Info />
+            </TooltipTrigger>
+            <TooltipContent className='border'>
+              <p className='max-w-xs text-sm'>{description}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
-      {showDescription && (
-        <p className='absolute bottom-full m-[4px] rounded border border-black bg-white p-2 text-sm text-black'>
-          {description}
-        </p>
-      )}
+      <div className='flex gap-2'>
+        <h3 className='text-base font-black md:text-xl'>
+          ${cost} / {title}
+        </h3>
+        {/* <p className='font'>${cost}</p> */}
+      </div>
     </div>
   );
 };

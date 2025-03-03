@@ -81,17 +81,27 @@ export const SevenDayForecast = ({ url }: { url: string }) => {
     );
   }
 
-  return sevenDay.map((ww: any) => <WeatherDayItem key={ww.name} {...ww} />);
+  return (
+    <div
+      className='mt-4 grid grid-cols-7'
+      style={{
+        gridTemplateColumns: `repeat(${sevenDay.length}, minmax(0, 1fr))`,
+      }}
+    >
+      {sevenDay.map((ww: any) => (
+        <WeatherDayItem key={ww.name} {...ww} />
+      ))}
+    </div>
+  );
 };
 
 const WeatherDayItem = (ww: any) => {
   return (
-    <div className='grid grid-cols-4 items-center p-2'>
+    <div className='flex flex-col gap-2 p-1 text-center text-sm'>
       <p>{ww.name !== 'Today' ? ww.name.slice(0, 3) : ww.name}</p>
-      <WeatherIcon id={ww.shortForecast ?? ''} style={{ fontSize: '1.5em' }} />
-      <p className='col-span-2'>
-        {ww.low}&deg;{ww.temperatureUnit} - {ww.high}&deg;
-        {ww.temperatureUnit}
+      <WeatherIcon id={ww.shortForecast} style={{ fontSize: '2.5em' }} />
+      <p>
+        {ww.high}&deg; {ww.low}&deg;
       </p>
     </div>
   );
