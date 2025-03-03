@@ -82,12 +82,7 @@ export const SevenDayForecast = ({ url }: { url: string }) => {
   }
 
   return (
-    <div
-      className='mt-4 grid grid-cols-7'
-      style={{
-        gridTemplateColumns: `repeat(${sevenDay.length}, minmax(0, 1fr))`,
-      }}
-    >
+    <div className='mt-4 flex w-full justify-between'>
       {sevenDay.map((ww: any) => (
         <WeatherDayItem key={ww.name} {...ww} />
       ))}
@@ -97,10 +92,10 @@ export const SevenDayForecast = ({ url }: { url: string }) => {
 
 const WeatherDayItem = (ww: any) => {
   return (
-    <div className='flex flex-col gap-2 p-1 text-center text-sm'>
+    <div className='flex w-fit flex-col gap-2 text-center text-sm sm:p-1'>
       <p>{ww.name !== 'Today' ? ww.name.slice(0, 3) : ww.name}</p>
-      <WeatherIcon id={ww.shortForecast} style={{ fontSize: '2.5em' }} />
-      <p>
+      <WeatherIcon id={ww.shortForecast} className='text-xl sm:text-4xl' />
+      <p className='text-xs sm:text-base'>
         {ww.high}&deg; {ww.low}&deg;
       </p>
     </div>

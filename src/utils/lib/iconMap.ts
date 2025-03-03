@@ -15,6 +15,7 @@ import {
 export const iconMap = {
   overview: Compass,
   alerts: TriangleAlert,
+  activities: Binoculars,
   directions: MapPin,
   weather: Sun,
   fees: DollarSign,

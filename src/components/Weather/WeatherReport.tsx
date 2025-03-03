@@ -78,7 +78,7 @@ export const WeatherDisplay = ({
       <h2 className='mb-2 text-4xl font-black'>
         {location.city}, {location.state}
       </h2>
-      <div className='flex items-center gap-4'>
+      <div className='flex flex-col items-center gap-4 md:flex-row'>
         {hourly.length > 0 && <CurrentWeather {...hourly[0]} />}
         {hourly.length > 0 && <HourlyForecast hours={hourly} />}
       </div>
@@ -89,7 +89,7 @@ export const WeatherDisplay = ({
 };
 
 const CurrentWeather = (current: Forecast) => (
-  <div>
+  <div className='grid w-full grid-cols-2 gap-4 sm:grid-cols-1'>
     <div className='my-4 flex'>
       <WeatherIcon id={current.shortForecast} style={{ fontSize: '48px' }} />
       <p className='text-5xl tracking-tighter'>

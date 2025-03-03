@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { fetcher, uniqueCategoryItems } from '../../../utils/helper';
 import { activityCategories } from '../../../utils/lib/activityCategories';
 import { ParkSection } from '.';
@@ -26,7 +26,7 @@ export const CategorySection = ({
 
   return (
     <ParkSection {...activeCat} count={categories.length}>
-      <div className='col-span-2 grid gap-8 sm:grid-cols-2 xl:grid-cols-4'>
+      <div className='col-span-2 grid gap-8 sm:grid-cols-2'>
         {uniqueCats.slice(0, itemLimit).map((cat) => (
           <CategoryCard key={cat.name || cat.title} data={cat} {...activeCat} />
         ))}
@@ -44,6 +44,7 @@ export const CategoryCard = ({
   name: string;
   path: string;
 }) => {
+  const navigate = useNavigate();
   const href = `./${path.replace(/ /g, '-').toLowerCase()}/${data.id}`;
   const date =
     data.date &&
@@ -55,24 +56,28 @@ export const CategoryCard = ({
     });
 
   return (
-    <div className='group flex flex-col overflow-hidden rounded-lg border-2 border-green-700 shadow-md transition-transform hover:scale-[101%] hover:shadow'>
+    <div
+      onClick={() => navigate(href)}
+      className='border-secondary relative h-64 cursor-pointer overflow-hidden rounded-lg border-2 shadow-md transition-transform hover:scale-[101%] hover:shadow'
+    >
       {/* Image */}
-      {data.images[0]?.url && data.images[0]?.url.startsWith('https://') && (
+      {data?.images[0]?.url && data.images[0]?.url.startsWith('https://') && (
         <div
-          className='relative h-64 bg-cover bg-center bg-no-repeat'
+          className='relative h-full bg-cover bg-center bg-no-repeat'
           style={{ backgroundImage: `url(${data.images[0].url})` }}
         >
           {data.isPassportStampLocation === '1' && (
-            <div className='absolute top-2 right-2 flex h-10 w-10 items-center justify-center rounded-full border border-green-700 bg-white'>
+            <div className='border-secondary absolute top-2 right-2 flex h-10 w-10 items-center justify-center rounded-full border bg-white'>
               <PassportImg />
             </div>
           )}
         </div>
       )}
-      <div className='flex flex-col gap-2 p-4 md:min-h-48'>
+      <div className='absolute inset-0 flex flex-col justify-end gap-2 bg-gradient-to-b from-transparent via-transparent to-black p-4'>
         {/* Title Row w Passport Location */}
-        <div className='w-full'>
+        <div className='w-full text-white'>
           {date && <p className='text-sm'>{date}</p>}
+          {name && <p className='text-sm'>{name}</p>}
           {/* <div className='flex items-center justify-between gap-4'> */}
           <h3
             className='line-clamp-2 text-xl font-black'
@@ -84,7 +89,7 @@ export const CategoryCard = ({
         </div>
 
         {/* Content */}
-        {name === 'Events' ? (
+        {/* {name === 'Events' ? (
           <div
             className='line-clamp-4'
             dangerouslySetInnerHTML={{
@@ -95,10 +100,10 @@ export const CategoryCard = ({
           <p className='line-clamp-4'>
             {data.description || data.shortDescription}
           </p>
-        )}
-        <Link className='mt-2 group-hover:underline' to={href}>
+        )} */}
+        {/* <Link className='mt-2 group-hover:underline' to={href}>
           Read more...
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

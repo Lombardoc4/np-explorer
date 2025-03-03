@@ -4,7 +4,12 @@ import ParkContext from '../../utils/hooks/ParkContext';
 import { activityCategories } from '../../utils/lib/activityCategories';
 import ErrorPage from '../Error';
 import { WeatherDisplay } from '../../components/Weather/WeatherReport';
-import { ParkAlert, FeeSection, CategorySection } from './Sections';
+import {
+  ParkAlert,
+  FeeSection,
+  CategorySection,
+  ParkSection,
+} from './Sections';
 import { ShareModal } from '../../components/Modal/ShareModal';
 import { ImgGrid } from '../../components/ImgGrid';
 import { FullHeightLoader } from '../../components/Loader';
@@ -20,7 +25,9 @@ import clsx from 'clsx';
 import { Sidebar } from '../../components/Sidebar';
 import { iconMap } from '../../utils/lib/iconMap';
 import { QuickNav } from '../../components/Sidebar/QuickNav';
+import { CategoryCard } from './Sections/Activities';
 
+const itemLimit = 8;
 export const ParkPage = () => {
   const { parkId } = useParams();
   const { status, error, data: park } = useContext(ParkContext);
@@ -155,11 +162,6 @@ export const ParkLayout = (park: IPark) => {
       label: 'Fees',
       condition: park.entranceFees && park.entranceFees.length > 0,
     },
-    {
-      id: 'events',
-      label: 'Events',
-      condition: !eventsFetching && events && events?.length > 0,
-    },
     { id: 'weather', label: 'Weather' },
     { id: 'directions', label: 'Directions' },
     {
@@ -169,19 +171,17 @@ export const ParkLayout = (park: IPark) => {
         !visitorCenterFetching && visitorCenters && visitorCenters?.length > 0,
     },
     {
-      id: 'tours',
-      label: 'Tours',
-      condition: !toursFetching && tours && tours?.length > 0,
+      id: 'activities',
+      label: 'Activities',
+      condition:
+        (!toursFetching && tours && tours?.length > 0) ||
+        (!thingsToDoFetching && thingsToDo && thingsToDo?.length > 0) ||
+        (!eventsFetching && events && events?.length > 0),
     },
     {
       id: 'campgrounds',
       label: 'Campgrounds',
       condition: !campgroundsFetching && campgrounds && campgrounds?.length > 0,
-    },
-    {
-      id: 'things-to-do',
-      label: 'Things to Do',
-      condition: !thingsToDoFetching && thingsToDo && thingsToDo?.length > 0,
     },
     {
       id: 'parking',
@@ -235,7 +235,10 @@ export const ParkLayout = (park: IPark) => {
               <WaveDivider reverse={false} />
               <div className='bg-primary'>
                 <div className='container mx-auto px-4 py-16'>
-                  <WeatherSection weather={park.weatherInfo}>
+                  <WeatherSection
+                    weather={park.weatherInfo}
+                    img={park.images[2]}
+                  >
                     <WeatherDisplay
                       lat={park.latitude}
                       long={park.longitude}
@@ -247,29 +250,45 @@ export const ParkLayout = (park: IPark) => {
               <WaveDivider reverse={true} />
             </div>
 
-            {/* Events */}
-            <CategorySection
-              key={'tours'}
-              parkCode={park.parkCode}
-              endpoint={'tours'}
-            />
-            <CategorySection
-              key={'events'}
-              parkCode={park.parkCode}
-              endpoint={'events'}
-            />
-            <CategorySection
-              key={'thingstodo'}
-              parkCode={park.parkCode}
-              endpoint={'thingstodo'}
-            />
-            <CategorySection
-              key={'camping'}
-              parkCode={park.parkCode}
-              endpoint={'campgrounds'}
-            />
+            {/* Activities */}
+            <ParkSection name='Activities'>
+              {sections.map((section) => {
+                let activities = [];
+                if (section.id !== 'activities') return <></>;
+                if (tours)
+                  activities = [
+                    ...activities,
+                    ...tours.map((t) => ({ ...t, type: 'Tour' })),
+                  ];
+                if (thingsToDo)
+                  activities = [
+                    ...activities,
+                    ...thingsToDo.map((t) => ({ ...t, type: 'Thing to do' })),
+                  ];
+                if (events)
+                  activities = [
+                    ...activities,
+                    ...events.map((e) => ({ ...e, type: 'Event' })),
+                  ];
+
+                return (
+                  <div className='col-span-2 grid gap-8 sm:grid-cols-2 xl:grid-cols-4'>
+                    {activities.slice(0, itemLimit).map((item) => (
+                      <CategoryCard
+                        key={item.title}
+                        data={item}
+                        name={item.type}
+                        path={section.id}
+                      />
+                    ))}
+                  </div>
+                );
+              })}
+            </ParkSection>
 
             <DirectionSection location={park} />
+
+            {/* Map for Visitor Centers, Parking, Campgrounds */}
             {/* {endpoints
               .filter((e) => e !== 'events')
               .map((e) => (

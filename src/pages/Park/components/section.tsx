@@ -18,7 +18,7 @@ const ParkSectionContainer = ({
   name: string;
   children: React.ReactNode;
 }) => (
-  <div className='scroll-m-24' id={name.replace(/ /g, '-').toLowerCase()}>
+  <div className='px-4' id={name.replace(/ /g, '-').toLowerCase()}>
     {children}
   </div>
 );

@@ -1,11 +1,9 @@
-import { WeatherIcon } from '../../assets/weather-icons';
 import {
   Bar,
   BarChart,
   CartesianGrid,
   DotProps,
   LabelList,
-  LabelListProps,
   LabelProps,
   Line,
   LineChart,
@@ -18,16 +16,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { extend } from 'leaflet';
-
-// export const HourlyForecast = ({ hours }: { hours: Forecast[] }) => (
-//     <HourlyChart chartData={hours.filter(hour => hour.temperature && hour.startTime)} />
-// );
-// hours.map((forecast: Forecast) => (
-//   <WeatherHourItem key={forecast.startTime} {...forecast} />
-// ));
 
 const formatHours = (time: string) => {
   const hours = new Date(time).getHours();
@@ -45,10 +34,6 @@ interface ChartProps {
   chartData: Forecast[];
 }
 
-interface HourlyChartProps extends ChartProps {
-  type?: 'temperature' | 'probabilityOfPrecipitation.value' | 'windSpeed';
-}
-
 export const HourlyForecast = ({ hours }: { hours: Forecast[] }) => {
   const chartData = hours
     .filter((hour) => hour.temperature && hour.startTime)
@@ -57,8 +42,8 @@ export const HourlyForecast = ({ hours }: { hours: Forecast[] }) => {
       startTime: formatHours(d.startTime),
     }));
   return (
-    <Tabs defaultValue='temperature' className='w-[400px]'>
-      <TabsList className='ml-auto'>
+    <Tabs defaultValue='temperature' className='w-full gap-0'>
+      <TabsList className='mx-auto sm:mr-0'>
         <TabsTrigger value='temperature'>Temperature</TabsTrigger>
         <TabsTrigger value='percipitation'>Percipitation %</TabsTrigger>
         {/* <TabsTrigger value='wind'>Wind</TabsTrigger> */}
@@ -117,53 +102,6 @@ const PercipChart = ({ chartData }: ChartProps) => (
   </ChartContainer>
 );
 
-const TempChart = ({ chartData }: ChartProps) => (
-  <ChartContainer config={chartConfig} className='max-h-[150px] w-full'>
-    <LineChart
-      accessibilityLayer
-      data={chartData}
-      margin={{
-        top: 24,
-        left: 16,
-        right: 16,
-      }}
-    >
-      {console.log('chart', chartData)}
-      <YAxis domain={['dataMin', 'dataMax']} hide />
-      <XAxis
-        dataKey='startTime'
-        tickLine={false}
-        // axisLine={false}
-        tick={{ fill: 'var(--color-foreground)' }}
-      />
-      <ChartTooltip
-        cursor={false}
-        content={<ChartTooltipContent indicator='line' />}
-      />
-      <Line
-        dataKey='temperature'
-        type='natural'
-        stroke='var(--color-secondary)'
-        strokeWidth={2}
-        dot={<CustomDot />}
-      >
-        <LabelList position='top' content={<CustomLabel />} />
-      </Line>
-    </LineChart>
-  </ChartContainer>
-);
-
-interface CustomDotProps extends DotProps {
-  index?: number; // Recharts doesn't always include index, so make it optional
-}
-
-const CustomDot = (props: CustomDotProps) => {
-  const { cx, cy, index } = props;
-  return index !== undefined && index % 2 === 0 ? (
-    <circle cx={cx} cy={cy} r={4} fill='var(--color-foreground)' />
-  ) : null;
-};
-
 interface BarLabelProps extends LabelProps {
   data: Forecast[];
 }
@@ -211,8 +149,8 @@ const CustomBarLabel = ({ x, y, value, index, data }: BarLabelProps) => {
   return (
     <text
       x={x ? Number(x) + 8 : 0}
-      y={y ? Number(y) - 10 : 0}
-      fontSize={12}
+      y={y ? Number(y) - 8 : 0}
+      fontSize={8}
       className='fill-foreground'
       fontWeight='bold'
       textAnchor='middle'
@@ -220,6 +158,53 @@ const CustomBarLabel = ({ x, y, value, index, data }: BarLabelProps) => {
       {value}%
     </text>
   );
+};
+
+const TempChart = ({ chartData }: ChartProps) => (
+  <ChartContainer config={chartConfig} className='max-h-[150px] w-full'>
+    <LineChart
+      accessibilityLayer
+      data={chartData}
+      margin={{
+        top: 24,
+        left: 16,
+        right: 16,
+      }}
+    >
+      <YAxis domain={['dataMin', 'dataMax']} hide />
+      <XAxis
+        dataKey='startTime'
+        tickLine={false}
+        // axisLine={false}
+        tick={{ fill: 'var(--color-foreground)' }}
+      />
+      <ChartTooltip
+        cursor={false}
+        content={<ChartTooltipContent indicator='line' />}
+      />
+      <Line
+        className='overflow-visible'
+        dataKey='temperature'
+        type='natural'
+        stroke='var(--color-secondary)'
+        strokeWidth={2}
+        dot={<CustomDot />}
+      >
+        <LabelList position='top' content={<CustomLabel />} />
+      </Line>
+    </LineChart>
+  </ChartContainer>
+);
+
+interface CustomDotProps extends DotProps {
+  index?: number; // Recharts doesn't always include index, so make it optional
+}
+
+const CustomDot = (props: CustomDotProps) => {
+  const { cx, cy, index } = props;
+  return index !== undefined && index % 2 === 0 ? (
+    <circle cx={cx} cy={cy} r={4} fill='var(--color-foreground)' />
+  ) : null;
 };
 
 const CustomLabel = ({ x, y, value, index }: LabelProps) => {

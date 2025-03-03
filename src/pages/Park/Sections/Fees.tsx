@@ -6,11 +6,10 @@ import {
 } from '@/components/ui/tooltip';
 import { Info } from 'lucide-react';
 import { useState } from 'react';
-
 export const FeeSection = ({ entranceFees }: { entranceFees: Fee[] }) => {
   if (!entranceFees || entranceFees.length <= 0) {
     return (
-      <div className='border-green -mb-8 rounded border-2 px-4 py-2'>
+      <div className='border-secondary -mb-8 w-fit rounded border-2 px-4 py-2 md:w-1/2'>
         <h2 className='text-xl font-black md:text-2xl'>No Entrance Fees</h2>
       </div>
     );
@@ -41,8 +40,6 @@ const FeeItem = ({
   title: string;
   description: string;
 }) => {
-  const [showDescription, setShowDescription] = useState(false);
-
   const subtitle = title.slice(0, title.indexOf('-'));
   title = title.slice(title.indexOf('-') + 1, title.length);
 

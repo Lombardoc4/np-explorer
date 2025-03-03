@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+
 interface IWeatherIcons {
   [key: string]: { day: string; night: string };
 }
@@ -14,6 +16,10 @@ const weatherIconMap: IWeatherIcons = {
   humidity: { day: 'humidity', night: 'humidity' },
 
   // Personally generated
+  'partly sunny then chance rain showers': {
+    day: 'day-rain',
+    night: 'night-alt-rain',
+  },
   'partly sunny then slight chance rain showers': {
     day: 'day-rain',
     night: 'night-alt-rain',
@@ -27,9 +33,14 @@ const weatherIconMap: IWeatherIcons = {
   'snow showers likely': { day: 'sleet', night: 'sleet' },
   'chance snow showers': { day: 'day-sleet', night: 'night-alt-sleet' },
   'snow likely': { day: 'snow', night: 'night-alt-snow' },
+  'rain and snow showers': { day: 'sleet', night: 'sleet' },
   'heavy snow': { day: 'snow', night: 'snow' },
   'chance snow showers and patchy blowing snow': { day: 'snow', night: 'snow' },
   'rain showers': { day: 'rain', night: 'rain' },
+  'mostly sunny then isolated rain showers': {
+    day: 'day-rain',
+    night: 'night-alt-rain',
+  },
   'chance light rain': { day: 'day-rain', night: 'night-alt-rain' },
   'chance rain and snow showers': { day: 'day-rain', night: 'night-alt-rain' },
   'mostly sunny then slight chance rain showers': {
@@ -61,9 +72,14 @@ const weatherIconMap: IWeatherIcons = {
   'partly cloudy': { day: 'day-cloudy', night: 'night-alt-cloudy' },
   'patchy fog': { day: 'day-fog', night: 'night-fog' },
   'rain showers likely': { day: 'showers', night: 'night-alt-showers' },
+
   'showers and thunderstorms': {
     day: 'storm-showers',
     night: 'storm-showers',
+  },
+  'slight chance t-storms': {
+    day: 'day-storm-showers',
+    night: 'night-alt-storm-showers',
   },
   'slight chance showers and thunderstorms': {
     day: 'day-storm-showers',
@@ -140,10 +156,13 @@ export const WeatherIcon = ({ id, isDay = true, ...rest }: IWeatherProps) => {
   if (weatherIconMap[normalizedId]) {
     return (
       <i
-        title={id}
-        className={`before:text-secondary wi wi-${isDay ? weatherIconMap[normalizedId].day : weatherIconMap[normalizedId].night}`}
-        // style={{ fontSize: '2em', padding: '0.25em 0' }}
         {...rest}
+        title={id}
+        className={clsx(
+          rest.className,
+          `before:text-secondary wi wi-${isDay ? weatherIconMap[normalizedId].day : weatherIconMap[normalizedId].night}`,
+        )}
+        // style={{ fontSize: '2em', padding: '0.25em 0' }}
       />
     );
   }
@@ -153,13 +172,21 @@ export const WeatherIcon = ({ id, isDay = true, ...rest }: IWeatherProps) => {
     const direction = normalizedId.split('-')[1];
     return (
       <i
-        title={id}
-        className={`before:text-secondary wi wi-wind wi-towards-${direction.toLowerCase()}`}
         {...rest}
+        title={id}
+        className={clsx(
+          `before:text-secondary wi wi-wind wi-towards-${direction.toLowerCase()}`,
+          rest.className,
+        )}
       />
     );
   }
   console.log('id', id.toLowerCase().trim());
   // Fallback Icon
-  return <i className='before:text-secondary wi wi-na' {...rest} />;
+  return (
+    <i
+      {...rest}
+      className={clsx('before:text-secondary wi wi-na', rest.className)}
+    />
+  );
 };
