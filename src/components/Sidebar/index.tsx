@@ -14,7 +14,7 @@ export const Sidebar = ({ children }: SidebarProps) => {
 
   return (
     <nav
-      className={`bg-primary relative hidden p-4 pt-24 shadow-md transition-all sm:block ${
+      className={`bg-muted relative hidden p-4 pt-24 shadow-md transition-all sm:block ${
         collapsed ? 'w-16' : 'w-48'
       } hidden`}
     >

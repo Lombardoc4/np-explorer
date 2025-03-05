@@ -1,9 +1,9 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router';
 
 import Layout from './pages/Layout';
 import { LandingPage } from './pages/Landing';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import './index.css';
 import { parkRoutes } from './routes/park';
 import { stateRoutes } from './routes/state';

@@ -5,7 +5,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { Info } from 'lucide-react';
-import { useState } from 'react';
+
 export const FeeSection = ({ entranceFees }: { entranceFees: Fee[] }) => {
   if (!entranceFees || entranceFees.length <= 0) {
     return (
@@ -18,9 +18,9 @@ export const FeeSection = ({ entranceFees }: { entranceFees: Fee[] }) => {
   return (
     <div id='fees' className='w-full'>
       <div className='col-span-2 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-8'>
-        {entranceFees.map((fee: Fee) => (
+        {entranceFees.map((fee: Fee, i) => (
           <FeeItem
-            key={fee.title}
+            key={fee.title + i}
             cost={fee.cost}
             title={fee.title}
             description={fee.description}

@@ -28,6 +28,7 @@ const weatherIconMap: IWeatherIcons = {
   'light snow likely': { day: 'day-snow', night: 'night-alt-snow' },
   'light snow': { day: 'day-snow', night: 'night-alt-snow' },
 
+  'rain and snow showers likely': { day: 'day-rain', night: 'night-alt-rain' },
   'slight chance light snow': { day: 'day-snow', night: 'night-alt-snow' },
   'slight chance snow showers': { day: 'day-sleet', night: 'night-alt-sleet' },
   'snow showers likely': { day: 'sleet', night: 'sleet' },

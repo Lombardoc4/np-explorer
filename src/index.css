@@ -149,3 +149,25 @@ h2 {
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom Mapbox Popup Styling */
+.mapboxgl-popup {
+  max-width: 250px; /* Adjust width */
+  font-family: inherit;
+}
+
+.mapboxgl-popup-content {
+  background-color: white; /* Match theme */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15); /* Soft shadow */
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb; /* Tailwind gray-200 */
+}
+
+.mapboxgl-popup-tip {
+  border-top-color: white !important; /* Ensure arrow matches popup */
+}
+
+.mapboxgl-popup-close-button {
+  display: none; /* Hide default close button */
+}

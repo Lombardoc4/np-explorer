@@ -89,19 +89,29 @@ export const WeatherDisplay = ({
 };
 
 const CurrentWeather = (current: Forecast) => (
-  <div className='grid w-full grid-cols-2 gap-4 sm:grid-cols-1'>
-    <div className='my-4 flex'>
+  <div className='grid w-fit min-w-[180px] grid-cols-2 gap-2 sm:grid-cols-1'>
+    <div className='flex flex-wrap justify-center gap-2 pb-4 md:pb-2'>
+      <p className='w-full text-center text-lg'>{current.shortForecast}</p>
       <WeatherIcon id={current.shortForecast} style={{ fontSize: '48px' }} />
       <p className='text-5xl tracking-tighter'>
         {current.temperature}
         &deg;{current.temperatureUnit}
       </p>
     </div>
-    <div className='text-sm'>
-      <p className='font-black'>{current.shortForecast}</p>
-      <p>Percipitation: {current.probabilityOfPrecipitation.value}%</p>
-      <p>Humidity: {current.relativeHumidity.value}%</p>
-      <p>Wind: {current.windSpeed}</p>
+    <div>
+      <p className='flex w-full py-1 text-sm'>
+        Percipitation:{' '}
+        <span className='ml-auto'>
+          {current.probabilityOfPrecipitation.value}%
+        </span>
+      </p>
+      <p className='flex w-full border-y text-sm'>
+        Humidity:{' '}
+        <span className='ml-auto'>{current.relativeHumidity.value}%</span>
+      </p>
+      <p className='flex w-full py-1 text-sm'>
+        Wind: <span className='ml-auto'>{current.windSpeed}</span>
+      </p>
     </div>
   </div>
 );

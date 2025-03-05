@@ -4,12 +4,7 @@ import ParkContext from '../../utils/hooks/ParkContext';
 import { activityCategories } from '../../utils/lib/activityCategories';
 import ErrorPage from '../Error';
 import { WeatherDisplay } from '../../components/Weather/WeatherReport';
-import {
-  ParkAlert,
-  FeeSection,
-  CategorySection,
-  ParkSection,
-} from './Sections';
+import { ParkAlert, FeeSection, ParkSection } from './Sections';
 import { ShareModal } from '../../components/Modal/ShareModal';
 import { ImgGrid } from '../../components/ImgGrid';
 import { FullHeightLoader } from '../../components/Loader';
@@ -26,6 +21,8 @@ import { Sidebar } from '../../components/Sidebar';
 import { iconMap } from '../../utils/lib/iconMap';
 import { QuickNav } from '../../components/Sidebar/QuickNav';
 import { CategoryCard } from './Sections/Activities';
+import MapContainer from '@/components/mapContainer';
+import { LngLatLike } from 'mapbox-gl';
 
 const itemLimit = 8;
 export const ParkPage = () => {
@@ -112,7 +109,6 @@ type sectionProps = {
 
 export const ParkLayout = (park: IPark) => {
   const { parkCode } = park;
-  const endpoints = Object.keys(activityCategories);
   const [_modal, btn] = ShareModal(park.fullName);
 
   const { data: alerts, isFetching: alertFetching } = useQuery({
@@ -206,7 +202,7 @@ export const ParkLayout = (park: IPark) => {
           >
             {StateLinks(park.states)}
             <div className='flex items-end justify-between gap-2'>
-              <h1 className='text-2xl font-thin md:text-6xl'>
+              <h1 className='text-3xl font-thin md:text-6xl'>
                 {park.fullName}
               </h1>
               {btn}
@@ -253,23 +249,16 @@ export const ParkLayout = (park: IPark) => {
             {/* Activities */}
             <ParkSection name='Activities'>
               {sections.map((section) => {
-                let activities = [];
                 if (section.id !== 'activities') return <></>;
-                if (tours)
-                  activities = [
-                    ...activities,
-                    ...tours.map((t) => ({ ...t, type: 'Tour' })),
-                  ];
-                if (thingsToDo)
-                  activities = [
-                    ...activities,
-                    ...thingsToDo.map((t) => ({ ...t, type: 'Thing to do' })),
-                  ];
-                if (events)
-                  activities = [
-                    ...activities,
-                    ...events.map((e) => ({ ...e, type: 'Event' })),
-                  ];
+                const activities = [
+                  ...(tours ? tours.map((t) => ({ ...t, type: 'Tour' })) : []),
+                  ...(thingsToDo
+                    ? thingsToDo.map((t) => ({ ...t, type: 'Thing to do' }))
+                    : []),
+                  ...(events
+                    ? events.map((e) => ({ ...e, type: 'Event' }))
+                    : []),
+                ];
 
                 return (
                   <div className='col-span-2 grid gap-8 sm:grid-cols-2 xl:grid-cols-4'>
@@ -285,19 +274,33 @@ export const ParkLayout = (park: IPark) => {
                 );
               })}
             </ParkSection>
+            {!visitorCenterFetching &&
+              !parkingFetching &&
+              !campgroundsFetching && (
+                <MapContainer
+                  latLong={
+                    [
+                      Number(park.longitude),
+                      Number(park.latitude),
+                    ] as LngLatLike
+                  }
+                  locations={[
+                    ...(visitorCenters?.map((vc) => ({
+                      ...vc,
+                      type: 'visitor-center',
+                    })) || []),
+                    ...(parking?.map((p) => ({ ...p, type: 'parking' })) || []),
+                    ...(campgrounds?.map((cg) => ({
+                      ...cg,
+                      type: 'campsite',
+                    })) || []),
+                  ]}
+                />
+              )}
 
             <DirectionSection location={park} />
 
             {/* Map for Visitor Centers, Parking, Campgrounds */}
-            {/* {endpoints
-              .filter((e) => e !== 'events')
-              .map((e) => (
-                <CategorySection
-                  key={e}
-                  parkCode={park.parkCode}
-                  endpoint={e}
-                />
-              ))} */}
           </main>
         </div>
         <Footer />

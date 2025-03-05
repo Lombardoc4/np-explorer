@@ -16,7 +16,7 @@ export const WeatherSection = ({
       <div className='flex h-full flex-col gap-2'>
         {img && (
           <div
-            className='relative h-full rounded-lg border-2 bg-cover bg-center bg-no-repeat'
+            className='relative hidden h-full rounded-lg border-2 bg-cover bg-center bg-no-repeat xl:block'
             style={{ backgroundImage: `url(${img.url})` }}
           />
         )}
