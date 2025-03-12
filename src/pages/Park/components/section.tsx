@@ -1,12 +1,21 @@
 import { Link } from 'react-router';
 import { ActivityDetails } from '../../../utils/lib/activityCategories';
+import { Button } from '@/components/ui/button';
+import clsx from 'clsx';
 
 export const ParkSectionTitle = ({
   children,
+  subtitle,
 }: {
   children: React.ReactNode;
+  subtitle?: boolean;
 }) => (
-  <h2 className='item-center flex justify-between border-b text-4xl font-thin md:col-span-2 md:text-6xl'>
+  <h2
+    className={clsx(
+      'item-center flex justify-between border-b text-4xl font-thin md:col-span-2',
+      subtitle ? 'text-2xl md:text-4xl' : 'text-4xl md:text-6xl',
+    )}
+  >
     {children}
   </h2>
 );
@@ -18,7 +27,7 @@ const ParkSectionContainer = ({
   name: string;
   children: React.ReactNode;
 }) => (
-  <div className='px-4' id={name.replace(/ /g, '-').toLowerCase()}>
+  <div className='px-4 sm:px-0' id={name.replace(/ /g, '-').toLowerCase()}>
     {children}
   </div>
 );
@@ -31,10 +40,12 @@ const ParkChildrenContainer = ({ children }: { children: React.ReactNode }) => (
 
 interface ParkSectionProps extends Omit<ActivityDetails, 'path'> {
   path?: string;
+  subtitle?: boolean;
   children: React.ReactNode;
 }
 
 export const ParkSection = ({
+  subtitle,
   name,
   count,
   path,
@@ -42,12 +53,14 @@ export const ParkSection = ({
 }: ParkSectionProps) => {
   return (
     <ParkSectionContainer name={name}>
-      <ParkSectionTitle>
+      <ParkSectionTitle subtitle={subtitle}>
         <p>{name}</p>
         {path && count && count > 4 && (
-          <Link className='btn btn-primary h-fit text-lg' to={path}>
-            View All
-          </Link>
+          <Button asChild>
+            <Link className='btn btn-primary my-auto h-fit text-lg' to={path}>
+              View All
+            </Link>
+          </Button>
         )}
       </ParkSectionTitle>
       <ParkChildrenContainer>{children}</ParkChildrenContainer>

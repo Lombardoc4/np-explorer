@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { WeatherIcon } from '../../assets/weather-icons';
 import '../../styles/weather-icons.min.css';
 import '../../styles/weather-icons-wind.min.css';
-import clsx from 'clsx';
 import { Loader } from '../Loader';
 import { SevenDayForecast } from './SevenDay';
 import { HourlyForecast } from './Hourly';
@@ -37,11 +36,9 @@ const fetchHourly = async (url: string) => {
 export const WeatherDisplay = ({
   lat,
   long,
-  weather,
 }: {
   lat: string;
   long: string;
-  weather?: string;
 }) => {
   const [sevenDayUrl, setSevenDayUrl] = useState<string>('');
   const [hourlyUrl, setHourlyUrl] = useState<string>('');

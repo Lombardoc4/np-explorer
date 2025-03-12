@@ -27,7 +27,14 @@ const weatherIconMap: IWeatherIcons = {
   'chance light snow': { day: 'day-snow', night: 'night-alt-snow' },
   'light snow likely': { day: 'day-snow', night: 'night-alt-snow' },
   'light snow': { day: 'day-snow', night: 'night-alt-snow' },
-
+  'slight chance rain and snow showers': {
+    day: 'day-rain',
+    night: 'night-alt-rain',
+  },
+  'rain showers likely then chance rain and snow showers': {
+    day: 'day-rain',
+    night: 'night-alt-rain',
+  },
   'rain and snow showers likely': { day: 'day-rain', night: 'night-alt-rain' },
   'slight chance light snow': { day: 'day-snow', night: 'night-alt-snow' },
   'slight chance snow showers': { day: 'day-sleet', night: 'night-alt-sleet' },
@@ -39,6 +46,10 @@ const weatherIconMap: IWeatherIcons = {
   'chance snow showers and patchy blowing snow': { day: 'snow', night: 'snow' },
   'rain showers': { day: 'rain', night: 'rain' },
   'mostly sunny then isolated rain showers': {
+    day: 'day-rain',
+    night: 'night-alt-rain',
+  },
+  'slight chance snow showers then mostly sunny': {
     day: 'day-rain',
     night: 'night-alt-rain',
   },

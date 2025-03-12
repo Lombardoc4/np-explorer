@@ -17,13 +17,6 @@ export const DirectionSection = ({
           {'directionsOverview' in location && location.directionsOverview}
           {'directionsInfo' in location && location.directionsInfo}
         </p>
-        <a
-          className='mt-4 flex items-center gap-1 text-sm italic hover:underline'
-          target='_blank'
-          href={location.directionsUrl}
-        >
-          <LinkIcon className='inline' size={16} /> Official Directions
-        </a>
       </div>
 
       {/* Address and Contact Info */}
@@ -36,23 +29,24 @@ const AddressContact = ({
   addresses,
   location,
 }: {
-  addresses: IAddress[];
+  addresses: Address[];
   location: {
     latitude?: string;
     longitude?: string;
     url?: string;
-    contacts?: IContacts;
+    directionsUrl?: string;
+    contacts?: Contacts;
   };
 }) => {
-  const { latitude, longitude, url, contacts } = location;
+  const { latitude, longitude, directionsUrl, url, contacts } = location;
   return (
-    <div className='h-fit rounded border p-4'>
+    <div className='h-fit'>
       <div className='grid gap-4 md:grid-cols-2'>
         {/* Address */}
         <div>
-          <h3 className='text-2xl font-thin underline'>Address</h3>
+          <h3 className='text-xl font-thin'>Address</h3>
           {addresses.length > 0 &&
-            addresses.map((add: IAddress) => (
+            addresses.map((add: Address) => (
               <DirectionAddress key={add.line1} address={add} />
             ))}
           <a
@@ -65,32 +59,43 @@ const AddressContact = ({
 
         {/* Contact */}
         <div>
-          <h3 className='text-2xl font-thin underline'>Contact</h3>
+          <h3 className='text-xl font-thin'>Contact</h3>
           <ContactCard contacts={contacts} />
         </div>
       </div>
 
       {/* Official Page Link */}
-      {url && (
-        <Link
-          to={url}
-          target='_blank'
-          className='mt-4 flex items-center gap-1 text-sm italic hover:underline'
-        >
-          <LinkIcon className='inline' size={16} /> Official Parks Page
-        </Link>
-      )}
+      <div className='mt-4'>
+        {url && (
+          <Link
+            to={url}
+            target='_blank'
+            className='flex items-center gap-1 text-sm italic hover:underline'
+          >
+            <LinkIcon className='inline' size={16} /> Official Parks Page
+          </Link>
+        )}
+        {directionsUrl && (
+          <Link
+            className='flex items-center gap-1 text-sm italic hover:underline'
+            target='_blank'
+            to={directionsUrl}
+          >
+            <LinkIcon className='inline' size={16} /> Official Directions
+          </Link>
+        )}
+      </div>
     </div>
   );
 };
 
-const formatGoogleUrl = ({ line1, city, stateCode, postalCode }: IAddress) => {
+const formatGoogleUrl = ({ line1, city, stateCode, postalCode }: Address) => {
   return `https://www.google.com/maps/search/?api=1&query=${line1
     .replace(/ /g, '+')
     .replace('.', '')}${city.replace(/ /g, '+')} ${stateCode} ${postalCode}`;
 };
 
-const DirectionAddress = ({ address }: { address: IAddress }) => {
+const DirectionAddress = ({ address }: { address: Address }) => {
   if (address.type !== 'Physical') return;
 
   const { line1, city, stateCode, postalCode } = address;

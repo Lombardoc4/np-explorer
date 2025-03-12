@@ -1,3 +1,4 @@
+import { Accessibility, Dog, DollarSign } from 'lucide-react';
 import React from 'react';
 
 const QuickFacts = ({
@@ -16,8 +17,8 @@ const QuickFacts = ({
 }: IThingToDo) => {
   return (
     <>
-      <div className='fact-item'>
-        <span className='icon'>♿</span>
+      <div className='fact-item py-2'>
+        <Accessibility />
         <div
           className='fact-info'
           dangerouslySetInnerHTML={{
@@ -25,14 +26,19 @@ const QuickFacts = ({
           }}
         />
       </div>
-      <div className='fact-item'>
-        <span className='icon'>🐾</span>
+      <div className='fact-item py-2'>
+        <Dog />
         <div className='fact-info'>
           <strong>Pets</strong>
-          <p>Pets Permitted: {arePetsPermitted === 'Yes' ? 'Yes' : 'No'}</p>
-          <p>
-            Pets Permitted with Restrictions:{' '}
-            {arePetsPermittedWithRestrictions === 'Yes' ? 'Yes' : 'No'}
+          <p className={arePetsPermitted !== 'Yes' ? 'line-through' : ''}>
+            Permitted
+          </p>
+          <p
+            className={
+              arePetsPermittedWithRestrictions !== 'Yes' ? 'line-through' : ''
+            }
+          >
+            Permitted with Restrictions
           </p>
           {petsDescription && (
             <p dangerouslySetInnerHTML={{ __html: petsDescription }} />
@@ -40,7 +46,7 @@ const QuickFacts = ({
         </div>
       </div>
       {age && (
-        <div className='fact-item'>
+        <div className='fact-item py-2'>
           <span className='icon'>📅</span>
           <div className='fact-info'>
             <strong>Age:</strong> {age}
@@ -50,11 +56,11 @@ const QuickFacts = ({
           </div>
         </div>
       )}
-      <div className='fact-item'>
-        <span className='icon'>📅</span>
+      <div className='fact-item py-2'>
+        <DollarSign />
         <div className='fact-info'>
           <p>
-            <strong>Fees:</strong> {doFeesApply === 'Yes' ? 'Yes' : 'No'}
+            <strong>{doFeesApply !== 'Yes' && 'No'} Fees</strong>
           </p>
           {feeDescription && (
             <p dangerouslySetInnerHTML={{ __html: feeDescription }} />
@@ -68,15 +74,17 @@ const QuickFacts = ({
           )}
         </div>
       </div>
-      <div className='fact-item'>
-        <span className='icon'>📅</span>
-        <div className='fact-info'>
-          <p>{location}</p>
-          {locationDescription && (
-            <p dangerouslySetInnerHTML={{ __html: locationDescription }} />
-          )}
+      {locationDescription && (
+        <div className='fact-item py-2'>
+          <span className='icon'>📅</span>
+          <div className='fact-info'>
+            <p>{location}</p>
+            {locationDescription && (
+              <p dangerouslySetInnerHTML={{ __html: locationDescription }} />
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

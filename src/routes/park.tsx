@@ -24,20 +24,37 @@ export const parkRoutes = (
           </ParkProvider>
         }
       />
-      <Route path='visitor-centers' element={<AllParkVCs />} />
+
+      {/* Activities */}
+      <Route path='activities' element={<ThingToDo />} />
+      {/* Things to do */}
+      <Route path='activities/things-to-do' element={<AllThingsToDo />} />
       <Route
-        path='visitor-centers/:activityId'
+        path='activities/things-to-do/:activityId'
+        element={<ThingToDo />}
+      />
+      {/* Tours */}
+      <Route path='activities/tours' element={<AllTours />} />
+      <Route path='activities/tours/:activityId' element={<Tour />} />
+
+      {/* <Route path='activities/events' element={<Events />} /> */}
+      {/* <Route path='activites/events/:activityId' element={<Events />} /> */}
+
+      {/* Places */}
+      <Route path='places' element={<AllParkVCs />} />
+      {/* Visitor Centers */}
+      <Route path='places/visitor-centers' element={<AllParkVCs />} />
+      <Route
+        path='places/visitor-centers/:activityId'
         element={<VisitorCenterPage />}
       />
-      <Route path='camping' element={<AllParkCamping />} />
-      <Route path='camping/:activityId' element={<Campground />} />
-      <Route path='things-to-do' element={<AllThingsToDo />} />
-      <Route path='things-to-do/:activityId' element={<ThingToDo />} />
-      {/* <Route path='events' element={<Events />} /> */}
-      {/* <Route path='tours' element={<AllTours />} />
-      <Route path='tours/:activityId' element={<Tour />} /> */}
+      {/* Camping */}
+      <Route path='places/camping' element={<AllParkCamping />} />
+      <Route path='places/camping/:activityId' element={<Campground />} />
 
-      {/* <Route path='parking' element={<Parking />} /> */}
+      {/* Parking */}
+      {/* <Route path='places/parking' element={<Parking />} /> */}
+      {/* <Route path='places/parking/:activityId' element={<Parking />} /> */}
     </Route>
   </>
 );

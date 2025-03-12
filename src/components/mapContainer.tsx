@@ -13,7 +13,7 @@ const linkCategories = {
   parking: 'parking',
 };
 
-const MapContainer = (props: { latLong: LngLatLike; locations: any[] }) => {
+const MapContainer = (props: { lnglat: LngLatLike; locations: any[] }) => {
   const [selectedLocation, setSelectedLocation] = useState<any>(null);
   const [mapStyle, setMapStyle] = useState(
     'mapbox://styles/mapbox/outdoors-v12',
@@ -24,6 +24,7 @@ const MapContainer = (props: { latLong: LngLatLike; locations: any[] }) => {
     'visitor-center': true,
     campsite: true,
     parking: true,
+    sign: true,
   });
 
   const toggleMapStyle = () => {
@@ -40,12 +41,17 @@ const MapContainer = (props: { latLong: LngLatLike; locations: any[] }) => {
   };
 
   return (
-    <div className='border-accent mx-4 overflow-hidden rounded-lg border-2 lg:grid lg:grid-cols-4'>
+    <div
+      id='places'
+      className='bg-primary mx-4 overflow-hidden rounded-lg lg:grid lg:grid-cols-4'
+    >
       {/* Map (3 columns) */}
-      <div className='relative lg:col-span-3'>
+
+      <div className='relative m-4 overflow-hidden rounded-lg border-2 shadow-lg lg:col-span-3'>
         <Map
           mapStyle={mapStyle}
           onLocationSelect={setSelectedLocation}
+          selectedLocation={selectedLocation}
           filters={filters}
           {...props}
         />
@@ -82,17 +88,20 @@ const MapContainer = (props: { latLong: LngLatLike; locations: any[] }) => {
       </div>
 
       {/* Description Panel (1 column) */}
-      <div className='bg-primary border-accent col-span-1 max-h-[500px] overflow-scroll border-t-2 p-4 lg:border-t-0 lg:border-l-2'>
+      <div className='inset-shadow col-span-1 max-h-[536px] overflow-scroll p-4'>
         {selectedLocation ? (
           <div>
             <div className='flex items-center justify-between gap-2'>
-              <h2 className='text-lg font-bold'>{selectedLocation.name}</h2>
-              <Button onClick={() => setSelectedLocation(null)}>
-                <X />
-              </Button>
+              <h2 className='text-lg font-bold'>
+                {selectedLocation.name || selectedLocation.title}
+              </h2>
+              <X onClick={() => setSelectedLocation(null)} />
             </div>
             <div className='bg-accent my-1 h-0.5 rounded-full' />
-            <p className='line-clamp-[12]'>{selectedLocation.description}</p>
+            <p className='line-clamp-[12]'>
+              {selectedLocation.description ||
+                selectedLocation.listingDescription}
+            </p>
             <Button variant={'outline'} className='mt-4' asChild>
               <Link
                 to={`./${linkCategories[selectedLocation.type as keyof typeof linkCategories]}/${selectedLocation.id}`}
@@ -102,20 +111,23 @@ const MapContainer = (props: { latLong: LngLatLike; locations: any[] }) => {
             </Button>
           </div>
         ) : (
-          props.locations.map((location) => (
-            <div
-              onClick={() => setSelectedLocation(location)}
-              className='bg-muted border-accent my-2 flex items-center gap-2 rounded border p-2'
-            >
-              <div className='flex min-h-6 min-w-6 items-center justify-center rounded-full bg-white p-1'>
-                <img
-                  src={`https://raw.githubusercontent.com/nationalparkservice/symbol-library/gh-pages/src/standalone/${location.type}-black-22.svg`}
-                  className='h-4 w-4'
-                />
-              </div>
-              <p>{location.name}</p>
-            </div>
-          ))
+          props.locations.map(
+            (location) =>
+              filters[location.type] && (
+                <div
+                  onClick={() => setSelectedLocation(location)}
+                  className='bg-accent border-foreground my-2 flex items-center gap-2 rounded border p-2 text-black'
+                >
+                  <div className='flex min-h-6 min-w-6 items-center justify-center rounded-full bg-white p-1'>
+                    <img
+                      src={`https://raw.githubusercontent.com/nationalparkservice/symbol-library/gh-pages/src/standalone/${location.type}-black-22.svg`}
+                      className='h-4 w-4'
+                    />
+                  </div>
+                  <p>{location.name || location.title}</p>
+                </div>
+              ),
+          )
         )}
       </div>
     </div>

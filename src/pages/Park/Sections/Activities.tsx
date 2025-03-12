@@ -41,11 +41,11 @@ export const CategoryCard = ({
   path,
 }: {
   data: any;
-  name: string;
-  path: string;
+  name?: string;
+  path?: string;
 }) => {
   const navigate = useNavigate();
-  const href = `./${path.replace(/ /g, '-').toLowerCase()}/${data.id}`;
+  const href = `./${!path ? '' : path.replace(/ /g, '-').toLowerCase() + '/'}${!name ? '' : name.replace(/ /g, '-').toLowerCase() + '/'}${data.id}`;
   const date =
     data.date &&
     new Date(data.date.replace(/-/g, '/')).toLocaleDateString('en-US', {

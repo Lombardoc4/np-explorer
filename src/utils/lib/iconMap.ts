@@ -16,7 +16,7 @@ export const iconMap = {
   overview: Compass,
   alerts: TriangleAlert,
   activities: Binoculars,
-  directions: MapPin,
+  directions: CarIcon,
   weather: Sun,
   fees: DollarSign,
   'visitor-centers': Store,
@@ -25,4 +25,5 @@ export const iconMap = {
   events: Calendar,
   'things-to-do': Leaf,
   parking: CarIcon,
+  places: MapPin,
 };

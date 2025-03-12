@@ -49,7 +49,9 @@ export const Tour = () => {
     <>
       <SEO title={tour.title} description={tour.description} />
       <div className='container mx-auto min-h-svh px-4 py-24 lg:px-0 xl:max-w-5xl'>
-        <Breadcrumbs parkId={parkId} category={category} name={tour.title} />
+        <Breadcrumbs
+          crumbs={[parkId as string, 'activities', category, tour.title]}
+        />
         <main>
           <TourSection key={tour.id} tour={tour} />
         </main>
@@ -61,12 +63,10 @@ export const Tour = () => {
 const TourSection = ({ tour }: { tour: ITour }) => {
   return (
     <ParkSection name={tour.title}>
-      {tour.images.length > 0 && (
-        <div className='col-span-2'>
-          <ImgGrid images={tour.images} />
-        </div>
-      )}
       <div className='col-span-2'>
+        {tour.images.length > 0 && <ImgGrid images={tour.images} />}
+      </div>
+      <div className='mb-0'>
         <p className='text-xl'>{tour.description}</p>
         <div className='mt-2 flex gap-2'>
           {tour.tags.map((tag: string) => (
@@ -80,58 +80,82 @@ const TourSection = ({ tour }: { tour: ITour }) => {
           ))}
         </div>
       </div>
-      <div className='col-span-2'>
-        <ParkSection name='Tour Stops'>
-          <div>
-            <p className='font-black'>
-              Duration: {tour.durationMin}-{tour.durationMax}{' '}
-              {tour.durationUnit === 'm' ? 'minutes' : 'hours'}
-            </p>
-            <div>
-              {tour.stops.map((stop: TourStop, i: number) => (
-                <>
-                  {i !== 0 && <hr />}
-                  <TourStop stop={stop} key={stop.assetId} />
-                </>
-              ))}
-            </div>
-          </div>
-        </ParkSection>
-      </div>
+      <ParkSection name='Tour Stops' subtitle>
+        <div className='col-span-2 -mt-4'>
+          <p className='font-black'>
+            Duration: {tour.durationMin}-{tour.durationMax}{' '}
+            {tour.durationUnit === 'm' ? 'minutes' : 'hours'}
+          </p>
+          <TourTimeline stops={tour.stops} />
+        </div>
+      </ParkSection>
     </ParkSection>
   );
 };
 
-const TourStop = ({ stop }: { stop: TourStop }) => {
+const TourTimeline = ({ stops }: { stops: TourStop[] }) => {
   return (
-    <li className='my-4 grid gap-x-8 md:grid-cols-2'>
-      <h3 className='mb-2 text-4xl font-thin md:col-span-2'>
-        {stop.ordinal}. {stop.assetName}
-      </h3>
-      {stop.audioFileUrl && (
-        <Link
-          className='col-span-2 flex items-center gap-4 hover:underline'
-          target='_blank'
-          to={stop.audioFileUrl}
-        >
-          <Headphones /> Listen to transcript
-        </Link>
-      )}
-      {stop.significance && (
-        <p>
-          <span className='font-black'>Significance: </span>
-          <br />
-          {stop.significance}
-        </p>
-      )}
+    <div className='relative pl-4'>
+      <ul>
+        {stops.map((stop, i) => (
+          <TourStop
+            key={stop.assetId}
+            stop={stop}
+            isLast={i === stops.length - 1}
+          />
+        ))}
+      </ul>
+    </div>
+  );
+};
 
-      {stop.directionsToNextStop && (
-        <p>
-          <span className='font-black'>Next stop: </span>
-          <br />
-          {stop.directionsToNextStop}
-        </p>
-      )}
-    </li>
+interface TourStopProps {
+  stop: TourStop;
+  isLast: boolean;
+}
+
+const TourStop = ({ stop, isLast }: TourStopProps) => {
+  return (
+    <div className='group relative flex items-center'>
+      {/* Timeline Dot & Line */}
+      <div className='flex flex-col items-center'>
+        {/* Dot */}
+        <div className='group-hover:bg-secondary bg-background border-secondary h-3 w-3 rounded-full border'></div>
+        {/* Line */}
+        {!isLast && (
+          <div className='bg-secondary absolute top-[50%] -z-10 h-full w-1 flex-1 rounded'></div>
+        )}
+      </div>
+
+      {/* Content */}
+      <li className='my-4 ml-6 grid gap-x-8'>
+        <h3 className='text-2xl font-thin'>
+          {stop.ordinal}. {stop.assetName}
+        </h3>
+        {stop.audioFileUrl && (
+          <Link
+            className='mt-2 flex items-center gap-4 hover:underline'
+            target='_blank'
+            to={stop.audioFileUrl}
+          >
+            <Headphones /> Listen to transcript
+          </Link>
+        )}
+        {stop.significance && (
+          <p>
+            <span className='font-black'>Significance: </span>
+            <br />
+            {stop.significance}
+          </p>
+        )}
+        {stop.directionsToNextStop && (
+          <p>
+            <span className='font-black'>Next stop: </span>
+            <br />
+            {stop.directionsToNextStop}
+          </p>
+        )}
+      </li>
+    </div>
   );
 };

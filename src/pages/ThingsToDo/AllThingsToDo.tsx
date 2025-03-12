@@ -1,14 +1,12 @@
 import { fetcher } from '../../utils/helper';
 import { FullHeightLoader } from '../../components/Loader';
-import { Link, useParams } from 'react-router';
-import { AnchorLink } from '../Park/Page';
-import { ParkSection } from '../Park/Sections';
+import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import ErrorPage from '../Error';
-import { Button } from '../../components/Button';
 import { category, endpoint } from '.';
 import SEO from '../../components/SEO';
 import { Breadcrumbs } from '../../components/Breadcrumbs';
+import { CategoryCard } from '../Park/Sections/Activities';
 
 export const AllThingsToDo = () => {
   const { parkId } = useParams();
@@ -49,48 +47,18 @@ export const AllThingsToDo = () => {
       />
       <div className='container mx-auto min-h-svh px-4 py-24 lg:px-0 xl:max-w-5xl'>
         <header>
-          <Breadcrumbs parkId={parkId} category={category} />
+          <Breadcrumbs crumbs={[parkId as string, 'activities', category]} />
           <h1 className='mb-8 text-6xl font-thin md:text-8xl'>Things To Do</h1>
         </header>
         <main>
-          {thingsToDo.length > 1 && (
-            <div className='mt-4 mb-16 grid h-full grid-cols-2 gap-4 md:grid-cols-4'>
-              {thingsToDo.map((ttd: IThingToDo) => (
-                <AnchorLink key={ttd.title} id={ttd.title} />
-              ))}
-            </div>
-          )}
-          <div className='grid gap-16'>
+          <div className='grid grid-cols-4 gap-4'>
             {thingsToDo.map((ttd: IThingToDo) => (
-              <TDDSection key={ttd.id} ttd={ttd} />
+              <CategoryCard data={ttd} />
+              // <TDDSection key={ttd.id} ttd={ttd} />
             ))}
           </div>
         </main>
       </div>
     </>
-  );
-};
-
-const TDDSection = ({ ttd }: { ttd: IThingToDo }) => {
-  return (
-    <ParkSection name={ttd.title}>
-      <div className='col-span-2 grid gap-8 md:grid-cols-2 md:gap-8'>
-        <div>
-          <p className='text-xl'>{ttd.shortDescription}</p>
-          <Button className='mt-4 bg-black text-white dark:bg-white dark:text-black'>
-            <Link to={`./${ttd.id}`}>Learn More</Link>
-          </Button>
-        </div>
-        {ttd.images.length > 0 && (
-          <div className='h-fit overflow-hidden rounded border border-dashed md:order-2'>
-            <img
-              src={ttd.images[0].url}
-              className='mx-auto w-full'
-              alt={ttd.images[0].altText}
-            />
-          </div>
-        )}
-      </div>
-    </ParkSection>
   );
 };
