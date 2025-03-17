@@ -1,39 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router';
-import { fetcher, uniqueCategoryItems } from '../../../utils/helper';
-import { activityCategories } from '../../../utils/lib/activityCategories';
-import { ParkSection } from '.';
-
-const itemLimit = 4;
-
-export const CategorySection = ({
-  parkCode,
-  endpoint,
-}: {
-  parkCode: string;
-  endpoint: string;
-}) => {
-  const activeCat = activityCategories[endpoint];
-
-  const { status, data: categories } = useQuery({
-    queryKey: ['park', { catergory: endpoint, parkCode: parkCode }],
-    queryFn: async () => await fetcher(`${endpoint}?parkCode=${parkCode}`),
-  });
-
-  if (status !== 'success' || categories.length <= 0) return;
-
-  const uniqueCats = uniqueCategoryItems(categories);
-
-  return (
-    <ParkSection {...activeCat} count={categories.length}>
-      <div className='col-span-2 grid gap-8 sm:grid-cols-2'>
-        {uniqueCats.slice(0, itemLimit).map((cat) => (
-          <CategoryCard key={cat.name || cat.title} data={cat} {...activeCat} />
-        ))}
-      </div>
-    </ParkSection>
-  );
-};
 
 export const CategoryCard = ({
   data,
@@ -45,7 +10,7 @@ export const CategoryCard = ({
   path?: string;
 }) => {
   const navigate = useNavigate();
-  const href = `./${!path ? '' : path.replace(/ /g, '-').toLowerCase() + '/'}${!name ? '' : name.replace(/ /g, '-').toLowerCase() + '/'}${data.id}`;
+  const href = `./${!path ? '' : path.replace(/ /g, '-').toLowerCase() + '/'}${data.id}${!name ? '' : '/' + name.replace(/ /g, '-').toLowerCase()}`;
   const date =
     data.date &&
     new Date(data.date.replace(/-/g, '/')).toLocaleDateString('en-US', {
@@ -87,23 +52,6 @@ export const CategoryCard = ({
           </h3>
           {/* </div> */}
         </div>
-
-        {/* Content */}
-        {/* {name === 'Events' ? (
-          <div
-            className='line-clamp-4'
-            dangerouslySetInnerHTML={{
-              __html: data.description.replaceAll('<br /><br />', '</p><p>'),
-            }}
-          />
-        ) : (
-          <p className='line-clamp-4'>
-            {data.description || data.shortDescription}
-          </p>
-        )} */}
-        {/* <Link className='mt-2 group-hover:underline' to={href}>
-          Read more...
-        </Link> */}
       </div>
     </div>
   );

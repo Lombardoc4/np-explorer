@@ -5,7 +5,7 @@ import { Footer } from '../../components/Footer';
 import SEO from '../../components/SEO';
 import { featureInfo, featureInfoProps } from './descriptions';
 import Map from '@/components/map';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LngLatLike } from 'mapbox-gl';
 import { fetcher } from '@/utils/helper';
 import { useQuery } from '@tanstack/react-query';
@@ -13,6 +13,15 @@ import { Loader } from '@/components/Loader';
 import ErrorPage from '../Error';
 import { buttonVariants } from '@/components/ui/button';
 import { Link } from 'react-router';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { stateMap, StateProps } from '@/utils/lib/stateMap';
+import clsx from 'clsx';
 const bgUrl = '/Grand_Teton_Landing_BG.jpg';
 
 export const LandingPage = () => {
@@ -27,7 +36,6 @@ export const LandingPage = () => {
 
       {/* Section 2 - Description */}
       <Description />
-      <WaveDivider reverse />
 
       {/* Section 3 - Selection Map */}
       <AllParksMap />
@@ -40,7 +48,10 @@ export const LandingPage = () => {
 };
 
 const Header = () => (
-  <header id='home' className='mt-4 grid min-h-dvh items-center sm:mt-0'>
+  <header
+    id='home'
+    className='bg-muted mt-4 grid min-h-dvh items-center sm:mt-0'
+  >
     <div className='container px-4 md:mx-auto'>
       <h1 className='text-xl md:text-3xl'>
         Explore Your Favorite <br />
@@ -62,32 +73,17 @@ const Header = () => (
 
 const Description = () => (
   <>
-    <WaveDivider />
-    <section className='bg-muted py-8 md:pt-16'>
-      <div className='container mx-auto px-6 text-center lg:px-0'>
-        {/* Section Heading */}
-        <h2 className='mb-12 text-3xl tracking-wide uppercase md:text-6xl'>
-          A Modern take on <br className='hidden md:inline' /> National Parks
-        </h2>
-
-        {/* Feature Grid */}
-        <div className='mx-auto grid max-w-7xl gap-8 md:grid-cols-2 lg:gap-16'>
-          {featureInfo.map((feat) => (
-            <Feature key={feat.id} {...feat} />
-          ))}
-        </div>
-        <div className='mt-16'>
-          <Link
-            to={'home'}
-            duration={600}
-            className='bg-accent text-accent-foreground mx-auto flex w-fit gap-2 rounded-lg px-3 py-2'
-          >
-            <Search /> Begin Your Search Now
-          </Link>
-        </div>
+    <WaveDivider reverse />
+    <section className='py-8 md:pt-16'>
+      {/* Feature Grid */}
+      <div className='container mx-auto px-6 md:px-0'>
+        <FeatureGroup category='places' />
       </div>
-      <WaveDivider />
+      <div className='container mx-auto px-6 md:px-0'>
+        <FeatureGroup category='activities' reverse />
+      </div>
     </section>
+    {/* <WaveDivider /> */}
   </>
 );
 
@@ -107,19 +103,49 @@ const WaveDivider = ({ reverse }: { reverse?: boolean }) => (
   </div>
 );
 
+const FeatureGroup = ({
+  category,
+  reverse,
+}: {
+  category: 'activities' | 'places';
+  reverse?: boolean;
+}) => {
+  return (
+    <div className='relative my-8 mb-16 flex justify-center gap-4 md:gap-8'>
+      <div
+        className={clsx(
+          'order-2 col-span-2 grid gap-8 md:order-first',
+          reverse && 'md:order-last',
+        )}
+      >
+        {featureInfo[category as keyof typeof featureInfo].map((feat) => (
+          <Feature key={feat.id} {...feat} />
+        ))}
+      </div>
+      <div>
+        <h2 className='sticky top-32 rotate-180 text-5xl uppercase [writing-mode:vertical-lr] md:text-7xl'>
+          {category}
+        </h2>
+      </div>
+    </div>
+  );
+};
+
 const Feature = ({ id, title, description }: featureInfoProps) => {
   const Icon = iconMap[id];
 
   return (
-    <div className='bg-background flex flex-col items-center rounded-lg p-6 shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-2xl dark:shadow-lg'>
-      {/* Icon - Centered Above Content */}
-      <div className='bg-accent flex h-20 w-20 items-center justify-center rounded-full shadow-md md:h-24 md:w-24'>
-        <Icon className='h-12 w-12 text-[var(--color-text)] md:h-14 md:w-14 dark:text-[var(--color-text)]' />
+    <div className='bg-background flex max-w-lg flex-col rounded-lg transition-transform hover:shadow-2xl md:p-4 dark:shadow-lg'>
+      <div className='flex items-center gap-4'>
+        {/* Icon - Centered Above Content */}
+        <div className='bg-accent flex h-12 w-12 items-center justify-center rounded-full shadow-md'>
+          <Icon className='h-6 w-6 text-[var(--color-text)] dark:text-[var(--color-text)]' />
+        </div>
+        <h3 className='text-xl font-bold md:text-4xl'>{title}</h3>
       </div>
 
       {/* Text Content */}
-      <div className='mx-auto mt-2 max-w-lg text-center'>
-        <h3 className='text-xl font-bold md:text-3xl'>{title}</h3>
+      <div className=''>
         <hr className='border-secondary my-4 rounded border-2' />
         <p className='text-foreground leading-relaxed'>{description}</p>
       </div>
@@ -128,8 +154,11 @@ const Feature = ({ id, title, description }: featureInfoProps) => {
 };
 
 const AllParksMap = () => {
-  const USCenter = [-98.35, 39.5];
+  const USCenter: LngLatLike = [-98.35, 39.5];
   const [selectedLocation, setSelectedLocation] = useState<IPark | null>(null);
+  const [activeParks, setActiveParks] = useState<IPark[] | null>(null);
+  const [state, setState] = useState<StateProps | null>(null);
+  const [center, setCenter] = useState<LngLatLike>(USCenter);
   const [mapStyle, setMapStyle] = useState(
     'mapbox://styles/mapbox/outdoors-v12',
   );
@@ -151,6 +180,20 @@ const AllParksMap = () => {
     );
   };
 
+  useEffect(() => {
+    if (!parks) return;
+    if (state) {
+      setActiveParks(
+        parks?.filter((park) => park.states.toLowerCase().includes(state.id)),
+      );
+      setCenter(state.coords);
+      return;
+    }
+
+    setCenter(USCenter);
+    setActiveParks(parks);
+  }, [parks, state]);
+
   if (isFetching)
     return (
       <div className='flex h-48 items-center justify-center'>
@@ -160,51 +203,89 @@ const AllParksMap = () => {
   if (error || !parks) return <ErrorPage error={error || 'No parks'} />;
 
   return (
-    <div className='bg-primary container mx-auto my-16 overflow-hidden rounded-lg lg:grid lg:grid-cols-4'>
-      {/* Map (3 columns) */}
+    <div className='bg-muted px-4 py-16'>
+      <div className='container mx-auto overflow-hidden'>
+        <h2 className='text-3xl md:text-6xl'>All U.S. National Parks</h2>
+        <div className='bg-primary rounded-lg border-4 p-4 lg:grid lg:grid-cols-4'>
+          {/* Map (3 columns) */}
 
-      <div className='relative m-4 overflow-hidden rounded-lg border-2 shadow-lg lg:col-span-3'>
-        <Map
-          mapStyle={mapStyle}
-          onLocationSelect={setSelectedLocation}
-          lnglat={USCenter as LngLatLike}
-          locations={parks}
-          zoom={4}
-        />
+          <div className='relative overflow-hidden rounded-lg border-2 shadow-lg lg:col-span-3'>
+            {activeParks && (
+              <Map
+                mapStyle={mapStyle}
+                onLocationSelect={setSelectedLocation}
+                selectedLocation={selectedLocation}
+                lnglat={center}
+                locations={activeParks}
+                zoom={2}
+              />
+            )}
 
-        {/* Layer Toggle Button */}
-        <button
-          onClick={toggleMapStyle}
-          className='absolute top-3 right-3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-900 shadow-md hover:bg-gray-100'
-        >
-          {mapStyle.includes('satellite')
-            ? 'Switch to Streets'
-            : 'Switch to Satellite'}
-        </button>
-      </div>
-
-      {/* Description Panel (1 column) */}
-      <div className='inset-shadow col-span-1 max-h-[536px] overflow-scroll p-4'>
-        {selectedLocation && (
-          <div>
-            <div className='flex items-center justify-between gap-2'>
-              <h2 className='text-lg font-bold'>{selectedLocation.name}</h2>
-              <X onClick={() => setSelectedLocation(null)} />
-            </div>
-            <div className='bg-accent my-1 h-0.5 rounded-full' />
-            <p className='mb-4 line-clamp-[12]'>
-              {selectedLocation.description}
-            </p>
-            <Link
-              className={
-                'cursor-pointer ' + buttonVariants({ variant: 'outline' })
-              }
-              to={`park/${selectedLocation.parkCode}`}
+            {/* Layer Toggle Button */}
+            <button
+              onClick={toggleMapStyle}
+              className='absolute top-3 right-3 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-900 shadow-md hover:bg-gray-100'
             >
-              Learn more
-            </Link>
+              {mapStyle.includes('satellite')
+                ? 'Switch to Streets'
+                : 'Switch to Satellite'}
+            </button>
           </div>
-        )}
+
+          {/* Description Panel (1 column) */}
+          <div className='inset-shadow col-span-1 mt-4 max-h-[536px] overflow-scroll md:mt-0 md:ml-4'>
+            {!selectedLocation && (
+              <>
+                <Select
+                  onValueChange={(val) =>
+                    setState(stateMap.find((state) => state.id === val) || null)
+                  }
+                >
+                  <SelectTrigger className='bg-background w-full'>
+                    <SelectValue placeholder='Select a state' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {/* <SelectItem value=''>All States</SelectItem> */}
+                    {stateMap.map((state) => (
+                      <SelectItem key={state.id} value={state.id}>
+                        {state.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {state &&
+                  activeParks?.map((park) => (
+                    <div
+                      onClick={() => setSelectedLocation(park)}
+                      className='bg-accent border-foreground my-2 flex items-center gap-2 rounded border p-2 text-black'
+                    >
+                      <p>{park.name}</p>
+                    </div>
+                  ))}
+              </>
+            )}
+            {selectedLocation && (
+              <div>
+                <div className='flex items-center justify-between gap-2'>
+                  <h2 className='text-lg font-bold'>{selectedLocation.name}</h2>
+                  <X onClick={() => setSelectedLocation(null)} />
+                </div>
+                <div className='bg-accent my-1 h-0.5 rounded-full' />
+                <p className='mb-4 line-clamp-[12]'>
+                  {selectedLocation.description}
+                </p>
+                <Link
+                  className={
+                    'cursor-pointer ' + buttonVariants({ variant: 'outline' })
+                  }
+                  to={`park/${selectedLocation.parkCode}`}
+                >
+                  Learn more
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

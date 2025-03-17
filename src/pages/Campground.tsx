@@ -1,15 +1,17 @@
-import { fetcher, getOperatingHours } from '../../utils/helper';
+import { fetcher, getOperatingHours } from '../utils/helper';
 import { Link, useParams } from 'react-router';
-import { ParkSection, ParkSectionTitle } from '../Park/Sections';
-import { category, endpoint } from '.';
+import { ParkSection, ParkSectionTitle } from './Park/Sections';
 import { useQuery } from '@tanstack/react-query';
-import { Button } from '../../components/Button';
-import { FullHeightLoader } from '../../components/Loader';
-import ErrorPage from '../Error';
-import { ImgGrid } from '../../components/ImgGrid';
-import { Breadcrumbs } from '../../components/Breadcrumbs';
-import { WeatherDisplay, WeatherSection } from '../../components/Weather';
-import { DirectionSection } from '../../components/Direction';
+import { Button } from '../components/Button';
+import { FullHeightLoader } from '../components/Loader';
+import ErrorPage from './Error';
+import { ImgGrid } from '../components/ImgGrid';
+import { Breadcrumbs } from '../components/Breadcrumbs';
+import { WeatherDisplay, WeatherSection } from '../components/Weather';
+import { DirectionSection } from '../components/Direction';
+
+export const endpoint = 'campgrounds';
+export const category = 'camping';
 
 export const Campground = () => {
   const { parkId, activityId } = useParams();
@@ -43,7 +45,7 @@ export const Campground = () => {
 
   return (
     <div className='container mx-auto min-h-svh px-4 py-24 lg:px-0 xl:max-w-5xl'>
-      <Breadcrumbs parkId={parkId} category={category} name={campground.name} />
+      <Breadcrumbs crumbs={[parkId as string, 'places', campground.name]} />
       <CampingSection key={campground.id} campground={campground} />
     </div>
   );
@@ -69,7 +71,7 @@ const CampingSection = ({ campground }: { campground: ICampground }) => {
 
             <div className='my-4'>
               {campground.operatingHours.map(
-                (operatingHours: IOperatingHours) => (
+                (operatingHours: OperatingHours) => (
                   <div key={campground.id + 'hours'}>
                     {getOperatingHours(operatingHours)}
                   </div>

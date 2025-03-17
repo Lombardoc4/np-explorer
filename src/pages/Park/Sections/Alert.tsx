@@ -25,7 +25,7 @@ export const ParkAlert = ({ parkId }: { parkId: string }) => {
 
   return (
     // <ParkSection name='Alerts'>
-    <div id='alerts' className='grid gap-8 md:grid-cols-2 2xl:grid-cols-4'>
+    <div id='alerts' className='grid gap-4 md:grid-cols-2 xl:grid-cols-4'>
       {alerts.map((alert: any) => (
         <ParkAlertItem key={alert.id} {...alert} />
       ))}
@@ -41,11 +41,11 @@ const ParkAlertItem = (alert: any) => {
   return (
     <>
       <div
-        className='bg-accent h-fit cursor-pointer rounded-lg border-2 p-4'
+        className='bg-accent h-full cursor-pointer rounded-lg border-2 px-4 py-2'
         onClick={() => setIsModalOpen(true)}
       >
         <h3 className='text-lg font-black'>{alert.category}</h3>
-        <p className='line-clamp-1'>{alert.title}</p>
+        <p className='line-clamp-1 lg:line-clamp-2'>{alert.title}</p>
       </div>
       <Modal
         type={'alert'}

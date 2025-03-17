@@ -17,7 +17,7 @@ export const FeeSection = ({ entranceFees }: { entranceFees: Fee[] }) => {
 
   return (
     <div id='fees' className='w-full'>
-      <div className='col-span-2 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-8'>
+      <div className='col-span-2 grid grid-cols-2 gap-4 md:gap-4 lg:grid-cols-4'>
         {entranceFees.map((fee: Fee, i) => (
           <FeeItem
             key={fee.title + i}
@@ -44,7 +44,7 @@ const FeeItem = ({
   title = title.slice(title.indexOf('-') + 1, title.length);
 
   return (
-    <div className='border-secondary relative w-full rounded-lg border-2 p-4'>
+    <div className='border-secondary relative w-full rounded-lg border-2 px-4 py-2'>
       <div className='flex items-center justify-between gap-2'>
         <p className='text-sm'>{subtitle}</p>
         <TooltipProvider>

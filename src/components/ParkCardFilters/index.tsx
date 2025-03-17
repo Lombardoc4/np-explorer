@@ -2,11 +2,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { styled } from 'styled-components';
 
-import { Dropdown } from '../Dropdown';
 import { StyledCard } from '../styled/StyledCard';
 
 import useOnScreen from '../../utils/hooks/useOnScreen';
-import { IPark } from '../../utils/hooks/ParkContext';
 import { InputProps } from '../../pages/Park/components/Card';
 
 interface ParkCardFiltersProps {
@@ -66,24 +64,12 @@ export const ParkCardFilters = ({
   const filterRef = useRef(null);
   const onScreen = useOnScreen(filterRef, 10);
 
-  const dropdownOptions =
-    otherParks.length > 0
-      ? otherParks.map((park: any) => ({
-          value: park.parkCode,
-          title: park.fullName,
-        }))
-      : noParks;
-
   // Sort Park Activities by with the most common first
   const activities = sortActivities(otherParks);
 
   useEffect(() => {
     if (!onScreen) setShowFilters(false);
   }, [onScreen]);
-
-  const handleParkSelect = (park: any) => {
-    navigate(`/park/${park}`);
-  };
 
   const handleInput = (e: React.MouseEvent) => {
     const { name, value } = e.target as HTMLInputElement;
@@ -127,12 +113,12 @@ export const ParkCardFilters = ({
           <h3>{otherParks.length} Parks</h3>
         </div>
 
-        <Dropdown
+        {/* <Dropdown
           style={{ top: '1rem' }}
           placeholder={`Find a park`}
           options={dropdownOptions}
           onSelect={(option) => handleParkSelect(option)}
-        />
+        /> */}
       </div>
 
       <div

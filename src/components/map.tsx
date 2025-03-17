@@ -34,7 +34,6 @@ const Map = ({
         style: mapStyle,
         center: lnglat,
         zoom: zoom || 10,
-        // minZoom: 8,
       });
     } else {
       mapRef.current.setStyle(mapStyle);
@@ -101,7 +100,7 @@ const Map = ({
     return () => {
       markers.forEach((marker) => marker.remove()); // Remove markers on filter change
     };
-  }, [mapStyle, filters, onLocationSelect, selectedLocation]); // Re-run when `selectedLocation` changes
+  }, [mapStyle, filters, onLocationSelect, selectedLocation, locations]); // Re-run when `selectedLocation` changes
 
   useEffect(() => {
     if (selectedLocation && mapRef.current) {
@@ -112,6 +111,17 @@ const Map = ({
       });
     }
   }, [selectedLocation]);
+
+  // useEffect(() => {
+  //   if (mapRef.current) {
+  //     console.log('resete zoom')
+  //     mapRef.current.flyTo({
+  //       center: lnglat,
+  //       zoom: 6,
+  //       essential: true,
+  //     });
+  //   }
+  // }, [lnglat]);
 
   return (
     <div ref={mapContainerRef} className='h-[300px] w-full lg:h-[500px]' />

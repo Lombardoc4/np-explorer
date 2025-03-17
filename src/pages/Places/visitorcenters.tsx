@@ -3,13 +3,13 @@ import { FullHeightLoader } from '../../components/Loader';
 import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import ErrorPage from '../Error';
-import { category, endpoint } from '.';
 import SEO from '../../components/SEO';
-import { Breadcrumbs } from '../../components/Breadcrumbs';
 import { CategoryCard } from '../Park/Sections/Activities';
 import { activityCategories } from '../../utils/lib/activityCategories';
-import { Sidebar } from '../../components/Sidebar';
 import { useState } from 'react';
+
+export const endpoint = 'visitorcenters';
+export const category = 'Visitor Centers';
 
 export const AllParkVCs = () => {
   const activeCat = activityCategories[endpoint];
@@ -51,16 +51,14 @@ export const AllParkVCs = () => {
         description={`${visitorCenters.length} Visitor Centers at ${parkId}`}
       />
       <div className='flex h-dvh'>
-        <Sidebar>
+        {/* <Sidebar>
           <Filters
             changePassport={() => change_passport(!passport)}
-            passport={passport}
-          />
-        </Sidebar>
+            passport={passport} collapsed={false}          />
+        </Sidebar> */}
 
         <div id='main-content' className='mt-16 flex-1 overflow-scroll p-6'>
           <header>
-            <Breadcrumbs parkId={parkId} category={category} />
             <h1 className='mb-8 text-6xl font-thin md:text-8xl'>
               Visitor Centers
             </h1>

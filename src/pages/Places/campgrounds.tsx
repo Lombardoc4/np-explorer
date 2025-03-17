@@ -4,10 +4,10 @@ import { FullHeightLoader } from '../../components/Loader';
 import ErrorPage from '../Error';
 import { fetcher } from '../../utils/helper';
 import { Link, useParams } from 'react-router';
-import { AnchorLink } from '../Park/Page';
 import { ParkSection } from '../Park/Sections';
-import { category, endpoint } from '.';
-import { Breadcrumbs } from '../../components/Breadcrumbs';
+
+export const endpoint = 'campgrounds';
+export const category = 'camping';
 
 export const AllParkCamping = () => {
   const { parkId } = useParams();
@@ -29,21 +29,11 @@ export const AllParkCamping = () => {
     return <ErrorPage error={error} />;
   }
 
-  if (!campgrounds || campgrounds.length <= 0)
-    return <ErrorPage error={'Issue loading the visitor centers'} />;
+  if (!campgrounds || campgrounds.length <= 0) return <></>;
 
   return (
     <div className='container mx-auto min-h-svh px-4 py-24 lg:px-0 xl:max-w-5xl'>
-      <Breadcrumbs parkId={parkId} category={category} />
-
       <h2 className='mb-8 text-6xl font-thin md:text-8xl'>Camping</h2>
-      {campgrounds.length > 1 && (
-        <div className='mt-4 mb-16 grid h-full grid-cols-2 gap-4 md:mt-8 md:grid-cols-4'>
-          {campgrounds.map((campground: ICampground) => (
-            <AnchorLink key={campground.name} id={campground.name} />
-          ))}
-        </div>
-      )}
       <div className='grid gap-16'>
         {campgrounds.map((camp: ICampground) => (
           <CampingSection key={camp.name} {...camp} />

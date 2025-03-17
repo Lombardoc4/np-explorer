@@ -1,16 +1,14 @@
 import { Route } from 'react-router';
 
-import Events from '../pages/Events';
-import { ParkLayout } from '../pages/Park/Layout';
-import Parking from '../pages/Parking';
-
 import { ParkProvider } from '../utils/hooks/ParkContext';
 import { ParkPage } from '../pages/Park/Page';
 import { RandomPark } from '../pages/Park/Random';
-import { AllParkVCs, VisitorCenterPage } from '../pages/VisitorCenters';
-import { AllParkCamping, Campground } from '../pages/Camping';
-import { Tour, AllTours } from '../pages/Tours';
-import { AllThingsToDo, ThingToDo } from '../pages/ThingsToDo';
+import { Activities } from '@/pages/Activities';
+import { Tour } from '@/pages/Tour';
+import { ThingToDo } from '@/pages/ThingToDo';
+import { VisitorCenterPage } from '@/pages/VisitorCenter';
+import { Places } from '@/pages/Places';
+import { Campground } from '@/pages/Campground';
 
 export const parkRoutes = (
   <>
@@ -26,35 +24,27 @@ export const parkRoutes = (
       />
 
       {/* Activities */}
-      <Route path='activities' element={<ThingToDo />} />
-      {/* Things to do */}
-      <Route path='activities/things-to-do' element={<AllThingsToDo />} />
-      <Route
-        path='activities/things-to-do/:activityId'
-        element={<ThingToDo />}
-      />
-      {/* Tours */}
-      <Route path='activities/tours' element={<AllTours />} />
-      <Route path='activities/tours/:activityId' element={<Tour />} />
-
-      {/* <Route path='activities/events' element={<Events />} /> */}
-      {/* <Route path='activites/events/:activityId' element={<Events />} /> */}
+      <Route path='activities' element={<Activities />} />
+      {/* Tour */}
+      <Route path='activities/:activityId/tour' element={<Tour />} />
+      {/* Thing to do */}
+      <Route path='activities/:activityId/thingtodo' element={<ThingToDo />} />
+      {/* Event */}
+      {/* <Route path='activities/:activityId/event' element={<ThingToDo />} /> */}
 
       {/* Places */}
-      <Route path='places' element={<AllParkVCs />} />
-      {/* Visitor Centers */}
-      <Route path='places/visitor-centers' element={<AllParkVCs />} />
+      <Route path='places' element={<Places />} />
+      {/* Visitor Center */}
       <Route
-        path='places/visitor-centers/:activityId'
+        path='places/:placeId/visitorcenter'
         element={<VisitorCenterPage />}
       />
       {/* Camping */}
-      <Route path='places/camping' element={<AllParkCamping />} />
-      <Route path='places/camping/:activityId' element={<Campground />} />
-
+      <Route path='places/:placeId/camping' element={<Campground />} />
       {/* Parking */}
-      {/* <Route path='places/parking' element={<Parking />} /> */}
-      {/* <Route path='places/parking/:activityId' element={<Parking />} /> */}
+      {/* <Route path='places/:placeId/parking' element={<Campground />} /> */}
+      {/* Other */}
+      {/* <Route path='places/:placeId/other' element={<Campground />} /> */}
     </Route>
   </>
 );

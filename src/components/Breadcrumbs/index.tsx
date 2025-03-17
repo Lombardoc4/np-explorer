@@ -7,6 +7,7 @@ export const Breadcrumbs = ({ crumbs }: { crumbs: string[] }) => {
   return (
     <div className='mb-4 flex items-center gap-2'>
       {crumbs.map((crumb, index) => {
+        const title = crumb.replace(/-/g, ' ');
         const link = !crumbs[index + 1]
           ? '.'
           : `/park/${crumbs
@@ -16,7 +17,7 @@ export const Breadcrumbs = ({ crumbs }: { crumbs: string[] }) => {
         return (
           <React.Fragment key={crumb}>
             {index > 0 && <ChevronRight />}
-            <Crumb link={link} title={crumb.replace(/-/g, ' ')} />
+            <Crumb link={link} title={title} />
           </React.Fragment>
         );
       })}

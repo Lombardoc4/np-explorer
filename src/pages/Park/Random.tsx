@@ -25,10 +25,10 @@ export const RandomPark = () => {
 
       const data = await fetcher(`parks?limit=1&start=${start}`);
       if (!data[0]) throw Error('No matching park');
-      SetLocalStorage({
-        name: data[0].fullName,
-        parkCode: data[0].parkCode,
-      });
+      // SetLocalStorage({
+      //   name: data[0].fullName,
+      //   parkCode: data[0].parkCode,
+      // });
 
       return data[0];
     },

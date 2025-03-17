@@ -7,18 +7,18 @@ import { State } from '../pages/State/Main';
 import { fetcher } from '../utils/helper';
 import ErrorPage from '../pages/Error';
 import { AllParkVCs } from '../pages/VisitorCenters';
-import { AllTours } from '../pages/Tours';
-import { AllThingsToDo } from '../pages/ThingsToDo';
+// import { AllTours } from '../pages/Tours';
+// import { AllThingsToDo } from '../pages/ThingsToDo';
 
 export const stateRoutes = (
   <Route path=':stateId' element={<StatePage />}>
     <Route path='' element={<State />} />
-    <Route path='things-to-do' element={<AllThingsToDo />} />
-    <Route path='camping' element={<AllParkCamping />} />
-    <Route path='events' element={<Events />} />
-    <Route path='tours' element={<AllTours />} />
-    <Route path='visitor-centers' element={<AllParkVCs />} />
-    <Route path='parking' element={<Parking />} />
+    {/* <Route path='things-to-do' element={<AllThingsToDo />} /> */}
+    {/* <Route path='camping' element={<AllParkCamping />} /> */}
+    {/* <Route path='events' element={<Events />} /> */}
+    {/* <Route path='tours' element={<AllTours />} /> */}
+    {/* <Route path='visitor-centers' element={<AllParkVCs />} /> */}
+    {/* <Route path='parking' element={<Parking />} /> */}
   </Route>
 );
 

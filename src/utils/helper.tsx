@@ -1,5 +1,4 @@
 import { FilterProps } from '../pages/Park/components/Card';
-import { parkVistors } from './lib/parkVisitors';
 
 export const daysOfWeek = [
   'monday',
@@ -68,15 +67,6 @@ export const getOperatingHours = (operatingHours: any) => {
   });
 };
 
-export const localFetch = async (input: RequestInfo, init?: RequestInit) => {
-  const res = await fetch(`http://localhost:3000/${input}`, init);
-  const data = await res.json();
-
-  // Set Local Storage for indepth data
-
-  return data;
-};
-
 export const fetcher = async (input: RequestInfo, init?: RequestInit) => {
   // console.log('input', input.toString())
   const limit = !input.toString().includes('&limit=') ? '&limit=500' : '';
@@ -129,11 +119,4 @@ export const scrollToHash = () => {
     const el = document.querySelector(hash) as HTMLElement;
     el?.scrollIntoView();
   }
-};
-
-export const getVisitorCount = (parkId: string) => {
-  const visitors = parkVistors.filter(
-    (park) => park.parkCode === parkId?.toUpperCase(),
-  );
-  return visitors.length >= 1 ? visitors[0].visitors : 0;
 };

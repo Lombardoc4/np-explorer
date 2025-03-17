@@ -1,18 +1,19 @@
-import { SymbolMap } from '../../utils/lib/symbolMap';
-import { fetcher, getOperatingHours } from '../../utils/helper';
-import { FullHeightLoader } from '../../components/Loader';
+import { SymbolMap } from '../utils/lib/symbolMap';
+import { fetcher, getOperatingHours } from '../utils/helper';
+import { FullHeightLoader } from '../components/Loader';
 import { useParams } from 'react-router';
-import { DirectionSection } from '../../components/Direction';
-import { ParkSection, ParkSectionTitle } from '../Park/Sections';
+import { DirectionSection } from '../components/Direction';
+import { ParkSection, ParkSectionTitle } from './Park/Sections';
 import { useQuery } from '@tanstack/react-query';
-import ErrorPage from '../Error';
-import { ImgGrid } from '../../components/ImgGrid';
-import { category, endpoint } from '.';
-import SEO from '../../components/SEO';
-import { Breadcrumbs } from '../../components/Breadcrumbs';
+import ErrorPage from './Error';
+import { ImgGrid } from '../components/ImgGrid';
+import SEO from '../components/SEO';
+import { Breadcrumbs } from '../components/Breadcrumbs';
+
+export const endpoint = 'visitorcenters';
 
 export const VisitorCenterPage = () => {
-  const { parkId, activityId } = useParams();
+  const { parkId, placeId } = useParams();
   const {
     status,
     error,
@@ -20,11 +21,11 @@ export const VisitorCenterPage = () => {
   } = useQuery<IVisitorCenter>({
     queryKey: [
       'park',
-      { catergory: endpoint, parkCode: parkId, activityId: activityId },
+      { catergory: endpoint, parkCode: parkId, placeId: placeId },
     ],
     queryFn: async () => {
       const data = await fetcher(`${endpoint}?parkCode=${parkId}`);
-      return data.filter((vc: IVisitorCenter) => vc.id === activityId)[0];
+      return data.filter((vc: IVisitorCenter) => vc.id === placeId)[0];
     },
   });
 
@@ -50,11 +51,9 @@ export const VisitorCenterPage = () => {
   return (
     <>
       <SEO title={visitorCenter.name} description={visitorCenter.description} />
-      <div className='container mx-auto min-h-svh px-4 py-24 lg:px-0 xl:max-w-5xl'>
+      <div className='container mx-auto min-h-svh px-4 py-24 lg:px-0'>
         <Breadcrumbs
-          parkId={parkId}
-          category={category}
-          name={visitorCenter.name}
+          crumbs={[parkId as string, 'places', visitorCenter.name]}
         />
         <main>
           <VCSection key={visitorCenter.id} vc={visitorCenter} />

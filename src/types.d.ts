@@ -164,6 +164,59 @@ interface ITour {
   relevanceScore: number;
 }
 
+// Event
+interface NPSEvent {
+  categoryid: string;
+  category: string;
+  eventid: string;
+  date: string;
+  datestart: string;
+  dateend: string;
+  recurrencedatestart: string;
+  recurrencedateend: string;
+  latitude: string;
+  longitude: string;
+  isrecurring: string;
+  isallday: string;
+  isregresrequired: string;
+  isfree: string;
+  regresurl: string;
+  regresinfo: string;
+  infourl: string;
+  feeinfo: string;
+  timeinfo: string;
+  title: string;
+  contactname: string;
+  contacttelephonenumber: string;
+  contactemailaddress: string;
+  description: string;
+  location: string;
+  tags: string[];
+  types: string[];
+  recurrencerule: string;
+  sitecode: string;
+  sitetype: string;
+  datetimecreated: string;
+  datetimeupdated: string;
+  createuser: string;
+  updateuser: string;
+  risdpoiid: string | null;
+  times: {
+    timestart: string;
+    timeend: string;
+    sunrisestart: string;
+    sunsetend: string;
+  }[];
+  dates: string[];
+  images: ImageProps[];
+  imageidlist: string;
+  subjectname: string;
+  parkfullname: string;
+  portalname: string;
+  organizationname: string;
+  id: string;
+}
+
 // Thing To Do
 interface IThingToDo {
   location: string;

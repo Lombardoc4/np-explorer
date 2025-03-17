@@ -44,6 +44,7 @@ const weatherIconMap: IWeatherIcons = {
   'rain and snow showers': { day: 'sleet', night: 'sleet' },
   'heavy snow': { day: 'snow', night: 'snow' },
   'chance snow showers and patchy blowing snow': { day: 'snow', night: 'snow' },
+  'snow showers': { day: 'snow', night: 'snow' },
   'rain showers': { day: 'rain', night: 'rain' },
   'mostly sunny then isolated rain showers': {
     day: 'day-rain',

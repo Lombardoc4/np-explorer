@@ -104,6 +104,7 @@ export const Dropdown = ({
           items={data}
           error={error}
           isPending={isPending && searchTerm.length > 0}
+          onSelect={() => setSearchTerm('')}
         />
       )}
     </div>
@@ -146,15 +147,17 @@ interface IResults {
   isPending: boolean;
   error: DefaultError | null;
   path?: 'park';
+  onSelect: () => void;
 }
 
 const resultClass = 'p-4 py-2';
 
-const Results = ({ items, isPending, error, path }: IResults) => {
+const Results = ({ items, isPending, error, path, onSelect }: IResults) => {
   const navigate = useNavigate();
 
   const handleParkSelect = (endpoint: string) => {
     const prefix = path ? `/${path}` : '';
+    onSelect();
     navigate(`${prefix}/${endpoint}`);
   };
   return (

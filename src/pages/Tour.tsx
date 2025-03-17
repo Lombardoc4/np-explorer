@@ -1,14 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams, Link } from 'react-router';
-import { endpoint, category } from '.';
-import { Breadcrumbs } from '../../components/Breadcrumbs';
-import { FullHeightLoader } from '../../components/Loader';
-import SEO from '../../components/SEO';
-import { fetcher } from '../../utils/helper';
-import ErrorPage from '../Error';
+import { Breadcrumbs } from '../components/Breadcrumbs';
+import { FullHeightLoader } from '../components/Loader';
+import SEO from '../components/SEO';
+import { fetcher } from '../utils/helper';
+import ErrorPage from './Error';
 import { Headphones, Tag } from 'lucide-react';
-import { ParkSection } from '../Park/Sections';
-import { ImgGrid } from '../../components/ImgGrid';
+import { ParkSection } from './Park/Sections';
+import { ImgGrid } from '../components/ImgGrid';
+
+export const endpoint = 'tours';
+export const category = 'Tours';
 
 export const Tour = () => {
   const { parkId, activityId } = useParams();
@@ -49,10 +51,8 @@ export const Tour = () => {
     <>
       <SEO title={tour.title} description={tour.description} />
       <div className='container mx-auto min-h-svh px-4 py-24 lg:px-0 xl:max-w-5xl'>
-        <Breadcrumbs
-          crumbs={[parkId as string, 'activities', category, tour.title]}
-        />
         <main>
+          <Breadcrumbs crumbs={[parkId as string, 'activities', tour.title]} />
           <TourSection key={tour.id} tour={tour} />
         </main>
       </div>
@@ -62,12 +62,20 @@ export const Tour = () => {
 
 const TourSection = ({ tour }: { tour: ITour }) => {
   return (
-    <ParkSection name={tour.title}>
-      <div className='col-span-2'>
-        {tour.images.length > 0 && <ImgGrid images={tour.images} />}
+    <>
+      <div className='rounded-lg bg-black p-4 text-white'>
+        {tour.title && (
+          <h1 className='text-4xl font-thin md:text-6xl'>{tour.title}</h1>
+        )}
+        {tour.images.length > 0 && (
+          <div className='my-4 overflow-hidden rounded-lg border border-white'>
+            <ImgGrid images={tour.images} />
+          </div>
+        )}
+
+        <p className='text-xl'>{tour.description}</p>
       </div>
       <div className='mb-0'>
-        <p className='text-xl'>{tour.description}</p>
         <div className='mt-2 flex gap-2'>
           {tour.tags.map((tag: string) => (
             <p
@@ -80,16 +88,15 @@ const TourSection = ({ tour }: { tour: ITour }) => {
           ))}
         </div>
       </div>
-      <ParkSection name='Tour Stops' subtitle>
-        <div className='col-span-2 -mt-4'>
-          <p className='font-black'>
-            Duration: {tour.durationMin}-{tour.durationMax}{' '}
-            {tour.durationUnit === 'm' ? 'minutes' : 'hours'}
-          </p>
-          <TourTimeline stops={tour.stops} />
-        </div>
-      </ParkSection>
-    </ParkSection>
+      <div className='mx-auto mt-8 max-w-2xl'>
+        <h2 className='mb-2 text-4xl'>Tour Stops</h2>
+        <p className='font-black'>
+          Duration: {tour.durationMin}-{tour.durationMax}{' '}
+          {tour.durationUnit === 'm' ? 'minutes' : 'hours'}
+        </p>
+        <TourTimeline stops={tour.stops} />
+      </div>
+    </>
   );
 };
 
@@ -116,20 +123,20 @@ interface TourStopProps {
 
 const TourStop = ({ stop, isLast }: TourStopProps) => {
   return (
-    <div className='group relative flex items-center'>
+    <div className='group relative my-4 flex'>
       {/* Timeline Dot & Line */}
-      <div className='flex flex-col items-center'>
+      <div className='mt-6 flex flex-col items-center'>
         {/* Dot */}
         <div className='group-hover:bg-secondary bg-background border-secondary h-3 w-3 rounded-full border'></div>
         {/* Line */}
         {!isLast && (
-          <div className='bg-secondary absolute top-[50%] -z-10 h-full w-1 flex-1 rounded'></div>
+          <div className='bg-secondary absolute -z-10 h-full w-1 flex-1 rounded'></div>
         )}
       </div>
 
       {/* Content */}
-      <li className='my-4 ml-6 grid gap-x-8'>
-        <h3 className='text-2xl font-thin'>
+      <li className='group-hover:border-foreground ml-4 grid gap-4 rounded-xl border border-transparent p-4 group-hover:shadow-md'>
+        <h3 className='text-2xl font-black'>
           {stop.ordinal}. {stop.assetName}
         </h3>
         {stop.audioFileUrl && (

@@ -8,7 +8,7 @@ import { Link } from 'react-router';
 import { X } from 'lucide-react';
 
 const linkCategories = {
-  'visitor-center': 'visitor-centers',
+  'visitor-center': 'visitorcenter',
   campsite: 'camping',
   parking: 'parking',
 };
@@ -104,7 +104,7 @@ const MapContainer = (props: { lnglat: LngLatLike; locations: any[] }) => {
             </p>
             <Button variant={'outline'} className='mt-4' asChild>
               <Link
-                to={`./${linkCategories[selectedLocation.type as keyof typeof linkCategories]}/${selectedLocation.id}`}
+                to={`./places/${selectedLocation.id}/${linkCategories[selectedLocation.type as keyof typeof linkCategories]}`}
               >
                 Learn more
               </Link>
@@ -113,7 +113,8 @@ const MapContainer = (props: { lnglat: LngLatLike; locations: any[] }) => {
         ) : (
           props.locations.map(
             (location) =>
-              filters[location.type] && (
+              filters &&
+              filters[location.type as keyof typeof filters] && (
                 <div
                   onClick={() => setSelectedLocation(location)}
                   className='bg-accent border-foreground my-2 flex items-center gap-2 rounded border p-2 text-black'

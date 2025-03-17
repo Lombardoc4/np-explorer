@@ -24,10 +24,10 @@ function ParkProvider({ children }: { children: React.ReactNode }) {
 
       const data = await fetcher(`parks?parkCode=${parkCode}`);
       if (!data[0]) throw Error('No matching park');
-      SetLocalStorage({
-        name: data[0].fullName,
-        parkCode: data[0].parkCode,
-      });
+      // SetLocalStorage({
+      //   name: data[0].fullName,
+      //   parkCode: data[0].parkCode,
+      // });
 
       return data[0];
     },

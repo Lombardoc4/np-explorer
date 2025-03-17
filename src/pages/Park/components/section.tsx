@@ -27,7 +27,7 @@ const ParkSectionContainer = ({
   name: string;
   children: React.ReactNode;
 }) => (
-  <div className='px-4 sm:px-0' id={name.replace(/ /g, '-').toLowerCase()}>
+  <div className='px-4' id={name.replace(/ /g, '-').toLowerCase()}>
     {children}
   </div>
 );

@@ -90,7 +90,7 @@ export const ParkLayout = (park: IPark) => {
     queryKey: ['park', { catergory: 'tours', parkCode: parkCode }],
     queryFn: () => fetchCustomData('tours', parkCode),
   });
-  const { data: events, isFetching: eventsFetching } = useQuery({
+  const { data: events, isFetching: eventsFetching } = useQuery<NPSEvent[]>({
     queryKey: ['park', { catergory: 'events', parkCode: parkCode }],
     queryFn: () => fetchCustomData('events', parkCode),
   });
@@ -205,11 +205,7 @@ export const ParkLayout = (park: IPark) => {
 
             {/* Weather */}
             <WeatherSection weather={park.weatherInfo} img={park.images[2]}>
-              <WeatherDisplay
-                lat={park.latitude}
-                long={park.longitude}
-                weather={park.weatherInfo}
-              />
+              <WeatherDisplay lat={park.latitude} long={park.longitude} />
             </WeatherSection>
 
             {/* Activities */}

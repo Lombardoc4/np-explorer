@@ -13,7 +13,7 @@ import { useState } from 'react';
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  type: 'alert' | 'fees' | 'feedback' | 'share' | 'image';
+  type: 'alert' | 'fees' | 'feedback' | 'share' | 'image' | 'event';
   content: any;
   title?: string;
   subtitle?: string;
@@ -89,6 +89,8 @@ const renderContent = (type: ModalProps['type'], content: any) => {
       return <ShareLink url={content.url} />;
     case 'image':
       return <ImageViewer src={content.imageUrl} />;
+    case 'event':
+      return content;
     default:
       return null;
   }

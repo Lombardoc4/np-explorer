@@ -12,7 +12,7 @@ const SEO = ({
   type?: string;
 }) => {
   const [load, setLoad] = useState(false);
-
+  title = 'NPE | ' + title;
   useEffect(() => {
     setLoad(true);
   }, []);
