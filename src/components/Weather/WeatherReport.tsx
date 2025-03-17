@@ -87,10 +87,10 @@ export const WeatherDisplay = ({
 
 const CurrentWeather = (current: Forecast) => (
   <div className='grid w-fit min-w-[180px] grid-cols-2 gap-2 sm:grid-cols-1'>
-    <div className='flex flex-wrap justify-center gap-2 pb-4 md:pb-2'>
+    <div className='flex flex-wrap justify-center gap-2 md:pb-2'>
       <p className='w-full text-center text-lg'>{current.shortForecast}</p>
       <WeatherIcon id={current.shortForecast} style={{ fontSize: '48px' }} />
-      <p className='text-5xl tracking-tighter'>
+      <p className='text-4xl tracking-tighter md:text-5xl'>
         {current.temperature}
         &deg;{current.temperatureUnit}
       </p>

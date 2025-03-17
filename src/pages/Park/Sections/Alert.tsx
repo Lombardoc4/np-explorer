@@ -4,6 +4,7 @@ import { ParkSection } from '../components/section';
 import { LinkIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Modal from '@/components/Modal/modal';
+import clsx from 'clsx';
 
 export const ParkAlert = ({ parkId }: { parkId: string }) => {
   const [alerts, setAlerts] = useState<any>([]);
@@ -25,7 +26,13 @@ export const ParkAlert = ({ parkId }: { parkId: string }) => {
 
   return (
     // <ParkSection name='Alerts'>
-    <div id='alerts' className='grid gap-4 md:grid-cols-2 xl:grid-cols-4'>
+    <div
+      id='alerts'
+      className={clsx(
+        'grid gap-4 md:grid-cols-2',
+        alerts.length > 2 ? 'xl:grid-cols-4' : 'xl:grid-cols-2',
+      )}
+    >
       {alerts.map((alert: any) => (
         <ParkAlertItem key={alert.id} {...alert} />
       ))}

@@ -8,7 +8,7 @@ export const WeatherSection = ({
   children?: React.ReactNode;
 }) => {
   return (
-    <div className='my-4'>
+    <div>
       <WaveDivider reverse={false} />
       <div className='bg-primary'>
         <div className='container mx-auto px-4 py-16'>
@@ -16,15 +16,19 @@ export const WeatherSection = ({
             id='weather'
             className='grid items-end gap-8 lg:grid-cols-2 lg:items-center'
           >
-            {children}
+            <div>
+              {children}
+              {weather && (
+                <p className='mt-2 border-t pt-2 lg:text-xl'>{weather}</p>
+              )}
+            </div>
             <div className='flex h-full flex-col gap-2'>
               {img && (
                 <div
-                  className='relative hidden h-full min-h-[250px] rounded-lg border-2 bg-cover bg-center bg-no-repeat xl:block'
+                  className='relative h-full min-h-[250px] rounded-lg border-2 bg-cover bg-center bg-no-repeat'
                   style={{ backgroundImage: `url(${img.url})` }}
                 />
               )}
-              {weather && <p className='lg:text-xl'>{weather}</p>}
             </div>
           </div>
         </div>

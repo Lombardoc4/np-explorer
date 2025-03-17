@@ -10,14 +10,13 @@ export const ParkSectionTitle = ({
   children: React.ReactNode;
   subtitle?: boolean;
 }) => (
-  <h2
+  <div
     className={clsx(
       'item-center flex justify-between border-b text-4xl font-thin md:col-span-2',
-      subtitle ? 'text-2xl md:text-4xl' : 'text-4xl md:text-6xl',
     )}
   >
     {children}
-  </h2>
+  </div>
 );
 
 const ParkSectionContainer = ({
@@ -27,7 +26,10 @@ const ParkSectionContainer = ({
   name: string;
   children: React.ReactNode;
 }) => (
-  <div className='px-4' id={name.replace(/ /g, '-').toLowerCase()}>
+  <div
+    className='container mx-auto px-4'
+    id={name.replace(/ /g, '-').toLowerCase()}
+  >
     {children}
   </div>
 );
@@ -54,7 +56,11 @@ export const ParkSection = ({
   return (
     <ParkSectionContainer name={name}>
       <ParkSectionTitle subtitle={subtitle}>
-        <p>{name}</p>
+        <h2
+          className={subtitle ? 'text-2xl md:text-4xl' : 'text-4xl md:text-6xl'}
+        >
+          {name}
+        </h2>
         {path && count && count > 4 && (
           <Button asChild>
             <Link className='btn btn-primary my-auto h-fit text-lg' to={path}>

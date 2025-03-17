@@ -4,20 +4,20 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import clsx from 'clsx';
 import { Info } from 'lucide-react';
 
 export const FeeSection = ({ entranceFees }: { entranceFees: Fee[] }) => {
-  if (!entranceFees || entranceFees.length <= 0) {
-    return (
-      <div className='border-secondary -mb-8 w-fit rounded border-2 px-4 py-2 md:w-1/2'>
-        <h2 className='text-xl font-black md:text-2xl'>No Entrance Fees</h2>
-      </div>
-    );
-  }
+  if (!entranceFees || entranceFees.length <= 0) return null;
 
   return (
     <div id='fees' className='w-full'>
-      <div className='col-span-2 grid grid-cols-2 gap-4 md:gap-4 lg:grid-cols-4'>
+      <div
+        className={clsx(
+          'grid grid-cols-2 gap-4 md:gap-4',
+          entranceFees.length > 2 ? 'lg:grid-cols-4' : 'lg:grid-cols-2',
+        )}
+      >
         {entranceFees.map((fee: Fee, i) => (
           <FeeItem
             key={fee.title + i}

@@ -61,7 +61,7 @@ const Header = () => (
       </h1>
       <div
         style={{ backgroundImage: `url(${bgUrl})` }}
-        className={`my-2 h-[400px] overflow-hidden rounded-xl border-4 bg-cover bg-center shadow-2xl sm:my-4 md:h-[500px] dark:shadow-md dark:shadow-white`}
+        className={`my-2 h-[400px] overflow-hidden rounded-xl border-4 bg-cover bg-center shadow-2xl sm:my-4 md:h-[500px]`}
       >
         <div className='relative flex h-full w-full items-center justify-center bg-black/25 px-4 text-white lg:px-0'>
           <Dropdown type='park' />
@@ -203,10 +203,10 @@ const AllParksMap = () => {
   if (error || !parks) return <ErrorPage error={error || 'No parks'} />;
 
   return (
-    <div className='bg-muted px-4 py-16'>
+    <div className='bg-muted px-4 py-12'>
       <div className='container mx-auto overflow-hidden'>
         <h2 className='text-3xl md:text-6xl'>All U.S. National Parks</h2>
-        <div className='bg-primary rounded-lg border-4 p-4 lg:grid lg:grid-cols-4'>
+        <div className='bg-primary my-2 rounded-lg border-4 p-4 sm:my-4 lg:grid lg:grid-cols-4'>
           {/* Map (3 columns) */}
 
           <div className='relative overflow-hidden rounded-lg border-2 shadow-lg lg:col-span-3'>

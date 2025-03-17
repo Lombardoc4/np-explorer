@@ -43,7 +43,7 @@ const MapContainer = (props: { lnglat: LngLatLike; locations: any[] }) => {
   return (
     <div
       id='places'
-      className='bg-primary mx-4 overflow-hidden rounded-lg lg:grid lg:grid-cols-4'
+      className='bg-primary overflow-hidden rounded-xl border-4 lg:grid lg:grid-cols-4'
     >
       {/* Map (3 columns) */}
 

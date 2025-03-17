@@ -16,6 +16,15 @@ export const DirectionSection = ({
         <p className='text-xl'>
           {'directionsOverview' in location && location.directionsOverview}
           {'directionsInfo' in location && location.directionsInfo}
+          {location.directionsUrl && (
+            <Link
+              className='mt-2 flex items-center gap-1 text-sm italic hover:underline'
+              target='_blank'
+              to={location.directionsUrl}
+            >
+              <LinkIcon className='inline' size={16} /> Official Directions
+            </Link>
+          )}
         </p>
       </div>
 
@@ -33,12 +42,10 @@ const AddressContact = ({
   location: {
     latitude?: string;
     longitude?: string;
-    url?: string;
-    directionsUrl?: string;
     contacts?: Contacts;
   };
 }) => {
-  const { latitude, longitude, directionsUrl, url, contacts } = location;
+  const { latitude, longitude, contacts } = location;
   return (
     <div className='h-fit'>
       <div className='grid gap-4 md:grid-cols-2'>
@@ -62,28 +69,6 @@ const AddressContact = ({
           <h3 className='text-xl font-thin'>Contact</h3>
           <ContactCard contacts={contacts} />
         </div>
-      </div>
-
-      {/* Official Page Link */}
-      <div className='mt-4'>
-        {url && (
-          <Link
-            to={url}
-            target='_blank'
-            className='flex items-center gap-1 text-sm italic hover:underline'
-          >
-            <LinkIcon className='inline' size={16} /> Official Parks Page
-          </Link>
-        )}
-        {directionsUrl && (
-          <Link
-            className='flex items-center gap-1 text-sm italic hover:underline'
-            target='_blank'
-            to={directionsUrl}
-          >
-            <LinkIcon className='inline' size={16} /> Official Directions
-          </Link>
-        )}
       </div>
     </div>
   );

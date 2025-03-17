@@ -19,7 +19,7 @@ import { QuickNav } from '../../components/Sidebar/QuickNav';
 import { CategoryCard } from './Sections/Activities';
 import MapContainer from '@/components/mapContainer';
 import { LngLatLike } from 'mapbox-gl';
-import { ChevronLeft, ChevronRight, Loader } from 'lucide-react';
+import { ChevronLeft, ChevronRight, LinkIcon, Loader } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -123,16 +123,16 @@ export const ParkLayout = (park: IPark) => {
 
   const sections = [
     { id: 'overview', label: 'Overview' },
-    {
-      id: 'alerts',
-      label: 'Alerts',
-      condition: !alertFetching && alerts?.length > 0,
-    },
-    {
-      id: 'fees',
-      label: 'Fees',
-      condition: park.entranceFees && park.entranceFees.length > 0,
-    },
+    // {
+    //   id: 'alerts',
+    //   label: 'Alerts',
+    //   condition: !alertFetching && alerts?.length > 0,
+    // },
+    // {
+    //   id: 'fees',
+    //   label: 'Fees',
+    //   condition: park.entranceFees && park.entranceFees.length > 0,
+    // },
     { id: 'weather', label: 'Weather' },
     {
       id: 'activities',
@@ -153,7 +153,7 @@ export const ParkLayout = (park: IPark) => {
         (!campgroundsFetching && campgrounds && campgrounds?.length > 0) ||
         (!placesFetching && places && places.length > 0),
     },
-    { id: 'directions', label: 'Directions' },
+    // { id: 'directions', label: 'Directions' },
   ].filter(
     (section) => section.condition === undefined || section.condition,
   ) as sectionProps[];
@@ -175,22 +175,32 @@ export const ParkLayout = (park: IPark) => {
         <ParkSidebar sections={sections} />
 
         <div id='main-content' className='mt-16 flex-1 overflow-scroll'>
-          <header id='overview' className='container mx-auto mt-4 px-4'>
-            {StateLinks(park.states)}
-            <div className='flex items-end justify-between gap-2'>
-              <h1 className='text-3xl font-thin md:text-6xl'>
-                {park.fullName}
-              </h1>
-              {btn}
-            </div>
-            <div className='bg-primary mt-4 grid gap-8 rounded-lg p-4 xl:grid-cols-4'>
+          <header id='overview' className='container mx-auto mt-4 grid px-4'>
+            <div className='leading-2'>{StateLinks(park.states)}</div>
+            <h1 className='text-3xl font-thin md:text-6xl'>{park.fullName}</h1>
+            <div className='bg-primary mt-4 grid gap-8 rounded-xl border-4 p-4 xl:grid-cols-4'>
               <div className='xl:order-2 xl:col-span-3'>
                 {park.images.length > 0 && <ImgGrid images={park.images} />}
               </div>
-              <p className='md:text-xl'>{park.description}</p>
+              <div className='grid h-full'>
+                <p className='md:text-xl'>{park.description}</p>
+                <div className='mt-2 flex items-center gap-4 border-t pt-4'>
+                  {/* Official Page Link */}
+                  {park.url && (
+                    <Link
+                      to={park.url}
+                      target='_blank'
+                      className='flex flex-col items-center justify-center'
+                    >
+                      <LinkIcon className='size-4 lg:size-6' /> NPS
+                    </Link>
+                  )}
+                  {btn}
+                </div>
+              </div>
             </div>
           </header>
-          <main className='my-8 grid gap-8 xl:gap-16'>
+          <main className='mt-8 grid gap-8 xl:gap-16'>
             {/* Mobile QuickNav */}
             <QuickNav sections={sections} />
 
@@ -223,13 +233,36 @@ export const ParkLayout = (park: IPark) => {
                 </div>
               </ParkSection>
             )}
+            <div>
+              <div className={'w-full'}>
+                <svg
+                  width='100%'
+                  height='60' // Reduced height
+                  viewBox='0 0 1440 120' // Adjusted viewBox to match height
+                  fill='currentColor'
+                  xmlns='http://www.w3.org/2000/svg'
+                  preserveAspectRatio='none'
+                  className='text-muted block'
+                >
+                  <path d='M0,96L80,80C160,64,320,32,480,37.3C640,43,800,85,960,90.7C1120,96,1280,64,1360,48L1440,32V120H0Z'></path>
+                </svg>
+              </div>
+              <div className='bg-muted py-16'>
+                <div className='container mx-auto grid gap-16'>
+                  <div>
+                    <h2 id='places' className='mb-4 text-4xl md:text-6xl'>
+                      Places
+                    </h2>
+                    <MapLoader
+                      parkCode={park.parkCode}
+                      lnglat={[Number(park.longitude), Number(park.latitude)]}
+                    />
+                  </div>
 
-            <MapLoader
-              parkCode={park.parkCode}
-              lnglat={[Number(park.longitude), Number(park.latitude)]}
-            />
-
-            <DirectionSection location={park} />
+                  <DirectionSection location={park} />
+                </div>
+              </div>
+            </div>
 
             {/* Map for Visitor Centers, Parking, Campgrounds */}
           </main>
@@ -246,7 +279,7 @@ const StateLinks = (states: IPark['states']) =>
   states.split(',').map((state, i) => (
     <>
       <Link
-        className='hover:underline'
+        className='text-sm hover:underline'
         key={state}
         to={'/' + state.toLowerCase()}
       >
@@ -255,17 +288,6 @@ const StateLinks = (states: IPark['states']) =>
       {!!states.split(',')[i + 1] && ', '}
     </>
   ));
-
-export const AnchorLink = ({ id }: { id: string }) => {
-  return (
-    <a
-      className='flex h-full min-h-16 items-center justify-center rounded border border-double px-2 py-4 text-center font-black uppercase hover:bg-green-200 hover:underline md:text-2xl dark:hover:bg-green-900'
-      href={'#' + id.replace(/ /g, '-').toLowerCase()}
-    >
-      {id}
-    </a>
-  );
-};
 
 // const ActivityLoader = ({parkCode, lnglat})
 
@@ -374,7 +396,7 @@ const MapLoader = ({
     placesFetching
   )
     return (
-      <div className='border-accent mx-4 flex min-h-[400px] items-center justify-center overflow-hidden rounded-lg border-2 lg:min-h-[500px]'>
+      <div className='border-accent flex min-h-[400px] items-center justify-center overflow-hidden rounded-lg border-2 lg:min-h-[500px]'>
         <Loader />
       </div>
     );
