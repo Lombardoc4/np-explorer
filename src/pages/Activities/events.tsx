@@ -9,12 +9,16 @@ import Modal from '@/components/Modal/modal';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import { DateRange } from 'react-day-picker';
 
 const endpoint = 'events';
 
 export const AllEvents = () => {
   const { parkId } = useParams();
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<DateRange>({
+    from: new Date(),
+    to: new Date(),
+  });
   const [filters, setFilters] = useState<Record<string, string>>({});
   const {
     status,
@@ -28,24 +32,27 @@ export const AllEvents = () => {
   if (status === 'pending') {
     return (
       <div className='flex h-96 items-center justify-center'>
-        <Loader />;
+        <Loader />
       </div>
     );
   }
+
+  console.log('range', date);
 
   if (error || !events || events.length <= 0) return <></>;
 
   const eventDays = events.flatMap((event) =>
     event.dates.map((date) => new Date(date)),
   );
-  console.log('eventDays', date);
+  // console.log('eventDays', date);
   return (
-    <section className='grid grid-cols-4'>
-      <div className='sticky top-20 h-fit px-4'>
+    <section className='flex grid-cols-4 flex-col justify-center gap-4 md:grid'>
+      <div className='top-20 h-fit md:sticky'>
         <h2 className='text-center text-2xl'>Upcoming Events</h2>
 
+        {/* Use drawer */}
         <Calendar
-          mode='single'
+          mode='range'
           // numberOfMonths={2}
           selected={date}
           className='w-full'
@@ -54,7 +61,7 @@ export const AllEvents = () => {
             row: 'flex w-full justify-center',
             month: 'w-full',
           }}
-          onSelect={setDate}
+          onSelect={(range) => range && setDate(range)}
           modifiers={{
             eventDay: eventDays,
           }}
@@ -62,21 +69,26 @@ export const AllEvents = () => {
             eventDay: 'border border-secondary',
           }}
         />
-        <div className='grid gap-2 rounded-xl border p-4'>
-          {date && (
-            <h3 className='text-center text-xl'>
-              {new Date(date).toDateString()}
-            </h3>
-          )}
-          <div className='border-t py-2'>
+        <div className='grid rounded-xl border p-4'>
+          <p className='mb-2 text-center md:text-xl'>
+            {date.from?.toDateString()}{' '}
+            {date.to && date.from !== date.to && (
+              <>
+                - <br className='hidden md:block' />
+                {date.to?.toDateString()}
+              </>
+            )}
+          </p>
+          <div className='flex gap-4 border-t py-2 sm:block'>
             <p className='font-medium'>Time of day</p>
             <RadioGroup
-              defaultValue='comfortable'
+              className='flex gap-4 md:mt-1'
+              defaultValue='all'
               onValueChange={(val) =>
                 setFilters({ ...filters, timeOfDay: val })
               }
             >
-              {['AM', 'PM'].map((time) => (
+              {['All', 'AM', 'PM'].map((time) => (
                 <div className='flex items-center space-x-2'>
                   <RadioGroupItem value={time} id={time} />
                   <Label htmlFor={time}>{time}</Label>
@@ -84,33 +96,29 @@ export const AllEvents = () => {
               ))}
             </RadioGroup>
           </div>
-          <div className='border-t py-2'>
-            <p className='font-black'>Registration Required</p>
-            <RadioGroup defaultValue='comfortable'>
-              {['Yes', 'No'].map((regRequired) => (
-                <div className='flex items-center space-x-2'>
-                  <RadioGroupItem
-                    value={regRequired}
-                    id={'regRequired-' + regRequired}
-                  />
-                  <Label htmlFor={'regRequired-' + regRequired}>
-                    {regRequired}
-                  </Label>
-                </div>
-              ))}
-            </RadioGroup>
+          <div className='flex gap-4 border-t py-2 sm:block'>
+            <div className='flex gap-4'>
+              <Label className='font-black'>Registration Required</Label>
+              <Checkbox />
+            </div>
           </div>
         </div>
       </div>
-      <div className='col-span-3 grid gap-4'>
+      <div className='grid h-fit gap-4 md:col-span-3'>
         {date &&
           events &&
           events
             .filter((event) => {
               return event.dates.some((eventDate) => {
                 const eventDay = new Date(eventDate).setHours(0, 0, 0, 0);
-                const selectedDay = date?.setHours(0, 0, 0, 0);
-                return eventDay === selectedDay;
+                const selectedFrom = date.from?.setHours(0, 0, 0, 0);
+                const selectedTo = date.to?.setHours(0, 0, 0, 0);
+                return (
+                  selectedFrom &&
+                  selectedTo &&
+                  eventDay >= selectedFrom &&
+                  eventDay <= selectedTo
+                );
               });
             })
             .slice(0, 10)
