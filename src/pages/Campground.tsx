@@ -1,20 +1,22 @@
 import { fetcher, getOperatingHours } from '../utils/helper';
 import { Link, useParams } from 'react-router';
-import { ParkSection, ParkSectionTitle } from './Park/Sections';
+import { FeeSection, ParkSection, ParkSectionTitle } from './Park/Sections';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '../components/Button';
 import { FullHeightLoader } from '../components/Loader';
 import ErrorPage from './Error';
 import { ImgGrid } from '../components/ImgGrid';
-import { Breadcrumbs } from '../components/Breadcrumbs';
 import { WeatherDisplay, WeatherSection } from '../components/Weather';
 import { DirectionSection } from '../components/Direction';
+import { LinkIcon } from 'lucide-react';
+import { ShareModal } from '@/components/Modal/ShareModal';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 
 export const endpoint = 'campgrounds';
 export const category = 'camping';
 
 export const Campground = () => {
-  const { parkId, activityId } = useParams();
+  const { parkId, placeId } = useParams();
   const {
     status,
     error,
@@ -22,12 +24,12 @@ export const Campground = () => {
   } = useQuery<ICampground>({
     queryKey: [
       'park',
-      { catergory: endpoint, parkCode: parkId, activityId: activityId },
+      { catergory: endpoint, parkCode: parkId, placeId: placeId },
     ],
     queryFn: async () => {
       const data = await fetcher(`${endpoint}?parkCode=${parkId}`);
       return data.filter(
-        (campground: ICampground) => campground.id === activityId,
+        (campground: ICampground) => campground.id === placeId,
       )[0];
     },
   });
@@ -44,31 +46,48 @@ export const Campground = () => {
     return <ErrorPage error={'Issue loading the visitor centers'} />;
 
   return (
-    <div className='container mx-auto min-h-svh px-4 py-24 lg:px-0 xl:max-w-5xl'>
-      <Breadcrumbs crumbs={[parkId as string, 'places', campground.name]} />
+    <div className='my-20'>
       <CampingSection key={campground.id} campground={campground} />
     </div>
   );
 };
 
 const CampingSection = ({ campground }: { campground: ICampground }) => {
-  return (
-    <ParkSection name={campground.name}>
-      {campground.images.length > 0 && (
-        <div className='col-span-2'>
-          <ImgGrid images={campground.images} />
-        </div>
-      )}
-      <div className='col-span-2 grid gap-8 md:grid-cols-2 md:gap-8'>
-        <div>
-          <p className='text-xl'>{campground.description}</p>
-        </div>
+  const [_modal, btn] = ShareModal(campground.name);
+  const { parkId } = useParams();
 
+  return (
+    <div>
+      <div className='container mx-auto'>
+        <Breadcrumbs crumbs={[parkId as string, 'places', campground.name]} />
+        <div className='bg-primary mt-4 grid gap-4 rounded-xl border-4 p-4 lg:grid-cols-4'>
+          <div className='lg:order-2 lg:col-span-3'>
+            {campground.images.length > 0 && (
+              <ImgGrid images={campground.images} />
+            )}
+          </div>
+          <div className='flex h-full flex-col'>
+            <p className='mb-4 md:text-xl'>{campground.description}</p>
+            <div className='mt-auto flex items-center gap-4 border-t pt-4'>
+              {/* Official Page Link */}
+              {campground.url && (
+                <Link
+                  to={campground.url}
+                  target='_blank'
+                  className='flex flex-col items-center justify-center'
+                >
+                  <LinkIcon className='size-4 lg:size-6' /> NPS
+                </Link>
+              )}
+              {btn}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className='container mx-auto mt-8 grid gap-4 px-4 md:grid-cols-2'>
         {/* Hours */}
         {campground.operatingHours.length > 0 && (
-          <div>
-            <ParkSectionTitle>Hours</ParkSectionTitle>
-
+          <div className='grid h-fit'>
             <div className='my-4'>
               {campground.operatingHours.map(
                 (operatingHours: OperatingHours) => (
@@ -78,59 +97,62 @@ const CampingSection = ({ campground }: { campground: ICampground }) => {
                 ),
               )}
             </div>
-            <p className='mb-4 text-xl'>
-              {campground.operatingHours[0].description}
-            </p>
-            <Button className='bg-black text-white dark:bg-white dark:text-black'>
-              <Link to={campground.reservationUrl} target='_blank'>
-                Make a reservation
-              </Link>
-            </Button>
+            {campground.operatingHours.map((op) => (
+              <p className='mb-4 overflow-hidden text-xl break-words'>
+                {op.description}
+              </p>
+            ))}
+            {campground.reservationUrl && (
+              <Button className='bg-black text-white dark:bg-white dark:text-black'>
+                <Link to={campground.reservationUrl} target='_blank'>
+                  Make a reservation
+                </Link>
+              </Button>
+            )}
+          </div>
+        )}
+        <div>
+          <Campsites
+            campsites={campground.campsites}
+            fcfs={campground.numberOfSitesFirstComeFirstServe}
+            reserverable={campground.numberOfSitesReservable}
+          />
+          <FeeSection entranceFees={campground.fees} />
+        </div>
+      </div>
+      <div className='my-4 grid gap-4 divide-y md:mt-8 md:grid-cols-2'>
+        {campground.accessibility.fireStovePolicy && (
+          <div className='bg-accent h-full cursor-pointer rounded-lg border-2 px-4 py-2'>
+            <h4 className='font-black'>Fire Policy</h4>
+
+            <p>{campground.accessibility.fireStovePolicy}</p>
+          </div>
+        )}
+        {campground.accessibility.rvInfo && (
+          <div className='bg-accent h-full cursor-pointer rounded-lg border-2 px-4 py-2'>
+            <h4 className='font-black'>RV Info</h4>{' '}
+            <p>{campground.accessibility.rvInfo}</p>
+          </div>
+        )}
+        {campground.accessibility.wheelchairAccess && (
+          <div className='bg-accent h-full cursor-pointer rounded-lg border-2 px-4 py-2'>
+            <h4 className='font-black'>Wheelchair Access</h4>{' '}
+            <p>{campground.accessibility.wheelchairAccess}</p>
+          </div>
+        )}
+        {campground.accessibility.additionalInfo && (
+          <div className='bg-accent h-full cursor-pointer rounded-lg border-2 px-4 py-2'>
+            <h4 className='font-black'>Additional Info</h4>{' '}
+            <p>{campground.accessibility.additionalInfo}</p>
           </div>
         )}
       </div>
 
-      <div className='col-span-2'>
-        <ParkSectionTitle>Sites</ParkSectionTitle>
-        <Campsites
-          campsites={campground.campsites}
-          fcfs={campground.numberOfSitesFirstComeFirstServe}
-        />
+      <WeatherSection weather={campground.weatherOverview}>
+        <WeatherDisplay lat={campground.latitude} long={campground.longitude} />
+      </WeatherSection>
 
-        <div className='my-4 grid gap-4 divide-y md:mt-8 md:grid-cols-2'>
-          {campground.accessibility.fireStovePolicy && (
-            <p className='py-2'>
-              <span className='font-black'>Fire Policy:</span>{' '}
-              {campground.accessibility.fireStovePolicy}
-            </p>
-          )}
-          {campground.accessibility.rvInfo && (
-            <p className='py-2'>
-              <span className='font-black'>RV Info:</span>{' '}
-              {campground.accessibility.rvInfo}
-            </p>
-          )}
-          {campground.accessibility.additionalInfo && (
-            <p className='py-2'>
-              <span className='font-black'>Additional Info:</span>{' '}
-              {campground.accessibility.additionalInfo}
-            </p>
-          )}
-        </div>
-      </div>
-
-      <div className='col-span-2'>
-        <DirectionSection location={campground} />
-      </div>
-
-      <div className='col-span-2'>
-        <WeatherSection weather={campground.weatherOverview}>
-          <WeatherDisplay
-            lat={campground.latitude}
-            long={campground.longitude}
-          />
-        </WeatherSection>
-      </div>
+      <DirectionSection location={campground} />
 
       {/* <StyledSidebar>
             {camp.images[0] && (
@@ -191,19 +213,22 @@ const CampingSection = ({ campground }: { campground: ICampground }) => {
                 </StyledCardContainer>
               ))}
           </StyledSidebar> */}
-    </ParkSection>
+    </div>
   );
 };
 
 const Campsites = ({
   campsites,
   fcfs,
+  reserverable,
 }: {
   campsites: ICampground['campsites'];
-  fcfs: number;
+  fcfs: string;
+  reserverable: string;
 }) => (
-  <div className='my-4 grid items-center gap-4 divide-x text-center md:grid-cols-4'>
+  <div className='my-4 grid grid-cols-2 gap-2 text-center md:grid-cols-4'>
     <SiteCount title='Total' count={campsites.totalSites} />
+    <SiteCount title='Reservable' count={reserverable} />
     <SiteCount title='First Come, First Serve' count={fcfs} />
     <SiteCount title='Tent' count={campsites.tentOnly} />
     <SiteCount title='Group' count={campsites.group} />
@@ -215,12 +240,12 @@ const Campsites = ({
   </div>
 );
 
-const SiteCount = ({ title, count }: { title: string; count: number }) => {
-  if (!count) return;
+const SiteCount = ({ title, count }: { title: string; count: string }) => {
+  if (!count || count === '0') return;
   return (
-    <div className='grid gap-1 text-2xl'>
+    <div className='border-accent flex flex-col items-center justify-center rounded-2xl border py-2'>
+      <p className='text-2xl font-black md:text-4xl'>{count}</p>
       <p>{title}</p>
-      <p className='text-4xl font-black'>{count}</p>
     </div>
   );
 };
