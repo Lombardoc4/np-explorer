@@ -22,13 +22,15 @@ jobs:
       - name: Installing Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '22'
+      - name: Installing pnpm
+        run: npm install -g pnpm
       - name: Installing dependencies
-        run: npm install
+        run: pnpm install
       - name: Building project
         env:
           VITE_NPS_API_KEY: ${{ secrets.NPS_API_KEY }}
-        run: npm run build
+        run: pnpm build
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
