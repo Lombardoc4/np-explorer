@@ -5,7 +5,14 @@ export const CategoryCard = ({
   name,
   path,
 }: {
-  data: IThingToDo | ITour | NPSEvent | ICampground | IVisitorCenter;
+  data:
+    | IPlaces
+    | IThingToDo
+    | ITour
+    | NPSEvent
+    | ICampground
+    | IVisitorCenter
+    | IParking;
   name?: string;
   path?: string;
 }) => {

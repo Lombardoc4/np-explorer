@@ -105,9 +105,9 @@ interface Multimedia {
 interface ImageProps {
   url?: string;
   altText?: string;
+  title?: string;
   caption?: string;
   credit?: string;
-  title?: string;
   fileInfo?: {
     url?: string;
   };

@@ -1,9 +1,8 @@
-import { useContext, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import ErrorPage from '../Error';
 import { WeatherDisplay } from '../../components/Weather/WeatherReport';
 import { ParkAlert, FeeSection, ParkSection } from './Sections';
-import { ShareModal } from '../../components/Modal/ShareModal';
 import { ImgGrid } from '../../components/ImgGrid';
 import { FullHeightLoader } from '../../components/Loader';
 import SEO from '../../components/SEO';
@@ -31,6 +30,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { scroller, Link as ScrollLink } from 'react-scroll';
+import { ShareModal } from '@/components/Modal/ShareModal';
 
 const itemLimit = 8;
 export const ParkPage = () => {
@@ -100,7 +100,6 @@ type sectionProps = {
 
 export const ParkLayout = (park: IPark) => {
   const { parkCode } = park;
-  const [_modal, btn] = ShareModal(park.fullName);
 
   const { data: tours, isFetching: toursFetching } = useQuery<ITour[]>({
     queryKey: ['park', { catergory: 'tours', parkCode: parkCode }],
@@ -181,7 +180,9 @@ export const ParkLayout = (park: IPark) => {
             <h1 className='text-3xl font-thin md:text-6xl'>{park.fullName}</h1>
             <div className='bg-primary mt-4 grid gap-4 rounded-xl border-4 p-4 xl:grid-cols-4'>
               <div className='xl:order-2 xl:col-span-3'>
-                {park.images.length > 0 && <ImgGrid images={park.images} />}
+                {park.images.length > 0 && (
+                  <ImgGrid images={park.images} loadMore />
+                )}
               </div>
               <div className='flex h-full flex-col'>
                 <p className='mb-4 md:text-xl'>{park.description}</p>
@@ -196,7 +197,7 @@ export const ParkLayout = (park: IPark) => {
                       <LinkIcon className='size-4 lg:size-6' /> NPS
                     </Link>
                   )}
-                  {btn}
+                  <ShareModal name={park.fullName} />
                 </div>
               </div>
             </div>

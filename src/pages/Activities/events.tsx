@@ -4,11 +4,18 @@ import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { Calendar } from '@/components/ui/calendar';
 import { useState } from 'react';
-import Modal from '@/components/Modal/modal';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { DateRange } from 'react-day-picker';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 const endpoint = 'events';
 
@@ -35,8 +42,6 @@ export const AllEvents = () => {
       </div>
     );
   }
-
-  console.log('range', date);
 
   if (error || !events || events.length <= 0) return <></>;
 
@@ -134,67 +139,59 @@ export const AllEvents = () => {
 };
 
 const EventItem = ({ event }: { event: NPSEvent }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const closeModal = () => {
-    setIsModalOpen(false);
-    console.log('close');
-  };
-
   return (
     <>
-      <div
-        className='grid rounded-xl border p-4'
-        key={event.id}
-        onClick={() => setIsModalOpen(true)}
-      >
-        <p className='line-clamp-2 font-black'>{event.title}</p>
-        {event.times.map((time) => (
-          <p key={time.timestart}>
-            {time.timestart} - {time.timeend}
-          </p>
-        ))}
-      </div>
-      <Modal
-        type={'event'}
-        title={event.title}
-        subtitle={event.category}
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        content={
-          <>
-            <div>
-              {event.times.map((time) => (
-                <p key={time.timestart}>
-                  {time.timestart} - {time.timeend}
-                </p>
-              ))}
-            </div>
-            {event.feeinfo && (
-              <>
-                <a href={event.feeinfo} target='_blank'>
-                  Fee Information
-                </a>
-                <hr className='my-2' />
-              </>
-            )}
-            {event.isregresrequired === 'true' && (
-              <>
-                <div className='grid grid-cols-2'>
-                  <p>
-                    Registration is required <br />
-                    <a href={event.regresurl} target='_blank'>
-                      Register here
-                    </a>
+      <Dialog>
+        <DialogTrigger asChild>
+          <div className='rounded-xl border p-4'>
+            <p className='line-clamp-2 font-black'>{event.title}</p>
+            {event.times.map((time) => (
+              <p key={time.timestart}>
+                {time.timestart} - {time.timeend}
+              </p>
+            ))}
+          </div>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className='text-xl'>{event.title}</DialogTitle>
+            <DialogDescription className=''>
+              <div>
+                {event.times.map((time) => (
+                  <p key={time.timestart}>
+                    {time.timestart} - {time.timeend}
                   </p>
-                  {event.regresinfo && <p>{event.regresinfo}</p>}
-                </div>
-                <hr className='my-2' />
-              </>
-            )}
-            <div dangerouslySetInnerHTML={{ __html: event.description }}></div>
-          </>
-        }
-      />
+                ))}
+              </div>
+              {event.feeinfo && (
+                <>
+                  <a href={event.feeinfo} target='_blank'>
+                    Fee Information
+                  </a>
+                  <hr className='my-2' />
+                </>
+              )}
+              {event.isregresrequired === 'true' && (
+                <>
+                  <div className='grid grid-cols-2'>
+                    <p>
+                      Registration is required <br />
+                      <a href={event.regresurl} target='_blank'>
+                        Register here
+                      </a>
+                    </p>
+                    {event.regresinfo && <p>{event.regresinfo}</p>}
+                  </div>
+                  <hr className='my-2' />
+                </>
+              )}
+              <div
+                dangerouslySetInnerHTML={{ __html: event.description }}
+              ></div>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

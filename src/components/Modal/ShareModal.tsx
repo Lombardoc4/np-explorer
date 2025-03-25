@@ -1,76 +1,56 @@
-import { useState } from 'react';
-import { Modal } from '.';
-import styled from 'styled-components';
+import { BotIcon, Clipboard, Mail, Share2 } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
+import { Button } from '../ui/button';
 
-import XIcon from '../../assets/icons/x.svg?react';
-import { StyledCard } from '../styled/StyledCard';
-import { Share2 } from 'lucide-react';
-
-export const ShareModal = (name: string) => {
-  const [isOpen, setIsOpen] = useState(false);
+export const ShareModal = ({ name }: { name: string }) => {
   const link = window.location.href;
-  // const copyClick = async () => {
-  //   navigator.clipboard.writeText(link);
-  // };
-  // const emailClick = () => {};
 
-  const modal = (
-    <Modal
-      isOpen={isOpen}
-      closeAction={() => setIsOpen(false)}
-      styles={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        padding: '1em',
-        gap: '1em',
-        fontSize: '1.5em',
-        maxWidth: '350px',
-      }}
-    >
-      <>
-        <div style={{ gridColumn: '1 / -1' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <h3>Share:</h3>
-            <button
-              style={{ fontSize: '0.5em', padding: '0.25em' }}
-              onClick={() => setIsOpen(false)}
-            >
-              <XIcon fill={'#fff'} />
-            </button>
-          </div>
-          {name}
-        </div>
-        {/* <ShareCard onClick={copyClick}>
-					Copy Link
-				</ShareCard>
-				<ShareCard as="a" href={`mailto:?subject=${park.fullName}?body=${link}`}>
-					Email
-				</ShareCard> */}
-      </>
-    </Modal>
+  return (
+    <Dialog>
+      <DialogTrigger className='flex flex-col items-center'>
+        <Share2 />
+        <p>Share</p>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className='text-xl'>Share {name}</DialogTitle>
+          <DialogDescription>
+            <div className='flex flex-col gap-4'>
+              <div className='flex gap-2 overflow-hidden rounded-xl border p-2 px-3 shadow'>
+                <input
+                  className='flex-1 outline-0'
+                  type='text'
+                  name='url'
+                  id='url'
+                  readOnly
+                  value={link}
+                />
+                <div className='flex items-center justify-center'>
+                  <Clipboard size={16} />
+                </div>
+              </div>
+              <div className='grid grid-cols-3 gap-4'>
+                <Button>
+                  <Mail /> Email
+                </Button>
+                <Button>
+                  <BotIcon /> Facebook
+                </Button>
+                <Button>
+                  <BotIcon /> X
+                </Button>
+              </div>
+            </div>
+          </DialogDescription>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
   );
-
-  const btn = (
-    <a
-      className='flex flex-col items-center justify-center'
-      onClick={() => setIsOpen(true)}
-      href='#'
-    >
-      <Share2 className='size-4 lg:size-6' />
-      Share
-    </a>
-  );
-
-  return [modal, btn];
 };
-
-const ShareCard = styled(StyledCard)`
-  border-radius: ${({ theme }) => theme.radius.sm};
-  padding: 0.5em;
-  cursor: pointer;
-  text-decoration: none;
-
-  &:hover {
-    box-shadow: none;
-  }
-`;

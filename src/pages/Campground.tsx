@@ -53,7 +53,6 @@ export const Campground = () => {
 };
 
 const CampingSection = ({ campground }: { campground: ICampground }) => {
-  const [_modal, btn] = ShareModal(campground.name);
   const { parkId } = useParams();
 
   return (
@@ -79,7 +78,7 @@ const CampingSection = ({ campground }: { campground: ICampground }) => {
                   <LinkIcon className='size-4 lg:size-6' /> NPS
                 </Link>
               )}
-              {btn}
+              <ShareModal name={campground.name} />
             </div>
           </div>
         </div>

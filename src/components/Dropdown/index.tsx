@@ -2,7 +2,7 @@ import { XIcon, Search } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { useQuery, DefaultError } from '@tanstack/react-query';
 import { clsx } from 'clsx';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import debounce from 'lodash.debounce';
 
 import { fetcher } from '../../utils/helper';
@@ -80,12 +80,11 @@ export const Dropdown = ({
     enabled: false, // Disable initial query execution
   });
 
-  const debouncedFetch = useCallback(
-    debounce(async () => {
+  const debouncedFetch = useRef(
+    debounce(() => {
       refetch();
     }, 300),
-    [refetch],
-  );
+  ).current;
 
   useEffect(() => {
     if (searchTerm) {

@@ -104,7 +104,7 @@ const CurrentWeather = (current: Forecast) => (
       </p>
       <p className='flex w-full border-y text-sm'>
         Humidity:{' '}
-        <span className='ml-auto'>{current.relativeHumidity.value}%</span>
+        <span className='ml-auto'>{current.relativeHumidity?.value}%</span>
       </p>
       <p className='flex w-full py-1 text-sm'>
         Wind: <span className='ml-auto'>{current.windSpeed}</span>

@@ -1,8 +1,16 @@
-import { useState } from 'react';
-import Modal from '@/components/Modal/modal';
 import clsx from 'clsx';
 import { useQuery } from '@tanstack/react-query';
 import { fetcher } from '@/utils/helper';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { TriangleAlert } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 export const ParkAlert = ({ parkId }: { parkId: string }) => {
   const { data: alerts } = useQuery<Alert[]>({
@@ -36,26 +44,27 @@ export const ParkAlert = ({ parkId }: { parkId: string }) => {
 };
 
 const ParkAlertItem = ({ category, title, description }: Alert) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const closeModal = () => setIsModalOpen(false);
-
   return (
     <>
-      <div
-        className='bg-accent h-full cursor-pointer rounded-lg border-2 px-4 py-2'
-        onClick={() => setIsModalOpen(true)}
-      >
-        <h3 className='text-lg font-black'>{category}</h3>
-        <p className='line-clamp-1 lg:line-clamp-2'>{title}</p>
-      </div>
-      <Modal
-        type={'alert'}
-        title={title}
-        subtitle={category}
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        content={description}
-      />
+      <Dialog>
+        <DialogTrigger asChild>
+          <Alert className='bg-accent'>
+            <TriangleAlert className='h-4 w-4' />
+            <AlertTitle>{category}</AlertTitle>
+            <AlertDescription className='text-foreground line-clamp-1'>
+              {title}
+            </AlertDescription>
+          </Alert>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className='text-xl'>{title}</DialogTitle>
+            <DialogDescription className='text-lg'>
+              {description}
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
