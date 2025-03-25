@@ -1,8 +1,4 @@
-import { Link } from 'react-router';
 import { useEffect, useState } from 'react';
-import { ParkSection } from '../components/section';
-import { LinkIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import Modal from '@/components/Modal/modal';
 import clsx from 'clsx';
 

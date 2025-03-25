@@ -1,11 +1,9 @@
 import { Link } from 'react-router';
-import { ActivityDetails } from '../../../utils/lib/activityCategories';
 import { Button } from '@/components/ui/button';
 import clsx from 'clsx';
 
 export const ParkSectionTitle = ({
   children,
-  subtitle,
 }: {
   children: React.ReactNode;
   subtitle?: boolean;

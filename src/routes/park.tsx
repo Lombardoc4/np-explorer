@@ -2,7 +2,6 @@ import { Route } from 'react-router';
 
 import { ParkProvider } from '../utils/hooks/ParkContext';
 import { ParkPage } from '../pages/Park/Page';
-import { RandomPark } from '../pages/Park/Random';
 import { Activities } from '@/pages/Activities';
 import { Tour } from '@/pages/Tour';
 import { ThingToDo } from '@/pages/ThingToDo';

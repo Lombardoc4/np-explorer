@@ -22,7 +22,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { n } from 'node_modules/react-router/dist/development/fog-of-war-D6dP9JIt.d.mts';
 
 const amenityFilters = [
   'Information',

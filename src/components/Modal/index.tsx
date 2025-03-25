@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { styled } from 'styled-components';
 
 export interface ModalProps {
   isOpen: boolean;
@@ -12,7 +11,6 @@ export interface ModalProps {
 export const Modal = ({
   isOpen,
   closeAction,
-  styles,
   overlayStyles,
   children,
 }: ModalProps) => {

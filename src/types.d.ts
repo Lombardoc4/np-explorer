@@ -168,7 +168,7 @@ interface ITour {
   tags: string[];
   type: string;
   activities: Activity[];
-  topics?: any[];
+  topics?: { name: string; id: string }[];
   durationMin: number;
   durationMax: number;
   durationUnit: string;

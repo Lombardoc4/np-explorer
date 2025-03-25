@@ -9,7 +9,7 @@ import ErrorPage from './Error';
 import { ImgGrid } from '../components/ImgGrid';
 import SEO from '../components/SEO';
 import { Breadcrumbs } from '../components/Breadcrumbs';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTheme } from '@/lib/themeProvider';
 import { Badge } from '@/components/ui/badge';
 

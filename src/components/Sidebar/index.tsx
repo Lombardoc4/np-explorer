@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import React, { useState, Children, ReactElement, ReactNode } from 'react';
+import React, { Children, ReactElement, ReactNode } from 'react';
 import { useSidebar } from '../ui/sidebar';
 
 interface SidebarProps {

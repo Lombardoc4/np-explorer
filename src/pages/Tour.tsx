@@ -6,7 +6,6 @@ import SEO from '../components/SEO';
 import { fetcher } from '../utils/helper';
 import ErrorPage from './Error';
 import { Headphones, Tag } from 'lucide-react';
-import { ParkSection } from './Park/Sections';
 import { ImgGrid } from '../components/ImgGrid';
 
 export const endpoint = 'tours';

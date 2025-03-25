@@ -38,15 +38,8 @@ const imgModal = (
 };
 
 export const ImgGrid = ({ images }: { images: ImageProps[] }) => {
-  const [previewImgs, setPreviewImages] = useState(images);
   const sliceEnd = images.length >= 5 ? 5 : images.length >= 3 ? 3 : 1;
   const [modal, setModalOpen] = imgModal(images);
-
-  const handleError = (failedImage: string) => {
-    setPreviewImages((prevImages) =>
-      prevImages.filter((img) => img.url !== failedImage),
-    );
-  };
 
   return (
     <>
@@ -57,7 +50,7 @@ export const ImgGrid = ({ images }: { images: ImageProps[] }) => {
           sliceEnd === 3 && 'md:grid-cols-[2fr_1fr]',
         )}
       >
-        {previewImgs.slice(0, sliceEnd).map((img) => (
+        {images.slice(0, sliceEnd).map((img) => (
           <div
             key={img.url}
             className='overflow-hidden bg-cover bg-center bg-no-repeat not-first:hidden first:row-span-full md:not-first:block'
@@ -72,7 +65,7 @@ export const ImgGrid = ({ images }: { images: ImageProps[] }) => {
             />} */}
           </div>
         ))}
-        {previewImgs.length > 1 && (
+        {images.length > 1 && (
           <div
             onClick={() => setModalOpen(true)}
             className='absolute bottom-4 left-4 cursor-pointer rounded bg-white px-3 py-1 text-xs text-black md:text-sm'

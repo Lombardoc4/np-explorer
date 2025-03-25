@@ -14,9 +14,13 @@ const linkCategories = {
   sign: 'other',
 };
 
+type Location = (IPlaces | IVisitorCenter | ICampground | IParking) & {
+  type: string;
+};
+
 const MapContainer = (props: {
   lnglat: LngLatLike;
-  locations: any[];
+  locations: Location[];
   showFilters?: boolean;
 }) => {
   const { parkId } = useParams();
@@ -131,8 +135,9 @@ const MapContainer = (props: {
                       src={`https://raw.githubusercontent.com/nationalparkservice/symbol-library/gh-pages/src/standalone/${location.type}-black-22.svg`}
                       className='h-4 w-4'
                     />
+                    {'name' in location && <p>{location.name}</p>}
+                    {'title' in location && <p>{location.title}</p>}
                   </div>
-                  <p>{location.name || location.title}</p>
                 </div>
               ),
           )

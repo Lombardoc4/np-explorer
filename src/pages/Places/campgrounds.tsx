@@ -1,10 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { Button } from '../../components/Button';
 import { FullHeightLoader } from '../../components/Loader';
 import ErrorPage from '../Error';
 import { fetcher } from '../../utils/helper';
-import { Link, useParams } from 'react-router';
-import { ParkSection } from '../Park/Sections';
+import { useParams } from 'react-router';
 import { CategoryCard } from '../Park/Sections/Activities';
 
 export const endpoint = 'campgrounds';

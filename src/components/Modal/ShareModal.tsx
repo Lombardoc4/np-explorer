@@ -2,19 +2,17 @@ import { useState } from 'react';
 import { Modal } from '.';
 import styled from 'styled-components';
 
-import Share from '../../assets/icons/share.svg?react';
 import XIcon from '../../assets/icons/x.svg?react';
 import { StyledCard } from '../styled/StyledCard';
 import { Share2 } from 'lucide-react';
-import { Button } from '../Button';
 
 export const ShareModal = (name: string) => {
   const [isOpen, setIsOpen] = useState(false);
   const link = window.location.href;
-  const copyClick = async () => {
-    navigator.clipboard.writeText(link);
-  };
-  const emailClick = () => {};
+  // const copyClick = async () => {
+  //   navigator.clipboard.writeText(link);
+  // };
+  // const emailClick = () => {};
 
   const modal = (
     <Modal
