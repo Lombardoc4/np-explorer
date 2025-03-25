@@ -13,7 +13,6 @@ import {
   Dog,
   DollarSign,
   LinkIcon,
-  MapPin,
   Tag,
 } from 'lucide-react';
 import { Button } from '../components/Button';
@@ -205,7 +204,7 @@ const TTDSection = ({ ttd }: { ttd: IThingToDo }) => {
                   </h4>
                 </div>
 
-                <Link className='mt-auto' to={`/park/${park.parkCode}`}>
+                <Link className='mt-auto' to={`/${park.parkCode}`}>
                   <Button className='w-full bg-green-800 py-2 text-white'>
                     View Park
                   </Button>

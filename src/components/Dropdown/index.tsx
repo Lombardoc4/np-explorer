@@ -12,9 +12,8 @@ import { stateMap } from '../../utils/lib/stateMap';
 const dropdownTypes = {
   park: {
     endpoint: 'parks',
-    path: 'park',
   },
-} as { [key: string]: { endpoint: 'parks'; path: 'park' } };
+} as { [key: string]: { endpoint: 'parks' } };
 
 const dropdownValues = async (term: string, endpoint: string) => {
   const data = (await fetcher(`${endpoint}?q=${term}`)) as IPark[];
@@ -30,7 +29,7 @@ export const Dropdown = ({
 }: {
   type: 'park' | 'state';
 }) => {
-  const { endpoint, path } = dropdownTypes[type];
+  const { endpoint } = dropdownTypes[type];
   const [searchTerm, setSearchTerm] = useState('');
   const [focused, setFocused] = useState(false);
   const queryClient = useQueryClient();
@@ -100,7 +99,6 @@ export const Dropdown = ({
       {/* Results */}
       {focused && searchTerm.length > 0 && (
         <Results
-          path={path}
           items={data}
           error={error}
           isPending={isPending && searchTerm.length > 0}
@@ -146,19 +144,17 @@ interface IResults {
   items?: IItem[];
   isPending: boolean;
   error: DefaultError | null;
-  path?: 'park';
   onSelect: () => void;
 }
 
 const resultClass = 'p-4 py-2';
 
-const Results = ({ items, isPending, error, path, onSelect }: IResults) => {
+const Results = ({ items, isPending, error, onSelect }: IResults) => {
   const navigate = useNavigate();
 
   const handleParkSelect = (endpoint: string) => {
-    const prefix = path ? `/${path}` : '';
     onSelect();
-    navigate(`${prefix}/${endpoint}`);
+    navigate(`/${endpoint}`);
   };
   return (
     <ul className='absolute max-h-[200px] w-full max-w-md list-none overflow-auto rounded-b-lg border bg-white md:top-full'>

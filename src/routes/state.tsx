@@ -11,7 +11,7 @@ import { AllParkVCs } from '../pages/VisitorCenters';
 // import { AllThingsToDo } from '../pages/ThingsToDo';
 
 export const stateRoutes = (
-  <Route path=':stateId' element={<StatePage />}>
+  <Route path='/state/:stateId' element={<StatePage />}>
     <Route path='' element={<State />} />
     {/* <Route path='things-to-do' element={<AllThingsToDo />} /> */}
     {/* <Route path='camping' element={<AllParkCamping />} /> */}

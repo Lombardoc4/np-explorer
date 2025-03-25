@@ -51,7 +51,7 @@ export const ParkCardGrid = ({
         {parks.length > 0 &&
           parks.slice(0, listLength).map((park) => (
             <Card key={park.parkCode}>
-              <Link className='img-container' to={`/park/${park.parkCode}`}>
+              <Link className='img-container' to={`/${park.parkCode}`}>
                 {park.images && park.images.length > 0
                   ? parkImage(park.images[0])
                   : npsImage}

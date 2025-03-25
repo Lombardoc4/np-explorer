@@ -278,7 +278,7 @@ const AllParksMap = () => {
                   className={
                     'cursor-pointer ' + buttonVariants({ variant: 'outline' })
                   }
-                  to={`park/${selectedLocation.parkCode}`}
+                  to={`${selectedLocation.parkCode}`}
                 >
                   Learn more
                 </Link>

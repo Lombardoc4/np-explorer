@@ -12,8 +12,8 @@ import { Campground } from '@/pages/Campground';
 
 export const parkRoutes = (
   <>
-    <Route path='park' element={<RandomPark />} />
-    <Route path='park/:parkId/'>
+    {/* <Route path='park' element={<RandomPark />} /> */}
+    <Route path=':parkId/'>
       <Route
         index
         element={
@@ -40,11 +40,11 @@ export const parkRoutes = (
         element={<VisitorCenterPage />}
       />
       {/* Camping */}
-      <Route path='places/:placeId/camping' element={<Campground />} />
+      <Route path='places/:placeId/campground' element={<Campground />} />
       {/* Parking */}
-      {/* <Route path='places/:placeId/parking' element={<Campground />} /> */}
+      <Route path='places/:placeId/parking' element={<Places />} />
       {/* Other */}
-      {/* <Route path='places/:placeId/other' element={<Campground />} /> */}
+      <Route path='places/:placeId/other' element={<Places />} />
     </Route>
   </>
 );

@@ -117,7 +117,7 @@ const MapMarker = ({ park }: { park: IMarker }) => {
     <Popup>
       <div style={{ width: '150px' }}>
         <p>{park.name}</p>
-        <Link to={`/park/${park.id}`}>View Park</Link>
+        <Link to={`${park.id}`}>View Park</Link>
       </div>
     </Popup>
   );

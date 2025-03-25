@@ -104,7 +104,7 @@ const MapContainer = (props: { lnglat: LngLatLike; locations: any[] }) => {
             </p>
             <Button variant={'outline'} className='mt-4' asChild>
               <Link
-                to={`./places/${selectedLocation.id}/${linkCategories[selectedLocation.type as keyof typeof linkCategories]}`}
+                to={`/${parkId}/places/${selectedLocation.id}/${linkCategories[selectedLocation.type as keyof typeof linkCategories]}`}
               >
                 Learn more
               </Link>
