@@ -38,7 +38,9 @@ const ParkChildrenContainer = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 
-interface ParkSectionProps extends Omit<ActivityDetails, 'path'> {
+interface ParkSectionProps {
+  name: string;
+  count?: number;
   path?: string;
   subtitle?: boolean;
   children: React.ReactNode;

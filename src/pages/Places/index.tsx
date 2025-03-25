@@ -9,7 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetcher } from '@/utils/helper';
 import { FullHeightLoader } from '@/components/Loader';
 import ErrorPage from '../Error';
-import { CategoryCard } from '../Park/Sections/Activities';
+import { CategoryCard } from '../Park/Sections/CategoryCard';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';

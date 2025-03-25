@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { stateMap, borderMap, otherMap } from '../../utils/lib/stateMap';
+import { stateMap, borderMap, otherMap } from '../../lib/stateMap';
 import { Dropdown } from '../Dropdown';
 
 export const Map = () => {

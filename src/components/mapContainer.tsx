@@ -14,17 +14,25 @@ const linkCategories = {
   sign: 'other',
 };
 
-type Location = (IPlaces | IVisitorCenter | ICampground | IParking) & {
-  type: string;
+export type MapLocation = (
+  | IPark
+  | IPlaces
+  | IVisitorCenter
+  | ICampground
+  | IParking
+) & {
+  type?: string;
 };
 
 const MapContainer = (props: {
   lnglat: LngLatLike;
-  locations: Location[];
+  locations: MapLocation[];
   showFilters?: boolean;
 }) => {
   const { parkId } = useParams();
-  const [selectedLocation, setSelectedLocation] = useState<any>(null);
+  const [selectedLocation, setSelectedLocation] = useState<MapLocation | null>(
+    null,
+  );
   const [mapStyle, setMapStyle] = useState(
     'mapbox://styles/mapbox/outdoors-v12',
   );
@@ -105,14 +113,17 @@ const MapContainer = (props: {
           <div>
             <div className='flex items-center justify-between gap-2'>
               <h2 className='text-lg font-bold'>
-                {selectedLocation.name || selectedLocation.title}
+                {'name' in selectedLocation
+                  ? selectedLocation.name
+                  : selectedLocation.title}
               </h2>
               <X onClick={() => setSelectedLocation(null)} />
             </div>
             <div className='bg-accent my-1 h-0.5 rounded-full' />
             <p className='line-clamp-[12]'>
-              {selectedLocation.description ||
-                selectedLocation.listingDescription}
+              {'description' in selectedLocation
+                ? selectedLocation.description
+                : selectedLocation.listingDescription}
             </p>
             <Button variant={'outline'} className='mt-4' asChild>
               <Link

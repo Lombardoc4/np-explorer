@@ -1,13 +1,12 @@
 import { XIcon, Search } from 'lucide-react';
 import { useNavigate } from 'react-router';
-import { useQuery, useQueryClient, DefaultError } from '@tanstack/react-query';
+import { useQuery, DefaultError } from '@tanstack/react-query';
 import { clsx } from 'clsx';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import debounce from 'lodash.debounce';
 
 import { fetcher } from '../../utils/helper';
-import { useOutsideAlerter } from '../../utils/hooks/useOuterClick';
-import { stateMap } from '../../utils/lib/stateMap';
+import { stateMap } from '../../lib/stateMap';
 
 const dropdownTypes = {
   park: {
@@ -32,11 +31,25 @@ export const Dropdown = ({
   const { endpoint } = dropdownTypes[type];
   const [searchTerm, setSearchTerm] = useState('');
   const [focused, setFocused] = useState(false);
-  const queryClient = useQueryClient();
 
   // Click outside of search closes search
   const dropdownSearch = useRef<HTMLDivElement>(null);
-  useOutsideAlerter(dropdownSearch, () => setFocused(false));
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownSearch.current &&
+        !dropdownSearch.current.contains(event.target as Node)
+      ) {
+        setFocused(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const clearInput = (e: React.MouseEvent<SVGElement>) => {
     e.stopPropagation();
@@ -71,7 +84,7 @@ export const Dropdown = ({
     debounce(async () => {
       refetch();
     }, 300),
-    [queryClient],
+    [refetch],
   );
 
   useEffect(() => {

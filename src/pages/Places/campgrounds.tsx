@@ -3,7 +3,7 @@ import { FullHeightLoader } from '../../components/Loader';
 import ErrorPage from '../Error';
 import { fetcher } from '../../utils/helper';
 import { useParams } from 'react-router';
-import { CategoryCard } from '../Park/Sections/Activities';
+import { CategoryCard } from '../Park/Sections/CategoryCard';
 
 export const endpoint = 'campgrounds';
 export const category = 'camping';

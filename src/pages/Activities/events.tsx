@@ -4,7 +4,6 @@ import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { Calendar } from '@/components/ui/calendar';
 import { useState } from 'react';
-import { Filter } from 'lucide-react';
 import Modal from '@/components/Modal/modal';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';

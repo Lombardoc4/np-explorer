@@ -1,5 +1,5 @@
 import { Link } from 'react-scroll';
-import { iconMap } from '../../utils/lib/iconMap';
+import { iconMap } from '../../lib/iconMap';
 
 interface QuickNavProps {
   sections: { id: keyof typeof iconMap; label: string }[];

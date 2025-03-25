@@ -3,7 +3,7 @@ import { FullHeightLoader } from '../../components/Loader';
 import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import ErrorPage from '../Error';
-import { CategoryCard } from '../Park/Sections/Activities';
+import { CategoryCard } from '../Park/Sections/CategoryCard';
 
 export const endpoint = 'visitorcenters';
 export const category = 'Visitor Centers';

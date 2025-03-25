@@ -5,20 +5,24 @@ export const CategoryCard = ({
   name,
   path,
 }: {
-  data: any;
+  data: IThingToDo | ITour | NPSEvent | ICampground | IVisitorCenter;
   name?: string;
   path?: string;
 }) => {
   const navigate = useNavigate();
   const href = `./${!path ? '' : path.replace(/ /g, '-').toLowerCase() + '/'}${data.id}${!name ? '' : '/' + name.replace(/ /g, '-').toLowerCase()}`;
+  const title = (
+    'name' in data ? data.name : 'title' in data ? data.title : ''
+  ) as string;
   const date =
-    data.date &&
-    new Date(data.date.replace(/-/g, '/')).toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
+    'date' in data && typeof data.date === 'string'
+      ? new Date(data.date.replace(/-/g, '/')).toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+      : undefined;
 
   return (
     <div
@@ -31,11 +35,12 @@ export const CategoryCard = ({
           className='relative h-full bg-cover bg-center bg-no-repeat'
           style={{ backgroundImage: `url(${data.images[0].url})` }}
         >
-          {data.isPassportStampLocation === '1' && (
-            <div className='border-secondary absolute top-2 right-2 flex h-10 w-10 items-center justify-center rounded-full border bg-white'>
-              <PassportImg />
-            </div>
-          )}
+          {'isPassportStampLocation' in data &&
+            data.isPassportStampLocation === '1' && (
+              <div className='border-secondary absolute top-2 right-2 flex h-10 w-10 items-center justify-center rounded-full border bg-white'>
+                <PassportImg />
+              </div>
+            )}
         </div>
       )}
       <div className='absolute inset-0 flex flex-col justify-end gap-2 bg-gradient-to-b from-transparent via-transparent to-black p-4'>
@@ -44,11 +49,8 @@ export const CategoryCard = ({
           {date && <p className='text-sm'>{date}</p>}
           {name && <p className='text-sm'>{name}</p>}
           {/* <div className='flex items-center justify-between gap-4'> */}
-          <h3
-            className='line-clamp-2 text-xl font-black'
-            title={data.name || data.title}
-          >
-            <Link to={href}>{data.name || data.title}</Link>
+          <h3 className='line-clamp-2 text-xl font-black' title={title}>
+            <Link to={href}>{title}</Link>
           </h3>
           {/* </div> */}
         </div>

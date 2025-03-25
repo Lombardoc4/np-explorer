@@ -53,8 +53,8 @@ const AddressContact = ({
         <div>
           <h3 className='text-xl font-thin'>Address</h3>
           {addresses.length > 0 &&
-            addresses.map((add: Address) => (
-              <DirectionAddress key={add.line1} address={add} />
+            addresses.map((add: Address, i) => (
+              <DirectionAddress key={`${i}_${add.line1}`} address={add} />
             ))}
           <a
             target='_blank'

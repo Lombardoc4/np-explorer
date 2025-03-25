@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import mapboxgl, { LngLatLike } from 'mapbox-gl';
+import { MapLocation } from './mapContainer';
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_API_KEY as string;
 
@@ -15,10 +16,10 @@ const Map = ({
   zoom,
 }: {
   mapStyle: string;
-  onLocationSelect: (location: any) => void;
-  selectedLocation?: any;
+  onLocationSelect: (location: MapLocation | null) => void;
+  selectedLocation?: MapLocation | null;
   lnglat: LngLatLike;
-  locations: any[];
+  locations: MapLocation[];
   filters?: Record<string, boolean>;
   zoom?: number;
 }) => {
@@ -43,7 +44,7 @@ const Map = ({
     const markers: mapboxgl.Marker[] = [];
 
     locations.reverse().forEach((location) => {
-      if (filters && !filters[location.type]) return; // Skip hidden types
+      if (filters && location.type && !filters[location.type]) return; // Skip hidden types
       const imgKey = location.type || 'visitor-center';
 
       const iconUrl = `https://raw.githubusercontent.com/nationalparkservice/symbol-library/gh-pages/src/standalone/${imgKey}-black-22.svg`;
@@ -83,7 +84,7 @@ const Map = ({
         popup
           .setLngLat([Number(location.longitude), Number(location.latitude)])
           .setHTML(
-            `<p class="font-semibold text-gray-900">${location.name || location.title}</p>`,
+            `<p class="font-semibold text-gray-900">${'name' in location ? location.name : location.title}</p>`,
           )
           .addTo(mapRef.current!);
       });
@@ -100,12 +101,23 @@ const Map = ({
     return () => {
       markers.forEach((marker) => marker.remove()); // Remove markers on filter change
     };
-  }, [mapStyle, filters, onLocationSelect, selectedLocation, locations]); // Re-run when `selectedLocation` changes
+  }, [
+    mapStyle,
+    filters,
+    onLocationSelect,
+    selectedLocation,
+    locations,
+    lnglat,
+    zoom,
+  ]); // Re-run when `selectedLocation` changes
 
   useEffect(() => {
     if (selectedLocation && mapRef.current) {
       mapRef.current.flyTo({
-        center: [selectedLocation.longitude, selectedLocation.latitude],
+        center: [
+          Number(selectedLocation.longitude),
+          Number(selectedLocation.latitude),
+        ],
         zoom: 16,
         essential: true,
       });

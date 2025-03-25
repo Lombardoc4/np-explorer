@@ -18,13 +18,18 @@ const getNameOfDay = (name: string) => {
 };
 
 // This is used to create a list of all the weather results
-const reduceForecast = (periods: any[]) => {
+const reduceForecast = (periods: WeatherPeriod[]) => {
   return periods.reduce(
-    (acc: any[], { name, isDaytime, ...forecast }: Forecast) => {
+    (acc: Forecast[], { name, ...forecast }: WeatherPeriod) => {
       const dayName = getNameOfDay(name);
 
       // Random edge case where we get a random value: Washington's Birthday
-      if (dayName !== 'Today' && !daysOfWeek.includes(dayName.toLowerCase())) {
+      if (
+        dayName !== 'Today' &&
+        !daysOfWeek.includes(
+          dayName.toLowerCase() as (typeof daysOfWeek)[number],
+        )
+      ) {
         return acc;
       }
 
@@ -40,23 +45,15 @@ const reduceForecast = (periods: any[]) => {
           existingDayEntry.low,
           forecast.temperature,
         );
+
+        return acc;
       }
-      // Add daytime forecast to weather
-      // Special case if afternoon or tonight and today doesnt exist
-      else if (isDaytime || !acc.find((item) => item.name === 'Today')) {
-        acc.push({
-          ...forecast,
-          high: forecast.temperature,
-          low: forecast.temperature,
-          name: dayName,
-        });
-      } else {
-        acc.push({
-          name: dayName,
-          high: forecast.temperature,
-          low: forecast.temperature,
-        });
-      }
+      acc.push({
+        ...forecast,
+        name: dayName,
+        high: forecast.temperature,
+        low: forecast.temperature,
+      });
 
       return acc;
     },
@@ -68,9 +65,11 @@ export const SevenDayForecast = ({ url }: { url: string }) => {
   const [sevenDay, setSevenDay] = useState<Forecast[]>([]);
 
   useEffect(() => {
-    fetchSevenDay(url).then((forecast: any) => {
-      setSevenDay(reduceForecast(forecast.properties.periods));
-    });
+    fetchSevenDay(url).then(
+      (forecast: { properties: { periods: WeatherPeriod[] } }) => {
+        setSevenDay(reduceForecast(forecast.properties.periods));
+      },
+    );
   }, [url]);
 
   if (sevenDay.length === 0) {
@@ -83,14 +82,14 @@ export const SevenDayForecast = ({ url }: { url: string }) => {
 
   return (
     <div className='mt-4 flex w-full justify-between'>
-      {sevenDay.map((ww: any) => (
+      {sevenDay.map((ww: Forecast) => (
         <WeatherDayItem key={ww.name} {...ww} />
       ))}
     </div>
   );
 };
 
-const WeatherDayItem = (ww: any) => {
+const WeatherDayItem = (ww: Forecast) => {
   return (
     <div className='flex w-fit flex-col gap-2 text-center text-sm sm:p-1'>
       <p>{ww.name !== 'Today' ? ww.name.slice(0, 3) : ww.name}</p>

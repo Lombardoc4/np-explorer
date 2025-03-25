@@ -2,7 +2,7 @@ import { fetcher } from '../../utils/helper';
 import { Loader } from '../../components/Loader';
 import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
-import { CategoryCard } from '../Park/Sections/Activities';
+import { CategoryCard } from '../Park/Sections/CategoryCard';
 
 const endpoint = 'thingstodo';
 

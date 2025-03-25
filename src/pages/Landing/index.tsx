@@ -1,11 +1,11 @@
-import { iconMap } from '@/utils/lib/iconMap';
-import { Search, X } from 'lucide-react';
+import { iconMap } from '@/lib/iconMap';
+import { X } from 'lucide-react';
 import { Dropdown } from '../../components/Dropdown';
 import { Footer } from '../../components/Footer';
 import SEO from '../../components/SEO';
 import { featureInfo, featureInfoProps } from './descriptions';
 import Map from '@/components/map';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { LngLatLike } from 'mapbox-gl';
 import { fetcher } from '@/utils/helper';
 import { useQuery } from '@tanstack/react-query';
@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { stateMap, StateProps } from '@/utils/lib/stateMap';
+import { stateMap, StateProps } from '@/lib/stateMap';
 import clsx from 'clsx';
 const bgUrl = '/Grand_Teton_Landing_BG.jpg';
 
@@ -154,7 +154,7 @@ const Feature = ({ id, title, description }: featureInfoProps) => {
 };
 
 const AllParksMap = () => {
-  const USCenter: LngLatLike = [-98.35, 39.5];
+  const USCenter: LngLatLike = useMemo(() => [-98.35, 39.5], []);
   const [selectedLocation, setSelectedLocation] = useState<IPark | null>(null);
   const [activeParks, setActiveParks] = useState<IPark[] | null>(null);
   const [state, setState] = useState<StateProps | null>(null);
@@ -192,7 +192,7 @@ const AllParksMap = () => {
 
     setCenter(USCenter);
     setActiveParks(parks);
-  }, [parks, state]);
+  }, [parks, state, USCenter]);
 
   if (isFetching)
     return (
@@ -213,7 +213,7 @@ const AllParksMap = () => {
             {activeParks && (
               <Map
                 mapStyle={mapStyle}
-                onLocationSelect={setSelectedLocation}
+                onLocationSelect={(loc) => setSelectedLocation(loc as IPark)}
                 selectedLocation={selectedLocation}
                 lnglat={center}
                 locations={activeParks}

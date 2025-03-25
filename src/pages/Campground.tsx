@@ -1,8 +1,7 @@
 import { fetcher, getOperatingHours } from '../utils/helper';
 import { Link, useParams } from 'react-router';
-import { FeeSection, ParkSection, ParkSectionTitle } from './Park/Sections';
+import { FeeSection } from './Park/Sections';
 import { useQuery } from '@tanstack/react-query';
-import { Button } from '../components/Button';
 import { FullHeightLoader } from '../components/Loader';
 import ErrorPage from './Error';
 import { ImgGrid } from '../components/ImgGrid';
@@ -11,6 +10,7 @@ import { DirectionSection } from '../components/Direction';
 import { LinkIcon } from 'lucide-react';
 import { ShareModal } from '@/components/Modal/ShareModal';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { Button } from '@/components/ui/button';
 
 export const endpoint = 'campgrounds';
 export const category = 'camping';

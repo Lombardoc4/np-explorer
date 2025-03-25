@@ -39,6 +39,34 @@ interface Contacts {
   emailAddresses: ContactEmail[];
 }
 
+interface WeatherPeriod {
+  number: number;
+  name: string;
+  startTime: string;
+  endTime: string;
+  isDaytime: boolean;
+  temperature: number;
+  temperatureUnit: string;
+  temperatureTrend: string;
+  probabilityOfPrecipitation: {
+    unitCode: string;
+    value: number;
+  };
+  dewpoint?: {
+    unitCode: string;
+    value: number;
+  };
+  relativeHumidity?: {
+    unitCode: string;
+    value: number;
+  };
+  windSpeed: string;
+  windDirection: string;
+  icon: string;
+  shortForecast: string;
+  detailedForecast: string;
+}
+
 interface OperatingHours {
   name: string;
   description: string;
@@ -141,11 +169,29 @@ interface Forecast {
   startTime: string;
   isDaytime: boolean;
   probabilityOfPrecipitation: {
-    value: string;
+    value: number;
   };
-  relativeHumidity: {
-    value: string;
+  relativeHumidity?: {
+    value: number;
   };
+}
+
+interface RelatedRoadEvents {
+  title: string;
+  id: string;
+  type: string;
+  url: string;
+}
+
+interface Alert {
+  id: string;
+  url: string;
+  title: string;
+  parkCode: string;
+  description: string;
+  category: string;
+  relatedRoadEvents: RelatedRoadEvents[];
+  lastIndexedDate: string;
 }
 
 interface TourStop {
@@ -168,7 +214,7 @@ interface ITour {
   tags: string[];
   type: string;
   activities: Activity[];
-  topics?: { name: string; id: string }[];
+  topics?: Topic[];
   durationMin: number;
   durationMax: number;
   durationUnit: string;
@@ -351,7 +397,7 @@ interface ICampground {
   longitude: string;
   latLong: LatLong;
   audioDescription: string;
-  isPassportStampLocation: number;
+  isPassportStampLocation: string;
   passportStampLocationDescription: string;
   passportStampImages: IPassportImages[];
   geometryPoiId: string;

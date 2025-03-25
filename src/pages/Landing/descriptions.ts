@@ -1,4 +1,4 @@
-import { iconMap } from '../../utils/lib/iconMap';
+import { iconMap } from '../../lib/iconMap';
 
 export type featureInfoProps = {
   id: keyof typeof iconMap;

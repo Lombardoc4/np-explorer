@@ -1,4 +1,4 @@
-import { SymbolMap } from '../utils/lib/amenitiesMap';
+import { SymbolMap } from '../lib/amenitiesMap';
 import { fetcher, getOperatingHours } from '../utils/helper';
 import { FullHeightLoader } from '../components/Loader';
 import { useParams } from 'react-router';
@@ -10,8 +10,8 @@ import { ImgGrid } from '../components/ImgGrid';
 import SEO from '../components/SEO';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { useEffect, useState } from 'react';
-import { useTheme } from '@/lib/themeProvider';
 import { Badge } from '@/components/ui/badge';
+import { useTheme } from '@/hooks/use-theme';
 
 export const endpoint = 'visitorcenters';
 

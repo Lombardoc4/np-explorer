@@ -2,9 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import { fetcher } from '../../utils/helper';
 import { useState } from 'react';
 import ErrorPage from '../Error';
-import { Button } from '../../components/Button';
 import { ParkLayout } from './Page';
 import { FullHeightLoader } from '../../components/Loader';
+import { Button } from '@/components/ui/button';
 
 const parkCount = 496;
 const getRandomInt = () => Math.floor(Math.random() * parkCount);

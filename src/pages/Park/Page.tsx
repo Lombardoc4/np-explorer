@@ -1,6 +1,5 @@
 import { useContext, useEffect, useMemo } from 'react';
 
-import ParkContext from '../../utils/hooks/ParkContext';
 import ErrorPage from '../Error';
 import { WeatherDisplay } from '../../components/Weather/WeatherReport';
 import { ParkAlert, FeeSection, ParkSection } from './Sections';
@@ -14,9 +13,9 @@ import { DirectionSection } from '../../components/Direction';
 import { fetcher } from '../../utils/helper';
 import { useQuery } from '@tanstack/react-query';
 import { Footer } from '../../components/Footer';
-import { iconMap } from '../../utils/lib/iconMap';
+import { iconMap } from '../../lib/iconMap';
 import { QuickNav } from '../../components/Sidebar/QuickNav';
-import { CategoryCard } from './Sections/Activities';
+import { CategoryCard } from './Sections/CategoryCard';
 import MapContainer from '@/components/mapContainer';
 import { LngLatLike } from 'mapbox-gl';
 import { ChevronLeft, ChevronRight, LinkIcon, Loader } from 'lucide-react';
@@ -36,7 +35,28 @@ import { scroller, Link as ScrollLink } from 'react-scroll';
 const itemLimit = 8;
 export const ParkPage = () => {
   const { parkId } = useParams();
-  const { status, error, data: park } = useContext(ParkContext);
+  const {
+    status,
+    data: park,
+    error,
+  } = useQuery<IPark>({
+    queryKey: ['parks', { parkCode: parkId }],
+    queryFn: async ({ queryKey }) => {
+      const { parkCode } = queryKey[1] as { parkCode: string };
+      if (!parkCode) return [];
+
+      const data = await fetcher(`parks?parkCode=${parkCode}`);
+      if (!data[0]) throw Error('No matching park');
+      // SetLocalStorage({
+      //   name: data[0].fullName,
+      //   parkCode: data[0].parkCode,
+      // });
+
+      return data[0];
+    },
+    retry: 1,
+    enabled: !!parkId, // Enable query execution only if parkId exists
+  });
 
   const title =
     status === 'success' && park

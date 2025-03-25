@@ -1,6 +1,4 @@
-import { FilterProps } from '../pages/Park/components/Card';
-
-export const daysOfWeek = [
+export const daysOfWeek: Array<keyof OperatingHours['standardHours']> = [
   'monday',
   'tuesday',
   'wednesday',
@@ -10,7 +8,7 @@ export const daysOfWeek = [
   'sunday',
 ];
 
-export const getOperatingHours = (operatingHours: any) => {
+export const getOperatingHours = (operatingHours: OperatingHours) => {
   const { standardHours } = operatingHours;
 
   // See if all days values match
@@ -55,7 +53,7 @@ export const getOperatingHours = (operatingHours: any) => {
     );
   }
 
-  return daysOfWeek.map((day: string) => {
+  return daysOfWeek.map((day: keyof OperatingHours['standardHours']) => {
     if (operatingHours.standardHours[day] !== '') {
       return (
         <p>
@@ -77,32 +75,4 @@ export const fetcher = async (input: RequestInfo, init?: RequestInit) => {
   // Set Local Storage for indepth data
 
   return data.data;
-};
-
-export const filterParks = (filters: FilterProps, parks: any[]): IPark[] => {
-  return parks.filter((p: any) => {
-    const entranceFees = p.entranceFees.length > 0 ? 'paid' : 'free';
-    const entrancePasses = p.entrancePasses.length > 0 ? 'annual-pass' : '';
-    if (
-      (filters.entranceFees && entranceFees !== filters.entranceFees) ||
-      (filters.entrancePasses && entrancePasses !== filters.entrancePasses)
-    )
-      return false;
-
-    if (filters.activities && filters.activities.length > 0) {
-      const match = filters.activities.every((a) =>
-        p.activities.find((pa: any) => pa.name === a),
-      );
-      if (!match) return false;
-    }
-    return true;
-  });
-};
-
-export const scrollToHash = () => {
-  const hash = window.location.hash;
-  if (hash.length > 0) {
-    const el = document.querySelector(hash) as HTMLElement;
-    el?.scrollIntoView();
-  }
 };

@@ -15,7 +15,7 @@ import {
   LinkIcon,
   Tag,
 } from 'lucide-react';
-import { Button } from '../components/Button';
+import { Button } from '@/components/ui/button';
 
 const endpoint = 'thingstodo';
 

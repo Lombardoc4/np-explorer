@@ -82,8 +82,17 @@ const weatherIconMap: IWeatherIcons = {
   'mostly clear': { day: 'day-sunny', night: 'night-clear' },
   'mostly cloudy': { day: 'day-cloudy', night: 'night-alt-cloudy' },
   'mostly sunny': { day: 'day-sunny', night: 'night-clear' },
+  'mostly sunny then slight chance light rain': {
+    day: 'day-sunny',
+    night: 'night-clear',
+  },
+  'mostly cloudy then chance light rain': {
+    day: 'day-cloudy',
+    night: 'night-cloudy',
+  },
   'partly cloudy': { day: 'day-cloudy', night: 'night-alt-cloudy' },
   'patchy fog': { day: 'day-fog', night: 'night-fog' },
+  'light rain likely': { day: 'day-rain', night: 'night-alt-rain' },
   'light rain': { day: 'day-rain', night: 'night-alt-rain' },
   rain: { day: 'rain', night: 'rain' },
   'rain showers likely': { day: 'showers', night: 'night-alt-showers' },
