@@ -1,41 +1,38 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { MoonIcon, SunIcon } from 'lucide-react';
+import { Moon, Sun } from 'lucide-react';
+import { useTheme } from '@/lib/themeProvider';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
+import { Button } from '../ui/button';
 
 export const ThemeSwitcher = () => {
-  const [darkMode, setDarkMode] = useState<boolean | null>(null); // Start with `null` to prevent mismatch
-
-  useEffect(() => {
-    // Ensure correct theme from localStorage or system preference
-    const storedDarkMode = localStorage.getItem('darkMode');
-    const prefersDark = window.matchMedia(
-      '(prefers-color-scheme: dark)',
-    ).matches;
-
-    setDarkMode(storedDarkMode ? storedDarkMode === 'true' : prefersDark);
-  }, []);
-
-  useEffect(() => {
-    if (darkMode === null) return; // Prevent applying styles before state is set
-
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('darkMode', 'true');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('darkMode', 'false');
-    }
-  }, [darkMode]);
-
-  const toggleDarkMode = () => setDarkMode((prev) => !prev);
+  const { setTheme } = useTheme();
 
   return (
-    <button
-      onClick={toggleDarkMode}
-      className='rounded-md bg-gray-800 px-4 py-2 text-white dark:bg-white dark:text-black'
-    >
-      {darkMode ? <SunIcon /> : <MoonIcon />}
-    </button>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant='outline' size='icon'>
+          <Sun className='h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90' />
+          <Moon className='absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0' />
+          <span className='sr-only'>Toggle theme</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align='end'>
+        <DropdownMenuItem onClick={() => setTheme('light')}>
+          Light
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme('dark')}>
+          Dark
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme('system')}>
+          System
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };

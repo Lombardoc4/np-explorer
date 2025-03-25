@@ -21,6 +21,7 @@ export const SymbolMap: IsymbolMap = {
   'Baby Changing Station': 'baby-changing-station',
   'Backcountry Permits': 'backcountry-camping-permit',
   'Beach/Water Access': 'beach-access',
+  'Bear Cannister Purchase/Rental': 'bear-canister-rentals',
   'Bear Canister Purchase/Rental': 'bear-canister-rentals',
   'Bear Spray Purchase/Rental': 'bear-spray-purchase',
   'Benches/Seating': 'benches-seating',

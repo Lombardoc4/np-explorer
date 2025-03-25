@@ -1,4 +1,4 @@
-import { SymbolMap } from '../utils/lib/symbolMap';
+import { SymbolMap } from '../utils/lib/amenitiesMap';
 import { fetcher, getOperatingHours } from '../utils/helper';
 import { FullHeightLoader } from '../components/Loader';
 import { useParams } from 'react-router';
@@ -9,6 +9,9 @@ import ErrorPage from './Error';
 import { ImgGrid } from '../components/ImgGrid';
 import SEO from '../components/SEO';
 import { Breadcrumbs } from '../components/Breadcrumbs';
+import { useEffect, useMemo, useState } from 'react';
+import { useTheme } from '@/lib/themeProvider';
+import { Badge } from '@/components/ui/badge';
 
 export const endpoint = 'visitorcenters';
 
@@ -51,31 +54,29 @@ export const VisitorCenterPage = () => {
   return (
     <>
       <SEO title={visitorCenter.name} description={visitorCenter.description} />
-      <div className='container mx-auto min-h-svh px-4 py-24 lg:px-0'>
+      <div className='py-24'>
         <Breadcrumbs
           crumbs={[parkId as string, 'places', visitorCenter.name]}
         />
-        <main>
-          <VCSection key={visitorCenter.id} vc={visitorCenter} />
-        </main>
+        <VCSection key={visitorCenter.id} vc={visitorCenter} />
       </div>
     </>
   );
 };
 
 const VCSection = ({ vc }: { vc: IVisitorCenter }) => {
+  // Resolve if
+
   return (
     <ParkSection name={vc.name}>
-      {vc.images.length > 0 && (
-        <div className='col-span-2'>
-          <ImgGrid images={vc.images} />
-        </div>
-      )}
-      <div className='col-span-2 grid gap-8 md:grid-cols-2'>
+      <header className='col-span-2'>
+        {vc.images.length > 0 && <ImgGrid images={vc.images} />}
         <div>
           <p className='text-xl'>{vc.description}</p>
+          <p className='text-xl'>{vc.audioDescription}</p>
         </div>
-
+      </header>
+      <main className='col-span-2 grid gap-8 md:grid-cols-2'>
         {/* Hours */}
         {vc.operatingHours && vc.operatingHours.length > 0 && (
           <div>
@@ -91,10 +92,9 @@ const VCSection = ({ vc }: { vc: IVisitorCenter }) => {
             <p className='text-xl'>{vc.operatingHours[0].description}</p>
           </div>
         )}
-      </div>
-
-      {/* Amenities */}
-      {vc.amenities.length > 0 && <Amenities amenities={vc.amenities} />}
+        {vc.amenities.length > 0 && <Amenities amenities={vc.amenities} />}
+        {/* Amenities */}
+      </main>
 
       {/* Directions */}
       <div className='col-span-2'>
@@ -105,31 +105,46 @@ const VCSection = ({ vc }: { vc: IVisitorCenter }) => {
 };
 
 const Amenities = ({ amenities }: { amenities: string[] }) => (
-  <div className='col-span-2'>
-    <ParkSectionTitle>Amenities</ParkSectionTitle>
-    <div className='mt-8'>
-      <div className='my-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
+  <div>
+    <div className='my-4'>
+      <div className='flex flex-wrap gap-2'>
         {amenities.map((amenity: string) => (
-          <AmentyItem key={amenity} amenity={amenity} />
+          <AmenityItem key={amenity} amenity={amenity} />
         ))}
       </div>
     </div>
   </div>
 );
 
-const AmentyItem = ({ amenity }: { amenity: string }) => {
-  const isDarkMode =
-    window.matchMedia &&
-    window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const imageColor = isDarkMode ? 'white' : 'black';
+const AmenityItem = ({ amenity }: { amenity: string }) => {
+  const { theme } = useTheme();
+  const [imageColor, setImageColor] = useState<'white' | 'black'>('black');
+
+  useEffect(() => {
+    const resolveImageColor = () => {
+      if (theme === 'dark') {
+        return 'white';
+      } else if (theme === 'light') {
+        return 'black';
+      } else {
+        // Handle 'system' theme by checking system preference
+        return window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'white'
+          : 'black';
+      }
+    };
+
+    setImageColor(resolveImageColor());
+  }, [theme]);
   return (
-    <div className='flex items-center gap-4'>
+    <Badge>
       <img
-        width={32}
-        height={32}
+        // width={24}
+        // height={24}
         src={`https://raw.githubusercontent.com/nationalparkservice/symbol-library/gh-pages/src/standalone/${SymbolMap[amenity]}-${imageColor}-22.svg`}
-      />{' '}
-      <span className='bold'>{amenity}</span>
-    </div>
+        alt={`${amenity} icon`}
+      />
+      <p>{amenity}</p>
+    </Badge>
   );
 };

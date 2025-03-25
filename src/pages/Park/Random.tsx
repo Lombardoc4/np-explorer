@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetcher } from '../../utils/helper';
-import { SetLocalStorage } from '../../utils/localStorage';
 import { useState } from 'react';
 import ErrorPage from '../Error';
 import { Button } from '../../components/Button';
@@ -25,10 +24,6 @@ export const RandomPark = () => {
 
       const data = await fetcher(`parks?limit=1&start=${start}`);
       if (!data[0]) throw Error('No matching park');
-      // SetLocalStorage({
-      //   name: data[0].fullName,
-      //   parkCode: data[0].parkCode,
-      // });
 
       return data[0];
     },

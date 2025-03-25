@@ -1,26 +1,11 @@
 import { Link, useLocation } from 'react-router';
 
 import logo from '../../assets/npe-green.svg';
-import { useEffect, useRef } from 'react';
-import useOnScreen from '../../utils/hooks/useOnScreen';
 import { Dropdown } from '../Dropdown';
 import { ThemeSwitcher } from './ThemeToggler';
 
 export const NavBar = () => {
   const location = useLocation();
-
-  // Hide when offscreen
-  const otherParksRef = useRef(document.querySelector('#other-parks'));
-  const offscreen = useOnScreen(otherParksRef, -50);
-
-  useEffect(() => {
-    // Confirms ref is set
-    if (!otherParksRef.current)
-      otherParksRef.current = document.querySelector('#other-parks');
-
-    // This close the dropdown
-    document.documentElement.click();
-  }, [offscreen]);
 
   return (
     <nav className='fixed start-0 end-0 top-0 z-30 flex h-[64px] bg-white/25 shadow backdrop-blur-lg backdrop-filter dark:bg-zinc-900/10'>

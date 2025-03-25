@@ -87,7 +87,10 @@ const DirectionAddress = ({ address }: { address: Address }) => {
   return (
     <p key={line1}>
       <a target='_blank' href={formatGoogleUrl(address)}>
-        {line1},<br /> {city}, {stateCode} {postalCode}
+        {line1 && <span className='block'>{line1},</span>}
+        <span className='block'>
+          {city}, {stateCode} {postalCode}
+        </span>
       </a>
     </p>
   );

@@ -99,20 +99,6 @@ export const filterParks = (filters: FilterProps, parks: any[]): IPark[] => {
   });
 };
 
-export const uniqueCategoryItems = (categories: any) => {
-  const unique = Array.from(
-    new Set(categories.map((obj: any) => obj.name || obj.title)),
-  )
-    .map((id) => {
-      return categories.find((obj: any) => obj.name === id || obj.title === id);
-    })
-    .sort((a, b) => {
-      if (!a.date || !b.date) return -1;
-      return new Date(a.date).getTime() - new Date(b.date).getTime();
-    });
-  return unique;
-};
-
 export const scrollToHash = () => {
   const hash = window.location.hash;
   if (hash.length > 0) {

@@ -2,7 +2,6 @@ import React, { createContext, useEffect, useState } from 'react';
 import { fetcher } from '../helper';
 import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
-import { SetLocalStorage } from '../localStorage';
 
 const initContext = {
   status: 'pending' as 'error' | 'success' | 'pending',

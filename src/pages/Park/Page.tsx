@@ -141,11 +141,11 @@ export const ParkLayout = (park: IPark) => {
 
   const activities = useMemo(
     () => [
-      ...(tours ? tours.map((t) => ({ ...t, type: 'Tours' })) : []),
+      ...(tours ? tours.map((t) => ({ ...t, type: 'Tour' })) : []),
       ...(thingsToDo
-        ? thingsToDo.map((t) => ({ ...t, type: 'Things to do' }))
+        ? thingsToDo.map((t) => ({ ...t, type: 'Thing to do' }))
         : []),
-      ...(events ? events.map((e) => ({ ...e, type: 'Events' })) : []),
+      ...(events ? events.map((e) => ({ ...e, type: 'Event' })) : []),
     ],
     [tours, thingsToDo, events],
   );

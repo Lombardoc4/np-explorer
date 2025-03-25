@@ -40,7 +40,7 @@ export const parkRoutes = (
         element={<VisitorCenterPage />}
       />
       {/* Camping */}
-      <Route path='places/:placeId/campground' element={<Campground />} />
+      <Route path='places/:placeId/camping' element={<Campground />} />
       {/* Parking */}
       <Route path='places/:placeId/parking' element={<Places />} />
       {/* Other */}
