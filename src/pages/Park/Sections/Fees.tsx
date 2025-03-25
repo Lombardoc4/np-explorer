@@ -5,19 +5,40 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import clsx from 'clsx';
-import { Info } from 'lucide-react';
 
-export const FeeSection = ({ entranceFees }: { entranceFees: Fee[] }) => {
-  if (!entranceFees || entranceFees.length <= 0) return null;
+export const FeeSection = ({
+  entranceFees,
+  entrancePasses,
+}: {
+  entranceFees: Fee[];
+  entrancePasses?: Fee[];
+}) => {
+  // If no entrance fees or passes return no element
+  if (
+    (!entranceFees && !entrancePasses) ||
+    (entrancePasses && entrancePasses.length <= 0 && entranceFees.length <= 0)
+  )
+    return null;
+
+  const count = entranceFees?.length + (entrancePasses?.length || 0);
 
   return (
     <div id='fees' className='w-full'>
       <div
         className={clsx(
           'grid grid-cols-2 gap-4 md:gap-4',
-          entranceFees.length > 2 ? 'lg:grid-cols-4' : 'lg:grid-cols-2',
+          count > 2 ? 'lg:grid-cols-4' : 'lg:grid-cols-2',
         )}
       >
+        {entrancePasses?.map((pass: Fee) => (
+          <FeeItem
+            key={'entrancePass_' + pass.title}
+            entrancePass
+            cost={pass.cost}
+            title={pass.title}
+            description={pass.description}
+          />
+        ))}
         {entranceFees.map((fee: Fee, i) => (
           <FeeItem
             key={fee.title + i}
@@ -35,35 +56,42 @@ const FeeItem = ({
   cost,
   title,
   description,
+  entrancePass,
 }: {
   cost: string;
   title: string;
   description: string;
+  entrancePass?: boolean;
 }) => {
-  const subtitle = title.slice(0, title.indexOf('-'));
-  title = title.slice(title.indexOf('-') + 1, title.length);
+  const shortTitle = title.slice(title.indexOf('-') + 1, title.length);
+  const subtitle = title.includes('-')
+    ? title.slice(0, title.indexOf('-'))
+    : null;
 
   return (
-    <div className='border-secondary relative w-full rounded-lg border-2 px-4 py-2'>
-      <div className='flex items-center justify-between gap-2'>
-        <p className='text-sm'>{subtitle}</p>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Info />
-            </TooltipTrigger>
-            <TooltipContent className='border'>
-              <p className='max-w-xs text-sm'>{description}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div>
-      <div className='flex gap-2'>
-        <h3 className='text-base font-black md:text-xl'>
-          ${cost} / {title}
-        </h3>
-        {/* <p className='font'>${cost}</p> */}
-      </div>
+    <div
+      className={clsx(
+        'rounded-lg border-2 py-3',
+        entrancePass ? 'border-accent' : 'border-secondary',
+      )}
+    >
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger className='flex w-full flex-col justify-center'>
+            <p className='text-3xl font-black'>${cost}</p>
+
+            <p className='text-xl'>{shortTitle}</p>
+            {subtitle && <p className='text-xs leading-3'>{subtitle}</p>}
+          </TooltipTrigger>
+          <TooltipContent
+            collisionPadding={16}
+            sideOffset={5}
+            className='bg-background border'
+          >
+            <p className='max-w-3xs text-sm'>{description}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     </div>
   );
 };
