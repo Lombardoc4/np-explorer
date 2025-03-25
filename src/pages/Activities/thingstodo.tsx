@@ -21,7 +21,7 @@ export const AllThingsToDo = () => {
   if (status === 'pending') {
     return (
       <div className='flex h-96 items-center justify-center'>
-        <Loader />;
+        <Loader />
       </div>
     );
   }
@@ -31,7 +31,7 @@ export const AllThingsToDo = () => {
   return (
     <section>
       {/* <h2 className='mb-2 text-2xl font-thin md:text-4xl'>Things to do</h2> */}
-      <div className='grid grid-cols-4 gap-4'>
+      <div className='grid gap-4 md:grid-cols-4'>
         {thingsToDo.map((ttd: IThingToDo) => (
           <CategoryCard data={ttd} name='thingtodo' />
         ))}

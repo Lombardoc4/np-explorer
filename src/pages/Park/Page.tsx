@@ -82,10 +82,6 @@ export const ParkLayout = (park: IPark) => {
   const { parkCode } = park;
   const [_modal, btn] = ShareModal(park.fullName);
 
-  const { data: alerts, isFetching: alertFetching } = useQuery({
-    queryKey: ['park', { catergory: 'alerts', parkCode: parkCode }],
-    queryFn: () => fetchCustomData('alerts', parkCode),
-  });
   const { data: tours, isFetching: toursFetching } = useQuery<ITour[]>({
     queryKey: ['park', { catergory: 'tours', parkCode: parkCode }],
     queryFn: () => fetchCustomData('tours', parkCode),
@@ -116,23 +112,9 @@ export const ParkLayout = (park: IPark) => {
     queryKey: ['park', { catergory: 'parkinglots', parkCode: parkCode }],
     queryFn: () => fetchCustomData('parkinglots', parkCode),
   });
-  const { data: places, isFetching: placesFetching } = useQuery({
-    queryKey: ['park', { catergory: 'places', parkCode: parkCode }],
-    queryFn: () => fetchCustomData('places', parkCode),
-  });
 
   const sections = [
     { id: 'overview', label: 'Overview' },
-    // {
-    //   id: 'alerts',
-    //   label: 'Alerts',
-    //   condition: !alertFetching && alerts?.length > 0,
-    // },
-    // {
-    //   id: 'fees',
-    //   label: 'Fees',
-    //   condition: park.entranceFees && park.entranceFees.length > 0,
-    // },
     { id: 'weather', label: 'Weather' },
     {
       id: 'activities',
@@ -150,10 +132,9 @@ export const ParkLayout = (park: IPark) => {
           visitorCenters &&
           visitorCenters?.length > 0) ||
         (!parkingFetching && parking && parking?.length > 0) ||
-        (!campgroundsFetching && campgrounds && campgrounds?.length > 0) ||
-        (!placesFetching && places && places.length > 0),
+        (!campgroundsFetching && campgrounds && campgrounds?.length > 0),
     },
-    // { id: 'directions', label: 'Directions' },
+    { id: 'directions', label: 'Directions' },
   ].filter(
     (section) => section.condition === undefined || section.condition,
   ) as sectionProps[];
@@ -178,13 +159,13 @@ export const ParkLayout = (park: IPark) => {
           <header id='overview' className='container mx-auto mt-4 grid px-4'>
             <div className='leading-2'>{StateLinks(park.states)}</div>
             <h1 className='text-3xl font-thin md:text-6xl'>{park.fullName}</h1>
-            <div className='bg-primary mt-4 grid gap-8 rounded-xl border-4 p-4 xl:grid-cols-4'>
+            <div className='bg-primary mt-4 grid gap-4 rounded-xl border-4 p-4 xl:grid-cols-4'>
               <div className='xl:order-2 xl:col-span-3'>
                 {park.images.length > 0 && <ImgGrid images={park.images} />}
               </div>
-              <div className='grid h-full'>
-                <p className='md:text-xl'>{park.description}</p>
-                <div className='mt-2 flex items-center gap-4 border-t pt-4'>
+              <div className='flex h-full flex-col'>
+                <p className='mb-4 md:text-xl'>{park.description}</p>
+                <div className='mt-auto flex items-center gap-4 border-t pt-4'>
                   {/* Official Page Link */}
                   {park.url && (
                     <Link
@@ -209,7 +190,8 @@ export const ParkLayout = (park: IPark) => {
               <ParkAlert parkId={park.parkCode} />
               {/* Fees */}
               <FeeSection
-                entranceFees={[...park.entrancePasses, ...park.entranceFees]}
+                entranceFees={park.entranceFees}
+                entrancePasses={park.entrancePasses}
               />
             </div>
 
@@ -258,9 +240,10 @@ export const ParkLayout = (park: IPark) => {
                       lnglat={[Number(park.longitude), Number(park.latitude)]}
                     />
                   </div>
-
-                  <DirectionSection location={park} />
                 </div>
+              </div>
+              <div className='bg-primary py-8'>
+                <DirectionSection location={park} />
               </div>
             </div>
 
@@ -380,11 +363,11 @@ const MapLoader = ({
     queryKey: ['campgrounds', parkCode],
     queryFn: () => fetchCustomData('campgrounds', parkCode),
   });
-  const { data: parking, isFetching: parkingFetching } = useQuery({
+  const { data: parking, isFetching: parkingFetching } = useQuery<IParking[]>({
     queryKey: ['park', { catergory: 'parkinglots', parkCode: parkCode }],
     queryFn: () => fetchCustomData('parkinglots', parkCode),
   });
-  const { data: places, isFetching: placesFetching } = useQuery({
+  const { data: places, isFetching: placesFetching } = useQuery<IPlaces[]>({
     queryKey: ['park', { catergory: 'places', parkCode: parkCode }],
     queryFn: () => fetchCustomData('places', parkCode),
   });
@@ -410,11 +393,8 @@ const MapLoader = ({
       ...cg,
       type: 'campsite',
     })) || []),
-    ...(parking?.map((p) => ({ ...p, type: 'parking' })) || []),
-    ...(places?.map((p) => ({
-      ...p,
-      type: 'sign',
-    })) || []),
+    ...(parking?.map((p: IParking) => ({ ...p, type: 'parking' })) || []),
+    ...(places?.map((p: IPlaces) => ({ ...p, type: 'sign' })) || []),
   ];
 
   return <MapContainer lnglat={lnglat} locations={locations} />;

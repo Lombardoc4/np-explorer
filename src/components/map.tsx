@@ -67,7 +67,7 @@ const Map = ({
       `;
 
       const marker = new mapboxgl.Marker(markerEl)
-        .setLngLat([location.longitude, location.latitude])
+        .setLngLat([Number(location.longitude), Number(location.latitude)])
         .addTo(mapRef.current!);
 
       markers.push(marker);
@@ -81,7 +81,7 @@ const Map = ({
 
       markerEl.addEventListener('mouseenter', () => {
         popup
-          .setLngLat([location.longitude, location.latitude])
+          .setLngLat([Number(location.longitude), Number(location.latitude)])
           .setHTML(
             `<p class="font-semibold text-gray-900">${location.name || location.title}</p>`,
           )

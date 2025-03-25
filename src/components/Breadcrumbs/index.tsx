@@ -1,32 +1,41 @@
-import { ChevronRight } from 'lucide-react';
 import { Link } from 'react-router';
-import { Button } from '../Button';
 import React from 'react';
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+  BreadcrumbItem,
+  BreadcrumbLink,
+} from '../ui/breadcrumb';
 
 export const Breadcrumbs = ({ crumbs }: { crumbs: string[] }) => {
   return (
-    <div className='mb-4 flex items-center gap-2'>
-      {crumbs.map((crumb, index) => {
-        const title = crumb.replace(/-/g, ' ');
-        const link = !crumbs[index + 1]
-          ? '.'
-          : `/park/${crumbs
-              .slice(0, index + 1)
-              .map((c) => c.replace(/ /g, '-').toLowerCase())
-              .join('/')}`;
-        return (
-          <React.Fragment key={crumb}>
-            {index > 0 && <ChevronRight />}
-            <Crumb link={link} title={title} />
-          </React.Fragment>
-        );
-      })}
-    </div>
+    <Breadcrumb>
+      <BreadcrumbList>
+        {crumbs.map((crumb, index) => {
+          const title = crumb.replace(/-/g, ' ');
+          const link = !crumbs[index + 1]
+            ? '.'
+            : `/${crumbs
+                .slice(0, index + 1)
+                .map((c) => c.replace(/ /g, '-').toLowerCase())
+                .join('/')}`;
+          return (
+            <React.Fragment key={crumb}>
+              {index !== 0 && <BreadcrumbSeparator />}
+              <Crumb link={link} title={title} />
+            </React.Fragment>
+          );
+        })}
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 };
 
 const Crumb = ({ link, title }: { link: string; title: string }) => (
-  <Button className='capitalize hover:underline'>
-    <Link to={link}>{title}</Link>
-  </Button>
+  <BreadcrumbItem>
+    <BreadcrumbLink asChild className='uppercase'>
+      <Link to={link}>{title}</Link>
+    </BreadcrumbLink>
+  </BreadcrumbItem>
 );

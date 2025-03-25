@@ -84,6 +84,8 @@ const weatherIconMap: IWeatherIcons = {
   'mostly sunny': { day: 'day-sunny', night: 'night-clear' },
   'partly cloudy': { day: 'day-cloudy', night: 'night-alt-cloudy' },
   'patchy fog': { day: 'day-fog', night: 'night-fog' },
+  'light rain': { day: 'day-rain', night: 'night-alt-rain' },
+  rain: { day: 'rain', night: 'rain' },
   'rain showers likely': { day: 'showers', night: 'night-alt-showers' },
 
   'showers and thunderstorms': {
@@ -108,6 +110,7 @@ const weatherIconMap: IWeatherIcons = {
   // Chatgpt generated
   clear: { day: 'day-sunny', night: 'night-clear' },
   hot: { day: 'hot', night: 'hot' },
+  snow: { day: 'day-snow', night: 'night-alt-snow' },
   cold: { day: 'snowflake-cold', night: 'snowflake-cold' },
   blizzard: { day: 'snow-wind', night: 'snow-wind' },
   hail: { day: 'hail', night: 'night-alt-hail' },
@@ -121,6 +124,18 @@ const weatherIconMap: IWeatherIcons = {
   },
   'heavy rain': { day: 'rain', night: 'night-alt-rain' },
   'partly sunny': { day: 'day-cloudy', night: 'night-alt-cloudy' },
+  'partly sunny then slight chance light rain': {
+    day: 'day-rain',
+    night: 'night-alt-rain',
+  },
+  'slight chance light rain then partly sunny': {
+    day: 'day-rain',
+    night: 'night-alt-rain',
+  },
+  'chance light rain then partly sunny': {
+    day: 'day-rain',
+    night: 'night-alt-rain',
+  },
   'thunderstorms likely': {
     day: 'thunderstorm',
     night: 'night-alt-thunderstorm',

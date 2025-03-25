@@ -4,6 +4,12 @@ interface LatLong {
   lng: string;
 }
 
+interface RelatedOrganization {
+  id: string;
+  url: string;
+  name: string;
+}
+
 interface Address {
   line1: string;
   line2?: string;
@@ -59,6 +65,13 @@ interface OperatingHours {
       saturday: string;
     };
   }>;
+}
+
+interface Multimedia {
+  title: string;
+  id: string;
+  type: string;
+  url: string;
 }
 
 interface ImageProps {
@@ -234,7 +247,7 @@ interface IThingToDo {
   feeDescription?: string;
   id: string;
   age?: string;
-  relatedOrganizations: unknown[]; // if always empty, you might set to an empty array type
+  relatedOrganizations: RelatedOrganization[];
   arePetsPermittedWithRestrictions: string;
   activities: Activity[];
   activityDescription: string;
@@ -253,6 +266,78 @@ interface IThingToDo {
   duration: string;
   relevanceScore: number;
   tags: string[];
+}
+
+// Parking
+interface IParking {
+  id: string;
+  name: string;
+  altName: string;
+  description: string;
+  relatedParks: RelatedPark[];
+  latitude: number;
+  longitude: number;
+  geometryPoiId: string;
+  managedByOrganization: string;
+  timeZone: string;
+  webcamUrl: string;
+  contacts: Contacts;
+  fees: Fee[];
+  operatingHours: OperatingHours[];
+  images: ImageProps[];
+  accessibility: {
+    isLotAccessibleToDisabled: boolean;
+    totalSpaces: number;
+    numberofAdaSpaces: number;
+    numberofAdaVanAccessbileSpaces: number;
+    numberofAdaStepFreeSpaces: number;
+    numberOfOversizeVehicleSpaces: number;
+    adaFacilitiesDescription: string;
+  };
+  liveStatus: {
+    isActive: boolean;
+    occupancy: string;
+    estimatedWaitTimeInMinutes?: number | string;
+    description: string;
+    expirationDate: string;
+  };
+}
+
+interface IPlaces {
+  id: string;
+  url: string;
+  title: string;
+  listingDescription: string;
+  images: ImageProps[];
+  relatedParks: RelatedPark[];
+  relatedOrganizations: RelatedOrganization[];
+  tags: string[];
+  latitude: string;
+  longitude: string;
+  latLong: string;
+  bodyText: string;
+  audioDescription: string;
+  isPassportStampLocation: string;
+  passportStampLocationDescription: string;
+  passportStampImages: IPassportImages[];
+  managedByUrl: string;
+  isOpenToPublic: string;
+  isMapPinHidden: string;
+  npmapId: string;
+  geometryPoiId: string;
+  isManagedByNps: string;
+  amenities: string[];
+  managedByOrg: string;
+  quickFacts: {
+    id: string;
+    value: string;
+    name: string;
+  }[];
+  location: string;
+  locationDescription: string;
+  credit: string;
+  multimedia: Multimedia[];
+  relevanceScore: number;
 }
 
 // Campground
@@ -283,17 +368,17 @@ interface ICampground {
   addresses: Address[];
   images: ImageProps[];
   weatherOverview: string;
-  numberOfSitesReservable: number;
-  numberOfSitesFirstComeFirstServe: number;
+  numberOfSitesReservable: string;
+  numberOfSitesFirstComeFirstServe: string;
   campsites: {
-    totalSites: number;
-    group: number;
-    horse: number;
-    tentOnly: number;
-    electricalHookups: number;
-    rvOnly: number;
-    walkBoatTo: number;
-    other: number;
+    totalSites: string;
+    group: string;
+    horse: string;
+    tentOnly: string;
+    electricalHookups: string;
+    rvOnly: string;
+    walkBoatTo: string;
+    other: string;
   };
   accessibility: {
     wheelchairAccess: string;
@@ -310,7 +395,7 @@ interface ICampground {
     accessRoads: string[];
     classifications: string[];
   };
-  multimedia: unknown[];
+  multimedia: Multimedia[];
   relevanceScore: number;
   lastIndexedDate: string;
 }
@@ -337,7 +422,7 @@ interface IVisitorCenter {
   operatingHours?: OperatingHours[];
   addresses?: Address[];
   images: ImageProps[];
-  multimedia: unknown[];
+  multimedia: Multimedia[];
   relevanceScore: number;
   lastIndexedDate: string;
 }

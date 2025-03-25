@@ -13,7 +13,7 @@ export const DirectionSection = ({
   return (
     <ParkSection name={'Directions'}>
       <div>
-        <p className='text-xl'>
+        <p className='md:text-xl'>
           {'directionsOverview' in location && location.directionsOverview}
           {'directionsInfo' in location && location.directionsInfo}
           {location.directionsUrl && (

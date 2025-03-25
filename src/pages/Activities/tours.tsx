@@ -21,7 +21,7 @@ export const AllTours = () => {
   if (status === 'pending') {
     return (
       <div className='flex h-96 items-center justify-center'>
-        <Loader />;
+        <Loader />
       </div>
     );
   }
@@ -31,7 +31,7 @@ export const AllTours = () => {
   return (
     <section>
       {/* <h2 className='mb-2 text-2xl font-thin md:text-4xl'>Tours</h2> */}
-      <div className='grid grid-cols-4 gap-8'>
+      <div className='grid gap-4 md:grid-cols-4'>
         {tours.map((tour: ITour) => (
           <CategoryCard data={tour} name='tour' />
         ))}

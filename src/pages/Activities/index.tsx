@@ -30,7 +30,7 @@ export const Activities = () => {
         title={`${parkId?.toUpperCase()} | Activities`}
         description='Explore events, things to do, and tours at ${parkId?.toUpperCase()} provided by the USNP'
       />
-      <main className='container mx-auto my-24'>
+      <main className='container mx-auto my-20 px-4 sm:px-0'>
         <Breadcrumbs crumbs={[parkId as string, 'activities']} />
 
         <Tabs

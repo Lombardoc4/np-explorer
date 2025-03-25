@@ -25,64 +25,26 @@ export const AllParkVCs = () => {
   });
 
   if (status === 'pending') {
-    return (
-      <>
-        <SEO
-          title={`Visitor Centers of ${parkId?.toUpperCase()}`}
-          description='Explore visitor centers of the USNP'
-        />
-        <FullHeightLoader />;
-      </>
-    );
+    return <FullHeightLoader />;
   }
 
   if (error) {
     return <ErrorPage error={error} />;
   }
 
-  if (!visitorCenters || visitorCenters.length <= 0)
-    return <ErrorPage error={'Issue loading the visitor centers'} />;
+  if (!visitorCenters || visitorCenters.length <= 0) return null;
 
-  console.log('vis', visitorCenters);
-  return (
-    <>
-      <SEO
-        title={`Visitor Centers of ${parkId?.toUpperCase()}`}
-        description={`${visitorCenters.length} Visitor Centers at ${parkId}`}
-      />
-      <div className='flex h-dvh'>
-        {/* <Sidebar>
-          <Filters
-            changePassport={() => change_passport(!passport)}
-            passport={passport} collapsed={false}          />
-        </Sidebar> */}
-
-        <div id='main-content' className='mt-16 flex-1 overflow-scroll p-6'>
-          <header>
-            <h1 className='mb-8 text-6xl font-thin md:text-8xl'>
-              Visitor Centers
-            </h1>
-          </header>
-          <main>
-            <div className='col-span-2 grid gap-8 sm:grid-cols-2'>
-              {visitorCenters
-                .filter((vc) => {
-                  if (passport) {
-                    return vc.isPassportStampLocation === '1';
-                  } else {
-                    return true;
-                  }
-                })
-                .map((vc: IVisitorCenter) => (
-                  <CategoryCard key={vc.id} data={vc} {...activeCat} />
-                ))}
-              {/* <VCSection key={vc.id} vc={vc} /> */}
-            </div>
-          </main>
-        </div>
-      </div>
-    </>
-  );
+  return visitorCenters
+    .filter((vc) => {
+      if (passport) {
+        return vc.isPassportStampLocation === '1';
+      } else {
+        return true;
+      }
+    })
+    .map((vc: IVisitorCenter) => (
+      <CategoryCard key={vc.id} data={vc} name={'visitorcenter'} />
+    ));
 };
 
 const Filters = ({

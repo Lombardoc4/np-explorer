@@ -67,6 +67,11 @@ h2 {
   font-family: 'Lora', serif;
 }
 
+p {
+  letter-spacing: -1px;
+  @apply text-balance;
+}
+
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);

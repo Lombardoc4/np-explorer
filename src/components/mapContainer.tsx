@@ -4,16 +4,22 @@ import { useState } from 'react';
 import Map from './map';
 import { LngLatLike } from 'mapbox-gl';
 import { Button } from './ui/button';
-import { Link } from 'react-router';
+import { Link, useParams } from 'react-router';
 import { X } from 'lucide-react';
 
 const linkCategories = {
   'visitor-center': 'visitorcenter',
   campsite: 'camping',
   parking: 'parking',
+  sign: 'other',
 };
 
-const MapContainer = (props: { lnglat: LngLatLike; locations: any[] }) => {
+const MapContainer = (props: {
+  lnglat: LngLatLike;
+  locations: any[];
+  showFilters?: boolean;
+}) => {
+  const { parkId } = useParams();
   const [selectedLocation, setSelectedLocation] = useState<any>(null);
   const [mapStyle, setMapStyle] = useState(
     'mapbox://styles/mapbox/outdoors-v12',
@@ -43,16 +49,16 @@ const MapContainer = (props: { lnglat: LngLatLike; locations: any[] }) => {
   return (
     <div
       id='places'
-      className='bg-primary overflow-hidden rounded-xl border-4 lg:grid lg:grid-cols-4'
+      className='bg-primary gap-4 overflow-hidden rounded-xl border-4 p-4 lg:grid lg:grid-cols-4'
     >
       {/* Map (3 columns) */}
 
-      <div className='relative m-4 overflow-hidden rounded-lg border-2 shadow-lg lg:col-span-3'>
+      <div className='relative overflow-hidden rounded-lg border-2 shadow-lg lg:col-span-3'>
         <Map
           mapStyle={mapStyle}
           onLocationSelect={setSelectedLocation}
           selectedLocation={selectedLocation}
-          filters={filters}
+          filters={props.showFilters ? filters : undefined}
           {...props}
         />
 
@@ -67,28 +73,30 @@ const MapContainer = (props: { lnglat: LngLatLike; locations: any[] }) => {
         </button>
 
         {/* Filter Buttons */}
-        <div className='absolute top-3 left-3 flex flex-col gap-2 rounded-lg border border-gray-300 bg-white p-1.5 shadow-md'>
-          {Object.keys(filters).map((type) => (
-            <button
-              key={type}
-              onClick={() => toggleFilter(type as keyof typeof filters)}
-              className={`rounded-md border px-3 py-1.5 text-sm ${
-                filters[type as keyof typeof filters]
-                  ? 'bg-accent text-white'
-                  : 'bg-primary text-gray-600'
-              }`}
-            >
-              <img
-                src={`https://raw.githubusercontent.com/nationalparkservice/symbol-library/gh-pages/src/standalone/${type}-black-22.svg`}
-                className='h-4 w-4 lg:h-6 lg:w-6'
-              />
-            </button>
-          ))}
-        </div>
+        {props.showFilters && (
+          <div className='absolute top-3 left-3 flex flex-col gap-2 rounded-lg border border-gray-300 bg-white p-1.5 shadow-md'>
+            {Object.keys(filters).map((type) => (
+              <button
+                key={type}
+                onClick={() => toggleFilter(type as keyof typeof filters)}
+                className={`rounded-md border px-3 py-1.5 text-sm ${
+                  filters[type as keyof typeof filters]
+                    ? 'bg-accent text-white'
+                    : 'bg-primary text-gray-600'
+                }`}
+              >
+                <img
+                  src={`https://raw.githubusercontent.com/nationalparkservice/symbol-library/gh-pages/src/standalone/${type}-black-22.svg`}
+                  className='h-4 w-4 lg:h-6 lg:w-6'
+                />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Description Panel (1 column) */}
-      <div className='inset-shadow col-span-1 max-h-[536px] overflow-scroll p-4'>
+      <div className='inset-shadow col-span-1 max-h-[536px] overflow-scroll'>
         {selectedLocation ? (
           <div>
             <div className='flex items-center justify-between gap-2'>
@@ -113,7 +121,6 @@ const MapContainer = (props: { lnglat: LngLatLike; locations: any[] }) => {
         ) : (
           props.locations.map(
             (location) =>
-              filters &&
               filters[location.type as keyof typeof filters] && (
                 <div
                   onClick={() => setSelectedLocation(location)}

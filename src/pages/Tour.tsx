@@ -63,7 +63,7 @@ export const Tour = () => {
 const TourSection = ({ tour }: { tour: ITour }) => {
   return (
     <>
-      <div className='rounded-lg bg-black p-4 text-white'>
+      <div className='rounded-lg bg-black py-4 text-white'>
         {tour.title && (
           <h1 className='text-4xl font-thin md:text-6xl'>{tour.title}</h1>
         )}
