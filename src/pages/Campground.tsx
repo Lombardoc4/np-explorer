@@ -152,66 +152,6 @@ const CampingSection = ({ campground }: { campground: ICampground }) => {
       </WeatherSection>
 
       <DirectionSection location={campground} />
-
-      {/* <StyledSidebar>
-            {camp.images[0] && (
-              <StyledCard className='img-container'>
-                <img src={camp.images[0].url} alt={camp.images[0].altText} />
-              </StyledCard>
-            )}
-            <ContactCard contacts={camp.contacts} url={camp.url} />
-            <FeeCard entranceFees={camp.fees} />
-
-            <StyledCardContainer>
-              <h2>Reservation</h2>
-              <StyledCard>
-                <CardItem>
-                  <p className='bold'>{camp.reservationInfo}</p>
-                </CardItem>
-                {camp.reservationUrl && (
-                  <CardItem>
-                    <a
-                      href={camp.reservationUrl}
-                      className='btn'
-                      target='_blank'
-                    >
-                      Make a reservation now
-                    </a>
-                  </CardItem>
-                )}
-              </StyledCard>
-            </StyledCardContainer>
-
-            {camp.accessibility.accessRoads ||
-              camp.accessibility.adaInfo ||
-              (camp.accessibility.wheelchairAccess && (
-                <StyledCardContainer>
-                  <h2>Accessibility</h2>
-                  <StyledCard>
-                    {camp.accessibility.accessRoads && (
-                      <CardItem>
-                        <p className='bold'>Road Access:</p>{' '}
-                        {camp.accessibility.accessRoads.map((road: string) => (
-                          <p>{road}</p>
-                        ))}
-                      </CardItem>
-                    )}
-                    {camp.accessibility.adaInfo && (
-                      <CardItem>
-                        <p className='bold'>ADA Info:</p>{' '}
-                        {camp.accessibility.adaInfo}
-                      </CardItem>
-                    )}
-                    {camp.accessibility.wheelchairAccess && (
-                      <CardItem>
-                        <p className='bold'>Wheelchair Info:</p>{' '}
-                        {camp.accessibility.wheelchairAccess}
-                      </CardItem>
-                    )}
-                  </StyledCard>
-                </StyledCardContainer>
-              ))}
-          </StyledSidebar> */}
     </div>
   );
 };

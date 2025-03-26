@@ -108,7 +108,7 @@ const MapContainer = (props: {
       </div>
 
       {/* Description Panel (1 column) */}
-      <div className='inset-shadow col-span-1 max-h-[536px] overflow-scroll'>
+      <div className='inset-shadow col-span-1 mt-4 lg:mt-0'>
         {selectedLocation ? (
           <div>
             <div className='flex items-center justify-between gap-2'>
@@ -119,7 +119,6 @@ const MapContainer = (props: {
               </h2>
               <X onClick={() => setSelectedLocation(null)} />
             </div>
-            <div className='bg-accent my-1 h-0.5 rounded-full' />
             <p className='line-clamp-[12]'>
               {'description' in selectedLocation
                 ? selectedLocation.description
@@ -134,14 +133,14 @@ const MapContainer = (props: {
             </Button>
           </div>
         ) : (
-          props.locations.map(
-            (location) =>
-              filters[location.type as keyof typeof filters] && (
-                <div
-                  onClick={() => setSelectedLocation(location)}
-                  className='bg-accent border-foreground my-2 flex items-center gap-2 rounded border p-2 text-black'
-                >
-                  <div className='flex min-h-6 min-w-6 items-center justify-center rounded-full bg-white p-1'>
+          <div className='h-[300px] overflow-scroll lg:h-[500px]'>
+            {props.locations.map(
+              (location) =>
+                filters[location.type as keyof typeof filters] && (
+                  <div
+                    onClick={() => setSelectedLocation(location)}
+                    className='my-2 flex items-center gap-2 rounded border bg-white p-2 leading-4 text-black'
+                  >
                     <img
                       src={`https://raw.githubusercontent.com/nationalparkservice/symbol-library/gh-pages/src/standalone/${location.type}-black-22.svg`}
                       className='h-4 w-4'
@@ -149,9 +148,9 @@ const MapContainer = (props: {
                     {'name' in location && <p>{location.name}</p>}
                     {'title' in location && <p>{location.title}</p>}
                   </div>
-                </div>
-              ),
-          )
+                ),
+            )}
+          </div>
         )}
       </div>
     </div>

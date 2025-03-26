@@ -1,4 +1,4 @@
-import { LinkIcon } from 'lucide-react';
+import { LinkIcon, MapPin } from 'lucide-react';
 import { Link } from 'react-router';
 import { ContactCard } from '../../pages/Park/Sections/Contact';
 import { ParkSection } from '../../pages/Park/Sections';
@@ -57,10 +57,12 @@ const AddressContact = ({
               <DirectionAddress key={`${i}_${add.line1}`} address={add} />
             ))}
           <a
+            className='flex items-center gap-2 hover:underline'
             target='_blank'
             href={`https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`}
           >
-            {latitude?.slice(0, 8)}, {longitude?.slice(0, 8)}
+            <MapPin size={20} /> {latitude?.slice(0, 8)},{' '}
+            {longitude?.slice(0, 8)}
           </a>{' '}
         </div>
 

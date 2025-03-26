@@ -30,13 +30,14 @@ jobs:
       - name: Building project
         env:
           VITE_NPS_API_KEY: ${{ secrets.NPS_API_KEY }}
+          VITE_MAPBOX_API_KEY: ${{secrets.MAPBOX_API_KEY}}
         run: pnpm build
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v3
         with:
           role-to-assume: arn:aws:iam::890078463828:role/ghActionUploadS3
           role-session-name: GhActionSession
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Deploy to S3 bucket
-        run: aws s3 sync ./build/ s3://${{ env.BUCKET_NAME }} --delete
+        run: aws s3 sync ./dist/ s3://${{ env.BUCKET_NAME }} --delete
