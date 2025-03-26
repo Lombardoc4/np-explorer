@@ -83,51 +83,50 @@ const ImageCarousel = ({ images }: { images: ImageProps[] }) => {
     });
   }, [api]);
   return (
-    <>
-      <Carousel
-        setApi={setApi}
-        opts={{
-          align: 'start',
-          loop: true,
-        }}
-        className='w-full max-w-dvw px-4 md:px-0'
-      >
-        <div className='text-muted-foreground py-2 text-center text-sm'>
-          Slide {current} of {count}
-        </div>
-        <CarouselContent className='items-center'>
-          {images.map(
-            (image, index) =>
-              image.url && (
-                <CarouselItem key={index}>
-                  <div className='overflow-hidden rounded-xl'>
-                    <div className='flex max-h-[400px] items-center justify-center overflow-hidden md:max-h-[500px] landscape:max-h-[230px] landscape:md:max-h-[500px]'>
-                      <img
-                        className='h-full w-full object-contain landscape:w-auto'
-                        src={image.url}
-                        alt={image.title + ', ' + image.credit}
-                      />
-                    </div>
-                    {/* <div
+    // TODO: FIX MOBILE LANDSCAPE
+    <Carousel
+      setApi={setApi}
+      opts={{
+        align: 'start',
+        loop: true,
+      }}
+      className='w-full max-w-dvw px-4 sm:max-w-xl md:max-w-3xl md:px-0'
+    >
+      <div className='text-muted-foreground py-2 text-center text-sm'>
+        Slide {current} of {count}
+      </div>
+      <CarouselContent className='items-center'>
+        {images.map(
+          (image, index) =>
+            image.url && (
+              <CarouselItem key={index}>
+                <div className='overflow-hidden rounded-xl'>
+                  <div className='flex max-h-[400px] items-center justify-center overflow-hidden md:max-h-[500px] landscape:max-h-[230px] landscape:md:max-h-[500px]'>
+                    <img
+                      className='h-full w-full object-contain landscape:w-auto'
+                      src={image.url}
+                      alt={image.title + ', ' + image.credit}
+                    />
+                  </div>
+                  {/* <div
                       className='aspect-video bg-cover bg-center bg-no-repeat'
                       style={{ backgroundImage: `url(${image.url})` }}
                       /> */}
-                    <div className='bg-primary text-primary-foreground w-full p-2 px-4 leading-5'>
-                      <div className='grid grid-cols-2 items-center gap-2'>
-                        <p>{image.title}</p>
-                        <p className='text-right'>{image.credit}</p>
-                      </div>
-                      <hr className='my-1' />
-                      <p className='text-sm'>{image.caption}</p>
+                  <div className='bg-primary text-primary-foreground w-full p-2 px-4 leading-5'>
+                    <div className='grid grid-cols-2 items-center gap-2'>
+                      <p>{image.title}</p>
+                      <p className='text-right'>{image.credit}</p>
                     </div>
+                    <hr className='my-1' />
+                    <p className='text-sm'>{image.caption}</p>
                   </div>
-                </CarouselItem>
-              ),
-          )}
-        </CarouselContent>
-        <CarouselPrevious className='hidden sm:inline-flex' />
-        <CarouselNext className='hidden sm:inline-flex' />
-      </Carousel>
-    </>
+                </div>
+              </CarouselItem>
+            ),
+        )}
+      </CarouselContent>
+      <CarouselPrevious className='hidden sm:inline-flex' />
+      <CarouselNext className='hidden sm:inline-flex' />
+    </Carousel>
   );
 };
